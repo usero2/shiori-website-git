@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Introducing Shiori EPUB Reader — Shiori Blog</title>
+  <meta name="description" content="Discover Shiori EPUB Reader for Android. Read about its local-first architecture, advanced script-switching Text-to-Speech (TTS), and custom text replacement rules." />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Layout -->
+  <main class="post-layout animate-fade-in">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p1-date">📅 June 29, 2026</span>
+        <span data-i18n="blog-p1-cat">🏷️ Announcements</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Introducing Shiori EPUB Reader<br><span class="text-gradient">An EPUB Reader for Android Designed for Thai Readers</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ขอแนะนำ Shiori EPUB Reader<br><span class="text-gradient">แอปพลิเคชันอ่านและฟังไฟล์ EPUB สำหรับ Android</span></h1>
+    </header>
+
+    <div class="post-hero-image">
+      📖 Shiori EPUB Reader (栞)
+    </div>
+
+    <!-- English Post Body -->
+    <article class="post-body lang-en">
+      <p>
+        Welcome to our first official update! Today we are very proud to introduce you to <strong>Shiori EPUB Reader</strong>, an EPUB reading application for Android designed with readers in mind.
+      </p>
+
+      <p>
+        The name <strong>Shiori (栞)</strong> means <em>"bookmark"</em> in Japanese, reflecting a simple yet essential tool for digital book lovers.
+      </p>
+
+      <h2>Why Shiori EPUB Reader?</h2>
+      <p>
+        There are many e-book readers available today, but they often overlook <strong>Thai script rendering and Text-to-Speech (TTS)</strong> integration, or embed complex publisher stylesheets that break mobile layout. Some also force user registration and cloud dependencies.
+      </p>
+      
+      <p>
+        Shiori resolves these friction points with a <strong>local-first architecture</strong> and advanced Text-to-Speech capabilities:
+      </p>
+
+      <ul>
+        <li><strong>Maximum Privacy:</strong> No account required, and no data is sent to external servers. All book parsing and TTS generation happens locally on your device.</li>
+        <li><strong>Direct Cloud Sync:</strong> Connect the app directly to your personal Google Drive for backups. The developer runs no databases and has zero access to your library.</li>
+        <li><strong>Advanced Script-Switching TTS:</strong> Automatically parses text segments and switches voice scripts seamlessly (e.g. reading Thai and English text on the same page with native voices). Includes custom text replacement rules before reading out loud.</li>
+      </ul>
+
+      <h2>What's Next?</h2>
+      <p>
+        This is just the beginning. We are actively working on styling options, custom typography settings, and visual layouts to make your reading time even more productive. For help and updates, contact us on our <a href="/blog/" style="color: var(--accent-primary); text-decoration: underline;">Blog</a>.
+      </p>
+
+      <p>
+        Download Shiori EPUB Reader today from our <a href="/download" style="color: var(--accent-primary); text-decoration: underline;">Download</a> page and take back control of your books!
+      </p>
+    </article>
+
+    <!-- Thai Post Body -->
+    <article class="post-body lang-th">
+      <p>
+        ยินดีต้อนรับสู่อัปเดตแรกอย่างเป็นทางการจากผู้พัฒนา! ในวันนี้เรามีความภูมิใจเป็นอย่างยิ่งที่จะแนะนำให้คุณได้รู้จักกับ <strong>Shiori EPUB Reader</strong> แอปอ่านหนังสือสกุล EPUB บนระบบปฏิบัติการ Android ที่ถูกสร้างขึ้นมาภายใต้แนวคิด "ออกแบบโดยคำนึงถึงนักอ่านเป็นหลัก"
+      </p>
+
+      <p>
+        คำว่า <strong>Shiori (栞)</strong> ในภาษาญี่ปุ่นแปลว่า <em>"บุ๊กมาร์ก"</em> หรือ <em>"ที่คั่นหนังสือ"</em> ซึ่งสะท้อนถึงการทำงานที่เรียบง่าย แต่มีประโยชน์และขาดไม่ได้สำหรับผู้ที่รักการอ่านหนังสือดิจิทัล
+      </p>
+
+      <h2>ทำไมต้องเป็น Shiori EPUB Reader?</h2>
+      <p>
+        ในปัจจุบัน มีตัวเลือกแอปสำหรับเปิดอ่านหนังสือดิจิทัลอยู่มากมาย แต่สิ่งที่แอปทั่วไปมักจะมองข้ามคือ <strong>ระบบการประมวลผลและการอ่านออกเสียงภาษาไทย</strong> ที่มักจะอ่านออกเสียงได้ไม่เป็นธรรมชาติ หรือปัญหารูปแบบดีไซน์จากหนังสือดั้งเดิมที่ทำให้การจัดหน้าการอ่านบนมือถือเป็นไปได้ยาก รวมถึงบางระบบที่บังคับสมัครสมาชิกคลาวด์เพื่อใช้งาน
+      </p>
+      
+      <p>
+        Shiori ถูกสร้างขึ้นมาเพื่อแก้ปัญหากลุ่มนี้โดยเน้นสถาปัตยกรรมแบบ <strong>Local-first (ทำงานในเครื่อง 100%)</strong> และระบบการอ่านออกเสียงเป็นหัวใจหลัก:
+      </p>
+
+      <ul>
+        <li><strong>ความปลอดภัยและส่วนตัวระดับสูงสุด:</strong> คุณไม่จำเป็นต้องลงชื่อเข้าใช้ (No Account) หรือเอาข้อมูลหนังสือของคุณไปฝากไว้บนคลาวด์ใด ๆ ทุกกระบวนการทำและวิเคราะห์ในอุปกรณ์ของคุณโดยตรง</li>
+        <li><strong>การซิงค์ข้อมูลที่ไม่ผ่านตัวกลาง:</strong> เรามีฟังก์ชันเสริมสำหรับเชื่อมโยงโดยตรงระหว่างอุปกรณ์ของคุณและ Google Drive คลาวด์ส่วนตัวของคุณ ปราศจากเซิร์ฟเวอร์นักพัฒนาเข้ามายุ่งเกี่ยว</li>
+        <li><strong>ระบบแปลงหนังสือเป็นเสียงคุณภาพสูง (Advanced TTS):</strong> รองรับการสแกนและแยกตัวอักษรหลายภาษาอัตโนมัติ (เช่น สลับเสียงพูดไทยและอังกฤษตามสคริปต์ได้ในพารากราฟเดียว) พร้อมระบบแทนที่คำ (Text Replacement) ที่คุณระบุได้ละเอียดทั้งแบบแสดงผลหน้าจอและออกเสียง</li>
+      </ul>
+
+      <h2>ก้าวต่อไปของ Shiori</h2>
+      <p>
+        นี่เป็นเพียงจุดเริ่มต้นในการพัฒนาเท่านั้น เรายังคงมุ่งมั่นที่จะพัฒนาคุณสมบัติในการปรับแต่งหน้ากระดาษ ฟอนต์ตัวพิมพ์ และปรับความสมบูรณ์ของระบบควบคุมหน้าต่างลอย (Floating Controls) ให้เสถียรยิ่งขึ้นบนอุปกรณ์รุ่นใหม่ ๆ หากคุณมีข้อเสนอแนะเพิ่มเติม สามารถติดตามอัปเดตเราได้ที่หน้า <a href="/blog/" style="color: var(--accent-primary); text-decoration: underline;">บล็อกข่าวสาร</a>
+      </p>
+
+      <p>
+        คุณสามารถเข้ามาร่วมเปิดประสบการณ์อ่านแบบพรีเมียมและดาวน์โหลด Shiori ePub Reader เวอร์ชันล่าสุดได้แล้ววันนี้ผ่านทางหน้า <a href="/download" style="color: var(--accent-primary); text-decoration: underline;">ดาวน์โหลดแอปพลิเคชัน</a> ของเรา!
+      </p>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+      <p>Built with ❤️ for Thai Readers</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+</body>
+</html>

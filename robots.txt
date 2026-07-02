@@ -1,0 +1,38 @@
+# robots.txt for shioriepubreader.com
+# Allow all standard search engines and AI web crawlers to index the site
+
+User-agent: *
+Allow: /
+Disallow: /cdn-cgi/
+
+# ChatGPT Web Crawler
+User-agent: GPTBot
+Allow: /
+
+# ChatGPT User Interactions
+User-agent: ChatGPT-User
+Allow: /
+
+# Gemini Web Crawler (Google Extended)
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic Claude Web Crawler
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity AI Crawler
+User-agent: PerplexityBot
+Allow: /
+
+# Apple AI Crawler
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere AI Crawler
+User-agent: cohere-ai
+Allow: /
+
+Sitemap: https://shioriepubreader.com/sitemap.xml
