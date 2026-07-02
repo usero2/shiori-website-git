@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "cta-desc": "Download Shiori EPUB Reader for free on Google Play Store.",
       "cta-play": "▶ Get it on Google Play",
       
+      // Video section
+      "video-tag": "Video Guides",
+      "video-title": "Learn How to Use <span>Shiori</span>",
+      "video-sub": "Watch our step-by-step video tutorials to master Shiori's advanced features and speech options.",
+      
       // Download page
       "dl-tag": "Get Shiori ePub Reader",
       "dl-title": "Download <span>Shiori EPUB Reader</span>",
@@ -191,6 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "cta-title": "พร้อมรับประสบการณ์อ่านที่ดีขึ้นหรือยัง?",
       "cta-desc": "ดาวน์โหลด Shiori EPUB Reader ฟรีทันทีผ่าน Google Play Store.",
       "cta-play": "▶ Get it on Google Play",
+      
+      // Video section
+      "video-tag": "คู่มือการใช้งานแบบวิดีโอ",
+      "video-title": "เรียนรู้วิธีการใช้งาน <span>Shiori</span>",
+      "video-sub": "รับชมวิดีโอแนะนำและขั้นตอนสอนการใช้งานฟังก์ชันสลับเสียงและระบบแทนที่คำอย่างละเอียด",
       
       // Download page
       "dl-tag": "รับแอปพลิเคชัน Shiori",
