@@ -332,7 +332,7 @@ a {
   position: relative;
   width: 100%;
   max-width: 320px;
-  aspect-ratio: 9 / 19.5;
+  aspect-ratio: 1200 / 2510;
   background: #000;
   border: 10px solid #1e293b;
   border-radius: 40px;
@@ -343,15 +343,17 @@ a {
 }
 
 .mockup-screen {
+  position: relative;
   flex: 1;
   background-color: #0b0f19;
-  padding: 1.5rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #fff;
   font-size: 0.8rem;
   font-family: var(--font-sans);
+  overflow: hidden;
 }
 
 .mockup-header {
