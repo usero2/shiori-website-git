@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How to Sync Shiori with Kavita (OPDS & REST API) — Shiori Blog</title>
+  <meta name="description" content="A step-by-step guide to connecting Shiori EPUB Reader with your self-hosted Kavita server for streaming books and syncing reading progress." />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-text {
+      flex: 1;
+    }
+    .step-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      font-size: 1rem;
+    }
+    .step-img-el {
+      max-width: 100%;
+      max-height: 380px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+      display: block;
+      object-fit: contain;
+    }
+    .step-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .section-divider {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 4rem 0;
+      text-align: center;
+    }
+    .section-divider::after {
+      content: "⚡";
+      display: inline-block;
+      position: relative;
+      top: -12px;
+      padding: 0 1rem;
+      background: var(--bg-primary);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      /* Alternating step layout for better rhythm */
+      .tutorial-step.alternate {
+        flex-direction: row-reverse;
+      }
+    }
+    .short-video-container {
+      max-width: 360px;
+      margin: 3rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    /* Lightbox Gallery Styles */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.97);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      flex: 1;
+      padding: 2rem;
+    }
+    .lightbox-img {
+      max-width: 85%;
+      max-height: 75vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      object-fit: contain;
+    }
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale(1);
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      user-select: none;
+      z-index: 2002;
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: translateY(-50%) scale(1.1);
+      color: #fff;
+    }
+    .lightbox-arrow.prev {
+      left: 2rem;
+    }
+    .lightbox-arrow.next {
+      right: 2rem;
+    }
+    .lightbox-thumbnails {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      max-width: 90%;
+      overflow-x: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    .lightbox-thumb-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.5;
+      transition: all 0.2s;
+    }
+    .lightbox-thumb-img:hover {
+      opacity: 0.8;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .lightbox-thumb-img.active {
+      opacity: 1;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      z-index: 2005;
+      box-shadow: var(--card-shadow);
+    }
+    .lightbox-close:hover {
+      background: var(--accent-primary);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    
+    /* Indicator showing image is clickable */
+    .step-img-el {
+      cursor: zoom-in;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .step-img-el:hover {
+      transform: scale(1.02);
+      border-color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Layout -->
+  <main class="post-layout animate-fade-in">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p4-date">📅 July 17, 2026</span>
+        <span data-i18n="blog-p4-cat">🏷️ Guides</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Sync Shiori with Kavita (OPDS & REST API)<br><span class="text-gradient">Stream your personal library and sync reading progress</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita (OPDS & REST API)<br><span class="text-gradient">เปิดอ่านคลังส่วนตัว พร้อมซิงค์ความคืบหน้าการอ่านแบบเรียลไทม์</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('image.png') no-repeat center center; background-size: cover; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden;">
+      <span style="font-size: 4rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));">⚡</span>
+    </div>
+
+    <!-- English Post Body -->
+    <div class="post-body lang-en">
+      <p>
+        Connecting <strong>Shiori EPUB Reader</strong> to a self-hosted media server like <strong>Kavita</strong> opens up your entire digital book catalog directly inside the app. By setting up a connection via OPDS, you can browse all your library items and sync your reading progress seamlessly back to Kavita.
+      </p>
+      
+      <p>
+        Here is a step-by-step guide to get everything configured in minutes.
+      </p>
+
+      <!-- YouTube Short Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">Video Walkthrough (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">For a quick, detailed look at the interface and configuration steps, watch this short video guide:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/1lPa4rimv44" title="Kavita Server Sync Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      
+      <h2 style="margin-bottom: 2rem;">Part 1: Setting up Kavita (Web Dashboard)</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>Access Dashboard</div>
+          <p>Log in to your Kavita server interface via your web browser. Go to your dashboard or user settings panel.</p>
+        </div>
+        <div class="step-image">
+          <img src="image-1.png" alt="Kavita Dashboard" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>Open Auth Keys / OPDS</div>
+          <p>In your user settings, look for the <strong>Auth Keys / OPDS</strong> tab. Kavita uses this section to generate unique tokens for third-party client integrations.</p>
+        </div>
+        <div class="step-image">
+          <img src="image.png" alt="Auth Keys Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>Copy OPDS URL</div>
+          <p>Scroll down to locate your unique <strong>OPDS URL</strong>. Copy this full URL address to your clipboard. This contains the authentication token Shiori needs to communicate with Kavita.</p>
+        </div>
+        <div class="step-image">
+          <img src="image-2.png" alt="OPDS URL" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">Part 2: Configuring Shiori App</h2>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>Add Library Server</div>
+          <p>Open Shiori EPUB Reader on your Android device. Tap the <strong>Collection</strong> icon in the bottom-right corner. In the <strong>Library Server</strong> section, tap the <strong>➕ (Add)</strong> icon.</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173412_com_shiori_epubreader_MainActivity.jpg" alt="Add Library Server" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>Input OPDS URL</div>
+          <p>Paste the copied <strong>OPDS URL</strong> into the input box. <br><strong>Important Note:</strong> If your Kavita server runs locally, ensure you replace <code>localhost</code> in the URL with the actual local IP address of your server machine so your Android device can reach it.</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173159_com_shiori_epubreader_MainActivity.jpg" alt="Enter URL" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>Test & Save</div>
+          <p>Tap the <strong>Test Connection</strong> button. Once connection succeeds, a green <em>"connected server"</em> message will appear below. Tap <strong>Save</strong> at the top-right corner to save the server configuration.</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173203_com_shiori_epubreader_MainActivity.jpg" alt="Test Connection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>Verify Listing</div>
+          <p>Your Kavita server will now show up in the Library Server catalog list in your collections tab.</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173434_com_shiori_epubreader_MainActivity.jpg" alt="Server Listing" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>Enjoy Seamless Reading</div>
+          <p>Tap your Kavita server from the list to browse all your books. Selecting any book will stream it directly. Your reading position and progress will sync back to Kavita automatically and invisibly.</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173222_com_shiori_epubreader_MainActivity.jpg" alt="Read and Sync" class="step-img-el" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Thai Post Body -->
+    <div class="post-body lang-th">
+      <p>
+        การเชื่อมต่อ <strong>Shiori EPUB Reader</strong> เข้ากับมีเดียเซิร์ฟเวอร์ส่วนตัวอย่าง <strong>Kavita</strong> จะช่วยดึงหนังสือทั้งหมดในคลังของคุณมาเปิดอ่านบนแอปได้ทันที โดยผ่านโปรโตคอล OPDS ซึ่งไม่เพียงแต่นำเข้าหนังสือได้อย่างรวดเร็ว แต่ยังช่วยซิงค์ข้อมูลความคืบหน้าการอ่าน (Reading Progress) กลับไปยัง Kavita โดยอัตโนมัติอีกด้วย
+      </p>
+      
+      <p>
+        นี่คือคู่มือขั้นตอนการตั้งค่าแบบทีละสเต็ปที่ทำเสร็จได้ง่าย ๆ ในไม่กี่นาทีครับ
+      </p>
+
+      <!-- YouTube Short Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">วิดีโอแนะนำขั้นตอนการตั้งค่า (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">สำหรับผู้ที่ต้องการชมหน้าตาเมนูและวิธีการตั้งค่าแต่ละขั้นตอนอย่างละเอียดแบบวิดีโอ สามารถรับชมได้ที่ด้านล่างนี้ครับ:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/1lPa4rimv44" title="Kavita Server Sync Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      
+      <h2 style="margin-bottom: 2rem;">ส่วนที่ 1: การตั้งค่าบนหน้าเว็บ Kavita Server</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>เข้าสู่หน้าควบคุมเซิร์ฟเวอร์</div>
+          <p>ล็อกอินเข้าสู่ระบบเซิร์ฟเวอร์ Kavita ของคุณผ่านเว็บเบราว์เซอร์ จากนั้นไปยังหน้าแดชบอร์ดหลักหรือส่วนการตั้งค่าผู้ใช้</p>
+        </div>
+        <div class="step-image">
+          <img src="image-1.png" alt="Kavita Dashboard" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>เปิดเมนู Auth Keys / OPDS</div>
+          <p>ในเมนูตั้งค่าส่วนตัว ให้คลิกเลือกแท็บ <strong>Auth Keys / ODPS</strong> เพื่อสร้างโทเคนการเข้าถึงของแอปภายนอก</p>
+        </div>
+        <div class="step-image">
+          <img src="image.png" alt="Auth Keys Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>คัดลอก OPDS URL</div>
+          <p>เลื่อนหน้าจอลงมาด้านล่างเพื่อค้นหา **OPDS URL** จากนั้นทำการคัดลอก (Copy) ลิงก์ดังกล่าวเก็บไว้ ซึ่งลิงก์นี้จะเป็นโทเคนเฉพาะสำหรับเชื่อมต่อกับแอป Shiori</p>
+        </div>
+        <div class="step-image">
+          <img src="image-2.png" alt="OPDS URL" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">ส่วนที่ 2: การเชื่อมต่อผ่านแอป Shiori</h2>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>เพิ่มเซิร์ฟเวอร์ห้องสมุด</div>
+          <p>เปิดแอป Shiori บนอุปกรณ์ Android ของคุณ แตะเมนู <strong>Collection</strong> (คอลเลกชัน) ที่มุมขวาล่าง จากนั้นไปที่หัวข้อ <strong>Library Server</strong> แล้วแตะไอคอนเครื่องหมาย <strong>➕</strong></p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173412_com_shiori_epubreader_MainActivity.jpg" alt="Add Library Server" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>ใส่ค่า OPDS URL</div>
+          <p>วาง **OPDS URL** ที่คุณคัดลอกไว้ลงในกล่องรับข้อมูล <br><strong>ข้อแนะนำสำคัญ:</strong> หากรันเซิร์ฟเวอร์ในระบบวงแลน (Local Network) ให้เปลี่ยนจาก <code>localhost</code> ในลิงก์ให้เป็นหมายเลข IP Address ของเครื่องเซิร์ฟเวอร์ เพื่อให้อุปกรณ์มือถือสามารถค้นหาเซิร์ฟเวอร์พบ</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173159_com_shiori_epubreader_MainActivity.jpg" alt="Enter URL" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>ทดสอบเชื่อมต่อและบันทึก</div>
+          <p>แตะปุ่ม **Test Connection** หากเชื่อมต่อถูกต้องระบบจะแสดงข้อความว่า *"connected server"* แตะปุ่ม **Save** (บันทึก) ที่มุมขวาบนสุดเพื่อยืนยัน</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173203_com_shiori_epubreader_MainActivity.jpg" alt="Test Connection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>ตรวจสอบรายการห้องสมุด</div>
+          <p>เซิร์ฟเวอร์ Kavita ของคุณจะปรากฏอยู่ในรายการ **Library Server** ภายในแถบคอลเลกชันเรียบร้อยแล้ว</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173434_com_shiori_epubreader_MainActivity.jpg" alt="Server Listing" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>เปิดอ่านและซิงค์ข้อมูล</div>
+          <p>แตะเข้าเซิร์ฟเวอร์เพื่อเลือกดูหนังสือที่คุณต้องการ เมื่อแตะเปิดเรื่องใด ๆ แอป Shiori จะดึงหนังสือมาสตรีมให้อ่านทันที พร้อมซิงค์ความคืบหน้าการอ่านล่าสุดกลับไปยัง Kavita อัตโนมัติ</p>
+        </div>
+        <div class="step-image">
+          <img src="Screenshot_20260717_173222_com_shiori_epubreader_MainActivity.jpg" alt="Read and Sync" class="step-img-el" />
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+      <p>Built with ❤️ for Thai Readers</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Lightbox Zoom Overlay -->
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">✕</div>
+    
+    <div class="lightbox-main">
+      <div class="lightbox-arrow prev" id="lightbox-prev">&#10094;</div>
+      <img src="" alt="Zoomed Image" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-arrow next" id="lightbox-next">&#10095;</div>
+    </div>
+    
+    <div class="lightbox-thumbnails" id="lightbox-thumbs"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+      const zoomableImages = document.querySelectorAll('.step-img-el');
+      
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Dynamically generate thumbnails
+      zoomableImages.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.getAttribute('src');
+        thumb.classList.add('lightbox-thumb-img');
+        thumb.dataset.index = idx;
+        lightboxThumbs.appendChild(thumb);
+
+        img.addEventListener('click', () => {
+          openImage(idx);
+        });
+
+        thumb.addEventListener('click', () => {
+          openImage(idx);
+        });
+      });
+
+      const openImage = (index) => {
+        currentIndex = index;
+        const targetImg = zoomableImages[currentIndex];
+        const src = targetImg.getAttribute('src');
+        
+        // Fade out transition
+        lightboxImg.style.opacity = '0';
+        setTimeout(() => {
+          lightboxImg.src = src;
+          lightboxImg.style.opacity = '1';
+        }, 150);
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Update active thumbnail state
+        const thumbs = lightboxThumbs.querySelectorAll('.lightbox-thumb-img');
+        thumbs.forEach(t => t.classList.remove('active'));
+        if (thumbs[currentIndex]) {
+          thumbs[currentIndex].classList.add('active');
+          thumbs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      };
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          lightboxImg.src = '';
+        }, 300);
+      };
+
+      const showNext = () => {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= zoomableImages.length) nextIndex = 0;
+        openImage(nextIndex);
+      };
+
+      const showPrev = () => {
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) prevIndex = zoomableImages.length - 1;
+        openImage(prevIndex);
+      };
+
+      // Control actions
+      lightboxClose.addEventListener('click', closeLightbox);
+      
+      lightboxPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+      
+      lightboxNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === document.querySelector('.lightbox-main')) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        }
+      });
+
+      // Mouse Wheel Navigation (Scroll to transition images)
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault(); // Lock page scroll
+
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return; // Debounce wheel event
+
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          showNext();
+          lastScrollTime = now;
+        } else if (e.deltaY < 0 || e.deltaX < 0) {
+          showPrev();
+          lastScrollTime = now;
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

@@ -111,7 +111,19 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p2-cat": "🏷️ Tips &amp; Tricks",
       "blog-p2-title": "Setting Up TTS Engine for Natural Pronunciation",
       "blog-p2-desc": "A step-by-step guide to installing high-quality language voice files in Android system settings and optimizing reading speeds in Shiori...",
-      "blog-p2-status": "Coming Soon"
+      "blog-p2-status": "Coming Soon",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 July 17, 2026",
+      "blog-p3-cat": "🏷️ E-Books",
+      "blog-p3-title": "5 Best Sites to Download Free EPUB Books",
+      "blog-p3-desc": "Looking for new books to read? Here are the top websites where you can find high-quality, free, and legal EPUB files.",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 July 17, 2026",
+      "blog-p4-cat": "🏷️ Guides",
+      "blog-p4-title": "How to Sync Shiori with Kavita (OPDS & REST API)",
+      "blog-p4-desc": "Stream your digital library and sync your reading progress seamlessly by connecting Shiori EPUB Reader to your self-hosted Kavita server."
     },
     th: {
       // Navbar
@@ -223,7 +235,19 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p2-cat": "🏷️ เคล็ดลับน่ารู้",
       "blog-p2-title": "วิธีการตั้งค่าเอนจินเสียงเพื่อให้อ่านออกเสียงภาษาไทยเป็นธรรมชาติที่สุด",
       "blog-p2-desc": "คู่มือการดาวน์โหลดแพ็คเกจเสียงคุณภาพสูงบน Android และการปรับแต่งสปีดโทนเสียงในแอป Shiori เพื่อประหยัดพลังงานขณะฟังเสียงอ่าน...",
-      "blog-p2-status": "เร็ว ๆ นี้"
+      "blog-p2-status": "เร็ว ๆ นี้",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 17 กรกฎาคม 2026",
+      "blog-p3-cat": "🏷️ แหล่งหนังสือ",
+      "blog-p3-title": "5 แหล่งดาวน์โหลดหนังสือ EPUB ฟรีที่ดีที่สุด",
+      "blog-p3-desc": "กำลังหาหนังสืออ่านอยู่ใช่ไหม? นี่คือเว็บยอดนิยมที่คุณสามารถหาไฟล์ EPUB คุณภาพดี ฟรี และถูกกฎหมาย เพื่อนำมาเปิดอ่านใน Shiori",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 17 กรกฎาคม 2026",
+      "blog-p4-cat": "🏷️ คู่มือการใช้งาน",
+      "blog-p4-title": "วิธีเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita (OPDS & REST API)",
+      "blog-p4-desc": "เปิดอ่านหนังสือจากคลังส่วนตัวและซิงค์ความคืบหน้าการอ่าน (Reading Progress) ได้อย่างราบรื่นโดยเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita ของคุณ"
     }
   };
 
