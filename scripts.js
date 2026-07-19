@@ -123,7 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p4-date": "📅 July 17, 2026",
       "blog-p4-cat": "🏷️ Guides",
       "blog-p4-title": "How to Sync Shiori with Kavita (OPDS & REST API)",
-      "blog-p4-desc": "Stream your digital library and sync your reading progress seamlessly by connecting Shiori EPUB Reader to your self-hosted Kavita server."
+      "blog-p4-desc": "Stream your digital library and sync your reading progress seamlessly by connecting Shiori EPUB Reader to your self-hosted Kavita server.",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 July 19, 2026",
+      "blog-p5-cat": "🏷️ Guides",
+      "blog-p5-title": "How to Import Custom Fonts into Shiori",
+      "blog-p5-desc": "Personalize your reading experience by importing your favorite font files and assigning custom typography settings for different languages."
     },
     th: {
       // Navbar
@@ -247,7 +253,47 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p4-date": "📅 17 กรกฎาคม 2026",
       "blog-p4-cat": "🏷️ คู่มือการใช้งาน",
       "blog-p4-title": "วิธีเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita (OPDS & REST API)",
-      "blog-p4-desc": "เปิดอ่านหนังสือจากคลังส่วนตัวและซิงค์ความคืบหน้าการอ่าน (Reading Progress) ได้อย่างราบรื่นโดยเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita ของคุณ"
+      "blog-p4-desc": "เปิดอ่านหนังสือจากคลังส่วนตัวและซิงค์ความคืบหน้าการอ่าน (Reading Progress) ได้อย่างราบรื่นโดยเชื่อมต่อ Shiori เข้ากับเซิร์ฟเวอร์ Kavita ของคุณ",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 19 กรกฎาคม 2026",
+      "blog-p5-cat": "🏷️ คู่มือการใช้งาน",
+      "blog-p5-title": "วิธีนำเข้าและใช้งานฟอนต์ภายนอก (Custom Fonts) บน Shiori",
+      "blog-p5-desc": "ปรับแต่งหน้าตาการอ่านให้น่าอ่านยิ่งขึ้นด้วยการนำเข้าไฟล์ฟอนต์ที่คุณชอบ และเลือกฟอนต์เฉพาะสำหรับแต่ละภาษาได้อย่างอิสระ"
+    },
+    jp: {
+      "nav-home": "ホーム",
+      "nav-download": "ダウンロード",
+      "nav-blog": "ブログ",
+      "footer-desc": "プレミアムで柔軟な読書と読み上げ（TTS）機能を提供するAndroid用EPUBリーダー。",
+      "footer-app": "アプリケーション",
+      "footer-legal": "法的情報",
+      "footer-privacy": "プライバシーポリシー",
+      "footer-terms": "利用規約",
+      "footer-blog": "ブログ",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 2026年7月19日",
+      "blog-p5-cat": "🏷️ ガイド",
+      "blog-p5-title": "Shioriにカスタムフォントをインポートする方法",
+      "blog-p5-desc": "お好みのフォントファイルをインポートし、表示言語ごとにカスタムフォントを割り当てることで、読書体験を自分好みにカスタマイズしましょう。"
+    },
+    cn: {
+      "nav-home": "首页",
+      "nav-download": "下载",
+      "nav-blog": "博客",
+      "footer-desc": "一款专为安卓打造的优质EPUB阅读器，提供灵活的阅读界面和出色的文本转语音（TTS）朗读体验。",
+      "footer-app": "应用程序",
+      "footer-legal": "法律信息",
+      "footer-privacy": "隐私政策",
+      "footer-terms": "服务条款",
+      "footer-blog": "博客",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 2026年7月19日",
+      "blog-p5-cat": "🏷️ 指南",
+      "blog-p5-title": "如何在 Shiori 中导入自定义字体",
+      "blog-p5-desc": "通过导入您最喜欢的字体文件，并为不同的显示语言分配自定义字体，打造最符合您个人喜好的完美阅读体验。"
     }
   };
 
@@ -329,13 +375,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggle block-level languages (for static articles/sections)
-    if (lang === 'en') {
-      document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'block');
-      document.querySelectorAll('.lang-th').forEach(el => el.style.display = 'none');
-    } else {
-      document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.lang-th').forEach(el => el.style.display = 'block');
-    }
+    const availableLangs = ['en', 'th', 'jp', 'cn'];
+    availableLangs.forEach(l => {
+      document.querySelectorAll(`.lang-${l}`).forEach(el => {
+        el.style.display = (l === lang) ? 'block' : 'none';
+      });
+    });
 
     // Update HTML lang attribute
     document.documentElement.setAttribute('lang', lang);
@@ -346,7 +391,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (langToggleBtn) {
     langToggleBtn.addEventListener('click', () => {
-      const nextLang = currentLang === 'en' ? 'th' : 'en';
+      let nextLang = 'en';
+      if (currentLang === 'en') nextLang = 'th';
+      else if (currentLang === 'th') nextLang = 'jp';
+      else if (currentLang === 'jp') nextLang = 'cn';
+      else if (currentLang === 'cn') nextLang = 'en';
       setLanguage(nextLang);
     });
   }

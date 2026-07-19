@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How to Import Custom Fonts into Shiori (OPDS & REST API) — Shiori Blog</title>
+  <meta name="description" content="A complete step-by-step guide to importing custom font files (TTF/OTF) into Shiori EPUB Reader and applying custom typography per language." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/how-to-import-custom-epub-fonts/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-text {
+      flex: 1;
+    }
+    .step-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      font-size: 1rem;
+    }
+    .step-img-el {
+      max-width: 100%;
+      max-height: 380px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+      display: block;
+      object-fit: contain;
+    }
+    .step-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .section-divider {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 4rem 0;
+      text-align: center;
+    }
+    .section-divider::after {
+      content: "🔤";
+      display: inline-block;
+      position: relative;
+      top: -12px;
+      padding: 0 1rem;
+      background: var(--bg-primary);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.alternate {
+        flex-direction: row-reverse;
+      }
+      .showcase-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    .short-video-container {
+      max-width: 360px;
+      margin: 3rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    /* Lightbox Gallery Styles */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.97);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      flex: 1;
+      padding: 2rem;
+    }
+    .lightbox-img {
+      max-width: 85%;
+      max-height: 75vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      object-fit: contain;
+    }
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale(1);
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      user-select: none;
+      z-index: 2002;
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: translateY(-50%) scale(1.1);
+      color: #fff;
+    }
+    .lightbox-arrow.prev {
+      left: 2rem;
+    }
+    .lightbox-arrow.next {
+      right: 2rem;
+    }
+    .lightbox-thumbnails {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      max-width: 90%;
+      overflow-x: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    .lightbox-thumb-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.5;
+      transition: all 0.2s;
+    }
+    .lightbox-thumb-img:hover {
+      opacity: 0.8;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .lightbox-thumb-img.active {
+      opacity: 1;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      z-index: 2005;
+      box-shadow: var(--card-shadow);
+    }
+    .lightbox-close:hover {
+      background: var(--accent-primary);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    
+    .step-img-el {
+      cursor: zoom-in;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .step-img-el:hover {
+      transform: scale(1.02);
+      border-color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Layout -->
+  <main class="post-layout animate-fade-in">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p5-date">📅 July 19, 2026</span>
+        <span data-i18n="blog-p5-cat">🏷️ Guides</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Import Custom Fonts into Shiori<br><span class="text-gradient">Personalize book styling for every language</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีนำเข้าและใช้งานฟอนต์ภายนอกบน Shiori<br><span class="text-gradient">ปรับเปลี่ยนรูปแบบอักษรแยกเฉพาะรายภาษา</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">Shioriにカスタムフォントをインポートする方法<br><span class="text-gradient">表示言語ごとに独自の書体を割り当てる</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何在 Shiori 中导入自定义字体<br><span class="text-gradient">为不同的语言个性化定制书籍字体排版</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('0101-showcase-custom-font1.jpg') no-repeat center center; background-size: cover; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden;">
+      <span style="font-size: 4rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));">🔤</span>
+    </div>
+
+    <!-- ==================== ENGLISH BODY ==================== -->
+    <div class="post-body lang-en">
+      <p>
+        Shiori EPUB Reader offers advanced typography personalization. In addition to forcing standard system fonts, you can import external <strong>TrueType (.ttf)</strong> and <strong>OpenType (.otf)</strong> font files. You can assign different fonts for individual languages (e.g., separate custom fonts for Thai, English, Japanese, and Chinese), ensuring optimal reading comfort.
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">Video Walkthrough (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">Watch the quick visual guide to see how to import and configure custom fonts:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/rbZuODEFhA4" title="Import Custom Fonts Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 1.5rem;">Font Showcase Comparison</h2>
+      <p>Here is a comparison showing the default system font versus two different types of imported custom fonts:</p>
+      
+      <div class="showcase-grid">
+        <div style="text-align: center;">
+          <img src="0100-showcase-system-font.jpg" alt="System Font" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">Default System Font</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0101-showcase-custom-font1.jpg" alt="Custom Font 1" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">Custom Font: Rounded Style</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0102-showcase-custom-font2.jpg" alt="Custom Font 2" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">Custom Font: Serif Style</p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">Part 1: Importing Custom Font Files</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>Open Settings</div>
+          <p>Launch Shiori and tap the <strong>Settings</strong> icon in the bottom navigation bar.</p>
+        </div>
+        <div class="step-image">
+          <img src="1001-touch-Setting.jpg" alt="Settings Menu" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>Tap Reading Settings</div>
+          <p>Select the <strong>Reading</strong> menu to access reader display preferences.</p>
+        </div>
+        <div class="step-image">
+          <img src="1002-touch-Reading.jpg" alt="Reading Options" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>Tap Reader Font</div>
+          <p>Look for the <strong>Reader font</strong> option and tap it to manage your font directory.</p>
+        </div>
+        <div class="step-image">
+          <img src="1003-touch-Reader-font.jpg" alt="Reader Font Option" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>Language & Layout Info</div>
+          <p>A helpful tip popup will explain how multi-language font selection works, especially for CJK (Chinese, Japanese, Korean) layout styling.</p>
+        </div>
+        <div class="step-image">
+          <img src="1004-incase-use-chinese-touch.jpg" alt="Settings Note" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>Tap Import Font</div>
+          <p>Tap the <strong>Import Font</strong> button at the bottom of the list. A file explorer will open; choose your desired <code>.ttf</code> or <code>.otf</code> font file from your phone storage.</p>
+        </div>
+        <div class="step-image">
+          <img src="1005-touch-import-font.jpg" alt="Import Button" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>Import Multiple Fonts</div>
+          <p>You can import multiple font styles (e.g. rounded fonts and clean serif fonts) to suit different books and moods.</p>
+        </div>
+        <div class="step-image">
+          <img src="1006-incase-we-import-2-fonts.jpg" alt="Importing Multiple Fonts" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>Verify Listing</div>
+          <p>Your imported fonts will appear in the library font catalog, showing the custom font name and details.</p>
+        </div>
+        <div class="step-image">
+          <img src="1007-see-list-2-font-appear.jpg" alt="Font List" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">Part 2: Applying Custom Fonts in the Reader</h2>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>Open Reader Settings</div>
+          <p>While reading an EPUB book, tap the center of the screen to reveal navigation bars. Tap the <strong>three dots (•••)</strong> in the top-right corner, then select <strong>Reading Settings</strong>.</p>
+        </div>
+        <div class="step-image">
+          <img src="1010-in-reader-your-can-change-font-touch-...-touch-Readingsettings.jpg" alt="In-Reader Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">9</span>Select Target Language</div>
+          <p>Choose the target language you want to customize. Shiori allows you to define unique typefaces for separate languages independently.</p>
+        </div>
+        <div class="step-image">
+          <img src="1011-touch-what-language-want-to-change-font.jpg" alt="Language Selection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">10</span>Assign Imported Font</div>
+          <p>Select your newly imported font from the list. The reader will instantly format the text using your custom font styling!</p>
+        </div>
+        <div class="step-image">
+          <img src="1012-touch-font-what-you-want.jpg" alt="Applying Font" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== THAI BODY ==================== -->
+    <div class="post-body lang-th">
+      <p>
+        แอปพลิเคชัน <strong>Shiori EPUB Reader</strong> เปิดโอกาสให้ผู้ใช้อ่านหนังสือได้อย่างเพลิดเพลินยิ่งขึ้นผ่านการปรับแต่งรูปแบบอักษร นอกจากการบังคับใช้ฟอนต์มาตรฐานของระบบแล้ว คุณยังสามารถนำเข้าไฟล์ฟอนต์ภายนอกสกุล <strong>TrueType (.ttf)</strong> และ <strong>OpenType (.otf)</strong> เพื่อใช้แยกเฉพาะรายภาษา (เช่น กำหนดฟอนต์เฉพาะสำหรับภาษาไทย ภาษาอังกฤษ ภาษาญี่ปุ่น และภาษาจีน) ได้อย่างอิสระ
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">วิดีโอแนะนำขั้นตอนการตั้งค่า (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">ชมคู่มือแนะนำการนำเข้าและเลือกใช้งานฟอนต์อย่างละเอียดแบบวิดีโอสั้นได้ที่นี่ครับ:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/rbZuODEFhA4" title="Import Custom Fonts Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 1.5rem;">เปรียบเทียบการแสดงผลฟอนต์แต่ละแบบ</h2>
+      <p>ตัวอย่างเปรียบเทียบระหว่างฟอนต์ระบบเริ่มต้น กับฟอนต์ภายนอกที่นำเข้ามาใช้งานเพิ่มเติมในแบบต่าง ๆ:</p>
+      
+      <div class="showcase-grid">
+        <div style="text-align: center;">
+          <img src="0100-showcase-system-font.jpg" alt="System Font" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">ฟอนต์ระบบเริ่มต้น (Default)</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0101-showcase-custom-font1.jpg" alt="Custom Font 1" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">ฟอนต์นำเข้า: สไตล์มนหัวกลม</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0102-showcase-custom-font2.jpg" alt="Custom Font 2" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">ฟอนต์นำเข้า: สไตล์อักษรมีหัวพรีเมียม</p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">ส่วนที่ 1: ขั้นตอนการนำเข้าไฟล์ฟอนต์ภายนอก</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>เข้าสู่เมนูตั้งค่า</div>
+          <p>เปิดแอป Shiori ขึ้นมา จากนั้นแตะไอคอนเมนู <strong>Settings</strong> (ตั้งค่า) ที่อยู่แถบนำทางด้านล่าง</p>
+        </div>
+        <div class="step-image">
+          <img src="1001-touch-Setting.jpg" alt="Settings Menu" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>เลือกตั้งค่าการอ่าน</div>
+          <p>เลือกหัวข้อเมนู <strong>Reading</strong> (การอ่าน) เพื่อเข้าไปปรับแต่งค่าเกี่ยวกับการแสดงผลหน้าหนังสือ</p>
+        </div>
+        <div class="step-image">
+          <img src="1002-touch-Reading.jpg" alt="Reading Options" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>แตะเลือก Reader Font</div>
+          <p>มองหาตัวเลือก <strong>Reader font</strong> (ฟอนต์ของผู้อ่าน) แล้วแตะเลือกเข้าไปเพื่อจัดการแคตตาล็อกฟอนต์</p>
+        </div>
+        <div class="step-image">
+          <img src="1003-touch-Reader-font.jpg" alt="Reader Font Option" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>หมายเหตุเกี่ยวกับภาษาและการแสดงผล</div>
+          <p>ระบบอาจแสดงข้อมูลคำแนะนำเบื้องต้นเกี่ยวกับวิธีการทำงานของฟอนต์ภาษาต่าง ๆ (โดยเฉพาะอักษรกลุ่มจีน ญี่ปุ่น เกาหลี)</p>
+        </div>
+        <div class="step-image">
+          <img src="1004-incase-use-chinese-touch.jpg" alt="Settings Note" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>แตะปุ่มนำเข้าฟอนต์</div>
+          <p>แตะปุ่ม **Import Font** ด้านล่างสุด ระบบจะเปิดตัวจัดการไฟล์ในเครื่องขึ้นมา ให้คุณแตะเลือกไฟล์ฟอนต์ <code>.ttf</code> หรือ <code>.otf</code> ที่เก็บไว้ในเครื่อง</p>
+        </div>
+        <div class="step-image">
+          <img src="1005-touch-import-font.jpg" alt="Import Button" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>นำเข้าฟอนต์เพิ่มเติม</div>
+          <p>คุณสามารถเลือกนำเข้าฟอนต์เพิ่มได้หลายรูปแบบ (เช่น นำเข้าไว้ทั้งแบบมีหัวและไม่มีหัว) เพื่อรองรับประเภทหนังสือที่หลากหลาย</p>
+        </div>
+        <div class="step-image">
+          <img src="1006-incase-we-import-2-fonts.jpg" alt="Importing Multiple Fonts" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>ตรวจสอบรายชื่อฟอนต์</div>
+          <p>ฟอนต์ที่ถูกนำเข้าเรียบร้อยจะแสดงอยู่ในหน้าต่างรายการฟอนต์ พร้อมให้คุณเลือกใช้งานในหนังสือ</p>
+        </div>
+        <div class="step-image">
+          <img src="1007-see-list-2-font-appear.jpg" alt="Font List" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">ส่วนที่ 2: วิธีเปลี่ยนมาใช้ฟอนต์ที่นำเข้าขณะอ่านหนังสือ</h2>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>เปิดเมนูควบคุมการอ่าน</div>
+          <p>ในหน้าเปิดอ่านหนังสือ ให้แตะบริเวณกลางจอเพื่อให้แถบเมนูปรากฏ แตะปุ่มจุดสามจุด **(•••)** ที่มุมขวาบน แล้วเลือก **Reading Settings**</p>
+        </div>
+        <div class="step-image">
+          <img src="1010-in-reader-your-can-change-font-touch-...-touch-Readingsettings.jpg" alt="In-Reader Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">9</span>เลือกภาษาเป้าหมาย</div>
+          <p>แตะเลือกภาษาของตัวหนังสือที่คุณต้องการตั้งค่า เพื่อเปลี่ยนฟอนต์ให้กับภาษานั้น ๆ โดยเฉพาะ</p>
+        </div>
+        <div class="step-image">
+          <img src="1011-touch-what-language-want-to-change-font.jpg" alt="Language Selection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">10</span>เลือกและใช้ฟอนต์ใหม่</div>
+          <p>แตะเลือกฟอนต์ที่นำเข้ามา ตัวอักษรบนหน้าหนังสือจะถูกปรับเปลี่ยนไปใช้ฟอนต์ใหม่ที่คุณเลือกทันที!</p>
+        </div>
+        <div class="step-image">
+          <img src="1012-touch-font-what-you-want.jpg" alt="Applying Font" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== JAPANESE BODY ==================== -->
+    <div class="post-body lang-jp">
+      <p>
+        <strong>Shiori EPUB Reader</strong>は、細部まで調整可能な文字レイアウトのパーソナライズ機能を提供します。標準のシステムフォントを強制するだけでなく、外部の<strong>TrueType (.ttf)</strong>や<strong>OpenType (.otf)</strong>フォントファイルをインポートし、表示言語ごとに個別のフォント（例：日本語、タイ語、英語、中国語それぞれに別のカスタムフォント）を割り当てることができます。これにより、どのような書籍でも最適な可読性を実現します。
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">操作手順動画 (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">フォントのインポートと設定手順については、こちらのクイック動画ガイドをご覧ください。</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/rbZuODEFhA4" title="Import Custom Fonts Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 1.5rem;">フォント表示比較</h2>
+      <p>デフォルトのシステムフォントと、インポートされた異なる書体のカスタムフォントの比較例です。</p>
+      
+      <div class="showcase-grid">
+        <div style="text-align: center;">
+          <img src="0100-showcase-system-font.jpg" alt="System Font" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">デフォルトシステムフォント</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0101-showcase-custom-font1.jpg" alt="Custom Font 1" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">インポートフォント（丸ゴシック調）</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0102-showcase-custom-font2.jpg" alt="Custom Font 2" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">インポートフォント（明朝・セリフ調）</p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">パート1：フォントファイルのインポート手順</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>設定を開く</div>
+          <p>Shioriを起動し、画面下部のナビゲーションバーにある<strong>Settings</strong>（設定）アイコンをタップします。</p>
+        </div>
+        <div class="step-image">
+          <img src="1001-touch-Setting.jpg" alt="Settings Menu" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>読書設定を選択</div>
+          <p>フォントや読書表示の設定を行うため、<strong>Reading</strong>（読書設定）メニューをタップします。</p>
+        </div>
+        <div class="step-image">
+          <img src="1002-touch-Reading.jpg" alt="Reading Options" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>Reader Fontをタップ</div>
+          <p><strong>Reader font</strong>（リーダーフォント）オプションを探し、フォント管理画面を開くためにタップします。</p>
+        </div>
+        <div class="step-image">
+          <img src="1003-touch-Reader-font.jpg" alt="Reader Font Option" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>多言語設定に関するヒント</div>
+          <p>多言語対応（中国語、日本語、韓国語など）のフォント切り替えメカニズムに関する説明ポップアップが表示されます。</p>
+        </div>
+        <div class="step-image">
+          <img src="1004-incase-use-chinese-touch.jpg" alt="Settings Note" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>フォントのインポート</div>
+          <p>画面下部の<strong>Import Font</strong>ボタンをタップします。ファイルマネージャーが開くので、端末のストレージ内から任意の <code>.ttf</code> または <code>.otf</code> ファイルを選択します。</p>
+        </div>
+        <div class="step-image">
+          <img src="1005-touch-import-font.jpg" alt="Import Button" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>複数のフォントをインポート</div>
+          <p>書籍のジャンルや気分に合わせて、明朝体やゴシック体など複数の異なるカスタムフォントを追加登録できます。</p>
+        </div>
+        <div class="step-image">
+          <img src="1006-incase-we-import-2-fonts.jpg" alt="Importing Multiple Fonts" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>インポート確認</div>
+          <p>インポートが正常に完了すると、フォント名と共にフォントの一覧リストに表示されます。</p>
+        </div>
+        <div class="step-image">
+          <img src="1007-see-list-2-font-appear.jpg" alt="Font List" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">パート2：読書画面でのカスタムフォントの適用</h2>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>ビューア内で設定を開く</div>
+          <p>書籍の読書画面で画面中央を軽くタップして操作バーを表示させます。右上にある<strong>3点リーダー (•••)</strong>ボタンをタップし、<strong>Reading Settings</strong>を選択します。</p>
+        </div>
+        <div class="step-image">
+          <img src="1010-in-reader-your-can-change-font-touch-...-touch-Readingsettings.jpg" alt="In-Reader Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">9</span>設定対象の言語を選択</div>
+          <p>フォントスタイルをカスタマイズしたい対象の言語を選択します。Shioriでは特定の言語のテキストにのみ個別のフォントを適用可能です。</p>
+        </div>
+        <div class="step-image">
+          <img src="1011-touch-what-language-want-to-change-font.jpg" alt="Language Selection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">10</span>フォントを割り当てる</div>
+          <p>一覧からインポートしたカスタムフォントを選択すると、選択した言語のテキスト部分に即座に新しいフォントが適用されます！</p>
+        </div>
+        <div class="step-image">
+          <img src="1012-touch-font-what-you-want.jpg" alt="Applying Font" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== CHINESE BODY ==================== -->
+    <div class="post-body lang-cn">
+      <p>
+        <strong>Shiori EPUB 阅读器</strong> 提供了高度自定义的排版控制。除了强制使用设备系统默认的字体之外，您还可以自主导入外部 <strong>TrueType (.ttf)</strong> 和 <strong>OpenType (.otf)</strong> 字体文件，并为不同的语言设置专有字体（例如：分别为中文、泰文、英文和日文绑定不同的自定义字体），以带来最佳、最舒适的视觉阅读体验。
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">视频演示教程 (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">请观看以下快速视频指南，直观地了解导入和设置字体的具体步骤：</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/rbZuODEFhA4" title="Import Custom Fonts Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 1.5rem;">不同字体效果对比展示</h2>
+      <p>以下是系统自带字体与两种不同艺术风格的导入自定义字体之间的渲染对比效果：</p>
+      
+      <div class="showcase-grid">
+        <div style="text-align: center;">
+          <img src="0100-showcase-system-font.jpg" alt="System Font" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">系统默认字体</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0101-showcase-custom-font1.jpg" alt="Custom Font 1" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">导入字体：圆体/卡通风格</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="0102-showcase-custom-font2.jpg" alt="Custom Font 2" class="step-img-el" style="max-height: 250px; margin: 0 auto; border-radius: 8px;" />
+          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">导入字体：宋体/衬线风格</p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">第一部分：如何导入自定义字体文件</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>打开设置</div>
+          <p>打开 Shiori 阅读器，点击屏幕下方导航栏右侧的 <strong>Settings</strong>（设置）图标。</p>
+        </div>
+        <div class="step-image">
+          <img src="1001-touch-Setting.jpg" alt="Settings Menu" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>进入阅读设置</div>
+          <p>在设置列表中，选择并点击 <strong>Reading</strong>（阅读设置）选项，以便调整书籍显示风格。</p>
+        </div>
+        <div class="step-image">
+          <img src="1002-touch-Reading.jpg" alt="Reading Options" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>点击 Reader Font</div>
+          <p>点击 <strong>Reader font</strong>（阅读器字体）项，进入字体库管理页面。</p>
+        </div>
+        <div class="step-image">
+          <img src="1003-touch-Reader-font.jpg" alt="Reader Font Option" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>语言与排版提示</div>
+          <p>系统此时会弹出一个提示弹窗，向您介绍多语言排版（如中日韩汉字排版）切换字体的基本工作机制。</p>
+        </div>
+        <div class="step-image">
+          <img src="1004-incase-use-chinese-touch.jpg" alt="Settings Note" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">5</span>点击导入字体</div>
+          <p>点击页面下方的 <strong>Import Font</strong> 按钮，调出手机本地文件管理器，并选择您存放的 <code>.ttf</code> 或 <code>.otf</code> 格式字体文件。</p>
+        </div>
+        <div class="step-image">
+          <img src="1005-touch-import-font.jpg" alt="Import Button" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">6</span>导入多个字体</div>
+          <p>您可以根据书籍的不同主题和个人偏好，一次导入多个不同的自定义字体文件。</p>
+        </div>
+        <div class="step-image">
+          <img src="1006-incase-we-import-2-fonts.jpg" alt="Importing Multiple Fonts" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">7</span>确认字体列表</div>
+          <p>导入成功后，自定义字体会立即出现在列表目录中，显示具体的字体属性和样式名称。</p>
+        </div>
+        <div class="step-image">
+          <img src="1007-see-list-2-font-appear.jpg" alt="Font List" class="step-img-el" />
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">第二部分：如何在书籍阅读中应用新导入的字体</h2>
+
+      <!-- Step 8 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">8</span>打开阅读菜单设置</div>
+          <p>在打开的书籍阅读界面，点击屏幕正中央呼出功能栏。点击右上角的 **三点 (•••)**，然后点击 **Reading Settings**。</p>
+        </div>
+        <div class="step-image">
+          <img src="1010-in-reader-your-can-change-font-touch-...-touch-Readingsettings.jpg" alt="In-Reader Settings" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">9</span>选择您要配置的语言</div>
+          <p>在阅读字体菜单中，点击并选择您需要配置哪一种显示语言的字体。Shiori 支持不同语言文字应用不同的专有字体。</p>
+        </div>
+        <div class="step-image">
+          <img src="1011-touch-what-language-want-to-change-font.jpg" alt="Language Selection" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">10</span>应用导入的自定义字体</div>
+          <p>在弹出列表中勾选刚才导入的自定义字体。阅读界面中的文本将立即重绘并渲染为您挑选的新字体！</p>
+        </div>
+        <div class="step-image">
+          <img src="1012-touch-font-what-you-want.jpg" alt="Applying Font" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Lightbox Zoom Overlay -->
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">✕</div>
+    
+    <div class="lightbox-main">
+      <div class="lightbox-arrow prev" id="lightbox-prev">&#10094;</div>
+      <img src="" alt="Zoomed Image" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-arrow next" id="lightbox-next">&#10095;</div>
+    </div>
+    
+    <div class="lightbox-thumbnails" id="lightbox-thumbs"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+      const zoomableImages = document.querySelectorAll('.step-img-el');
+      
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Dynamically generate thumbnails
+      zoomableImages.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.getAttribute('src');
+        thumb.classList.add('lightbox-thumb-img');
+        thumb.dataset.index = idx;
+        lightboxThumbs.appendChild(thumb);
+
+        img.addEventListener('click', () => {
+          openImage(idx);
+        });
+
+        thumb.addEventListener('click', () => {
+          openImage(idx);
+        });
+      });
+
+      const openImage = (index) => {
+        currentIndex = index;
+        const targetImg = zoomableImages[currentIndex];
+        const src = targetImg.getAttribute('src');
+        
+        // Fade out transition
+        lightboxImg.style.opacity = '0';
+        setTimeout(() => {
+          lightboxImg.src = src;
+          lightboxImg.style.opacity = '1';
+        }, 150);
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Update active thumbnail state
+        const thumbs = lightboxThumbs.querySelectorAll('.lightbox-thumb-img');
+        thumbs.forEach(t => t.classList.remove('active'));
+        if (thumbs[currentIndex]) {
+          thumbs[currentIndex].classList.add('active');
+          thumbs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      };
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          lightboxImg.src = '';
+        }, 300);
+      };
+
+      const showNext = () => {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= zoomableImages.length) nextIndex = 0;
+        openImage(nextIndex);
+      };
+
+      const showPrev = () => {
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) prevIndex = zoomableImages.length - 1;
+        openImage(prevIndex);
+      };
+
+      // Control actions
+      lightboxClose.addEventListener('click', closeLightbox);
+      
+      lightboxPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+      
+      lightboxNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === document.querySelector('.lightbox-main')) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        }
+      });
+
+      // Mouse Wheel Navigation (Scroll to transition images)
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault(); // Lock page scroll
+
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return; // Debounce wheel event
+
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          showNext();
+          lastScrollTime = now;
+        } else if (e.deltaY < 0 || e.deltaX < 0) {
+          showPrev();
+          lastScrollTime = now;
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
