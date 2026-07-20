@@ -29,8 +29,14 @@
   <li>The App does <strong>not</strong> require you to create an account to read books.</li>
   <li>The developer does <strong>not</strong> operate any server and does <strong>not</strong> receive, store, or have access to your books, reading data, or personal information.</li>
   <li>The App does <strong>not</strong> collect your name or any personally identifiable information for the developer's own use.</li>
-  <li>By default, EPUB files you open are read locally on your device and are never transmitted. They leave your device only if you choose to enable the optional Cloud Sync feature described below, in which case they are synced with <em>your own</em> Google Drive (specifically under the "Shiori Library" folder or the private application folder).</li>
+  <li>By default, book files you open (EPUB, CBZ, PDF, FB2) are read locally on your device and are never transmitted. They leave your device only if you choose to enable the optional Cloud Sync feature described below, in which case they are synced with <em>your own</em> Google Drive (specifically under the "Shiori Library" folder or the private application folder).</li>
 </ul>
+
+<h3>On-Device AI, Translation, and OCR</h3>
+<p>The App's AI assistant (Gemma model), offline translation, and comic text recognition (OCR) run <strong>entirely on your device</strong> once their models are downloaded. Your questions to the AI, the text of your books, and recognized comic text are processed locally and are <strong>never</strong> sent to the developer or any developer-operated server. (If you explicitly choose the "Google Translate" action, the selected text is handed to the Google Translate app on your device.)</p>
+
+<h3>Personal Library Servers (OPDS, Komga, Kavita, Calibre, WebDAV)</h3>
+<p>If you add your own library server, the App connects <strong>directly from your device to your server</strong> using the address and credentials you enter. These are stored locally on your device (and included in your own Google Drive backup only if you enable Cloud Sync) and are never sent to the developer.</p>
 
 <h3>Information Collected by Third-Party Services</h3>
 <p>The App displays advertisements provided by <strong>Google AdMob</strong>. AdMob may automatically collect certain device information to serve personalised or non-personalised ads, including:</p>
@@ -46,11 +52,13 @@
 <p>The App uses <strong>Google Analytics for Firebase</strong> to understand, in aggregate, which features and screens are used and which are not, so we can improve the App. This is <strong>anonymous usage analytics</strong>: it is <strong>not</strong> linked to your name or any account, and it does <strong>not</strong> include the content of your books, the text you read, or your bookmarks, highlights, or notes. Firebase may automatically collect:</p>
 <ul>
   <li>App interaction events (for example, opening a screen or tab, starting text-to-speech, adding a bookmark, translating a paragraph, importing a book)</li>
+  <li>Aggregate usage durations (such as time spent reading or listening, in seconds) and the file format and metadata language of books opened — never their titles, authors, or content</li>
   <li>A randomly generated app-instance identifier</li>
   <li>Device model, OS version, and language</li>
   <li>Approximate (country/region-level) location derived from IP address</li>
 </ul>
 <p>This information is processed by Google and is available to the developer only as <strong>aggregated statistics</strong> (counts and trends) — never as individual profiles. It is <strong>never</strong> sold, and is used solely to improve the App. For details, see <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> and <a href="https://firebase.google.com/support/privacy" target="_blank">how Firebase uses data</a>.</p>
+<p>You can turn usage analytics <strong>off</strong> at any time with the <strong>Settings → Usage analytics</strong> switch in the App — the App then stops sending analytics entirely.</p>
 
 <hr />
 
@@ -119,7 +127,7 @@
   </tr>
   <tr>
     <td style="padding:8px; border:1px solid #ddd;"><code>SYSTEM_ALERT_WINDOW</code></td>
-    <td style="padding:8px; border:1px solid #ddd;">Displays the floating TTS controls overlay so you can pause/skip without returning to the App, This permission is used only when you enable the floating TTS controls feature and can be disabled at any time.</td>
+    <td style="padding:8px; border:1px solid #ddd;">Displays the floating TTS controls overlay so you can pause/skip without returning to the App. This permission is used only when you enable the floating TTS controls feature and can be disabled at any time.</td>
   </tr>
   <tr>
     <td style="padding:8px; border:1px solid #ddd;"><code>POST_NOTIFICATIONS</code></td>
@@ -127,7 +135,19 @@
   </tr>
   <tr>
     <td style="padding:8px; border:1px solid #ddd;"><code>READ_EXTERNAL_STORAGE</code></td>
-    <td style="padding:8px; border:1px solid #ddd;">Allows opening EPUB files from your Downloads folder on Android 12 and below only</td>
+    <td style="padding:8px; border:1px solid #ddd;">Allows opening book files from your Downloads folder on Android 12 and below only</td>
+  </tr>
+  <tr>
+    <td style="padding:8px; border:1px solid #ddd;"><code>FOREGROUND_SERVICE_DATA_SYNC</code></td>
+    <td style="padding:8px; border:1px solid #ddd;">Lets book imports, library-server downloads, cloud sync, and whole-book translation continue in the background under a progress notification</td>
+  </tr>
+  <tr>
+    <td style="padding:8px; border:1px solid #ddd;"><code>WAKE_LOCK</code></td>
+    <td style="padding:8px; border:1px solid #ddd;">Keeps background work (TTS playback, downloads, translation) running while the screen is off</td>
+  </tr>
+  <tr>
+    <td style="padding:8px; border:1px solid #ddd;"><code>REQUEST_IGNORE_BATTERY_OPTIMIZATIONS</code></td>
+    <td style="padding:8px; border:1px solid #ddd;">Optional: lets you exempt the App from battery optimization so long Text-to-Speech listening sessions are not stopped by the system</td>
   </tr>
 </table>
 
