@@ -262,15 +262,128 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-desc": "ปรับแต่งหน้าตาการอ่านให้น่าอ่านยิ่งขึ้นด้วยการนำเข้าไฟล์ฟอนต์ที่คุณชอบ และเลือกฟอนต์เฉพาะสำหรับแต่ละภาษาได้อย่างอิสระ"
     },
     jp: {
+      // Navbar
       "nav-home": "ホーム",
       "nav-download": "ダウンロード",
       "nav-blog": "ブログ",
+      
+      // Footer
       "footer-desc": "プレミアムで柔軟な読書と読み上げ（TTS）機能を提供するAndroid用EPUBリーダー。",
       "footer-app": "アプリケーション",
       "footer-legal": "法的情報",
       "footer-privacy": "プライバシーポリシー",
       "footer-terms": "利用規約",
       "footer-blog": "ブログ",
+      
+      // Home Hero
+      "hero-tag": "Android用EPUBリーダー",
+      "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
+      "hero-sub": "ワンランク上の読書と朗読体験を。自動多言語音声読み上げ（TTS）とアプリ内翻訳機能を搭載。",
+      "hero-get-play": "▶ Google Play で入手",
+      
+      // Home Screenshots
+      "ss-tag": "アプリのスクリーンショット",
+      "ss-title": "<span>Shiori</span> の画面を見る",
+      "ss-sub": "シンプルで洗練されたデザインを誇るAndroid版Shiori EPUBリーダーの実際のスクリーンショット。",
+      
+      // Home Features
+      "feat-tag": "主な機能",
+      "feat-title": "<span>すべての読者</span>のために作られた機能",
+      "feat-sub": "読書効率と体験を最大化するために丁寧に設計された機能群。",
+      "feat-1-title": "スマートライブラリ",
+      "feat-1-desc": "3つの表示モード（サムネイル、リスト、詳細）でEPUBコレクションを管理。読書の進捗を自動記録。",
+      "feat-2-title": "快適なEPUBリーダー",
+      "feat-2-desc": "検索可能な目次と無制限スクロール機能。TTS（読み上げ）が停止した正確な段落から再開可能。",
+      "feat-3-title": "ブックマーク、ハイライト＆メモ",
+      "feat-3-desc": "多彩な色でハイライト、メモの追加、薄い輪郭線で段落をブックマーク。",
+      "feat-4-title": "フローティングコントロール",
+      "feat-4-desc": "他のアプリの上でも動くフローティングTTSオーバーレイ。ピンチでサイズ変更、画面端への吸着も可能。",
+      "feat-5-title": "スマートテキスト置換",
+      "feat-5-desc": "TTS読み上げ前に単語を修正。5,000件以上のルールと正規表現（Regex）に対応し、誤読を補正。",
+      "feat-6-title": "選択＆翻訳",
+      "feat-6-desc": "単語をタップして瞬時に翻訳（Google翻訳ポップアップ）、コピー、選択箇所からのTTS再生、置換ルール追加が可能。",
+      
+      // Home Pro Features
+      "pro-tag": "詳細機能",
+      "pro-title": "<span>Pro機能</span>の深掘り",
+      "pro-sub": "読書体験を極限までコントロールするために設計された機能。",
+      "pro-tts-title": "高度なTTS＆言語コントロール",
+      "pro-tts-sub": "スマートな多言語自動音声切り替えによる精密な再生コントロール。",
+      "pro-tts-1": "🎯 <strong>Auto-detect Script:</strong> 6言語（TH, EN, ZH, JA, KO, DE）の文字を自動判別し、段落ごとにスムーズに声を切り替え。",
+      "pro-tts-2": "▲▼ <strong>Priority Ordering:</strong> 共通文字（ラテン文字：EN/DE、漢字：ZH/JA）の優先順位をドラッグで調整し競合を解決。",
+      "pro-tts-3": "⇅ <strong>Auto-Scroll & Highlight:</strong> 読み上げ中の段落に合わせて画面を自動スクロールしハイライト表示。",
+      "pro-rep-title": "デュアルモードテキスト置換",
+      "pro-rep-sub": "発音の修正と画面表示の調整を独立して設定できる高度なルール機能。",
+      "pro-rep-1": "🎨 <strong>Visual Replacement:</strong> 読書画面の文字とTTS読み上げの両方で指定単語を置換。",
+      "pro-rep-2": "🔊 <strong>TTS Replacement:</strong> 画面の本文はそのままに、TTS音声エンジンへ送信する際のみ単語を置換。",
+      "pro-rep-3": "⚡ <strong>Import/Export System:</strong> 高速検索、正規表現（Regex）対応、TSVファイルによるルールの入出力。",
+      "pro-float-title": "スマートフローティングパネル",
+      "pro-float-sub": "バックグラウンドや画面オフ時でもインタラクティブな操作で聴き続けられる機能。",
+      "pro-float-1": "🤏 <strong>Pinch to Resize:</strong> 読書用のフォントサイズを変えずにテキスト表示枠の大きさを調整。",
+      "pro-float-2": "🧲 <strong>Snap to Edge:</strong> 画面外に半分以上ドラッグすると15%だけ表示して隠れ、他アプリの邪魔をしない。",
+      "pro-float-3": "🔄 <strong>Double-Tap to Center:</strong> パネルをダブルタップするだけで素早く画面中央へ復帰。",
+      "pro-vis-title": "高度な表示カスタマイズ",
+      "pro-vis-sub": "電子書籍ファイルに埋め込まれた表示の崩れや独自スタイルを解消。",
+      "pro-vis-1": "🔤 <strong>Force System Font:</strong> 安定した表示のために端末の標準フォントを強制適用。",
+      "pro-vis-2": "🚫 <strong>Disable EPUB CSS:</strong> 出版社のスタイルシートを無効化し、アプリのクリーンなデフォルト表示に統合。",
+      "pro-vis-3": "🌈 <strong>Remove Font Color:</strong> 固定の文字色をクリアし、ダークモードやセピアテーマでの見やすさを維持。",
+      
+      // Home Advanced TTS Card
+      "card-tts-title": "高度な多言語テキスト読み上げ",
+      "card-tts-desc": "同じ段落内にあるタイ語、英語、中国語、日本語、韓国語、ドイツ語の文字を自動判別し、自然に音声を切り替え。言語ごとに速度、ピッチ、音声を個別調整可能。端末のTTSエンジンを使用してオフラインで動作します。",
+      
+      // Home Google Drive Cloud Sync Card
+      "card-sync-title": "Google ドライブ クラウド同期",
+      "card-sync-sub": "(Google Drive Cloud Sync)",
+      "card-sync-desc": "オプションのクラウド同期機能。本棚の書籍、読書の進捗、テキスト置換ルールを個人のGoogleドライブに直接保存。サーバーを持たないため、開発者がデータにアクセスすることは一切ありません。100%安全。",
+      "card-sync-1": "✓ アプリとGoogleドライブ間の直接かつ安全な接続",
+      "card-sync-2": "✓ お持ちのすべてのAndroid端末間での同期",
+      "card-sync-3": "✓ データは自分自身のストレージで安全に管理",
+      
+      // Home CTA
+      "cta-title": "読書体験を次のレベルへ引き上げませんか？",
+      "cta-desc": "Google Play ストアで Shiori EPUB リーダーを無料でダウンロード。",
+      "cta-play": "▶ Google Play で入手",
+      
+      // Video section
+      "video-tag": "ビデオガイド",
+      "video-title": "<span>Shiori</span> の使い方を学ぶ",
+      "video-sub": "Shioriの高度な機能と読み上げ設定をマスターするためのステップバイステップ動画チュートリアル。",
+      
+      // Download page
+      "dl-tag": "Shiori ePub リーダーを入手",
+      "dl-title": "<span>Shiori EPUB リーダー</span> をダウンロード",
+      "dl-sub": "お好みのインストール方法を選択してください。Android 8.0 (API 26) 以上に対応。読書中は100%広告なし。",
+      "dl-card-play-title": "Google Play ストア",
+      "dl-card-play-desc": "推奨。自動的にインストールおよび更新されます。Google Play プロテクトによる安全検証済み。",
+      "dl-card-play-btn": "Play ストアで入手",
+      
+      // Blog list
+      "blog-tag": "公式ブログ",
+      "blog-title": "ブログ ＆ <span>アップデート</span>",
+      "blog-sub": "最新のお知らせ、チュートリアル、ガイド、バージョンリリースをご覧ください。",
+      "blog-p1-date": "📅 2026年6月29日",
+      "blog-p1-cat": "🏷️ お知らせ",
+      "blog-p1-title": "Android向けShiori EPUBリーダーのご紹介",
+      "blog-p1-desc": "先進的な文字検知切り替えTTSとカスタムテキスト置換ルールを備えた、オフラインファーストなEPUBリーダー Shiori（栞）をご覧ください...",
+      "blog-p1-btn": "記事全文を読む",
+      "blog-p2-date": "📅 近日公開",
+      "blog-p2-cat": "🏷️ ヒント ＆ テクニック",
+      "blog-p2-title": "自然な発音のためのTTSエンジンのセットアップ",
+      "blog-p2-desc": "Androidシステム設定で高品質な言語音声ファイルをインストールし、Shioriでの読み上げ速度を最適化するためのステップバイステップガイド...",
+      "blog-p2-status": "近日公開",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 2026年7月17日",
+      "blog-p3-cat": "🏷️ 電子書籍",
+      "blog-p3-title": "無料のEPUB本をダウンロードできるベストサイト5選",
+      "blog-p3-desc": "新しい本をお探しですか？高品質で無料、かつ合法的なEPUBファイルが見つかるトップウェブサイトをご紹介します。",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 2026年7月17日",
+      "blog-p4-cat": "🏷️ ガイド",
+      "blog-p4-title": "ShioriをKavitaと同期する方法 (OPDS & REST API)",
+      "blog-p4-desc": "Shiori EPUBリーダーをセルフホストのKavitaサーバーに接続することで、デジタルライブラリをストリーミングし読書の進捗をスムーズに同期できます。",
       
       // Blog Post 5
       "blog-p5-date": "📅 2026年7月19日",
@@ -279,15 +392,128 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-desc": "お好みのフォントファイルをインポートし、表示言語ごとにカスタムフォントを割り当てることで、読書体験を自分好みにカスタマイズしましょう。"
     },
     cn: {
+      // Navbar
       "nav-home": "首页",
       "nav-download": "下载",
       "nav-blog": "博客",
+      
+      // Footer
       "footer-desc": "一款专为安卓打造的优质EPUB阅读器，提供灵活的阅读界面和出色的文本转语音（TTS）朗读体验。",
       "footer-app": "应用程序",
       "footer-legal": "法律信息",
       "footer-privacy": "隐私政策",
       "footer-terms": "服务条款",
       "footer-blog": "博客",
+      
+      // Home Hero
+      "hero-tag": "Android EPUB 阅读器",
+      "hero-title": "Shiori <br><span class=\"text-gradient\">ePub 阅读器</span>",
+      "hero-sub": "体验全新的阅读与听书方式。配备自动多语言文本转语音（TTS）与应用内翻译功能。",
+      "hero-get-play": "▶ Google Play 下载",
+      
+      // Home Screenshots
+      "ss-tag": "应用截图",
+      "ss-title": "探索 <span>Shiori</span> 界面",
+      "ss-sub": "Android版 Shiori EPUB 阅读器的真实界面截图，展现简洁而高级的设计风格。",
+      
+      // Home Features
+      "feat-tag": "核心功能",
+      "feat-title": "为<span>每一位读者</span>打造的特色功能",
+      "feat-sub": "我们精心设计了这些功能，以提升您的阅读效率与体验。",
+      "feat-1-title": "智能书架",
+      "feat-1-desc": "通过3种视图模式（缩略图、列表、详情）管理EPUB藏书，自动记录阅读进度。",
+      "feat-2-title": "流畅的EPUB阅读器",
+      "feat-2-desc": "支持无限滚动与可搜索的章节目录。无论读到哪里或TTS停在哪段，都能准确无缝续读。",
+      "feat-3-title": "书签、划线高亮与笔记",
+      "feat-3-desc": "支持多色文本高亮、添加笔记，以及段落书签标注。",
+      "feat-4-title": "悬浮控制面板",
+      "feat-4-desc": "悬浮TTS朗读窗口支持在任何应用上层运行。支持双指缩放、靠边吸着，随时随地边走边听。",
+      "feat-5-title": "智能文本替换",
+      "feat-5-desc": "在TTS朗读前纠正发音。支持5,000+条规则及正则表达式，精准修正发音。",
+      "feat-6-title": "划词与翻译",
+      "feat-6-desc": "轻触任意词语即可翻译（Google翻译弹窗）、复制、从所选处播放TTS或快速添加到替换规则。",
+      
+      // Home Pro Features
+      "pro-tag": "深度进阶功能",
+      "pro-title": "深入了解 <span>Pro 专业功能</span>",
+      "pro-sub": "旨在让您全面掌控阅读体验的高级功能。",
+      "pro-tts-title": "高级TTS与语言控制",
+      "pro-tts-sub": "智能多语言自动语音切换，带来精准的播放控制。",
+      "pro-tts-1": "🎯 <strong>Auto-detect Script:</strong> 自动识别6种语言（TH, EN, ZH, JA, KO, DE）的文本，并按段落无缝切换对应发音。",
+      "pro-tts-2": "▲▼ <strong>Priority Ordering:</strong> 通过拖拽调整语言优先级，轻松解决共享文字（如英/德的拉丁字母，中/日的汉字）的冲突。",
+      "pro-tts-3": "⇅ <strong>Auto-Scroll & Highlight:</strong> 自动随当前朗读段落同步滚动与高亮，阅读不脱节。",
+      "pro-rep-title": "双模式文本替换",
+      "pro-rep-sub": "通过高级规则配置，分别独立修复发音问题与文本显示样式。",
+      "pro-rep-1": "🎨 <strong>Visual Replacement:</strong> 在阅读界面与TTS朗读中同时替换指定的词汇。",
+      "pro-rep-2": "🔊 <strong>TTS Replacement:</strong> 仅在发送至TTS语音引擎时替换词汇，页面上仍保留原始文本。",
+      "pro-rep-3": "⚡ <strong>Import/Export System:</strong> 支持快速搜索、正则表达式，并可通过TSV制表符分隔文件导入/导出规则。",
+      "pro-float-title": "智能悬浮面板",
+      "pro-float-sub": "后台运行或锁屏时仍可流畅听书，配备交互式悬浮控制按钮。",
+      "pro-float-1": "🤏 <strong>Pinch to Resize:</strong> 调整文本视口大小，同时保持阅读字体大小不变。",
+      "pro-float-2": "🧲 <strong>Snap to Edge:</strong> 拖出屏幕50%以上时自动隐藏至仅保留15%显示，避免遮挡其他应用。",
+      "pro-float-3": "🔄 <strong>Double-Tap to Center:</strong> 双击悬浮面板即可快速平滑返回屏幕中央。",
+      "pro-vis-title": "高级视觉自定义",
+      "pro-vis-sub": "解决电子书中嵌入的格式混乱与自定义样式问题。",
+      "pro-vis-1": "🔤 <strong>Force System Font:</strong> 强制使用设备标准系统字体，确保多语言文本稳定清晰显示。",
+      "pro-vis-2": "🚫 <strong>Disable EPUB CSS:</strong> 忽略出版商自带的样式表，使用应用内置的简洁排版。",
+      "pro-vis-3": "🌈 <strong>Remove Font Color:</strong> 清除写死的字体颜色，确保在深色（Dark）或怀旧（Sepia）主题下视觉体验舒适。",
+      
+      // Home Advanced TTS Card
+      "card-tts-title": "高级多语言文本转语音（TTS）",
+      "card-tts-desc": "在同一段落内自动检测泰语、英语、中文、日语、韩语和德语文本并无缝切换对应语音。支持按语言单独调节语速、音调和发音人。完全基于设备本地TTS引擎，支持离线运行。",
+      
+      // Home Google Drive Cloud Sync Card
+      "card-sync-title": "Google Drive 云端同步",
+      "card-sync-sub": "(Google Drive Cloud Sync)",
+      "card-sync-desc": "可选的云端同步功能。将书架图书、阅读进度及文本替换规则直接保存至您的个人 Google Drive。100% 安全：我们没有数据库服务器，无法访问您的任何数据。",
+      "card-sync-1": "✓ 应用与 Google Drive 之间的直接安全连接",
+      "card-sync-2": "✓ 在您的所有 Android 设备之间顺畅同步",
+      "card-sync-3": "✓ 数据完全保留在您自己的存储空间中",
+      
+      // Home CTA
+      "cta-title": "准备好提升您的阅读体验了吗？",
+      "cta-desc": "在 Google Play 商店免费下载 Shiori EPUB 阅读器。",
+      "cta-play": "▶ Google Play 下载",
+      
+      // Video section
+      "video-tag": "视频指南",
+      "video-title": "学习如何使用 <span>Shiori</span>",
+      "video-sub": "观看我们的逐步视频教程，掌握 Shiori 的高级功能与语音设置。",
+      
+      // Download page
+      "dl-tag": "获取 Shiori ePub 阅读器",
+      "dl-title": "下载 <span>Shiori EPUB 阅读器</span>",
+      "dl-sub": "选择您首选的安装方式。支持 Android 8.0 (API 26) 及以上版本。阅读全程 100% 无广告。",
+      "dl-card-play-title": "Google Play 商店",
+      "dl-card-play-desc": "推荐方式。自动安装与更新。经 Google Play Protect 安全验证。",
+      "dl-card-play-btn": "前往 Play 商店下载",
+      
+      // Blog list
+      "blog-tag": "官方博客",
+      "blog-title": "博客 与 <span>更新</span>",
+      "blog-sub": "阅读最新的官方公告、教程、指南以及版本发布信息。",
+      "blog-p1-date": "📅 2026年6月29日",
+      "blog-p1-cat": "🏷️ 官方公告",
+      "blog-p1-title": "Android 版 Shiori EPUB 阅读器正式发布",
+      "blog-p1-desc": "探索 Shiori（栞）——一款离线优先的 EPUB 阅读器，配备先进的多语言自动切换 TTS 与可自定义文本规则...",
+      "blog-p1-btn": "阅读全文",
+      "blog-p2-date": "📅 即将推出",
+      "blog-p2-cat": "🏷️ 技巧与心得",
+      "blog-p2-title": "设置 TTS 引擎以获得更自然的发音",
+      "blog-p2-desc": "逐步指引：如何在 Android 系统设置中安装高质量语言语音包，并在 Shiori 中优化朗读速度...",
+      "blog-p2-status": "即将推出",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 2026年7月17日",
+      "blog-p3-cat": "🏷️ 电子书",
+      "blog-p3-title": "5 个免费下载 EPUB 电子书的最佳网站",
+      "blog-p3-desc": "寻找新书阅读？这里为您精选提供高质量、免费且合法的 EPUB 图书下载网站。",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 2026年7月17日",
+      "blog-p4-cat": "🏷️ 指南",
+      "blog-p4-title": "如何将 Shiori 与 Kavita 同步 (OPDS & REST API)",
+      "blog-p4-desc": "将 Shiori EPUB 阅读器连接到您自建的 Kavita 服务器，顺畅串流数字藏书并同步阅读进度。",
       
       // Blog Post 5
       "blog-p5-date": "📅 2026年7月19日",
