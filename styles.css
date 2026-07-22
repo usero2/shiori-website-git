@@ -1020,3 +1020,133 @@ textarea.form-control {
 .lang-th {
   display: none;
 }
+
+/* Responsive Sync Promo Card */
+.sync-promo-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  box-shadow: var(--card-shadow);
+}
+.sync-promo-title {
+  text-align: left;
+  font-size: 1.8rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.sync-promo-cloud {
+  font-size: 6rem;
+  filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.2));
+  display: block;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .sync-promo-card {
+    padding: 4rem;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+  }
+  .sync-promo-title {
+    font-size: 2.25rem;
+  }
+  .sync-promo-cloud {
+    font-size: 10rem;
+  }
+}
+
+/* Mockup Slideshow Styles */
+.mockup-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.mockup-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  display: block;
+}
+.mockup-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+.mockup-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(31, 41, 55, 0.85);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1.15rem;
+  transition: all 0.2s;
+  user-select: none;
+  box-shadow: var(--card-shadow);
+}
+.mockup-arrow:hover {
+  background: var(--accent-primary);
+  transform: translateY(-50%) scale(1.1);
+  color: #fff;
+}
+.mockup-arrow.prev {
+  left: -24px;
+}
+.mockup-arrow.next {
+  right: -24px;
+}
+@media (max-width: 400px) {
+  .mockup-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+  .mockup-arrow.prev {
+    left: -10px;
+  }
+  .mockup-arrow.next {
+    right: -10px;
+  }
+}
+.mockup-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+.mockup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mockup-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+.mockup-dot.active {
+  background: #fff;
+  transform: scale(1.2);
+  box-shadow: 0 0 8px var(--accent-glow);
+}

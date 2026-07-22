@@ -100,12 +100,27 @@
       </div>
       
       <div class="hero-mockup animate-fade-in delay-200">
+        <button class="mockup-arrow prev" id="mockup-prev" aria-label="Previous screenshot">&#10094;</button>
         <div class="mockup-wrapper">
           <div class="mockup-screen">
-            <img src="/images/bookshelf.jpg" alt="Shiori EPUB Reader bookshelf preview" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;" />
+            <div class="mockup-slides">
+              <img src="/images/001-bookshelf.jpg" alt="Shiori EPUB Reader bookshelf preview" class="mockup-slide active" />
+              <img src="/images/002-reader.jpg" alt="Shiori EPUB Reader reader preview" class="mockup-slide" />
+              <img src="/images/003-memory-highlight-note.jpg" alt="Shiori EPUB Reader highlight preview" class="mockup-slide" />
+              <img src="/images/004-insights.jpg" alt="Shiori EPUB Reader settings preview" class="mockup-slide" />
+              <img src="/images/005-collections.jpg" alt="Shiori EPUB Reader collections preview" class="mockup-slide" />
+            </div>
+            <div class="mockup-dots" id="mockup-dots">
+              <span class="mockup-dot active" data-index="0"></span>
+              <span class="mockup-dot" data-index="1"></span>
+              <span class="mockup-dot" data-index="2"></span>
+              <span class="mockup-dot" data-index="3"></span>
+              <span class="mockup-dot" data-index="4"></span>
+            </div>
           </div>
           <div class="mockup-glow"></div>
         </div>
+        <button class="mockup-arrow next" id="mockup-next" aria-label="Next screenshot">&#10095;</button>
       </div>
     </div>
   </header>
@@ -264,10 +279,10 @@
 
   <!-- Google Drive Sync Section -->
   <section class="section container" style="padding-top: 0;">
-    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 24px; padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; box-shadow: var(--card-shadow);" class="animate-fade-in">
+    <div class="sync-promo-card animate-fade-in">
       <div>
         <div class="feature-icon" style="background: #14b8a6; color: #fff; font-size: 1.5rem;">☁️</div>
-        <h2 style="text-align: left; font-size: 2.25rem; margin-bottom: 1.5rem;" data-i18n="card-sync-title">Google Drive Cloud Sync</h2>
+        <h2 class="sync-promo-title" data-i18n="card-sync-title">Google Drive Cloud Sync</h2>
         <p style="color: var(--text-secondary); margin-bottom: 2rem;" data-i18n="card-sync-desc">
           Optional cloud sync. Save library books, reading progress, and text replacement lists directly to your private Google Drive. 100% secure: we have no database server and cannot access your data.
         </p>
@@ -277,9 +292,90 @@
           <li style="display: flex; align-items: center; gap: 0.5rem;" data-i18n="card-sync-3">✓ Data stays inside your own storage control</li>
         </ul>
       </div>
-      <div style="text-align: center;">
-        <span style="font-size: 10rem; filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.2));">☁️</span>
+      <div>
+        <span class="sync-promo-cloud">☁️</span>
       </div>
+    </div>
+  </section>
+
+  <!-- Latest Blog Articles Section -->
+  <section class="section container" id="latest-blog" style="padding-top: 0;">
+    <div class="section-header animate-fade-in">
+      <span class="section-tag" data-i18n="home-blog-tag">Latest Articles</span>
+      <h2 class="section-title" data-i18n="home-blog-title">Tips, Guides & <span>Insights</span></h2>
+      <p class="section-subtitle" data-i18n="home-blog-sub">Discover how to customize Shiori, setup library servers, and get the most out of your reading experience.</p>
+    </div>
+
+    <!-- Blog Grid (Showcase 3 Newest Posts) -->
+    <div class="blog-grid animate-fade-in delay-100" style="margin-top: 3rem;">
+      <!-- Blog Post 1 (Newest: Multi-language Translation) -->
+      <article class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('/blog/how-to-translate-to-multiple-language/0004-Result-Translate.jpg') no-repeat center center; background-size: cover; height: 200px; display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 3.5rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">🌐</span>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span data-i18n="blog-p6-date">📅 July 22, 2026</span>
+            <span data-i18n="blog-p6-cat">🏷️ Features</span>
+          </div>
+          <h3 class="blog-title" data-i18n="blog-p6-title">How to Translate EPUB to Multiple Languages Simultaneously</h3>
+          <p class="blog-excerpt" data-i18n="blog-p6-desc">
+            Learn how to use Shiori's advanced multi-language translation panel to translate paragraphs into multiple target languages at once.
+          </p>
+          <a href="/blog/how-to-translate-to-multiple-language/" class="blog-readmore">
+            <span data-i18n="blog-p1-btn">Read Full Article</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Blog Post 2 (Custom Fonts) -->
+      <article class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('/blog/how-to-import-custom-epub-fonts/0101-showcase-custom-font1.jpg') no-repeat center center; background-size: cover; height: 200px; display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 3.5rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">🔤</span>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span data-i18n="blog-p5-date">📅 July 19, 2026</span>
+            <span data-i18n="blog-p5-cat">🏷️ Guides</span>
+          </div>
+          <h3 class="blog-title" data-i18n="blog-p5-title">How to Import Custom Fonts into Shiori</h3>
+          <p class="blog-excerpt" data-i18n="blog-p5-desc">
+            Personalize your reading experience by importing your favorite font files and assigning custom typography settings for different languages.
+          </p>
+          <a href="/blog/how-to-import-custom-epub-fonts/" class="blog-readmore">
+            <span data-i18n="blog-p1-btn">Read Full Article</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Blog Post 3 (Kavita Server) -->
+      <article class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('/blog/how-to-setup-kavita-rest-api/image.png') no-repeat center center; background-size: cover; height: 200px; display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 3.5rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">⚡</span>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span data-i18n="blog-p4-date">📅 July 17, 2026</span>
+            <span data-i18n="blog-p4-cat">🏷️ Guides</span>
+          </div>
+          <h3 class="blog-title" data-i18n="blog-p4-title">How to Sync Shiori with Kavita (OPDS & REST API)</h3>
+          <p class="blog-excerpt" data-i18n="blog-p4-desc">
+            Stream your digital library and sync your reading progress seamlessly by connecting Shiori EPUB Reader to your self-hosted Kavita server.
+          </p>
+          <a href="/blog/how-to-setup-kavita-rest-api/" class="blog-readmore">
+            <span data-i18n="blog-p1-btn">Read Full Article</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </article>
+    </div>
+    
+    <div style="text-align: center; margin-top: 3.5rem;" class="animate-fade-in delay-200">
+      <a href="/blog/" class="btn" style="background: var(--accent-gradient); color: #fff;">
+        <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+      </a>
     </div>
   </section>
 

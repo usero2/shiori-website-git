@@ -80,6 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "card-sync-2": "✓ Sync across all your personal Android devices",
       "card-sync-3": "✓ Data stays inside your own storage control",
       
+      // Home Blog Section
+      "home-blog-tag": "Latest Articles",
+      "home-blog-title": "Tips, Guides & <span>Insights</span>",
+      "home-blog-sub": "Discover how to customize Shiori, setup library servers, and get the most out of your reading experience.",
+      
       // Home CTA
       "cta-title": "Ready to Elevate Your Reading?",
       "cta-desc": "Download Shiori EPUB Reader for free on Google Play Store.",
@@ -215,6 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "card-sync-1": "✓ เชื่อมต่อโดยตรงระหว่างแอปและ Google Drive",
       "card-sync-2": "✓ ซิงค์ข้อมูลข้ามอุปกรณ์ Android ทั้งหมดของคุณ",
       "card-sync-3": "✓ ข้อมูลปลอดภัย ไม่ผ่านตัวกลางหรือคลาวด์คนอื่น",
+      
+      // Home Blog Section
+      "home-blog-tag": "บทความล่าสุด",
+      "home-blog-title": "เคล็ดลับ คู่มือการใช้งาน และ <span>บทความน่าอ่าน</span>",
+      "home-blog-sub": "เรียนรู้วิธีการตั้งค่า Shiori, การเชื่อมโยงห้องสมุดส่วนตัว และเทคนิคการอ่านที่จะช่วยเพิ่มประสิทธิภาพการอ่านของคุณ",
       
       // Home CTA
       "cta-title": "พร้อมรับประสบการณ์อ่านที่ดีขึ้นหรือยัง?",
@@ -352,6 +362,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "card-sync-2": "✓ お持ちのすべてのAndroid端末間での同期",
       "card-sync-3": "✓ データは自分自身のストレージで安全に管理",
       
+      // Home Blog Section
+      "home-blog-tag": "ブログ最新記事",
+      "home-blog-title": "ヒント、ガイド ＆ <span>最新ニュース</span>",
+      "home-blog-sub": "Shioriのカスタマイズ方法、自作サーバーとの同期、そして読書を最大限楽しむための各種ガイドをお届けします。",
+      
       // Home CTA
       "cta-title": "読書体験を次のレベルへ引き上げませんか？",
       "cta-desc": "Google Play ストアで Shiori EPUB リーダーを無料でダウンロード。",
@@ -487,6 +502,11 @@ document.addEventListener('DOMContentLoaded', () => {
       "card-sync-1": "✓ 应用与 Google Drive 之间的直接安全连接",
       "card-sync-2": "✓ 在您的所有 Android 设备之间顺畅同步",
       "card-sync-3": "✓ 数据完全保留在您自己的存储空间中",
+      
+      // Home Blog Section
+      "home-blog-tag": "官方博客最新文章",
+      "home-blog-title": "使用技巧、指南与<span>深度文章</span>",
+      "home-blog-sub": "探索如何自定义 Shiori、配置个人藏书服务器，以及获取最佳电子书阅读体验的全面指南。",
       
       // Home CTA
       "cta-title": "准备好提升您的阅读体验了吗？",
@@ -694,5 +714,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     animateElements.forEach(el => observer.observe(el));
+  }
+
+  // --- Homepage Mockup Slideshow ---
+  const mockupSlides = document.querySelectorAll('.mockup-slide');
+  const mockupDots = document.querySelectorAll('.mockup-dot');
+  const mockupPrev = document.getElementById('mockup-prev');
+  const mockupNext = document.getElementById('mockup-next');
+
+  if (mockupSlides.length > 0) {
+    let activeIndex = 0;
+    let autoPlayTimer = null;
+
+    const showSlide = (index) => {
+      activeIndex = index;
+      mockupSlides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === activeIndex);
+      });
+      mockupDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === activeIndex);
+      });
+    };
+
+    const nextSlide = () => {
+      let nextIdx = activeIndex + 1;
+      if (nextIdx >= mockupSlides.length) nextIdx = 0;
+      showSlide(nextIdx);
+    };
+
+    const prevSlide = () => {
+      let prevIdx = activeIndex - 1;
+      if (prevIdx < 0) prevIdx = mockupSlides.length - 1;
+      showSlide(prevIdx);
+    };
+
+    // Auto play every 4 seconds
+    const startAutoPlay = () => {
+      autoPlayTimer = setInterval(nextSlide, 4000);
+    };
+
+    const stopAutoPlay = () => {
+      if (autoPlayTimer) clearInterval(autoPlayTimer);
+    };
+
+    if (mockupNext) {
+      mockupNext.addEventListener('click', () => {
+        stopAutoPlay();
+        nextSlide();
+        startAutoPlay();
+      });
+    }
+
+    if (mockupPrev) {
+      mockupPrev.addEventListener('click', () => {
+        stopAutoPlay();
+        prevSlide();
+        startAutoPlay();
+      });
+    }
+
+    mockupDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        stopAutoPlay();
+        showSlide(idx);
+        startAutoPlay();
+      });
+    });
+
+    // Start auto slideshow
+    startAutoPlay();
   }
 });
