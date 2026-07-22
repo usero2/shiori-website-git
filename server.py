@@ -21,7 +21,7 @@ class CleanURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
 if __name__ == '__main__':
-    port = 8000
+    port = 8990
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
     

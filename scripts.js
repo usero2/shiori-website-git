@@ -129,7 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-date": "📅 July 19, 2026",
       "blog-p5-cat": "🏷️ Guides",
       "blog-p5-title": "How to Import Custom Fonts into Shiori",
-      "blog-p5-desc": "Personalize your reading experience by importing your favorite font files and assigning custom typography settings for different languages."
+      "blog-p5-desc": "Personalize your reading experience by importing your favorite font files and assigning custom typography settings for different languages.",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 July 22, 2026",
+      "blog-p6-cat": "🏷️ Features",
+      "blog-p6-title": "How to Translate EPUB to Multiple Languages Simultaneously",
+      "blog-p6-desc": "Learn how to use Shiori's advanced multi-language translation panel to translate paragraphs into multiple target languages at once."
     },
     th: {
       // Navbar
@@ -259,7 +265,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-date": "📅 19 กรกฎาคม 2026",
       "blog-p5-cat": "🏷️ คู่มือการใช้งาน",
       "blog-p5-title": "วิธีนำเข้าและใช้งานฟอนต์ภายนอก (Custom Fonts) บน Shiori",
-      "blog-p5-desc": "ปรับแต่งหน้าตาการอ่านให้น่าอ่านยิ่งขึ้นด้วยการนำเข้าไฟล์ฟอนต์ที่คุณชอบ และเลือกฟอนต์เฉพาะสำหรับแต่ละภาษาได้อย่างอิสระ"
+      "blog-p5-desc": "ปรับแต่งหน้าตาการอ่านให้น่าอ่านยิ่งขึ้นด้วยการนำเข้าไฟล์ฟอนต์ที่คุณชอบ และเลือกฟอนต์เฉพาะสำหรับแต่ละภาษาได้อย่างอิสระ",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 22 กรกฎาคม 2026",
+      "blog-p6-cat": "🏷️ ฟังก์ชันการใช้งาน",
+      "blog-p6-title": "วิธีแปลเนื้อหาในหนังสือเป็นหลายภาษาพร้อมกันในหน้าเดียว",
+      "blog-p6-desc": "คู่มือการใช้งานระบบแปลภาษาอัจฉริยะใน Shiori เพื่อแปลประโยคหรือย่อหน้าออกเป็นหลายภาษาเป้าหมายได้พร้อมกันในคลิกเดียว"
     },
     jp: {
       // Navbar
@@ -389,7 +401,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-date": "📅 2026年7月19日",
       "blog-p5-cat": "🏷️ ガイド",
       "blog-p5-title": "Shioriにカスタムフォントをインポートする方法",
-      "blog-p5-desc": "お好みのフォントファイルをインポートし、表示言語ごとにカスタムフォントを割り当てることで、読書体験を自分好みにカスタマイズしましょう。"
+      "blog-p5-desc": "お好みのフォントファイルをインポートし、表示言語ごとにカスタムフォントを割り当てることで、読書体験を自分好みにカスタマイズしましょう。",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 2026年7月22日",
+      "blog-p6-cat": "🏷️ 機能紹介",
+      "blog-p6-title": "EPUB小説を複数の言語に同時に翻訳する方法",
+      "blog-p6-desc": "Shioriの高度な多言語翻訳パネルを使用して、1つの段落を複数の対象言語に同時に翻訳し、読み比べる方法を解説します。"
     },
     cn: {
       // Navbar
@@ -519,7 +537,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p5-date": "📅 2026年7月19日",
       "blog-p5-cat": "🏷️ 指南",
       "blog-p5-title": "如何在 Shiori 中导入自定义字体",
-      "blog-p5-desc": "通过导入您最喜欢的字体文件，并为不同的显示语言分配自定义字体，打造最符合您个人喜好的完美阅读体验。"
+      "blog-p5-desc": "通过导入您最喜欢的字体文件，并为不同的显示语言分配自定义字体，打造最符合您个人喜好的完美阅读体验。",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 2026年7月22日",
+      "blog-p6-cat": "🏷️ 功能介绍",
+      "blog-p6-title": "如何在阅读中同时将文本翻译成多种语言",
+      "blog-p6-desc": "了解如何使用 Shiori 的高级多语言翻译面板，一次性将选中的段落翻译成多种目标语言，方便对照阅读。"
     }
   };
 

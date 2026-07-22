@@ -2,7 +2,7 @@
 title Shiori Website Local Server
 echo ==============================================
 echo   Starting Shiori Local Server (Clean URLs)
-echo   Open: http://localhost:8000/
+echo   Open: http://localhost:8990/
 echo   To stop, close this window or press Ctrl+C
 echo ==============================================
 echo.

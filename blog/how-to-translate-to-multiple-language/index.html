@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How to Translate EPUB to Multiple Languages Simultaneously — Shiori Blog</title>
+  <meta name="description" content="Learn how to configure and use Shiori's multi-language translation panel to translate book paragraphs into multiple target languages at once." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/how-to-translate-to-multiple-language/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-text {
+      flex: 1;
+    }
+    .step-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      font-size: 1rem;
+    }
+    .step-img-el {
+      max-width: 100%;
+      max-height: 380px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+      display: block;
+      object-fit: contain;
+    }
+    .step-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .section-divider {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 4rem 0;
+      text-align: center;
+    }
+    .section-divider::after {
+      content: "🌐";
+      display: inline-block;
+      position: relative;
+      top: -12px;
+      padding: 0 1rem;
+      background: var(--bg-primary);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.alternate {
+        flex-direction: row-reverse;
+      }
+    }
+    
+    .short-video-container {
+      max-width: 360px;
+      margin: 3rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    
+    /* Lightbox Gallery Styles */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.97);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      flex: 1;
+      padding: 2rem;
+    }
+    .lightbox-img {
+      max-width: 85%;
+      max-height: 75vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      object-fit: contain;
+    }
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale(1);
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      user-select: none;
+      z-index: 2002;
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: translateY(-50%) scale(1.1);
+      color: #fff;
+    }
+    .lightbox-arrow.prev {
+      left: 2rem;
+    }
+    .lightbox-arrow.next {
+      right: 2rem;
+    }
+    .lightbox-thumbnails {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      max-width: 90%;
+      overflow-x: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    .lightbox-thumb-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.5;
+      transition: all 0.2s;
+    }
+    .lightbox-thumb-img:hover {
+      opacity: 0.8;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .lightbox-thumb-img.active {
+      opacity: 1;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.2s;
+      z-index: 2005;
+      box-shadow: var(--card-shadow);
+    }
+    .lightbox-close:hover {
+      background: var(--accent-primary);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    
+    .step-img-el {
+      cursor: zoom-in;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .step-img-el:hover {
+      transform: scale(1.02);
+      border-color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Layout -->
+  <main class="post-layout animate-fade-in">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p6-date">📅 July 22, 2026</span>
+        <span data-i18n="blog-p6-cat">🏷️ Features</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Translate EPUB to Multiple Languages Simultaneously<br><span class="text-gradient">Translate paragraphs into multiple languages at once</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีแปลเนื้อหาในหนังสือเป็นหลายภาษาพร้อมกันในหน้าเดียว<br><span class="text-gradient">แปลประโยคหรือย่อหน้าออกเป็นหลายภาษาเคียงคู่กัน</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">EPUB小説を複数の言語に同時に翻訳する方法<br><span class="text-gradient">ワンタップで1つの段落を複数の対象言語に翻訳して見比べる</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何在阅读中同时将文本翻译成多种语言<br><span class="text-gradient">一键同时将书籍段落翻译为多种目标语言对照</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('0004-Result-Translate.jpg') no-repeat center center; background-size: cover; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden;">
+      <span style="font-size: 4rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));">🌐</span>
+    </div>
+
+    <!-- ==================== ENGLISH BODY ==================== -->
+    <div class="post-body lang-en">
+      <p>
+        Shiori EPUB Reader introduces a powerful side-by-side translation panel. Instead of translating a sentence into a single language and constantly switching settings, Shiori allows you to select multiple target languages simultaneously. When you highlight or select a paragraph, Shiori automatically displays the translations side-by-side. This is extremely helpful for language learners, researchers, or readers comparing nuances across translations.
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">Video Walkthrough (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">Watch the quick visual guide to see multi-language translation in action:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/IFzq7lQfH9w" title="Translate to Multiple Languages Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">Step-by-Step Translation Guide</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>Open Translation Panel</div>
+          <p>Open any book. In the reader view, tap the center of the screen to reveal the menu options. Locate and tap the <strong>Translate Icon (🌐)</strong> to open the Translate settings overlay.</p>
+        </div>
+        <div class="step-image">
+          <img src="0001-OpenReadYourBook-TouchTranslateIcon-forOpenTranslatePanal.jpg" alt="Open Translation Panel" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>Choose Target Languages</div>
+          <p>In the overlay settings, select the target languages you want to translate your book into. Shiori supports selecting multiple checkboxes simultaneously (e.g. translating into Thai, English, Japanese, and Chinese at once).</p>
+        </div>
+        <div class="step-image">
+          <img src="0002-ChooseLanguages-translate-to-can-multiple.jpg" alt="Choose Languages" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>Highlight Text (Long Tap)</div>
+          <p>Go back to reading. Long-press (long tap) on any paragraph or sentence you want to translate. The text selection handles will appear, and Shiori will detect the selected section.</p>
+        </div>
+        <div class="step-image">
+          <img src="0003-LongTap-Paragraph-which-your-want-to-translate.jpg" alt="Long Press Paragraph" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>See Translation Results</div>
+          <p>The translation panel will slide up from the bottom, presenting the paragraph translated into all your selected target languages in a clear side-by-side layout.</p>
+        </div>
+        <div class="step-image">
+          <img src="0004-Result-Translate.jpg" alt="Translation Results" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== THAI BODY ==================== -->
+    <div class="post-body lang-th">
+      <p>
+        แอปพลิเคชัน <strong>Shiori EPUB Reader</strong> มีระบบแปลภาษาอัจฉริยะที่ช่วยยกระดับการอ่านและการเรียนรู้ภาษาใหม่ ๆ แทนที่คุณจะต้องแปลประโยคทีละภาษาหรือกดเปลี่ยนประเภทภาษาไปมา Shiori ช่วยให้คุณสามารถเลือกแปลออกเป็นหลายภาษาเป้าหมายพร้อมกัน (เช่น แปลย่อหน้าภาษาอังกฤษหรือญี่ปุ่นเป็นภาษาไทย ภาษาอังกฤษ และภาษาจีนพร้อมกัน) และแสดงผลเปรียบเทียบในแถบแสดงผลด้านล่างได้ทันทีในคลิกเดียว
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">วิดีโอแนะนำขั้นตอนการตั้งค่า (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">รับชมวิดีโอแสดงตัวอย่างการใช้งานระบบแปลหลายภาษาพร้อมกันใน Shiori:</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/IFzq7lQfH9w" title="Translate to Multiple Languages Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">คู่มือการใช้งานทีละสเต็ป</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>เปิดแผงตั้งค่าการแปลภาษา</div>
+          <p>เปิดหนังสือเล่มที่ต้องการอ่าน ในหน้าอ่าน ให้แตะบริเวณกลางหน้าจอเพื่อให้เมนูปรากฏ จากนั้นแตะไอคอน **แปลภาษา (🌐)** เพื่อเปิดกล่องควบคุมการแปลขึ้นมา</p>
+        </div>
+        <div class="step-image">
+          <img src="0001-OpenReadYourBook-TouchTranslateIcon-forOpenTranslatePanal.jpg" alt="Open Translation Panel" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>เลือกกลุ่มภาษาเป้าหมาย</div>
+          <p>ภายในหน้าต่างตั้งค่า ให้แตะเลือกภาษาที่คุณต้องการแปลทั้งหมด Shiori รองรับการกดเลือกทีละหลายภาษาพร้อมกัน (เช่น เลือกแปลเป็นไทย จีน ญี่ปุ่น อังกฤษพร้อมกัน)</p>
+        </div>
+        <div class="step-image">
+          <img src="0002-ChooseLanguages-translate-to-can-multiple.jpg" alt="Choose Languages" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>แตะค้างประโยคที่ต้องการแปล</div>
+          <p>กลับมาที่หน้าหนังสือ จากนั้นแตะค้าง (Long tap) บริเวณย่อหน้าหรือประโยคที่คุณต้องการแปลภาษา ระบบจะเลือกช่วงข้อความดังกล่าวให้โดยอัตโนมัติ</p>
+        </div>
+        <div class="step-image">
+          <img src="0003-LongTap-Paragraph-which-your-want-to-translate.jpg" alt="Long Press Paragraph" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>ดูผลลัพธ์การแปลหลายภาษา</div>
+          <p>หน้าต่างผลการแปลจะเลื่อนขึ้นมาจากขอบจอด้านล่าง โดยจะจัดแสดงประโยคแปลในทุกภาษาเป้าหมายที่คุณเลือกไว้เคียงข้างกันอย่างสวยงามและอ่านง่าย</p>
+        </div>
+        <div class="step-image">
+          <img src="0004-Result-Translate.jpg" alt="Translation Results" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== JAPANESE BODY ==================== -->
+    <div class="post-body lang-jp">
+      <p>
+        <strong>Shiori EPUB Reader</strong>には、複数の翻訳結果を並べて比較できる強力な多言語翻訳機能が備わっています。テキストを1つの言語に都度翻訳し直すのではなく、事前に複数の翻訳先言語を選択しておくことで、選択した段落を一度に複数の言語へ同時に翻訳することができます。外国語の学習者、原書の読解や語彙のニュアンス比較を行う際に非常に強力なツールとなります。
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">操作手順動画 (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">Shioriでの多言語同時翻訳の実際の動作については、こちらの動画をご覧ください。</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/IFzq7lQfH9w" title="Translate to Multiple Languages Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">翻訳機能の使い方・手順</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>翻訳設定パネルを開く</div>
+          <p>読みたい本を開き、画面中央をタップしてツールバーを表示させます。メニュー内の <strong>翻訳アイコン (🌐)</strong> をタップして翻訳設定オーバーレイを開きます。</p>
+        </div>
+        <div class="step-image">
+          <img src="0001-OpenReadYourBook-TouchTranslateIcon-forOpenTranslatePanal.jpg" alt="Open Translation Panel" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>翻訳先の言語を選択する</div>
+          <p>翻訳したい対象の言語を複数選択します。Shioriでは複数のチェックボックスを同時に選択できるため（例：日本語、英語、タイ語、中国語）、複数言語への同時翻訳が可能です。</p>
+        </div>
+        <div class="step-image">
+          <img src="0002-ChooseLanguages-translate-to-can-multiple.jpg" alt="Choose Languages" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>文章を長押しする</div>
+          <p>読書画面に戻り、翻訳したい任意の段落や文章を長押し（ロングタップ）します。選択範囲マークが表示され、Shioriがテキスト範囲を感知します。</p>
+        </div>
+        <div class="step-image">
+          <img src="0003-LongTap-Paragraph-which-your-want-to-translate.jpg" alt="Long Press Paragraph" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>翻訳結果を確認する</div>
+          <p>画面下部から翻訳結果パネルがスライドアップし、選択したすべての言語に翻訳された結果が並んでわかりやすく表示されます。</p>
+        </div>
+        <div class="step-image">
+          <img src="0004-Result-Translate.jpg" alt="Translation Results" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== CHINESE BODY ==================== -->
+    <div class="post-body lang-cn">
+      <p>
+        <strong>Shiori EPUB 阅读器</strong> 引入了极具实用性的对照翻译面板。与普通的单语言翻译不同，Shiori 支持在翻译设置中同时选择多种目标语言。当您在阅读过程中长按选中某一段落或句子时，阅读器会在底部滑出翻译面板，将该段落同时翻译成您勾选的多种目标语言并排显示。这为多语言学习者、研究者或跨语言阅读对比提供了极大的便利。
+      </p>
+
+      <!-- Video Walkthrough -->
+      <div style="margin-top: 3rem; text-align: center;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">视频演示教程 (YouTube Shorts)</h3>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem;">请观看以下快速视频指南，直观了解如何在 Shiori 中同时将文本翻译为多国语言：</p>
+        <div class="short-video-container">
+          <div class="short-video-wrapper">
+            <iframe src="https://www.youtube-nocookie.com/embed/IFzq7lQfH9w" title="Translate to Multiple Languages Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 style="margin-bottom: 2rem;">多语言翻译设置步骤指引</h2>
+
+      <!-- Step 1 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">1</span>打开翻译设置面板</div>
+          <p>打开任何一本书籍。在阅读器界面中，点击屏幕正中央呼出功能菜单，然后点击 <strong>翻译图标 (🌐)</strong> 打开翻译设置悬浮窗。</p>
+        </div>
+        <div class="step-image">
+          <img src="0001-OpenReadYourBook-TouchTranslateIcon-forOpenTranslatePanal.jpg" alt="Open Translation Panel" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">2</span>勾选多目标语言</div>
+          <p>在设置面板中，勾选所有您希望将文本翻译成的目标语言。Shiori 支持同时勾选多个目标语言（例如：同时将选段翻译成泰语、英语、日语和中文）。</p>
+        </div>
+        <div class="step-image">
+          <img src="0002-ChooseLanguages-translate-to-can-multiple.jpg" alt="Choose Languages" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tutorial-step">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">3</span>长按选中段落</div>
+          <p>返回到书籍阅读界面。长按（Long tap）您想要翻译的段落或句子，屏幕会弹出文本选择光标，自动识别您选中的文字区间。</p>
+        </div>
+        <div class="step-image">
+          <img src="0003-LongTap-Paragraph-which-your-want-to-translate.jpg" alt="Long Press Paragraph" class="step-img-el" />
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="tutorial-step alternate">
+        <div class="step-text">
+          <div class="step-title"><span class="step-number">4</span>查看多国语言翻译结果</div>
+          <p>翻译面板会从屏幕底部向上滑出，并排平铺展示所选段落被翻译成所有选定语言的译文结果，一目了然。</p>
+        </div>
+        <div class="step-image">
+          <img src="0004-Result-Translate.jpg" alt="Translation Results" class="step-img-el" />
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Lightbox Zoom Overlay -->
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">✕</div>
+    
+    <div class="lightbox-main">
+      <div class="lightbox-arrow prev" id="lightbox-prev">&#10094;</div>
+      <img src="" alt="Zoomed Image" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-arrow next" id="lightbox-next">&#10095;</div>
+    </div>
+    
+    <div class="lightbox-thumbnails" id="lightbox-thumbs"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+      const zoomableImages = document.querySelectorAll('.step-img-el');
+      
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Dynamically generate thumbnails
+      zoomableImages.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.getAttribute('src');
+        thumb.classList.add('lightbox-thumb-img');
+        thumb.dataset.index = idx;
+        lightboxThumbs.appendChild(thumb);
+
+        img.addEventListener('click', () => {
+          openImage(idx);
+        });
+
+        thumb.addEventListener('click', () => {
+          openImage(idx);
+        });
+      });
+
+      const openImage = (index) => {
+        currentIndex = index;
+        const targetImg = zoomableImages[currentIndex];
+        const src = targetImg.getAttribute('src');
+        
+        // Fade out transition
+        lightboxImg.style.opacity = '0';
+        setTimeout(() => {
+          lightboxImg.src = src;
+          lightboxImg.style.opacity = '1';
+        }, 150);
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Update active thumbnail state
+        const thumbs = lightboxThumbs.querySelectorAll('.lightbox-thumb-img');
+        thumbs.forEach(t => t.classList.remove('active'));
+        if (thumbs[currentIndex]) {
+          thumbs[currentIndex].classList.add('active');
+          thumbs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      };
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          lightboxImg.src = '';
+        }, 300);
+      };
+
+      const showNext = () => {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= zoomableImages.length) nextIndex = 0;
+        openImage(nextIndex);
+      };
+
+      const showPrev = () => {
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) prevIndex = zoomableImages.length - 1;
+        openImage(prevIndex);
+      };
+
+      // Control actions
+      lightboxClose.addEventListener('click', closeLightbox);
+      
+      lightboxPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+      
+      lightboxNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === document.querySelector('.lightbox-main')) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        }
+      });
+
+      // Mouse Wheel Navigation (Scroll to transition images)
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault(); // Lock page scroll
+
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return; // Debounce wheel event
+
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          showNext();
+          lastScrollTime = now;
+        } else if (e.deltaY < 0 || e.deltaX < 0) {
+          showPrev();
+          lastScrollTime = now;
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
