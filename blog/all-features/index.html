@@ -56,6 +56,7 @@
       text-decoration: none;
       transition: all 0.2s;
       border: 1px solid var(--border-color);
+      cursor: pointer;
     }
     .feature-nav-chip:hover {
       background: var(--accent-primary);
@@ -207,7 +208,7 @@
       Shiori is an Android EPUB reader designed to elevate your reading and listening experience. Below is the comprehensive breakdown of all 19 feature categories available in the app.
     </p>
     <p class="hero-subtitle lang-th" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
-      Shiori คือโปรแกรมอ่านหนังสือ EPUB บน Android ที่ออกแบบมาเพื่อการอ่าน การฟังออกเสียง การแปลภาษา และสถิติการเรียนรู้ ด้านล่างนี้คือสรุปรายการฟีเจอร์ครบทั้ง 19 หมวดหมู่แบบละเอียด
+      Shiori คือโปรแกรมอ่านหนังสือ EPUB บน Android ที่ออกแบบมาเพื่อการอ่าน การฟังออกเสียง การแปลภาษา และสถิติการเรียนรู้ ด้านล่างนี้คือสรุปรายการฟีเจอร์ครบทั้ง 19 หมวดหมู่แบบรายละเอียด
     </p>
     <p class="hero-subtitle lang-jp" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
       Shioriは、読書・音声読み上げ・翻訳・学習記憶を極限まで高めるAndroid用EPUBリーダーです。アプリに搭載された全19モジュールの詳細ガイドをお届けします。
@@ -216,30 +217,29 @@
       Shiori 是一款专为 Android 打造的高级 EPUB 阅读器。以下是为您整理的 Shiori 全套 19 大功能模块的深度解析指引。
     </p>
 
-    <!-- Quick Jump Bar -->
+    <!-- Quick Jump Bar with Multi-language Labels & Unified Target Keys -->
     <nav class="feature-nav-bar" aria-label="Feature quick navigation">
-      <a href="#f1" class="feature-nav-chip">1. Formats</a>
-      <a href="#f2" class="feature-nav-chip">2. Reading</a>
-      <a href="#f3" class="feature-nav-chip">3. Bookmarks</a>
-      <a href="#f4" class="feature-nav-chip">4. TTS Voice</a>
-      <a href="#f5" class="feature-nav-chip">5. Word Rules</a>
-      <a href="#f6" class="feature-nav-chip">6. Translation</a>
-      <a href="#f7" class="feature-nav-chip">7. On-device AI</a>
-      <a href="#f8" class="feature-nav-chip">8. Comics (CBZ)</a>
-      <a href="#f9" class="feature-nav-chip">9. Reflow PDF</a>
-      <a href="#f10" class="feature-nav-chip">10. Insights</a>
-      <a href="#f11" class="feature-nav-chip">11. Memory</a>
-      <a href="#f12" class="feature-nav-chip">12. Collections</a>
-      <a href="#f13" class="feature-nav-chip">13. Library Server</a>
-      <a href="#f14" class="feature-nav-chip">14. Cloud Sync</a>
-      <a href="#f18" class="feature-nav-chip">18. Privacy</a>
+      <a href="#f1" class="feature-nav-chip" data-target="f1" data-i18n="chip-f1">1. Formats</a>
+      <a href="#f2" class="feature-nav-chip" data-target="f2" data-i18n="chip-f2">2. Reading</a>
+      <a href="#f3" class="feature-nav-chip" data-target="f3" data-i18n="chip-f3">3. Bookmarks</a>
+      <a href="#f4" class="feature-nav-chip" data-target="f4" data-i18n="chip-f4">4. TTS Voice</a>
+      <a href="#f5" class="feature-nav-chip" data-target="f5" data-i18n="chip-f5">5. Word Rules</a>
+      <a href="#f6" class="feature-nav-chip" data-target="f6" data-i18n="chip-f6">6. Translation</a>
+      <a href="#f7" class="feature-nav-chip" data-target="f7" data-i18n="chip-f7">7. On-device AI</a>
+      <a href="#f8" class="feature-nav-chip" data-target="f8" data-i18n="chip-f8">8. Comics (CBZ)</a>
+      <a href="#f9" class="feature-nav-chip" data-target="f9" data-i18n="chip-f9">9. Reflow PDF</a>
+      <a href="#f10" class="feature-nav-chip" data-target="f10" data-i18n="chip-f10">10. Insights</a>
+      <a href="#f11" class="feature-nav-chip" data-target="f11" data-i18n="chip-f11">11. Memory</a>
+      <a href="#f13" class="feature-nav-chip" data-target="f13" data-i18n="chip-f13">13. Library Server</a>
+      <a href="#f14" class="feature-nav-chip" data-target="f14" data-i18n="chip-f14">14. Cloud Sync</a>
+      <a href="#f18" class="feature-nav-chip" data-target="f18" data-i18n="chip-f18">18. Privacy</a>
     </nav>
 
     <!-- ==================== FEATURE MODULES (ENGLISH) ==================== -->
     <div class="lang-en">
 
       <!-- 1. Open Many Kinds of Books -->
-      <section class="feature-module" id="f1">
+      <section class="feature-module" data-feature="f1" id="f1">
         <div class="feature-header-row">
           <div class="feature-badge-num">1</div>
           <h2 class="feature-module-title">Open Many Kinds of Books</h2>
@@ -255,7 +255,7 @@
       </section>
 
       <!-- 2. Reading Experience -->
-      <section class="feature-module" id="f2">
+      <section class="feature-module" data-feature="f2" id="f2">
         <div class="feature-header-row">
           <div class="feature-badge-num">2</div>
           <h2 class="feature-module-title">Reading Experience Customization</h2>
@@ -271,7 +271,7 @@
       </section>
 
       <!-- 3. Bookmarks, Highlights & Notes -->
-      <section class="feature-module" id="f3">
+      <section class="feature-module" data-feature="f3" id="f3">
         <div class="feature-header-row">
           <div class="feature-badge-num">3</div>
           <h2 class="feature-module-title">Bookmarks, Highlights & Notes</h2>
@@ -285,7 +285,7 @@
       </section>
 
       <!-- 4. Read Aloud (Text-to-Speech) -->
-      <section class="feature-module" id="f4">
+      <section class="feature-module" data-feature="f4" id="f4">
         <div class="feature-header-row">
           <div class="feature-badge-num">4</div>
           <h2 class="feature-module-title">Advanced Text-to-Speech (TTS)</h2>
@@ -299,7 +299,7 @@
       </section>
 
       <!-- 5. Automatic Word Replacement -->
-      <section class="feature-module" id="f5">
+      <section class="feature-module" data-feature="f5" id="f5">
         <div class="feature-header-row">
           <div class="feature-badge-num">5</div>
           <h2 class="feature-module-title">Dual-Mode Word Replacement</h2>
@@ -312,7 +312,7 @@
       </section>
 
       <!-- 6. Translation -->
-      <section class="feature-module" id="f6">
+      <section class="feature-module" data-feature="f6" id="f6">
         <div class="feature-header-row">
           <div class="feature-badge-num">6</div>
           <h2 class="feature-module-title">Multi-Language & AI Translation</h2>
@@ -325,7 +325,7 @@
       </section>
 
       <!-- 7. Ask AI (Runs On Your Device) -->
-      <section class="feature-module" id="f7">
+      <section class="feature-module" data-feature="f7" id="f7">
         <div class="feature-header-row">
           <div class="feature-badge-num">7</div>
           <h2 class="feature-module-title">On-Device Local AI Assistant</h2>
@@ -337,7 +337,7 @@
       </section>
 
       <!-- 8. Read Comics (CBZ) -->
-      <section class="feature-module" id="f8">
+      <section class="feature-module" data-feature="f8" id="f8">
         <div class="feature-header-row">
           <div class="feature-badge-num">8</div>
           <h2 class="feature-module-title">Comic & Manga Suite (CBZ & OCR)</h2>
@@ -350,7 +350,7 @@
       </section>
 
       <!-- 9. Opening & Reading PDFs -->
-      <section class="feature-module" id="f9">
+      <section class="feature-module" data-feature="f9" id="f9">
         <div class="feature-header-row">
           <div class="feature-badge-num">9</div>
           <h2 class="feature-module-title">Smart PDF Reflow Engine</h2>
@@ -363,7 +363,7 @@
       </section>
 
       <!-- 10. Reading Stats & Calendar (Insights) -->
-      <section class="feature-module" id="f10">
+      <section class="feature-module" data-feature="f10" id="f10">
         <div class="feature-header-row">
           <div class="feature-badge-num">10</div>
           <h2 class="feature-module-title">Insights: Stats & Heatmap Calendar</h2>
@@ -376,7 +376,7 @@
       </section>
 
       <!-- 11. Memory -->
-      <section class="feature-module" id="f11">
+      <section class="feature-module" data-feature="f11" id="f11">
         <div class="feature-header-row">
           <div class="feature-badge-num">11</div>
           <h2 class="feature-module-title">Memory & Historical Review</h2>
@@ -388,7 +388,7 @@
       </section>
 
       <!-- 12-19 Other Features Summary -->
-      <section class="feature-module" id="f13">
+      <section class="feature-module" data-feature="f13" id="f13">
         <div class="feature-header-row">
           <div class="feature-badge-num">12-19</div>
           <h2 class="feature-module-title">Cloud, Server & Privacy Capabilities</h2>
@@ -407,7 +407,7 @@
     <div class="lang-th">
 
       <!-- 1. เปิดหนังสือได้หลายรูปแบบ -->
-      <section class="feature-module" id="f1-th">
+      <section class="feature-module" data-feature="f1">
         <div class="feature-header-row">
           <div class="feature-badge-num">1</div>
           <h2 class="feature-module-title">เปิดหนังสือได้หลายรูปแบบ (Format Support)</h2>
@@ -422,7 +422,7 @@
       </section>
 
       <!-- 2. ประสบการณ์การอ่าน -->
-      <section class="feature-module" id="f2-th">
+      <section class="feature-module" data-feature="f2">
         <div class="feature-header-row">
           <div class="feature-badge-num">2</div>
           <h2 class="feature-module-title">ประสบการณ์การอ่านขั้นสูง (Reading Experience)</h2>
@@ -437,13 +437,13 @@
       </section>
 
       <!-- 3. ที่คั่นหน้า ไฮไลต์ และโน้ต -->
-      <section class="feature-module" id="f3-th">
+      <section class="feature-module" data-feature="f3">
         <div class="feature-header-row">
           <div class="feature-badge-num">3</div>
           <h2 class="feature-module-title">ที่คั่นหน้า ไฮไลต์ และโน้ต (Bookmarks & Notes)</h2>
         </div>
         <ul class="feature-list">
-          <li>คั่นหน้าได้ละเอียดระดับย่อหน้า พร้อมสารบัญที่คั่นค้นหาและจัดการได้</li>
+          <li>คั่นหน้าได้รายละเอียดระดับย่อหน้า พร้อมสารบัญที่คั่นค้นหาและจัดการได้</li>
           <li><strong>ไฮไลต์หลากสีและจดโน้ต:</strong> ปรับสีข้อความสำคัญและพิมพ์โน้ตประกอบได้ทันที</li>
           <li><strong>จัดกลุ่มด้วย #แท็ก (#Tags):</strong> ใส่แฮชแท็กในโน้ตเพื่อค้นหาความคิดเห็นย้อนหลังข้ามหนังสือทุกเล่ม</li>
           <li><strong>ไฮไลต์รูปภาพ:</strong> เลือกบันทึกภาพประกอบในหนังสือเก็บไว้ได้ แม้ลบไฟล์หนังสือออกไปแล้ว</li>
@@ -451,7 +451,7 @@
       </section>
 
       <!-- 4. อ่านออกเสียง (Text-to-Speech) -->
-      <section class="feature-module" id="f4-th">
+      <section class="feature-module" data-feature="f4">
         <div class="feature-header-row">
           <div class="feature-badge-num">4</div>
           <h2 class="feature-module-title">อ่านออกเสียงอัจฉริยะ (Text-to-Speech - TTS)</h2>
@@ -465,7 +465,7 @@
       </section>
 
       <!-- 5. แทนที่คำอัตโนมัติ -->
-      <section class="feature-module" id="f5-th">
+      <section class="feature-module" data-feature="f5">
         <div class="feature-header-row">
           <div class="feature-badge-num">5</div>
           <h2 class="feature-module-title">ระบบแทนที่คำคู่ (Dual-Mode Word Replacement)</h2>
@@ -478,7 +478,7 @@
       </section>
 
       <!-- 6. แปลภาษา -->
-      <section class="feature-module" id="f6-th">
+      <section class="feature-module" data-feature="f6">
         <div class="feature-header-row">
           <div class="feature-badge-num">6</div>
           <h2 class="feature-module-title">แปลภาษาหลายรูปแบบ (Multi-Language Translation)</h2>
@@ -491,7 +491,7 @@
       </section>
 
       <!-- 7. ถาม AI (ทำงานบนเครื่อง) -->
-      <section class="feature-module" id="f7-th">
+      <section class="feature-module" data-feature="f7">
         <div class="feature-header-row">
           <div class="feature-badge-num">7</div>
           <h2 class="feature-module-title">ผู้ช่วย AI บนเครื่อง (On-Device AI Assistant)</h2>
@@ -503,7 +503,7 @@
       </section>
 
       <!-- 8. อ่านการ์ตูน (CBZ) -->
-      <section class="feature-module" id="f8-th">
+      <section class="feature-module" data-feature="f8">
         <div class="feature-header-row">
           <div class="feature-badge-num">8</div>
           <h2 class="feature-module-title">อ่านการ์ตูนและมังงะ (CBZ & OCR Suite)</h2>
@@ -516,7 +516,7 @@
       </section>
 
       <!-- 9. เปิดและอ่าน PDF -->
-      <section class="feature-module" id="f9-th">
+      <section class="feature-module" data-feature="f9">
         <div class="feature-header-row">
           <div class="feature-badge-num">9</div>
           <h2 class="feature-module-title">ระบบอ่าน PDF อัจฉริยะ (Smart PDF Engine)</h2>
@@ -529,7 +529,7 @@
       </section>
 
       <!-- 10. สถิติและปฏิทินการอ่าน (Insights) -->
-      <section class="feature-module" id="f10-th">
+      <section class="feature-module" data-feature="f10">
         <div class="feature-header-row">
           <div class="feature-badge-num">10</div>
           <h2 class="feature-module-title">สถิติและปฏิทินการอ่าน (Insights)</h2>
@@ -542,7 +542,7 @@
       </section>
 
       <!-- 11. ความทรงจำ (Memory) -->
-      <section class="feature-module" id="f11-th">
+      <section class="feature-module" data-feature="f11">
         <div class="feature-header-row">
           <div class="feature-badge-num">11</div>
           <h2 class="feature-module-title">ศูนย์รวมความทรงจำ (Memory Gallery)</h2>
@@ -554,7 +554,7 @@
       </section>
 
       <!-- 12-19 สรุปฟีเจอร์อื่นๆ -->
-      <section class="feature-module" id="f13-th">
+      <section class="feature-module" data-feature="f13">
         <div class="feature-header-row">
           <div class="feature-badge-num">12-19</div>
           <h2 class="feature-module-title">คลาวด์ เซิร์ฟเวอร์ และ ความเป็นส่วนตัว</h2>
@@ -573,7 +573,7 @@
     <div class="lang-jp">
 
       <!-- 1. 多様なファイル形式に対応 -->
-      <section class="feature-module" id="f1-jp">
+      <section class="feature-module" data-feature="f1">
         <div class="feature-header-row">
           <div class="feature-badge-num">1</div>
           <h2 class="feature-module-title">多様な電子書籍フォーマットに対応</h2>
@@ -588,7 +588,7 @@
       </section>
 
       <!-- 2. 読書体験のカスタマイズ -->
-      <section class="feature-module" id="f2-jp">
+      <section class="feature-module" data-feature="f2">
         <div class="feature-header-row">
           <div class="feature-badge-num">2</div>
           <h2 class="feature-module-title">極上の読書カスタマイズ</h2>
@@ -603,7 +603,7 @@
       </section>
 
       <!-- 3. ブックマーク・ハイライト・メモ -->
-      <section class="feature-module" id="f3-jp">
+      <section class="feature-module" data-feature="f3">
         <div class="feature-header-row">
           <div class="feature-badge-num">3</div>
           <h2 class="feature-module-title">ブックマーク・ハイライト・メモ管理</h2>
@@ -617,7 +617,7 @@
       </section>
 
       <!-- 4. テキスト読み上げ (TTS) -->
-      <section class="feature-module" id="f4-jp">
+      <section class="feature-module" data-feature="f4">
         <div class="feature-header-row">
           <div class="feature-badge-num">4</div>
           <h2 class="feature-module-title">スマート多言語テキスト読み上げ（TTS）</h2>
@@ -631,7 +631,7 @@
       </section>
 
       <!-- 5. 単語置換 -->
-      <section class="feature-module" id="f5-jp">
+      <section class="feature-module" data-feature="f5">
         <div class="feature-header-row">
           <div class="feature-badge-num">5</div>
           <h2 class="feature-module-title">デュアルモード単語置換システム</h2>
@@ -643,7 +643,7 @@
       </section>
 
       <!-- 6. 翻訳機能 -->
-      <section class="feature-module" id="f6-jp">
+      <section class="feature-module" data-feature="f6">
         <div class="feature-header-row">
           <div class="feature-badge-num">6</div>
           <h2 class="feature-module-title">同時多言語翻訳エンジン</h2>
@@ -656,7 +656,7 @@
       </section>
 
       <!-- 7. オンデバイスAI -->
-      <section class="feature-module" id="f7-jp">
+      <section class="feature-module" data-feature="f7">
         <div class="feature-header-row">
           <div class="feature-badge-num">7</div>
           <h2 class="feature-module-title">完全ローカル動作のオンデバイスAI</h2>
@@ -668,7 +668,7 @@
       </section>
 
       <!-- 8. コミック (CBZ) -->
-      <section class="feature-module" id="f8-jp">
+      <section class="feature-module" data-feature="f8">
         <div class="feature-header-row">
           <div class="feature-badge-num">8</div>
           <h2 class="feature-module-title">コミック・マンガ機能（CBZ＆OCR）</h2>
@@ -680,10 +680,22 @@
         </ul>
       </section>
 
-      <!-- 9-19 その他の機能 -->
-      <section class="feature-module" id="f10-jp">
+      <!-- 9. PDFリフロー -->
+      <section class="feature-module" data-feature="f9">
         <div class="feature-header-row">
-          <div class="feature-badge-num">9-19</div>
+          <div class="feature-badge-num">9</div>
+          <h2 class="feature-module-title">スマートPDFリフローエンジン</h2>
+        </div>
+        <ul class="feature-list">
+          <li>テキストPDFと画像スキャンPDFを自動認識し、最良の表示モードを適用。</li>
+          <li>EPUBと同様にフォント拡張、朗読、翻訳機能に対応。</li>
+        </ul>
+      </section>
+
+      <!-- 10. 読書統計・クラウド・プライバシー -->
+      <section class="feature-module" data-feature="f10">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">10-19</div>
           <h2 class="feature-module-title">読書統計・クラウド同期・プライバシー</h2>
         </div>
         <ul class="feature-list">
@@ -701,7 +713,7 @@
     <div class="lang-cn">
 
       <!-- 1. 支持多种图书格式 -->
-      <section class="feature-module" id="f1-cn">
+      <section class="feature-module" data-feature="f1">
         <div class="feature-header-row">
           <div class="feature-badge-num">1</div>
           <h2 class="feature-module-title">支持多种图书格式与即时阅读</h2>
@@ -716,7 +728,7 @@
       </section>
 
       <!-- 2. 阅读体验 -->
-      <section class="feature-module" id="f2-cn">
+      <section class="feature-module" data-feature="f2">
         <div class="feature-header-row">
           <div class="feature-badge-num">2</div>
           <h2 class="feature-module-title">高度可定制的阅读体验</h2>
@@ -731,7 +743,7 @@
       </section>
 
       <!-- 3. 书签、高亮与笔记 -->
-      <section class="feature-module" id="f3-cn">
+      <section class="feature-module" data-feature="f3">
         <div class="feature-header-row">
           <div class="feature-badge-num">3</div>
           <h2 class="feature-module-title">书签、多色高亮与笔记管理</h2>
@@ -745,7 +757,7 @@
       </section>
 
       <!-- 4. 文本转语音 (TTS) -->
-      <section class="feature-module" id="f4-cn">
+      <section class="feature-module" data-feature="f4">
         <div class="feature-header-row">
           <div class="feature-badge-num">4</div>
           <h2 class="feature-module-title">智能多语言文本转语音 (TTS)</h2>
@@ -759,7 +771,7 @@
       </section>
 
       <!-- 5. 文本替换 -->
-      <section class="feature-module" id="f5-cn">
+      <section class="feature-module" data-feature="f5">
         <div class="feature-header-row">
           <div class="feature-badge-num">5</div>
           <h2 class="feature-module-title">双模式文本替换规则</h2>
@@ -771,7 +783,7 @@
       </section>
 
       <!-- 6. 翻译功能 -->
-      <section class="feature-module" id="f6-cn">
+      <section class="feature-module" data-feature="f6">
         <div class="feature-header-row">
           <div class="feature-badge-num">6</div>
           <h2 class="feature-module-title">多语言与 AI 对照翻译</h2>
@@ -784,7 +796,7 @@
       </section>
 
       <!-- 7. 端侧 AI 助手 -->
-      <section class="feature-module" id="f7-cn">
+      <section class="feature-module" data-feature="f7">
         <div class="feature-header-row">
           <div class="feature-badge-num">7</div>
           <h2 class="feature-module-title">完全本地运行的端侧 AI 助手</h2>
@@ -796,7 +808,7 @@
       </section>
 
       <!-- 8. 漫画 (CBZ) -->
-      <section class="feature-module" id="f8-cn">
+      <section class="feature-module" data-feature="f8">
         <div class="feature-header-row">
           <div class="feature-badge-num">8</div>
           <h2 class="feature-module-title">漫画阅读与图片 OCR 识别</h2>
@@ -808,10 +820,22 @@
         </ul>
       </section>
 
-      <!-- 9-19 其他功能 -->
-      <section class="feature-module" id="f10-cn">
+      <!-- 9. PDF 重排 -->
+      <section class="feature-module" data-feature="f9">
         <div class="feature-header-row">
-          <div class="feature-badge-num">9-19</div>
+          <div class="feature-badge-num">9</div>
+          <h2 class="feature-module-title">智能 PDF 重排引擎</h2>
+        </div>
+        <ul class="feature-list">
+          <li>自动识别文本 PDF 与扫描图片 PDF，应用最佳视图模式。</li>
+          <li>支持像 EPUB 一样自由调整字号、进行 TTS 朗读与对照翻译。</li>
+        </ul>
+      </section>
+
+      <!-- 10. 阅读统计与云端同步 -->
+      <section class="feature-module" data-feature="f10">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">10-19</div>
           <h2 class="feature-module-title">阅读统计、云端同步与隐私保护</h2>
         </div>
         <ul class="feature-list">
@@ -879,16 +903,32 @@
 
   <script src="/scripts.js"></script>
   
-  <!-- Lightbox Overlay -->
-  <div class="lightbox-overlay" id="lightbox">
-    <div class="lightbox-close" id="lightbox-close">✕</div>
-    <div class="lightbox-main">
-      <div class="lightbox-arrow prev" id="lightbox-prev">&#10094;</div>
-      <img src="" alt="Zoomed Image" class="lightbox-img" id="lightbox-img" />
-      <div class="lightbox-arrow next" id="lightbox-next">&#10095;</div>
-    </div>
-    <div class="lightbox-thumbnails" id="lightbox-thumbs"></div>
-  </div>
+  <!-- Script for Multi-language Smooth Chip Scroll Navigation -->
+  <script>
+    function scrollToFeature(targetKey) {
+      const candidateSections = document.querySelectorAll(`[data-feature="${targetKey}"], #${targetKey}`);
+      for (let sec of candidateSections) {
+        const parentLang = sec.closest('.lang-en, .lang-th, .lang-jp, .lang-cn');
+        if (!parentLang || window.getComputedStyle(parentLang).display !== 'none') {
+          const yOffset = -140; // Navbar (80px) + Sticky Chip Bar (60px)
+          const y = sec.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          break;
+        }
+      }
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.feature-nav-chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetKey = chip.getAttribute('data-target');
+          if (targetKey) {
+            scrollToFeature(targetKey);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

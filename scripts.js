@@ -146,7 +146,23 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-date": "📅 July 23, 2026",
       "blog-p7-cat": "🏷️ Full Guide",
       "blog-p7-title": "Shiori Complete Feature Guide: All 19 Capabilities Explained",
-      "blog-p7-desc": "Explore the complete breakdown of Shiori EPUB Reader's features, from multi-language TTS and AI translation to smart PDFs, CBZ OCR, and Google Drive cloud sync."
+      "blog-p7-desc": "Explore the complete breakdown of Shiori EPUB Reader's features, from multi-language TTS and AI translation to smart PDFs, CBZ OCR, and Google Drive cloud sync.",
+
+      // Feature Chips
+      "chip-f1": "1. Formats",
+      "chip-f2": "2. Reading",
+      "chip-f3": "3. Bookmarks",
+      "chip-f4": "4. TTS Voice",
+      "chip-f5": "5. Word Rules",
+      "chip-f6": "6. Translation",
+      "chip-f7": "7. On-device AI",
+      "chip-f8": "8. Comics (CBZ)",
+      "chip-f9": "9. Reflow PDF",
+      "chip-f10": "10. Insights",
+      "chip-f11": "11. Memory",
+      "chip-f13": "13. Library Server",
+      "chip-f14": "14. Cloud Sync",
+      "chip-f18": "18. Privacy"
     },
     th: {
       // Navbar
@@ -293,7 +309,23 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-date": "📅 23 กรกฎาคม 2026",
       "blog-p7-cat": "🏷️ คู่มือฉบับสมบูรณ์",
       "blog-p7-title": "Shiori — เจาะลึกรายการฟีเจอร์ทั้งหมด 19 หมวดแบบครบถ้วน",
-      "blog-p7-desc": "สรุปฟังก์ชันการใช้งานทั้งหมดของ Shiori EPUB Reader ตั้งแต่ระบบอ่านออกเสียง TTS, การแปลภาษาอัจฉริยะ, AI บนเครื่อง, อ่านการ์ตูน CBZ, ซิงก์คลาวด์ ไปจนถึงสถิติการอ่าน"
+      "blog-p7-desc": "สรุปฟังก์ชันการใช้งานทั้งหมดของ Shiori EPUB Reader ตั้งแต่ระบบอ่านออกเสียง TTS, การแปลภาษาอัจฉริยะ, AI บนเครื่อง, อ่านการ์ตูน CBZ, ซิงก์คลาวด์ ไปจนถึงสถิติการอ่าน",
+
+      // Feature Chips
+      "chip-f1": "1. รูปแบบไฟล์",
+      "chip-f2": "2. การอ่าน",
+      "chip-f3": "3. ที่คั่นหน้า",
+      "chip-f4": "4. เสียงอ่าน TTS",
+      "chip-f5": "5. แทนที่คำ",
+      "chip-f6": "6. แปลภาษา",
+      "chip-f7": "7. AI บนเครื่อง",
+      "chip-f8": "8. อ่านการ์ตูน",
+      "chip-f9": "9. ปรับไหล PDF",
+      "chip-f10": "10. สถิติการอ่าน",
+      "chip-f11": "11. ความทรงจำ",
+      "chip-f13": "13. เซิร์ฟเวอร์",
+      "chip-f14": "14. คลาวด์ซิงก์",
+      "chip-f18": "18. ความเป็นส่วนตัว"
     },
     jp: {
       // Navbar
@@ -440,7 +472,23 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-date": "📅 2026年7月23日",
       "blog-p7-cat": "🏷️ 全機能ガイド",
       "blog-p7-title": "Shiori 全機能ガイド：全19の主要機能を徹底解説",
-      "blog-p7-desc": "Shiori EPUBリーダーの全機能を網羅解説。多言語自動TTS、AI翻訳、PDFリフロー、CBZ漫画OCR、Googleドライブ同期まで、すべての魅力を紹介します。"
+      "blog-p7-desc": "Shiori EPUBリーダーの全機能を網羅解説。多言語自動TTS、AI翻訳、PDFリフロー、CBZ漫画OCR、Googleドライブ同期まで、すべての魅力を紹介します。",
+
+      // Feature Chips
+      "chip-f1": "1. フォーマット",
+      "chip-f2": "2. 読書設定",
+      "chip-f3": "3. しおり・メモ",
+      "chip-f4": "4. 音声読み上げ",
+      "chip-f5": "5. 単語置換",
+      "chip-f6": "6. 多言語翻訳",
+      "chip-f7": "7. ローカルAI",
+      "chip-f8": "8. マンガ・OCR",
+      "chip-f9": "9. PDFリフロー",
+      "chip-f10": "10. 読書統計",
+      "chip-f11": "11. メモリー",
+      "chip-f13": "13. サーバー接続",
+      "chip-f14": "14. クラウド同期",
+      "chip-f18": "18. プライバシー"
     },
     cn: {
       // Navbar
@@ -587,7 +635,23 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-date": "📅 2026年7月23日",
       "blog-p7-cat": "🏷️ 全功能指南",
       "blog-p7-title": "Shiori 全功能全景指南：19 大核心特色深度解析",
-      "blog-p7-desc": "全面了解 Shiori EPUB 阅读器的所有功能：从多语言 TTS 朗读、AI 端侧翻译到 PDF 重排、漫画 OCR 识别及 Google Drive 云端同步。"
+      "blog-p7-desc": "全面了解 Shiori EPUB 阅读器的所有功能：从多语言 TTS 朗读、AI 端侧翻译到 PDF 重排、漫画 OCR 识别及 Google Drive 云端同步。",
+
+      // Feature Chips
+      "chip-f1": "1. 图书格式",
+      "chip-f2": "2. 阅读设置",
+      "chip-f3": "3. 书签笔记",
+      "chip-f4": "4. TTS 朗读",
+      "chip-f5": "5. 文本替换",
+      "chip-f6": "6. 语言翻译",
+      "chip-f7": "7. 端侧 AI",
+      "chip-f8": "8. 漫画 OCR",
+      "chip-f9": "9. PDF 重排",
+      "chip-f10": "10. 阅读统计",
+      "chip-f11": "11. 记忆画廊",
+      "chip-f13": "13. 书库服务器",
+      "chip-f14": "14. 云端同步",
+      "chip-f18": "18. 隐私安全"
     }
   };
 
@@ -640,6 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
 
     // Update language button text
     if (langToggleBtn) {
