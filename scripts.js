@@ -140,7 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p6-date": "📅 July 22, 2026",
       "blog-p6-cat": "🏷️ Features",
       "blog-p6-title": "How to Translate EPUB to Multiple Languages Simultaneously",
-      "blog-p6-desc": "Learn how to use Shiori's advanced multi-language translation panel to translate paragraphs into multiple target languages at once."
+      "blog-p6-desc": "Learn how to use Shiori's advanced multi-language translation panel to translate paragraphs into multiple target languages at once.",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 July 23, 2026",
+      "blog-p7-cat": "🏷️ Full Guide",
+      "blog-p7-title": "Shiori Complete Feature Guide: All 19 Capabilities Explained",
+      "blog-p7-desc": "Explore the complete breakdown of Shiori EPUB Reader's features, from multi-language TTS and AI translation to smart PDFs, CBZ OCR, and Google Drive cloud sync."
     },
     th: {
       // Navbar
@@ -281,7 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p6-date": "📅 22 กรกฎาคม 2026",
       "blog-p6-cat": "🏷️ ฟังก์ชันการใช้งาน",
       "blog-p6-title": "วิธีแปลเนื้อหาในหนังสือเป็นหลายภาษาพร้อมกันในหน้าเดียว",
-      "blog-p6-desc": "คู่มือการใช้งานระบบแปลภาษาอัจฉริยะใน Shiori เพื่อแปลประโยคหรือย่อหน้าออกเป็นหลายภาษาเป้าหมายได้พร้อมกันในคลิกเดียว"
+      "blog-p6-desc": "คู่มือการใช้งานระบบแปลภาษาอัจฉริยะใน Shiori เพื่อแปลประโยคหรือย่อหน้าออกเป็นหลายภาษาเป้าหมายได้พร้อมกันในคลิกเดียว",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 23 กรกฎาคม 2026",
+      "blog-p7-cat": "🏷️ คู่มือฉบับสมบูรณ์",
+      "blog-p7-title": "Shiori — เจาะลึกรายการฟีเจอร์ทั้งหมด 19 หมวดแบบครบถ้วน",
+      "blog-p7-desc": "สรุปฟังก์ชันการใช้งานทั้งหมดของ Shiori EPUB Reader ตั้งแต่ระบบอ่านออกเสียง TTS, การแปลภาษาอัจฉริยะ, AI บนเครื่อง, อ่านการ์ตูน CBZ, ซิงก์คลาวด์ ไปจนถึงสถิติการอ่าน"
     },
     jp: {
       // Navbar
@@ -422,7 +434,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p6-date": "📅 2026年7月22日",
       "blog-p6-cat": "🏷️ 機能紹介",
       "blog-p6-title": "EPUB小説を複数の言語に同時に翻訳する方法",
-      "blog-p6-desc": "Shioriの高度な多言語翻訳パネルを使用して、1つの段落を複数の対象言語に同時に翻訳し、読み比べる方法を解説します。"
+      "blog-p6-desc": "Shioriの高度な多言語翻訳パネルを使用して、1つの段落を複数の対象言語に同時に翻訳し、読み比べる方法を解説します。",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 2026年7月23日",
+      "blog-p7-cat": "🏷️ 全機能ガイド",
+      "blog-p7-title": "Shiori 全機能ガイド：全19の主要機能を徹底解説",
+      "blog-p7-desc": "Shiori EPUBリーダーの全機能を網羅解説。多言語自動TTS、AI翻訳、PDFリフロー、CBZ漫画OCR、Googleドライブ同期まで、すべての魅力を紹介します。"
     },
     cn: {
       // Navbar
@@ -563,7 +581,13 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p6-date": "📅 2026年7月22日",
       "blog-p6-cat": "🏷️ 功能介绍",
       "blog-p6-title": "如何在阅读中同时将文本翻译成多种语言",
-      "blog-p6-desc": "了解如何使用 Shiori 的高级多语言翻译面板，一次性将选中的段落翻译成多种目标语言，方便对照阅读。"
+      "blog-p6-desc": "了解如何使用 Shiori 的高级多语言翻译面板，一次性将选中的段落翻译成多种目标语言，方便对照阅读。",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 2026年7月23日",
+      "blog-p7-cat": "🏷️ 全功能指南",
+      "blog-p7-title": "Shiori 全功能全景指南：19 大核心特色深度解析",
+      "blog-p7-desc": "全面了解 Shiori EPUB 阅读器的所有功能：从多语言 TTS 朗读、AI 端侧翻译到 PDF 重排、漫画 OCR 识别及 Google Drive 云端同步。"
     }
   };
 

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Shiori Complete Feature Guide: All 19 Capabilities Explained — Shiori Blog</title>
+  <meta name="description" content="Explore the complete feature guide for Shiori EPUB Reader on Android: from multi-language TTS and AI translation to reflowable PDFs, CBZ OCR, and Google Drive cloud sync." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/all-features/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Shiori Complete Feature Guide: All 19 Capabilities Explained",
+    "description": "Comprehensive breakdown of Shiori EPUB Reader's 19 major feature modules including TTS, AI translation, PDF reflow, and cloud sync.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/all-features/"
+  }
+  </script>
+  
+  <style>
+    .feature-nav-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      position: sticky;
+      top: 80px;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+    }
+    .feature-nav-chip {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid var(--border-color);
+    }
+    .feature-nav-chip:hover {
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: var(--accent-primary);
+    }
+    .feature-module {
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .feature-module:hover {
+      border-color: var(--accent-primary);
+    }
+    .feature-header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .feature-badge-num {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .feature-module-title {
+      font-size: 1.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .feature-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    .feature-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent-primary);
+      font-size: 0.9rem;
+    }
+    .highlight-pill {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: 0.4rem;
+    }
+    .section-divider {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 3rem 0;
+    }
+    
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .feature-module {
+        padding: 1.5rem;
+      }
+      .feature-module-title {
+        font-size: 1.25rem;
+      }
+      .feature-nav-bar {
+        top: 70px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p7-date">📅 July 23, 2026</span>
+        <span data-i18n="blog-p7-cat">🏷️ Full Guide</span>
+      </div>
+      
+      <!-- English Titles -->
+      <h1 class="post-title lang-en">Shiori Complete Feature Guide<br><span class="text-gradient">All 19 Capabilities Explained</span></h1>
+      <!-- Thai Titles -->
+      <h1 class="post-title lang-th">Shiori — รายการฟีเจอร์ทั้งหมด 19 หมวด<br><span class="text-gradient">เจาะลึกทุกฟังก์ชันเพื่อการอ่านและฟังอย่างมีประสิทธิภาพ</span></h1>
+      <!-- Japanese Titles -->
+      <h1 class="post-title lang-jp">Shiori 全機能ガイド<br><span class="text-gradient">全19の主要機能を徹底解説</span></h1>
+      <!-- Chinese Titles -->
+      <h1 class="post-title lang-cn">Shiori 全功能全景指南<br><span class="text-gradient">19 大核心特色深度解析</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('/images/001-bookshelf.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem;">
+      <span style="font-size: 4.5rem; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));">📚</span>
+    </div>
+
+    <!-- Subtitle intros -->
+    <p class="hero-subtitle lang-en" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
+      Shiori is an Android EPUB reader designed to elevate your reading and listening experience. Below is the comprehensive breakdown of all 19 feature categories available in the app.
+    </p>
+    <p class="hero-subtitle lang-th" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
+      Shiori คือโปรแกรมอ่านหนังสือ EPUB บน Android ที่ออกแบบมาเพื่อการอ่าน การฟังออกเสียง การแปลภาษา และสถิติการเรียนรู้ ด้านล่างนี้คือสรุปรายการฟีเจอร์ครบทั้ง 19 หมวดหมู่แบบละเอียด
+    </p>
+    <p class="hero-subtitle lang-jp" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
+      Shioriは、読書・音声読み上げ・翻訳・学習記憶を極限まで高めるAndroid用EPUBリーダーです。アプリに搭載された全19モジュールの詳細ガイドをお届けします。
+    </p>
+    <p class="hero-subtitle lang-cn" style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
+      Shiori 是一款专为 Android 打造的高级 EPUB 阅读器。以下是为您整理的 Shiori 全套 19 大功能模块的深度解析指引。
+    </p>
+
+    <!-- Quick Jump Bar -->
+    <nav class="feature-nav-bar" aria-label="Feature quick navigation">
+      <a href="#f1" class="feature-nav-chip">1. Formats</a>
+      <a href="#f2" class="feature-nav-chip">2. Reading</a>
+      <a href="#f3" class="feature-nav-chip">3. Bookmarks</a>
+      <a href="#f4" class="feature-nav-chip">4. TTS Voice</a>
+      <a href="#f5" class="feature-nav-chip">5. Word Rules</a>
+      <a href="#f6" class="feature-nav-chip">6. Translation</a>
+      <a href="#f7" class="feature-nav-chip">7. On-device AI</a>
+      <a href="#f8" class="feature-nav-chip">8. Comics (CBZ)</a>
+      <a href="#f9" class="feature-nav-chip">9. Reflow PDF</a>
+      <a href="#f10" class="feature-nav-chip">10. Insights</a>
+      <a href="#f11" class="feature-nav-chip">11. Memory</a>
+      <a href="#f12" class="feature-nav-chip">12. Collections</a>
+      <a href="#f13" class="feature-nav-chip">13. Library Server</a>
+      <a href="#f14" class="feature-nav-chip">14. Cloud Sync</a>
+      <a href="#f18" class="feature-nav-chip">18. Privacy</a>
+    </nav>
+
+    <!-- ==================== FEATURE MODULES (ENGLISH) ==================== -->
+    <div class="lang-en">
+
+      <!-- 1. Open Many Kinds of Books -->
+      <section class="feature-module" id="f1">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">1</div>
+          <h2 class="feature-module-title">Open Many Kinds of Books</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Supports <span class="highlight-pill">EPUB</span> <span class="highlight-pill">KEPUB</span> <span class="highlight-pill">FB2</span> <span class="highlight-pill">PDF</span> and <span class="highlight-pill">CBZ Comics</span>.</li>
+          <li><strong>Text-based PDFs</strong> open in reflowable text mode — adjust fonts, themes, and read aloud just like an EPUB (with correct Thai vowel/tone ordering).</li>
+          <li><strong>Scanned PDFs / Comics</strong> open seamlessly as crisp page images.</li>
+          <li><strong>Batch Import:</strong> Add multiple books at once. Large books appear on the shelf instantly while background loading finishes.</li>
+          <li><strong>Open with Shiori:</strong> Tap any file from external file managers or chat apps to launch directly.</li>
+          <li><strong>Reader Only Mode:</strong> Open a temporary file without adding it to your shelf or cloud sync. Deletes automatically after 30 days.</li>
+        </ul>
+      </section>
+
+      <!-- 2. Reading Experience -->
+      <section class="feature-module" id="f2">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">2</div>
+          <h2 class="feature-module-title">Reading Experience Customization</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>4 Reading Themes:</strong> Light, Sepia, Gray, and Pure Dark.</li>
+          <li><strong>Per-language Fonts:</strong> Assign specific font families for English, Thai, Japanese, or Chinese text, and import your own TTF/OTF fonts.</li>
+          <li>Full control over font sizes, line height, paragraph spacing, and page margins.</li>
+          <li><strong>EPUB CSS Override:</strong> Discard publisher stylesheets, remove hardcoded font colors, or force device system fonts.</li>
+          <li><strong>Continuous Infinite Scroll:</strong> Seamless scrolling across chapters without interruption.</li>
+          <li><strong>In-book Popover Previews:</strong> Footnotes and internal links show popover previews before jumping.</li>
+        </ul>
+      </section>
+
+      <!-- 3. Bookmarks, Highlights & Notes -->
+      <section class="feature-module" id="f3">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">3</div>
+          <h2 class="feature-module-title">Bookmarks, Highlights & Notes</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Paragraph-level bookmarks with an in-book searchable index.</li>
+          <li><strong>Multi-color Highlights & Notes:</strong> Color-code passages and attach detailed notes.</li>
+          <li><strong>Hashtags (#Tags):</strong> Add hashtags inside notes to categorize thoughts across books.</li>
+          <li><strong>Image Highlights:</strong> Highlight images in EPUBs; keeps a copy even if the book file is deleted.</li>
+        </ul>
+      </section>
+
+      <!-- 4. Read Aloud (Text-to-Speech) -->
+      <section class="feature-module" id="f4">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">4</div>
+          <h2 class="feature-module-title">Advanced Text-to-Speech (TTS)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Multi-language Speech:</strong> Auto-detects script (TH, EN, ZH, JA, KO, DE) and switches native voices smoothly per paragraph.</li>
+          <li><strong>Karaoke Highlighting:</strong> Synchronized highlighting by paragraph, sentence, and word during playback.</li>
+          <li><strong>Background Playback & Floating Overlay:</strong> Keep listening while switching to other apps or when the screen is locked.</li>
+          <li><strong>Sleep Timer & Pocket Lock:</strong> Set auto-off timers or lock the screen to prevent accidental touches in your pocket.</li>
+        </ul>
+      </section>
+
+      <!-- 5. Automatic Word Replacement -->
+      <section class="feature-module" id="f5">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">5</div>
+          <h2 class="feature-module-title">Dual-Mode Word Replacement</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Visual vs TTS Modes:</strong> Choose whether to replace text on screen, only during TTS playback, or both.</li>
+          <li>Supports advanced Regular Expressions (Regex) and target voice languages.</li>
+          <li>Import/Export TSV rule files to share dictionary rules across devices.</li>
+        </ul>
+      </section>
+
+      <!-- 6. Translation -->
+      <section class="feature-module" id="f6">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">6</div>
+          <h2 class="feature-module-title">Multi-Language & AI Translation</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Side-by-side Paragraph Translation:</strong> Tap to translate any paragraph into multiple target languages simultaneously.</li>
+          <li><strong>Background Chapter/Book Translation:</strong> Translate entire chapters or full books in the background with progress feedback.</li>
+          <li>Supports free offline engines and private on-device AI.</li>
+        </ul>
+      </section>
+
+      <!-- 7. Ask AI (Runs On Your Device) -->
+      <section class="feature-module" id="f7">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">7</div>
+          <h2 class="feature-module-title">On-Device Local AI Assistant</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Runs a local LLM model directly on your Android device (no API keys, no internet connection required).</li>
+          <li>Ask questions about plot points, summarize chapters, or analyze characters.</li>
+        </ul>
+      </section>
+
+      <!-- 8. Read Comics (CBZ) -->
+      <section class="feature-module" id="f8">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">8</div>
+          <h2 class="feature-module-title">Comic & Manga Suite (CBZ & OCR)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Image OCR:</strong> Extract, copy, translate, or read aloud text from comic images (English, Japanese, Chinese, Korean).</li>
+          <li><strong>Speech Bubble Translation Overlay:</strong> Overlays translated Thai text directly onto comic speech bubbles.</li>
+          <li><strong>Auto Page Cropping:</strong> Automatically trims white borders for maximum panel size.</li>
+        </ul>
+      </section>
+
+      <!-- 9. Opening & Reading PDFs -->
+      <section class="feature-module" id="f9">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">9</div>
+          <h2 class="feature-module-title">Smart PDF Reflow Engine</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Automatically detects whether a PDF is text-based or image-scanned upon import.</li>
+          <li><strong>Text PDF Reflow:</strong> Reflows text like an EPUB, enabling font scaling, TTS reading, translation, and Thai tone mark corrections.</li>
+          <li>Toggle original page view anytime to verify figures and original layouts.</li>
+        </ul>
+      </section>
+
+      <!-- 10. Reading Stats & Calendar (Insights) -->
+      <section class="feature-module" id="f10">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">10</div>
+          <h2 class="feature-module-title">Insights: Stats & Heatmap Calendar</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Monthly Heatmap Calendar:</strong> Visualizes daily reading intensity (darker green = longer reading time).</li>
+          <li><strong>Daily Timeline:</strong> Chronological record of highlights, reading spans, listening sessions, and AI chats per day.</li>
+          <li><strong>Streaks & Goals:</strong> Track current and longest reading streaks; set daily (minutes) or monthly (hours) targets.</li>
+        </ul>
+      </section>
+
+      <!-- 11. Memory -->
+      <section class="feature-module" id="f11">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">11</div>
+          <h2 class="feature-module-title">Memory & Historical Review</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Unified gallery of all bookmarks, notes, and highlights across every book in your library.</li>
+          <li><strong>"On This Day":</strong> Resurfaces notes and highlights created exactly a year ago to jog memory.</li>
+        </ul>
+      </section>
+
+      <!-- 12-19 Other Features Summary -->
+      <section class="feature-module" id="f13">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">12-19</div>
+          <h2 class="feature-module-title">Cloud, Server & Privacy Capabilities</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Online Library Servers:</strong> Connect to OPDS (Calibre, Standard Ebooks), Kavita, Komga, WebDAV, or Everything (voidtools) with auto-detection.</li>
+          <li><strong>Google Drive Cloud Sync:</strong> Private backup of settings, bookmarks, rules, and books directly to your personal Google Drive.</li>
+          <li><strong>45 Languages / 64 Regions:</strong> Fully localized UI with region-tailored typography and native settings.</li>
+          <li><strong>100% Privacy-First:</strong> No registration, no tracking of book content, and optional anonymous usage metrics.</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- ==================== FEATURE MODULES (THAI) ==================== -->
+    <div class="lang-th">
+
+      <!-- 1. เปิดหนังสือได้หลายรูปแบบ -->
+      <section class="feature-module" id="f1-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">1</div>
+          <h2 class="feature-module-title">เปิดหนังสือได้หลายรูปแบบ (Format Support)</h2>
+        </div>
+        <ul class="feature-list">
+          <li>รองรับไฟล์ <span class="highlight-pill">EPUB</span> <span class="highlight-pill">KEPUB (Kobo)</span> <span class="highlight-pill">FB2</span> <span class="highlight-pill">PDF</span> และ <span class="highlight-pill">การ์ตูน (CBZ)</span></li>
+          <li><strong>PDF แบบตัวอักษร:</strong> เปิดด้วยระบบ "ปรับไหลข้อความ" (Reflow) เปลี่ยนฟอนต์ ธีม และอ่านออกเสียงได้เหมือน EPUB พร้อมจัดวางสระและวรรณยุกต์ไทยอย่างถูกต้อง</li>
+          <li><strong>PDF สแกน / การ์ตูน:</strong> เปิดแบบภาพหน้าความละเอียดสูง</li>
+          <li><strong>นำเข้าหลายเล่มพร้อมกัน:</strong> เล่มใหญ่ขึ้นชั้นหนังสือทันที แล้วประมวลผลต่อเบื้องหลังอย่างรวดเร็ว</li>
+          <li><strong>โหมดเปิดตรง (Reader Only):</strong> เปิดอ่านไฟล์ชั่วคราวโดยไม่เพิ่มลงชั้น ไม่ซิงก์คลาวด์ และลบตัวเองอัตโนมัติหลัง 30 วัน</li>
+        </ul>
+      </section>
+
+      <!-- 2. ประสบการณ์การอ่าน -->
+      <section class="feature-module" id="f2-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">2</div>
+          <h2 class="feature-module-title">ประสบการณ์การอ่านขั้นสูง (Reading Experience)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>ธีมอ่านหนังสือ 4 รูปแบบ:</strong> สว่าง (Light), ซีเปีย (Sepia), เทา (Gray), และ มืดสนิท (Dark)</li>
+          <li><strong>กำหนดฟอนต์แยกตามภาษา:</strong> เลือกใช้ฟอนต์ไทยหนึ่งแบบ ญี่ปุ่นหรืออังกฤษอีกแบบ และนำเข้าไฟล์ฟอนต์ TTF/OTF ของคุณเองได้</li>
+          <li>ปรับขนาดตัวอักษร ระยะห่างบรรทัด ขอบหน้ากระดาษ และการย่อหน้าได้อย่างอิสระ</li>
+          <li><strong>ยกเลิก CSS ดั้งเดิม:</strong> ปิดสไตล์ที่ติดมากับหนังสือ ลบสีตัวอักษรเดิมที่มองยาก หรือบังคับใช้ฟอนต์ระบบเพื่อความสบายตา</li>
+          <li><strong>เลื่อนอ่านต่อเนื่องข้ามบท:</strong> สโครลอ่านยาวทั้งเล่มได้โดยไม่ต้องกดเปลี่ยนบท</li>
+        </ul>
+      </section>
+
+      <!-- 3. ที่คั่นหน้า ไฮไลต์ และโน้ต -->
+      <section class="feature-module" id="f3-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">3</div>
+          <h2 class="feature-module-title">ที่คั่นหน้า ไฮไลต์ และโน้ต (Bookmarks & Notes)</h2>
+        </div>
+        <ul class="feature-list">
+          <li>คั่นหน้าได้ละเอียดระดับย่อหน้า พร้อมสารบัญที่คั่นค้นหาและจัดการได้</li>
+          <li><strong>ไฮไลต์หลากสีและจดโน้ต:</strong> ปรับสีข้อความสำคัญและพิมพ์โน้ตประกอบได้ทันที</li>
+          <li><strong>จัดกลุ่มด้วย #แท็ก (#Tags):</strong> ใส่แฮชแท็กในโน้ตเพื่อค้นหาความคิดเห็นย้อนหลังข้ามหนังสือทุกเล่ม</li>
+          <li><strong>ไฮไลต์รูปภาพ:</strong> เลือกบันทึกภาพประกอบในหนังสือเก็บไว้ได้ แม้ลบไฟล์หนังสือออกไปแล้ว</li>
+        </ul>
+      </section>
+
+      <!-- 4. อ่านออกเสียง (Text-to-Speech) -->
+      <section class="feature-module" id="f4-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">4</div>
+          <h2 class="feature-module-title">อ่านออกเสียงอัจฉริยะ (Text-to-Speech - TTS)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>ตรวจจับภาษาและสลับเสียงอ่านอัตโนมัติ:</strong> แยกภาษาไทย อังกฤษ จีน ญี่ปุ่น เกาหลี เยอรมัน ในย่อหน้าเดียวกันและสลับเสียงอ่านให้อย่างเป็นธรรมชาติ</li>
+          <li><strong>เน้นคำตามเสียงอ่าน (Karaoke Effect):</strong> ไฮไลต์ข้อความแบบเรียลไทม์ทั้งย่อหน้า ประโยค และคำขณะเสียงอ่านทำงาน</li>
+          <li><strong>ฟังต่อเนื่องเบื้องหลัง & หน้าต่างลอย:</strong> ฟังเสียงอ่านได้แม้ปิดหน้าจอ หรือเปิดหน้าต่างควบคุมลอย (Floating overlay) ทำงานร่วมกับแอปอื่น</li>
+          <li><strong>ตั้งเวลาปิด (Sleep Timer) & ล็อกหน้าจอ:</strong> ป้องกันการแตะโดนหน้าจอโดยไม่ตั้งใจขณะใส่ฟังในกระเป๋าเสื้อ/กางเกง</li>
+        </ul>
+      </section>
+
+      <!-- 5. แทนที่คำอัตโนมัติ -->
+      <section class="feature-module" id="f5-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">5</div>
+          <h2 class="feature-module-title">ระบบแทนที่คำคู่ (Dual-Mode Word Replacement)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>แยกกฎหน้าตาข้อความและเสียงอ่าน:</strong> เลือกแทนที่คำเฉพาะบนหน้ากระดาษ หรือแทนที่เฉพาะตอนส่งให้เสียง TTS อ่าน (แก้คำอ่านเพี้ยน)</li>
+          <li>รองรับนิพจน์ทั่วไป (Regex) และระบุภาษาของเสียงเป้าหมายได้</li>
+          <li>นำเข้าและส่งออกกฎเป็นไฟล์ TSV เพื่อแบ่งปันกับเพื่อนๆ ได้ง่ายดาย</li>
+        </ul>
+      </section>
+
+      <!-- 6. แปลภาษา -->
+      <section class="feature-module" id="f6-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">6</div>
+          <h2 class="feature-module-title">แปลภาษาหลายรูปแบบ (Multi-Language Translation)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>แปลพร้อมกันหลายภาษา:</strong> แตะย่อหน้าเพื่อแปลออกเป็นหลายภาษาเป้าหมายเคียงข้างกันในหน้าเดียว</li>
+          <li><strong>แปลทั้งบทและทั้งเล่ม:</strong> ระบบแปลเนื้อหาเบื้องหลังพร้อมแถบแสดงความคืบหน้าอย่างชัดเจน</li>
+          <li>รองรับการแปลแบบออฟไลน์ฟรี และการใช้โมเดล AI บนเครื่อง</li>
+        </ul>
+      </section>
+
+      <!-- 7. ถาม AI (ทำงานบนเครื่อง) -->
+      <section class="feature-module" id="f7-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">7</div>
+          <h2 class="feature-module-title">ผู้ช่วย AI บนเครื่อง (On-Device AI Assistant)</h2>
+        </div>
+        <ul class="feature-list">
+          <li>รันโมเดลภาษา (LLM) บนอุปกรณ์ของคุณเอง 100% ไม่ต้องใช้อินเทอร์เน็ตและไม่มีค่าบริการ API</li>
+          <li>ถาม-ตอบ วิเคราะห์ตัวละคร หรือสรุปย่อหน้าในเนื้อหาที่อ่านได้ทันที</li>
+        </ul>
+      </section>
+
+      <!-- 8. อ่านการ์ตูน (CBZ) -->
+      <section class="feature-module" id="f8-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">8</div>
+          <h2 class="feature-module-title">อ่านการ์ตูนและมังงะ (CBZ & OCR Suite)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>อ่านตัวอักษรจากภาพ (OCR):</strong> ดึงข้อความ คัดลอก แปลภาษา หรืออ่านออกเสียงจากหน้าการ์ตูน (อังกฤษ ญี่ปุ่น จีน เกาหลี)</li>
+          <li><strong>แปลทับในบอลลูนคำพูด:</strong> แสดงคำแปลภาษาไทยทับบนบอลลูนคำพูดเดิมของการ์ตูนอย่างสมจริง</li>
+          <li><strong>ตัดขอบภาพอัตโนมัติ (Auto-crop):</strong> ขยายหน้าการ์ตูนให้อ่านได้เต็มตาที่สุด</li>
+        </ul>
+      </section>
+
+      <!-- 9. เปิดและอ่าน PDF -->
+      <section class="feature-module" id="f9-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">9</div>
+          <h2 class="feature-module-title">ระบบอ่าน PDF อัจฉริยะ (Smart PDF Engine)</h2>
+        </div>
+        <ul class="feature-list">
+          <li>ตรวจจับชนิดไฟล์ PDF อัตโนมัติว่าเป็นแบบข้อความจริงหรือสแกนเป็นภาพ</li>
+          <li><strong>ปรับไหลข้อความ (Reflow):</strong> แปลง PDF เป็นข้อความให้อ่านง่าย ปรับขนาดฟอนต์ สลับธีม ฟังเสียงอ่าน และจัดสระวรรณยุกต์ไทยไม่ให้ลอยหรือจม</li>
+          <li>กดสลับดูภาพหน้าต้นฉบับดั้งเดิมได้ตลอดเวลา</li>
+        </ul>
+      </section>
+
+      <!-- 10. สถิติและปฏิทินการอ่าน (Insights) -->
+      <section class="feature-module" id="f10-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">10</div>
+          <h2 class="feature-module-title">สถิติและปฏิทินการอ่าน (Insights)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>ปฏิทินแผนที่ความร้อน (Heatmap Calendar):</strong> แสดงพฤติกรรมความถี่ในการอ่านหนังสือรายวัน</li>
+          <li><strong>ไทม์ไลน์รายวัน (Daily Timeline):</strong> รวบรวมช่วงเวลาอ่าน เวลาฟัง โน้ตที่จด และบทสนทนา AI ในวันนั้นๆ</li>
+          <li><strong>สตรีคและเป้าหมาย:</strong> นับจำนวนวันอ่านต่อเนื่อง และตั้งเป้าหมายการอ่านรายวัน/รายเดือน</li>
+        </ul>
+      </section>
+
+      <!-- 11. ความทรงจำ (Memory) -->
+      <section class="feature-module" id="f11-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">11</div>
+          <h2 class="feature-module-title">ศูนย์รวมความทรงจำ (Memory Gallery)</h2>
+        </div>
+        <ul class="feature-list">
+          <li>รวบรวมโน้ต ไฮไลต์ และที่คั่นหนังสือจากทุกเล่มมาไว้ในที่เดียว</li>
+          <li><strong>"วันนี้เมื่อปีก่อน" (On This Day):</strong> ย้อนดูสิ่งที่คุณเคยจดและอ่านเมื่อ 1 ปีก่อนเพื่อฟื้นความจำ</li>
+        </ul>
+      </section>
+
+      <!-- 12-19 สรุปฟีเจอร์อื่นๆ -->
+      <section class="feature-module" id="f13-th">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">12-19</div>
+          <h2 class="feature-module-title">คลาวด์ เซิร์ฟเวอร์ และ ความเป็นส่วนตัว</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>เชื่อมต่อเซิร์ฟเวอร์คลังหนังสือ:</strong> รองรับ OPDS (Calibre), Kavita, Komga, WebDAV และ Everything (voidtools) พร้อมตรวจจับชนิดเซิร์ฟเวอร์อัตโนมัติ</li>
+          <li><strong>ซิงค์คลาวด์ Google Drive:</strong> สำรองข้อมูลและซิงค์การตั้งค่า ที่คั่นหน้า กฎ และหนังสือไปยังพื้นที่ส่วนตัวของคุณ</li>
+          <li><strong>รองรับ 45 ภาษา (64 ภูมิภาค):</strong> หน้าตาแอปแปลภาษาครอบคลุมทั่วโลก</li>
+          <li><strong>ความเป็นส่วนตัว 100%:</strong> ไม่ต้องสมัครบัญชี ไม่เก็บเนื้อหาหนังสือ และปิดการส่งสถิติไร้ตัวตนได้ตลอดเวลา</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- ==================== FEATURE MODULES (JAPANESE) ==================== -->
+    <div class="lang-jp">
+
+      <!-- 1. 多様なファイル形式に対応 -->
+      <section class="feature-module" id="f1-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">1</div>
+          <h2 class="feature-module-title">多様な電子書籍フォーマットに対応</h2>
+        </div>
+        <ul class="feature-list">
+          <li><span class="highlight-pill">EPUB</span> <span class="highlight-pill">KEPUB</span> <span class="highlight-pill">FB2</span> <span class="highlight-pill">PDF</span> および <span class="highlight-pill">CBZ（漫画）</span> をサポート。</li>
+          <li><strong>テキストPDFのリフロー表示：</strong> EPUBと同様にフォント変更、テーマ切り替え、音声読み上げが可能。</li>
+          <li><strong>スキャンPDF・コミック：</strong> 高画質なページ画像としてスムーズに閲覧。</li>
+          <li><strong>一括インポート：</strong> 大容量の本も即座に本棚に表示され、バックグラウンドで読み込みを完了。</li>
+          <li><strong>クイック閲覧モード（Reader Only）：</strong> 本棚に追加せず、クラウド同期も行わずに一時閲覧（30日後に自動削除）。</li>
+        </ul>
+      </section>
+
+      <!-- 2. 読書体験のカスタマイズ -->
+      <section class="feature-module" id="f2-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">2</div>
+          <h2 class="feature-module-title">極上の読書カスタマイズ</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>4つのテーマ：</strong> ライト、セピア、グレー、ダーク。</li>
+          <li><strong>言語別カスタムフォント：</strong> 日本語、英語、タイ語など言語ごとに別々のフォント（TTF/OTF）を割り当て可能。</li>
+          <li>文字サイズ、行間、余白を細かく調整可能。</li>
+          <li><strong>CSSスタイル上書き：</strong> 出版社の固定スタイルや文字色を無効化し、見やすい端末標準フォントを強制。</li>
+          <li><strong>シームレスな連続スクロール：</strong> 章をまたいで途切れることなくスクロール読書。</li>
+        </ul>
+      </section>
+
+      <!-- 3. ブックマーク・ハイライト・メモ -->
+      <section class="feature-module" id="f3-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">3</div>
+          <h2 class="feature-module-title">ブックマーク・ハイライト・メモ管理</h2>
+        </div>
+        <ul class="feature-list">
+          <li>段落単位のブックマークと、検索可能なインデックス機能。</li>
+          <li><strong>マルチカラーハイライト＆メモ：</strong> 重要な文章を色分けして記録。</li>
+          <li><strong>ハッシュタグ（#Tags）：</strong> メモ内にタグを付け、全書籍から横断検索。</li>
+          <li><strong>画像ハイライト：</strong> 本の中の挿絵や図解を保存。書籍ファイルを削除しても画像が残ります。</li>
+        </ul>
+      </section>
+
+      <!-- 4. テキスト読み上げ (TTS) -->
+      <section class="feature-module" id="f4-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">4</div>
+          <h2 class="feature-module-title">スマート多言語テキスト読み上げ（TTS）</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>文字自動判別＆声切り替え：</strong> 同一段落内の日本語・英語・タイ語等を自動認識し、最適な音声エンジンへスムーズ切り替え。</li>
+          <li><strong>カラオケ風ハイライト：</strong> 音声再生に合わせて段落・文・単語単位でリアルタイムハイライト。</li>
+          <li><strong>バックグラウンド再生＆フローティング操作：</strong> 画面オフや他アプリの使用中も聴き続けられるオーバーレイ操作画面。</li>
+          <li><strong>スリープタイマー＆画面ロック：</strong> ポケットの中での誤作動を防ぐロック機能。</li>
+        </ul>
+      </section>
+
+      <!-- 5. 単語置換 -->
+      <section class="feature-module" id="f5-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">5</div>
+          <h2 class="feature-module-title">デュアルモード単語置換システム</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>画面表示用と朗読用を独立設定：</strong> 読書画面の文字だけを変更するか、TTS読み上げの誤読のみを修正するかを選択。</li>
+          <li>正規表現（Regex）や言語別ルールに対応。TSVファイルでルールのインポート/エクスポートが可能。</li>
+        </ul>
+      </section>
+
+      <!-- 6. 翻訳機能 -->
+      <section class="feature-module" id="f6-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">6</div>
+          <h2 class="feature-module-title">同時多言語翻訳エンジン</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>同時多言語翻訳：</strong> 段落をタップすると、指定した複数の言語へ同時に翻訳し並べて表示。</li>
+          <li><strong>全章・全冊バックグラウンド翻訳：</strong> 進捗バーを表示しながら、本一冊を丸ごとバックグラウンド翻訳。</li>
+          <li>オフライン無料エンジンおよびオンデバイスAIに対応。</li>
+        </ul>
+      </section>
+
+      <!-- 7. オンデバイスAI -->
+      <section class="feature-module" id="f7-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">7</div>
+          <h2 class="feature-module-title">完全ローカル動作のオンデバイスAI</h2>
+        </div>
+        <ul class="feature-list">
+          <li>Android端末上でLLMモデルを直接実行（APIキーやネット接続不要）。</li>
+          <li>登場人物の分析や複雑なストーリーの要約を読書中にAIへ質問可能。</li>
+        </ul>
+      </section>
+
+      <!-- 8. コミック (CBZ) -->
+      <section class="feature-module" id="f8-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">8</div>
+          <h2 class="feature-module-title">コミック・マンガ機能（CBZ＆OCR）</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>画像文字認識（OCR）：</strong> マンガ画像内のセリフ（日本語/英語/中国語/韓国語）を抽出・翻訳・読み上げ。</li>
+          <li><strong>吹き出しリアルタイム覆膜翻訳：</strong> 吹き出しの上に翻訳テキストを直接オーバーレイ表示。</li>
+          <li><strong>自動余白カット：</strong> ページの余白を切り落とし、画面いっぱいにマンガを表示。</li>
+        </ul>
+      </section>
+
+      <!-- 9-19 その他の機能 -->
+      <section class="feature-module" id="f10-jp">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">9-19</div>
+          <h2 class="feature-module-title">読書統計・クラウド同期・プライバシー</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Insights読書統計：</strong> 月間ヒートマップカレンダー、タイムライン、連続読書ストリーク管理。</li>
+          <li><strong>メモリー機能：</strong> 全書籍のハイライトを一覧化し「去年の今日」の読書体験を振り返り。</li>
+          <li><strong>ライブラリサーバー接続：</strong> OPDS, Kavita, Komga, WebDAV, Everythingの自動検出対応。</li>
+          <li><strong>Googleドライブ同期：</strong> 個人ストレージへの安全な暗号化バックアップ。</li>
+          <li><strong>プライバシー第一：</strong> ユーザー登録不要、本の内容やメモは完全ローカル保存。</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- ==================== FEATURE MODULES (CHINESE) ==================== -->
+    <div class="lang-cn">
+
+      <!-- 1. 支持多种图书格式 -->
+      <section class="feature-module" id="f1-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">1</div>
+          <h2 class="feature-module-title">支持多种图书格式与即时阅读</h2>
+        </div>
+        <ul class="feature-list">
+          <li>支持 <span class="highlight-pill">EPUB</span> <span class="highlight-pill">KEPUB</span> <span class="highlight-pill">FB2</span> <span class="highlight-pill">PDF</span> 以及 <span class="highlight-pill">CBZ（漫画）</span> 格式。</li>
+          <li><strong>文本型 PDF 智能重排：</strong> 像 EPUB 一样自由调整字体、主题与字号，并支持 TTS 文本朗读。</li>
+          <li><strong>扫描型 PDF 与漫画：</strong> 高清流畅的翻页视图。</li>
+          <li><strong>批量导入：</strong> 快速导入大批图书，大文件秒上书架，后台完成解析。</li>
+          <li><strong>即时阅读模式 (Reader Only)：</strong> 打开临时文件阅读，不加入书架也不同步云端，30 天后自动清理。</li>
+        </ul>
+      </section>
+
+      <!-- 2. 阅读体验 -->
+      <section class="feature-module" id="f2-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">2</div>
+          <h2 class="feature-module-title">高度可定制的阅读体验</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>4 款专业阅读主题：</strong> 亮洁、怀旧复古、雅致灰与深邃夜间模式。</li>
+          <li><strong>按语言独立设置字体：</strong> 支持为中文、英文、日文或泰文分别指定不同字体（支持导入 TTF/OTF）。</li>
+          <li>自由调整字号、行距、段落间距与页边距。</li>
+          <li><strong>忽略出版商 CSS：</strong> 强制应用系统标准字体，清除死板的内嵌文字颜色。</li>
+          <li><strong>跨章节无缝连续滚动：</strong> 畅快连贯阅读，无需频繁手动切章。</li>
+        </ul>
+      </section>
+
+      <!-- 3. 书签、高亮与笔记 -->
+      <section class="feature-module" id="f3-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">3</div>
+          <h2 class="feature-module-title">书签、多色高亮与笔记管理</h2>
+        </div>
+        <ul class="feature-list">
+          <li>精准至段落级的书签，配备可搜索的内嵌目录。</li>
+          <li><strong>多色高亮与笔记：</strong> 区分不同级别的重点语句并添加个人心得。</li>
+          <li><strong>#标签分类 (#Tags)：</strong> 在笔记中嵌入标签，实现跨书本的知识点检索。</li>
+          <li><strong>图片高亮：</strong> 支持高亮保存图书中的插图，即便删除图书文件仍保留图片副本。</li>
+        </ul>
+      </section>
+
+      <!-- 4. 文本转语音 (TTS) -->
+      <section class="feature-module" id="f4-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">4</div>
+          <h2 class="feature-module-title">智能多语言文本转语音 (TTS)</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>多语言自动识别发音：</strong> 自动识别同一段落中的中文、英文、日文、泰文、韩文和德文，并无缝切换对应发音人。</li>
+          <li><strong>卡拉OK式同步高亮：</strong> 朗读时按段落、句子和词语进行实时高亮展示。</li>
+          <li><strong>后台朗读与悬浮控制窗：</strong> 锁屏或切换至其他应用时继续听书，支持悬浮窗缩放与吸边。</li>
+          <li><strong>睡眠定时器与口袋防误触锁：</strong> 方便放入口袋听书时防止误触。</li>
+        </ul>
+      </section>
+
+      <!-- 5. 文本替换 -->
+      <section class="feature-module" id="f5-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">5</div>
+          <h2 class="feature-module-title">双模式文本替换规则</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>显示模式与 TTS 朗读模式分离：</strong> 可选择仅替换页面显示的错别字，或仅在 TTS 发音时修正读音。</li>
+          <li>支持正则表达式（Regex）与按语言匹配，支持 TSV 文件导入与导出。</li>
+        </ul>
+      </section>
+
+      <!-- 6. 翻译功能 -->
+      <section class="feature-module" id="f6-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">6</div>
+          <h2 class="feature-module-title">多语言与 AI 对照翻译</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>同时翻译为多种语言：</strong> 轻触段落即可同时翻译成泰语、英语、日语、中文等多种目标语言对照显示。</li>
+          <li><strong>全章/全书后台翻译：</strong> 后台自动完成整章或整本书的翻译，并带有进度指示。</li>
+          <li>支持免费离线翻译引擎及本地端侧 AI 模型。</li>
+        </ul>
+      </section>
+
+      <!-- 7. 端侧 AI 助手 -->
+      <section class="feature-module" id="f7-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">7</div>
+          <h2 class="feature-module-title">完全本地运行的端侧 AI 助手</h2>
+        </div>
+        <ul class="feature-list">
+          <li>在您的 Android 设备本地直接运行大语言模型（LLM），无需网络与 API Key。</li>
+          <li>随时针对阅读内容提问、总结章节大意或分析人物关系。</li>
+        </ul>
+      </section>
+
+      <!-- 8. 漫画 (CBZ) -->
+      <section class="feature-module" id="f8-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">8</div>
+          <h2 class="feature-module-title">漫画阅读与图片 OCR 识别</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>图片文字识别 (OCR)：</strong> 识别并提取漫画页面中的文字（中/英/日/韩），支持复制、翻译与 TTS 朗读。</li>
+          <li><strong>气泡框覆膜实时翻译：</strong> 将翻译后的译文直接覆盖在漫画原始对话气泡上。</li>
+          <li><strong>自动切边：</strong> 自动裁剪漫画周边白边，提供最大视口。</li>
+        </ul>
+      </section>
+
+      <!-- 9-19 其他功能 -->
+      <section class="feature-module" id="f10-cn">
+        <div class="feature-header-row">
+          <div class="feature-badge-num">9-19</div>
+          <h2 class="feature-module-title">阅读统计、云端同步与隐私保护</h2>
+        </div>
+        <ul class="feature-list">
+          <li><strong>Insights 阅读统计：</strong> 月度热力图日历、每日阅读与听书时间轴、打卡挑战与目标管理。</li>
+          <li><strong>Memory 记忆画廊：</strong> 汇总全书笔记，“去年的今天”温故知新。</li>
+          <li><strong>连接在线书库：</strong> 自动识别并连接 OPDS (Calibre), Kavita, Komga, WebDAV 及 Everything。</li>
+          <li><strong>Google Drive 私有云同步：</strong> 数据直接保存至您个人的 Google Drive，无中间服务器。</li>
+          <li><strong>隐私安全：</strong> 离线优先架构，无账号强制依赖，完全保障数据安全。</li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Ready to Experience Shiori?</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+        Download Shiori EPUB Reader today on Google Play Store and transform how you read, listen, and learn.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Lightbox Overlay -->
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">✕</div>
+    <div class="lightbox-main">
+      <div class="lightbox-arrow prev" id="lightbox-prev">&#10094;</div>
+      <img src="" alt="Zoomed Image" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-arrow next" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbnails" id="lightbox-thumbs"></div>
+  </div>
+
+</body>
+</html>
