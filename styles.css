@@ -1150,3 +1150,148 @@ textarea.form-control {
   transform: scale(1.2);
   box-shadow: 0 0 8px var(--accent-glow);
 }
+
+/* ==========================================
+   Vision Component Styles ("From Reading to Learning")
+   ========================================== */
+
+/* Hero Vision Badge */
+.hero-vision-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.15rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  box-shadow: 0 4px 15px var(--accent-glow);
+  transition: all 0.3s ease;
+}
+
+.hero-vision-badge:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.hero-vision-badge .vision-badge-icon {
+  font-size: 1rem;
+}
+
+.hero-vision-badge .vision-badge-label {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  font-size: 0.78rem;
+}
+
+.hero-vision-badge .vision-badge-divider {
+  color: var(--text-muted);
+}
+
+.hero-vision-badge .vision-badge-quote {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Dedicated App Vision Section */
+.vision-section {
+  padding: 4rem 0;
+}
+
+.vision-box {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 28px;
+  padding: 3.5rem 3rem;
+  box-shadow: var(--card-shadow);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3rem;
+  align-items: center;
+  overflow: hidden;
+}
+
+.vision-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+}
+
+.vision-icon-glow {
+  width: 100px;
+  height: 100px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 1.6rem;
+  box-shadow: 0 10px 30px var(--accent-glow);
+}
+
+.vision-icon-glow .vision-arrow {
+  font-size: 1.1rem;
+  color: var(--accent-primary);
+}
+
+.vision-content .section-tag {
+  margin-bottom: 0.5rem;
+}
+
+.vision-main-quote {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.vision-main-desc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 800px;
+}
+
+@media (max-width: 768px) {
+  .vision-box {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 1.75rem;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .vision-icon-glow {
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+    font-size: 1.3rem;
+  }
+  .vision-main-quote {
+    font-size: 1.9rem;
+  }
+  .vision-main-desc {
+    font-size: 1rem;
+  }
+}
+
+/* Footer Vision Tagline */
+.footer-vision {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-top: 0.6rem;
+  letter-spacing: 0.02em;
+}
+

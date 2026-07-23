@@ -16,10 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "footer-blog": "Blog",
       
       // Home Hero
+      "hero-vision-tag": "VISION",
+      "hero-vision-quote": "\"From Reading to Learning.\"",
       "hero-tag": "EPUB Reader for Android",
       "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
       "hero-sub": "Experience next-level reading and listening. Designed for Thai readers with automatic multi-language Text-to-Speech and in-app translation.",
       "hero-get-play": "▶ Get it on Google Play",
+      
+      // Vision Section
+      "vision-sec-tag": "Our Vision",
+      "vision-sec-title": "\"From Reading to Learning.\"",
+      "vision-sec-desc": "Shiori bridges passive reading and active learning. With automatic multi-language Text-to-Speech, instant in-app translation, customizable word replacement rules, and smart AI tools, every book becomes a portal to deeper understanding.",
+      "footer-vision": "— From Reading to Learning.",
       
       // Home Screenshots
       "ss-tag": "App Screenshots",
@@ -179,10 +187,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "footer-blog": "บล็อกบทความ",
       
       // Home Hero
+      "hero-vision-tag": "วิสัยทัศน์",
+      "hero-vision-quote": "\"จากการอ่าน สู่การเรียนรู้\"",
       "hero-tag": "ตัวอ่านไฟล์ EPUB บนระบบ Android",
       "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
       "hero-sub": "สัมผัสประสบการณ์การอ่านและการฟังที่เหนือระดับ ออกแบบเป็นพิเศษสำหรับผู้อ่านชาวไทย พร้อมฟังก์ชัน Text-to-Speech สลับภาษาอัตโนมัติ และระบบแปลภาษาในแอป",
       "hero-get-play": "▶ Get it on Google Play",
+      
+      // Vision Section
+      "vision-sec-tag": "วิสัยทัศน์ของเรา",
+      "vision-sec-title": "\"จากการอ่าน สู่การเรียนรู้\"",
+      "vision-sec-desc": "Shiori เปลี่ยนการอ่านทั่วไปให้เป็นการเรียนรู้ที่ลึกซึ้ง ด้วยระบบอ่านออกเสียงหลายภาษาอัตโนมัติ การแปลภาษาฉับไว กฎการแทนที่คำอัจฉริยะ และระบบ AI ช่วยสรุปเนื้อหา เพื่อให้ทุกเล่มที่คุณอ่านกลายเป็นขุมทรัพย์แห่งความรู้",
+      "footer-vision": "— จากการอ่าน สู่การเรียนรู้",
       
       // Home Screenshots
       "ss-tag": "ภาพหน้าจอแอป",
@@ -342,10 +358,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "footer-blog": "ブログ",
       
       // Home Hero
+      "hero-vision-tag": "ビジョン",
+      "hero-vision-quote": "「読書から学びへ」",
       "hero-tag": "Android用EPUBリーダー",
       "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
       "hero-sub": "ワンランク上の読書と朗読体験を。自動多言語音声読み上げ（TTS）とアプリ内翻訳機能を搭載。",
       "hero-get-play": "▶ Google Play で入手",
+      
+      // Vision Section
+      "vision-sec-tag": "私たちのビジョン",
+      "vision-sec-title": "「読書から学びへ」",
+      "vision-sec-desc": "Shioriは、単なる「読書」をアクティブな「学び」へと進化させます。自動多言語読み上げ（TTS）、即時アプリ内翻訳、単語置換ルール、端側AIのサポートにより、すべての本が知識の扉を開くキーとなります。",
+      "footer-vision": "— 読書から学びへ",
       
       // Home Screenshots
       "ss-tag": "アプリのスクリーンショット",
@@ -505,10 +529,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "footer-blog": "博客",
       
       // Home Hero
+      "hero-vision-tag": "愿景",
+      "hero-vision-quote": "“从阅读到学习”",
       "hero-tag": "Android EPUB 阅读器",
       "hero-title": "Shiori <br><span class=\"text-gradient\">ePub 阅读器</span>",
       "hero-sub": "体验全新的阅读与听书方式。配备自动多语言文本转语音（TTS）与应用内翻译功能。",
       "hero-get-play": "▶ Google Play 下载",
+      
+      // Vision Section
+      "vision-sec-tag": "我们的愿景",
+      "vision-sec-title": "“从阅读到学习”",
+      "vision-sec-desc": "Shiori 旨在将“被动阅读”转化为“主动学习”。通过自动多语言 TTS 朗读、即时划词翻译、自定义词汇替换规则及端侧 AI 助手，让每一本书都成为您汲取知识的桥梁。",
+      "footer-vision": "— 从阅读到学习",
       
       // Home Screenshots
       "ss-tag": "应用截图",
