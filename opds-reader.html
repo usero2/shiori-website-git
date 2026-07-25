@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Meta Tags -->
+  <title>OPDS Reader for Android — Shiori EPUB Reader</title>
+  <meta name="description" content="Connect your Calibre, Kavita, Komga, or custom OPDS server directly to Android. Shiori is a fast OPDS client featuring 1-click download, stream reading, and multi-language TTS." />
+  <meta name="keywords" content="opds reader android, opds client app, calibre opds reader, kavita opds, komga opds, digital library reader" />
+  <meta name="author" content="Endofday" />
+  <link rel="canonical" href="https://shioriepubreader.com/opds-reader" />
+  
+  <!-- OpenGraph Card -->
+  <meta property="og:title" content="OPDS Reader for Android — Shiori EPUB Reader" />
+  <meta property="og:description" content="Connect Calibre, Kavita, Komga, or custom OPDS feeds to stream and download EPUBs directly on your Android device." />
+  <meta property="og:image" content="https://shioriepubreader.com/images/001-bookshelf.jpg" />
+  <meta property="og:url" content="https://shioriepubreader.com/opds-reader" />
+  <meta property="og:type" content="website" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OPDS Reader for Android — Shiori EPUB Reader" />
+  <meta name="twitter:description" content="Connect Calibre, Kavita, Komga, or custom OPDS feeds to stream and download EPUBs directly on Android." />
+  <meta name="twitter:image" content="https://shioriepubreader.com/images/001-bookshelf.jpg" />
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Shiori OPDS Catalog Reader",
+    "operatingSystem": "Android",
+    "applicationCategory": "BooksApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "downloadUrl": "https://play.google.com/store/apps/details?id=com.shiori.epubreader"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/download" class="nav-link">Download</a></li>
+        <li><a href="/blog/" class="nav-link">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-grid">
+      <div class="hero-content animate-fade-in">
+        <div class="hero-vision-badge">
+          <span class="vision-badge-icon">🌐</span>
+          <span class="vision-badge-label">OPDS CATALOG CLIENT</span>
+          <span class="vision-badge-divider">•</span>
+          <span class="vision-badge-quote">"Connect Any Digital Library"</span>
+        </div>
+        <span class="section-tag">OPDS Reader for Android</span>
+        <h1 class="hero-title">Powerful OPDS Reader <br><span class="text-gradient">for Android</span></h1>
+        <p class="hero-subtitle">
+          Connect your Calibre Content Server, Kavita, Komga, or custom OPDS feeds seamlessly. Browse remote catalogs, download EPUBs with 1 tap, and enjoy ad-free reading.
+        </p>
+        
+        <div class="hero-actions" style="margin-top: 2rem;">
+          <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn btn-primary" target="_blank" rel="noopener" style="padding: 1.1rem 2.2rem; font-size: 1.1rem;">
+            ▶ Download on Google Play
+          </a>
+        </div>
+      </div>
+      
+      <div class="hero-image-wrapper animate-fade-in" style="animation-delay: 0.2s;">
+        <img src="/images/001-bookshelf.jpg" alt="Shiori OPDS Catalog Integration" class="hero-mockup-img" style="border-radius: 20px; box-shadow: var(--card-shadow); max-width: 100%; border: 1px solid var(--border-color);" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Key OPDS Features Grid -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header text-center animate-fade-in">
+        <span class="section-tag">Universal Library Connectivity</span>
+        <h2 class="section-title">Seamless Integration with <span>All OPDS Servers</span></h2>
+        <p class="section-subtitle">Access your home media server or public digital catalogs wherever you go.</p>
+      </div>
+
+      <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color);">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">📚</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Calibre Content Server</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Connect to your personal Calibre OPDS catalog via local network or remote HTTPS connection easily.</p>
+        </div>
+
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); animation-delay: 0.1s;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Kavita &amp; Komga Support</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Native compatibility with modern self-hosted e-book and comic servers through standard OPDS feed URLs.</p>
+        </div>
+
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); animation-delay: 0.2s;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">1-Click Direct Download</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Download EPUB, CBZ, or PDF files from your OPDS feed directly into your local library in seconds.</p>
+        </div>
+
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); animation-delay: 0.3s;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔑</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Basic Auth &amp; Secure HTTPS</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Supports password-protected OPDS feeds, HTTP Basic Authentication, and secure SSL/TLS connections.</p>
+        </div>
+
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); animation-delay: 0.4s;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔍</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Remote Catalog Search</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Search titles, authors, and series directly inside the OPDS catalog feed interface without opening a browser.</p>
+        </div>
+
+        <div class="feature-card animate-fade-in" style="background: var(--bg-secondary); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); animation-delay: 0.5s;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">☁️</div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Cloud Sync Progress</h3>
+          <p style="color: var(--text-secondary); line-height: 1.7;">Combine OPDS server downloads with private Google Drive sync to maintain reading history across all devices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase Section -->
+  <section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container hero-grid">
+      <div class="animate-fade-in">
+        <img src="/images/005-collections.jpg" alt="Shiori Smart Book Collections" style="width: 100%; max-width: 480px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--card-shadow);" />
+      </div>
+      <div class="animate-fade-in" style="animation-delay: 0.2s;">
+        <span class="section-tag">Self-Hosted Library</span>
+        <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Your Entire Server Library <span>At Your Fingertips</span></h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.7;">
+          Say goodbye to manual file transfers. With Shiori's OPDS client, your entire server catalog is accessible instantly on your Android phone or tablet.
+        </p>
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn btn-primary" target="_blank" rel="noopener" style="padding: 0.9rem 1.8rem;">
+          ▶ Download on Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Banner -->
+  <section class="cta-section section">
+    <div class="container text-center animate-fade-in">
+      <h2 class="cta-title">Connect Your OPDS Feed Today</h2>
+      <p class="cta-desc" style="max-width: 600px; margin: 0 auto 2.5rem;">
+        Get Shiori EPUB &amp; OPDS Reader free on Google Play. Enjoy fast catalog browsing, 1-click downloads, and ad-free reading.
+      </p>
+      <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn btn-primary" target="_blank" rel="noopener" style="padding: 1.2rem 2.5rem; font-size: 1.15rem;">
+        ▶ Download on Google Play
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+        <p class="footer-vision">— From Reading to Learning.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/download" class="footer-link">Download Page</a></li>
+          <li><a href="/blog/" class="footer-link">Blog</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Landing Pages</h4>
+        <ul class="footer-links">
+          <li><a href="/best-manga-reader" class="footer-link">Manga Reader</a></li>
+          <li><a href="/best-epub-reader" class="footer-link">Best EPUB Reader</a></li>
+          <li><a href="/read-japanese-books" class="footer-link">Japanese Reader</a></li>
+          <li><a href="/read-light-novel" class="footer-link">Light Novel Reader</a></li>
+          <li><a href="/opds-reader" class="footer-link">OPDS Reader</a></li>
+          <li><a href="/komga-reader" class="footer-link">Komga Client</a></li>
+          <li><a href="/kavita-reader" class="footer-link">Kavita Client</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+      <p>Built with ❤️ for Digital Library Collectors</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+</body>
+</html>
