@@ -176,6 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-title": "Shiori Complete Feature Guide: All 19 Capabilities Explained",
       "blog-p7-desc": "Explore the complete breakdown of Shiori EPUB Reader's features, from multi-language TTS and AI translation to smart PDFs, CBZ OCR, and Google Drive cloud sync.",
 
+      // Blog Post 8
+      "blog-p8-date": "📅 August 2, 2026",
+      "blog-p8-cat": "🏷️ Insights & Stats",
+      "blog-p8-title": "Track Your Reading Journey with Book Timeline & Reading Progress",
+      "blog-p8-desc": "Learn how Shiori's Book Timeline and Insights feature lets you track reading velocity, time spent, and visual progress curves for every book.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -366,6 +372,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-cat": "🏷️ คู่มือฉบับสมบูรณ์",
       "blog-p7-title": "Shiori — เจาะลึกรายการฟีเจอร์ทั้งหมด 19 หมวดแบบครบถ้วน",
       "blog-p7-desc": "สรุปฟังก์ชันการใช้งานทั้งหมดของ Shiori EPUB Reader ตั้งแต่ระบบอ่านออกเสียง TTS, การแปลภาษาอัจฉริยะ, AI บนเครื่อง, อ่านการ์ตูน CBZ, ซิงก์คลาวด์ ไปจนถึงสถิติการอ่าน",
+
+      // Blog Post 8
+      "blog-p8-date": "📅 2 สิงหาคม 2026",
+      "blog-p8-cat": "🏷️ สถิติการอ่าน",
+      "blog-p8-title": "บันทึกและติดตามเส้นทางการอ่านหนังสือของคุณด้วย Book Timeline & Insights",
+      "blog-p8-desc": "เรียนรู้วิธีใช้ Book Timeline และ Insights ใน Shiori เพื่อติดตามสถิติการอ่าน เวลาที่ใช้ และกราฟความคืบหน้ารายเล่มอย่างสมบูรณ์แบบ",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -558,6 +570,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-title": "Shiori 全機能ガイド：全19の主要機能を徹底解説",
       "blog-p7-desc": "Shiori EPUBリーダーの全機能を網羅解説。多言語自動TTS、AI翻訳、PDFリフロー、CBZ漫画OCR、Googleドライブ同期まで、すべての魅力を紹介します。",
 
+      // Blog Post 8
+      "blog-p8-date": "📅 2026年8月2日",
+      "blog-p8-cat": "🏷️ 読書統計",
+      "blog-p8-title": "読書タイムラインと進捗グラフで読書体験を記録・振り返り",
+      "blog-p8-desc": "Shioriの読書タイムラインとインサイト機能を使って、本ごとの読書速度、所要時間、進捗グラフを記録・分析する方法を解説します。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -748,6 +766,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p7-cat": "🏷️ 全功能指南",
       "blog-p7-title": "Shiori 全功能全景指南：19 大核心特色深度解析",
       "blog-p7-desc": "全面了解 Shiori EPUB 阅读器的所有功能：从多语言 TTS 朗读、AI 端侧翻译到 PDF 重排、漫画 OCR 识别及 Google Drive 云端同步。",
+
+      // Blog Post 8
+      "blog-p8-date": "📅 2026年8月2日",
+      "blog-p8-cat": "🏷️ 阅读统计",
+      "blog-p8-title": "通过图书时间线与阅读进度追溯您的专属阅读之旅",
+      "blog-p8-desc": "了解如何使用 Shiori 的图书时间线与 Insights 功能，追踪每本书的阅读速度、所用时长及可视化进度曲线。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",

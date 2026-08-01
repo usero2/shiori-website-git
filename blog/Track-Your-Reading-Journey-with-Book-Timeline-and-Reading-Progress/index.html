@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Track Your Reading Journey with Book Timeline & Reading Progress — Shiori Blog</title>
+  <meta name="description" content="Discover how Shiori EPUB Reader's Book Timeline and Insights feature tracks reading velocity, time spent, and visual progress curves for every book." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/Track-Your-Reading-Journey-with-Book-Timeline-and-Reading-Progress/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Track Your Reading Journey with Book Timeline & Reading Progress",
+    "description": "Learn how to use Shiori's Book Timeline and Insights to track your reading habits, total time spent, and visual progress curves for individual EPUB books.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/Track-Your-Reading-Journey-with-Book-Timeline-and-Reading-Progress/"
+  }
+  </script>
+  
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-text {
+      flex: 1;
+    }
+    .step-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 1rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+    .img-preview {
+      width: 100%;
+      max-width: 340px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+    }
+    .img-preview:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(99, 102, 241, 0.25);
+    }
+    .feature-box {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    .feature-box h4 {
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .feature-box p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* YouTube Short Embed */
+    .short-video-container {
+      max-width: 360px;
+      margin: 2rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .lightbox-thumb {
+      width: 44px;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.reverse {
+        flex-direction: row-reverse;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 900px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p8-date">📅 August 2, 2026</span>
+        <span data-i18n="blog-p8-cat">🏷️ Insights &amp; Stats</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Track Your Reading Journey with<br><span class="text-gradient">Book Timeline &amp; Reading Progress</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">บันทึกและติดตามเส้นทางการอ่านหนังสือของคุณ<br><span class="text-gradient">ด้วย Book Timeline &amp; Insights รายเล่ม</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">読書タイムラインと進捗グラフで<br><span class="text-gradient">読書体験を記録・振り返り</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">通过图书时间线与阅读进度<br><span class="text-gradient">追溯您的专属阅读之旅</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('002-showcase-insight.jpg') no-repeat center center; background-size: cover; height: 380px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📈</span>
+    </div>
+
+    <!-- Intro Subtitles -->
+    <p class="hero-subtitle lang-en" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      Finishing a book is rewarding—but seeing <strong>how you got there</strong> can be just as motivating. Most e-book readers only show a simple percentage. Shiori introduces <strong>Book Timeline</strong>, turning every book you read into a personal historical memory.
+    </p>
+    <p class="hero-subtitle lang-th" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      การอ่านหนังสือจนจบเล่มเป็นความรู้สึกที่ยอดเยี่ยม — แต่การได้เห็น <strong>"เส้นทางการอ่าน"</strong> ว่าเราผ่านก้าวไหนมาบ้างก็สร้างแรงบันดาลใจได้ไม่แพ้กัน Shiori ช่วยเปลี่ยนเปอร์เซ็นต์การอ่านธรรมดาให้กลายเป็น <strong>Book Timeline</strong> ที่บันทึกความทรงจำการอ่านรายเล่มของคุณอย่างงดงาม
+    </p>
+    <p class="hero-subtitle lang-jp" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      一冊の本を読み終える達成感はもちろん、<strong>「どのように読んできたか」</strong> という軌跡を振り返ることも大きなモチベーションになります。Shioriの<strong>読書タイムライン機能</strong>は、単なる進捗率を超えて、本ごとの読書体験を鮮やかに記録します。
+    </p>
+    <p class="hero-subtitle lang-cn" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      读完一本书固然让人成就感十足，但回味<strong>“我是如何一步步读完它的”</strong>过程同样充满乐趣。Shiori 的<strong>图书时间线 (Book Timeline)</strong> 功能，将简单的阅读百分比化为一部专属于您的图书阅读史。
+    </p>
+
+    <!-- Video Walkthrough -->
+    <div style="margin: 2.5rem 0 3.5rem; text-align: center;">
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-en">Video Walkthrough (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-th">วิดีโอสาธิตการใช้งาน (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-jp">動画で見るガイド (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-cn">视频演示指南 (YouTube Shorts)</h3>
+
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-en">Watch the quick visual guide to see Book Timeline &amp; Insights in action:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-th">รับชมวิดีโอแนะนำสั้นเพื่อดูการทำงานของ Book Timeline &amp; Insights:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-jp">読書タイムラインとインサイト機能の実際の動きをご覧ください：</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-cn">观看短视频演示，直观感受图书时间线与阅读统计功能：</p>
+
+      <div class="short-video-container">
+        <div class="short-video-wrapper">
+          <iframe src="https://www.youtube-nocookie.com/embed/eLxeo0EpMSQ" title="Book Timeline &amp; Reading Progress Guide - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <!-- English -->
+        <div class="lang-en">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            <span>Beyond Progress Bars: Your Reading is a Journey</span>
+          </div>
+          <div class="step-desc">
+            <p>Most reader apps show a static percentage like "65% completed." Once you close the book, that context vanishes. Shiori treats your reading as an evolving story.</p>
+            <p>By long-pressing any book cover on your bookshelf and selecting <strong>Insights</strong>, you unlock dedicated analytics for that specific title.</p>
+            <div class="feature-box">
+              <h4>💡 Quick Action</h4>
+              <p>Long-press any book card in your bookshelf library tab to open the context menu and tap <strong>Insights</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Thai -->
+        <div class="lang-th">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            <span>มากกว่าแค่เปอร์เซ็นต์ — การอ่านคือเรื่องราวและประสบการณ์</span>
+          </div>
+          <div class="step-desc">
+            <p>แอปอ่านอีบุ๊กทั่วไปมักแสดงเพียงตัวเลขสถิตินิ่งๆ เช่น "อ่านแล้ว 65%" ซึ่งเมื่อปิดเล่มไป ข้อมูลเหล่านั้นก็มักจะถูกลืมไปในทันที แต่ Shiori เชื่อว่าการอ่านหนังสือแต่ละเล่มคือเรื่องราวที่มีคุณค่า</p>
+            <p>เพียงแตะค้างที่ปกหนังสือเล่มใดก็ได้บนชั้นหนังสือ แล้วเลือก <strong>Insights (สถิติการอ่าน)</strong> คุณจะพบบอร์ดวิเคราะห์ข้อมูลเฉพาะของหนังสือเล่มนั้นทันที</p>
+            <div class="feature-box">
+              <h4>💡 วิธีเปิดใช้งานง่ายๆ</h4>
+              <p>กดแตะค้าง (Long-press) ที่ปกหนังสือบนชั้นหนังสือ Shiori เพื่อเปิดเมนูลัด แล้วเลือก <strong>Insights</strong></p>
+            </div>
+          </div>
+        </div>
+        <!-- Japanese -->
+        <div class="lang-jp">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            <span>単なる数字を超えて：読書は大切なストーリー</span>
+          </div>
+          <div class="step-desc">
+            <p>「65%完了」というスタティックな数字だけでは、いつどのように読み進めたかは分かりません。Shioriでは、読書を継続的な体験として扱います。</p>
+            <p>本棚にある書籍のカバーを長押しして <strong>Insights（インサイト）</strong> をタップするだけで、その本専用のアナリティクス画面を開くことができます。</p>
+            <div class="feature-box">
+              <h4>💡 クイック操作</h4>
+              <p>本棚画面で書籍カバーを長押しし、コンテキストメニューから <strong>Insights</strong> を選択します。</p>
+            </div>
+          </div>
+        </div>
+        <!-- Chinese -->
+        <div class="lang-cn">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            <span>超越单纯的百分比：让阅读成为可追溯的历史</span>
+          </div>
+          <div class="step-desc">
+            <p>大多数阅读器只展示静态的“已完成 65%”，关闭图书后这些痕迹便不复存在。在 Shiori 中，每一本书的阅读过程都被妥善纪录。</p>
+            <p>只需在书架上长按任意图书封面并选择 <strong>Insights（阅读统计）</strong>，即可解锁该图书的专有数据分析面板。</p>
+            <div class="feature-box">
+              <h4>💡 快捷操作方法</h4>
+              <p>在 Shiori 书架界面长按图书封面，在弹出的快捷菜单中轻触 <strong>Insights</strong> 即可查看。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="step-image">
+        <img src="001-long-press-your-book-to-view-insights.jpg" alt="Long press book to open Insights in Shiori" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <section class="tutorial-step reverse">
+      <div class="step-text">
+        <!-- English -->
+        <div class="lang-en">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            <span>Comprehensive Individual Book Insights</span>
+          </div>
+          <div class="step-desc">
+            <p>Inside the <strong>Book Insights</strong> dashboard, you gain a detailed breakdown tailored specifically to that single title:</p>
+            <ul style="padding-left: 1.25rem; margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>📈 <strong>Reading Progress Curve:</strong> Visualizes how your reading pace evolved over days and weeks.</li>
+              <li>⏱️ <strong>Time Spent Reading:</strong> Total hours and minutes dedicated to this specific book.</li>
+              <li>📅 <strong>Reading Timeline:</strong> Complete date-stamped log showing when you started, paused, and resumed.</li>
+              <li>📚 <strong>Chapter Breakdowns:</strong> Tracks reading velocity across chapters.</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Thai -->
+        <div class="lang-th">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            <span>เจาะลึกสถิติและกราฟการอ่านรายเล่ม (Individual Book Insights)</span>
+          </div>
+          <div class="step-desc">
+            <p>แดชบอร์ด <strong>Book Insights</strong> จะสรุปข้อมูลเชิงลึกเฉพาะของหนังสือเล่มนั้นๆ ให้คุณเห็นอย่างชัดเจนและครบถ้วน:</p>
+            <ul style="padding-left: 1.25rem; margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>📈 <strong>กราฟความคืบหน้าการอ่าน:</strong> แสดงเส้นโค้งการเติบโตของการอ่านว่าคุณอ่านไปกี่เปอร์เซ็นต์ในแต่ละวัน</li>
+              <li>⏱️ <strong>เวลาอ่านสะสมรายเล่ม:</strong> บันทึกจำนวนชั่วโมงและนาทีทั้งหมดที่คุณทุ่มเทให้หนังสือเล่มนี้</li>
+              <li>📅 <strong>ไทม์ไลน์วันเวลา:</strong> บันทึกวันที่เริ่มต้นอ่าน วันที่อ่านต่อเนื่อง และวันที่อ่านจบอย่างแม่นยำ</li>
+              <li>📚 <strong>ความเร็วการอ่านรายบท:</strong> ช่วยให้เห็นอัตราการอ่านในแต่ละบท</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Japanese -->
+        <div class="lang-jp">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            <span>1冊ごとの詳細な読書インサイト</span>
+          </div>
+          <div class="step-desc">
+            <p><strong>Book Insights</strong> ダッシュボードでは、一冊の本に関する詳細な統計データを可視化します：</p>
+            <ul style="padding-left: 1.25rem; margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>📈 <strong>読書進捗グラフ：</strong> 日ごとの読書ペースの変化をグラフで分かりやすく表示。</li>
+              <li>⏱️ <strong>総読書時間：</strong> その本に費やした合計時間（時間・分）を正確に記録。</li>
+              <li>📅 <strong>読書タイムライン：</strong> 読み始めた日、途中の記録、読了日までの完全な履歴。</li>
+              <li>📚 <strong>章ごとの読書ペース：</strong> 各章での読書速度や所要時間を分析。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Chinese -->
+        <div class="lang-cn">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            <span>单本图书的高级数据深度分析</span>
+          </div>
+          <div class="step-desc">
+            <p>进入 <strong>Book Insights</strong> 专属面板，您将获得针对该本图书的全维度统计分析：</p>
+            <ul style="padding-left: 1.25rem; margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8;">
+              <li>📈 <strong>阅读进度曲线：</strong> 可视化呈现在数天或数周内的阅读进度攀升轨迹。</li>
+              <li>⏱️ <strong>专注阅读时长：</strong> 精准统计您倾注在这本书上的累计小时与分钟。</li>
+              <li>📅 <strong>阅读时间线：</strong> 记录起始阅读日期、阅读中断与重启的具体时间节点。</li>
+              <li>📚 <strong>章节阅读速率：</strong> 了解您在不同章节的阅读节奏与投入度。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="step-image">
+        <img src="002-showcase-insight.jpg" alt="Book Insights overview dashboard with reading curve" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <!-- English -->
+        <div class="lang-en">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            <span>Stay Motivated & Finish More Books</span>
+          </div>
+          <div class="step-desc">
+            <p>Thick novels, academic textbooks, or complex language learning materials can often feel intimidating. Seeing visual feedback of your steady progress builds momentum and keeps you engaged.</p>
+            <p>Whether you read 10 minutes before bed or 2 hours over the weekend, small sessions accumulate into impressive milestones on your Book Timeline.</p>
+            <div class="feature-box">
+              <h4>🎯 Perfect for Every Reader</h4>
+              <p>Ideal for novel enthusiasts, students, researchers, and foreign language learners reading with multi-language TTS and AI translation.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Thai -->
+        <div class="lang-th">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            <span>สร้างแรงบันดาลใจ อ่านจบเล่มได้ง่ายขึ้นสำหรับนักอ่านทุกคน</span>
+          </div>
+          <div class="step-desc">
+            <p>นิยายเล่มหนา ตำราวิชาการ หรือหนังสือภาษาต่างประเทศอาจดูน่าเกรงขามเมื่อมองจากจำนวนหน้า แต่การได้เห็นกราฟความคืบหน้าที่ขยับขึ้นทุกวันจะช่วยสร้างแรงจูงใจและสร้างนิสัยการอ่านอย่างสม่ำเสมอ</p>
+            <p>ไม่ว่าคุณจะมีเวลาอ่านเพียงวันละ 10 นาทีก่อนนอน หรืออ่านยาว 2 ชั่วโมงในวันหยุด การอ่านทีละนิดจะถูกรวมเป็นความสำเร็จชิ้นใหญ่บน Book Timeline ของคุณเสมอ</p>
+            <div class="feature-box">
+              <h4>🎯 เหมาะสำหรับนักอ่านทุกกลุ่ม</h4>
+              <p>ตอบโจทย์ทั้งคอนิยาย นักเรียน นักวิจัย และผู้เรียนภาษาที่ใช้ฟีเจอร์แปลภาษาอัจฉริยะและ TTS ฟังเสียงอ่าน</p>
+            </div>
+          </div>
+        </div>
+        <!-- Japanese -->
+        <div class="lang-jp">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            <span>モチベーションを高めて読了率をアップ</span>
+          </div>
+          <div class="step-desc">
+            <p>長編小説や分厚い専門書も、毎日の努力が可視化されることで途中で挫折しにくくなります。小さな積み重ねが確かな進捗となってグラフに現れます。</p>
+            <p>寝る前の10分間の読書も、週末のまとまった読書時間も、すべてが大切なステップとしてタイムラインに刻まれます。</p>
+            <div class="feature-box">
+              <h4>🎯 すべての読者におすすめ</h4>
+              <p>小説ファン、学生、研究者、そして多言語TTSや翻訳機能を活用する語学学習者に最適です。</p>
+            </div>
+          </div>
+        </div>
+        <!-- Chinese -->
+        <div class="lang-cn">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            <span>保持阅读动力，顺畅读完长篇大作</span>
+          </div>
+          <div class="step-desc">
+            <p>面对厚重的长篇小说或专业学术书籍时，可视化的进度的反馈能有效缓解阅读焦虑。看着进度的曲线稳步上升，能极大激发读完图书的动力。</p>
+            <p>无论是睡前 10 分钟的碎片阅读，还是周末 2 小时的沉浸式阅读，每一次阅读都会转化为图书时间线上的里程碑。</p>
+            <div class="feature-box">
+              <h4>🎯 适合所有类型的读者</h4>
+              <p>小说爱者、学生、科研人员，以及配合多语言 TTS 朗读与 AI 翻译学习外语的语言学习者。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="step-image">
+        <img src="003-showcase-insight-other-book.jpg" alt="Insights screen for novel reading journey tracking" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Ready to Track Your Reading Journey?</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;">
+        Download Shiori EPUB Reader today and turn every book into a rewarding experience with Book Timeline, multi-language TTS, AI translation, and cloud sync.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
