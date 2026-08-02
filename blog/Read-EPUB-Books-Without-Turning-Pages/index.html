@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Read EPUB Books Without Turning Pages: The Power of Infinite Scroll — Shiori Blog</title>
+  <meta name="description" content="Discover how Shiori EPUB Reader's Infinite Scroll feature transforms ebook reading into one smooth, continuous, distraction-free document experience." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/Read-EPUB-Books-Without-Turning-Pages/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Read EPUB Books Without Turning Pages: The Power of Infinite Scroll",
+    "description": "Learn how Shiori's Infinite Scroll feature eliminates page breaks for effortless one-thumb continuous reading of EPUB books, novels, and documents.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/Read-EPUB-Books-Without-Turning-Pages/"
+  }
+  </script>
+  
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 1rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .feature-box {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    .feature-box h4 {
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .feature-box p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Showcase Layout for Tall Infinite Scroll Screenshot */
+    .infinite-showcase-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin: 3rem 0;
+      align-items: start;
+    }
+    @media (min-width: 992px) {
+      .infinite-showcase-container {
+        grid-template-columns: 1fr 380px;
+      }
+    }
+
+    .phone-mockup-frame {
+      position: relative;
+      background: #0f172a;
+      border: 10px solid #1e293b;
+      border-radius: 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      max-height: 640px;
+    }
+    @media (min-width: 992px) {
+      .phone-mockup-frame {
+        position: sticky;
+        top: 100px;
+      }
+    }
+    
+    .phone-mockup-speaker {
+      width: 50px;
+      height: 5px;
+      background: #334155;
+      border-radius: 3px;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    
+    .phone-mockup-screen {
+      max-height: 620px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-primary) transparent;
+      cursor: zoom-in;
+      padding-top: 16px;
+    }
+
+    .phone-mockup-screen::-webkit-scrollbar {
+      width: 5px;
+    }
+    .phone-mockup-screen::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 3px;
+    }
+
+    .tall-scroll-img {
+      width: 100%;
+      display: block;
+      transition: filter 0.3s;
+    }
+    .tall-scroll-img:hover {
+      filter: brightness(1.05);
+    }
+
+    .scroll-hint-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 5;
+      animation: bounceHint 2s infinite;
+    }
+    @keyframes bounceHint {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-6px); }
+    }
+
+    /* YouTube Short Embed */
+    .short-video-container {
+      max-width: 360px;
+      margin: 2rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 1040px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p9-date">📅 August 2, 2026</span>
+        <span data-i18n="blog-p9-cat">🏷️ Reading Experience</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Read EPUB Books Without Turning Pages<br><span class="text-gradient">The Power of Infinite Scroll</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">อ่านหนังสือ EPUB โดยไม่ต้องพลิกหน้า<br><span class="text-gradient">สัมผัสความลื่นไหลด้วยระบบ Infinite Scroll</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">ページめくりのいらないEPUB読書<br><span class="text-gradient">インフィニット・スクロールの魅力</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">无需翻页的 EPUB 阅读体验<br><span class="text-gradient">体验 Infinite Scroll 无缝滚动的魅力</span></h1>
+    </header>
+
+    <!-- Intro Subtitles -->
+    <p class="hero-subtitle lang-en" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7;">
+      Have you ever wished reading an ebook felt as effortless as scrolling through your favorite app? Most ebook readers still force page turns every few seconds. With <strong>Shiori EPUB Reader</strong>, experience <strong>Infinite Scroll</strong>—one smooth, continuous reading journey from beginning to end.
+    </p>
+    <p class="hero-subtitle lang-th" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7;">
+      เคยรู้สึกไหมว่าอยากอ่านหนังสือให้ลื่นไหลเหมือนสโครลดูฟีดแอปโปรดของคุณ? แอปส่วนใหญ่ยังคงบังคับให้กดพลิกหน้าบ่อยๆ จนเสียจังหวะอ่าน แต่ใน <strong>Shiori EPUB Reader</strong> คุณสามารถอ่านหนังสือทั้งเล่มด้วย <strong>Infinite Scroll</strong> — ไหลลื่นต่อเนื่องตั้งแต่หน้าแรกจนจบเล่ม
+    </p>
+    <p class="hero-subtitle lang-jp" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7;">
+      お気に入りのアプリをスクロールするように、電子書籍をシームレスに読めたらいいのにと思ったことはありませんか？ Shioriの<strong>インフィニット・スクロール（連続スクロール）機能</strong>なら、ページめくりのストレスなく、一冊の本をなめらかに読み進めることができます。
+    </p>
+    <p class="hero-subtitle lang-cn" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7;">
+      您是否希望阅读电子书能像浏览习惯的应用一样顺畅？大多数阅读器仍需频繁手动翻页。在 <strong>Shiori EPUB 阅读器</strong> 中，体验 <strong>Infinite Scroll（无缝无界滚动）</strong>——从第一章到最后一页，享受一气呵成的沉浸式阅读。
+    </p>
+
+    <!-- Video Walkthrough -->
+    <div style="margin: 2.5rem 0 3.5rem; text-align: center;">
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-en">Video Walkthrough (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-th">วิดีโอสาธิตการใช้งาน (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-jp">動画で見るガイド (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-cn">视频演示指南 (YouTube Shorts)</h3>
+
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-en">Watch the quick visual guide to see Infinite Scroll in action:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-th">รับชมวิดีโอแนะนำสั้นเพื่อดูการทำงานของระบบ Infinite Scroll:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-jp">インフィニット・スクロール（連続スクロール）の実際の動きをご覧ください：</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-cn">观看短视频演示，直观感受无缝无界连续滚动的魅力：</p>
+
+      <div class="short-video-container">
+        <div class="short-video-wrapper">
+          <iframe src="https://www.youtube-nocookie.com/embed/nWqGAHH2wKw" title="Read EPUB Books Without Turning Pages - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Showcase Layout: Left Text Steps + Right Phone Sticky Showcase -->
+    <div class="infinite-showcase-container">
+      
+      <!-- Left Column: Detailed Steps -->
+      <div>
+        
+        <!-- STEP 1: One Continuous Experience -->
+        <section class="tutorial-step">
+          <!-- English -->
+          <div class="lang-en">
+            <div class="step-title"><span class="step-number">1</span>One Continuous Reading Experience</div>
+            <div class="step-desc">
+              <p>Instead of reading one page at a time, the text flows naturally as you scroll. Whether you're reading a novel, technical documentation, or study materials, you can keep moving through the book without interruptions.</p>
+              <div class="feature-box">
+                <h4>✨ Zero Flow Interruption</h4>
+                <p>No more waiting for page animations or losing your spot between page transitions.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Thai -->
+          <div class="lang-th">
+            <div class="step-title"><span class="step-number">1</span>ประสบการณ์การอ่านที่ต่อเนื่องเป็นเนื้อเดียว</div>
+            <div class="step-desc">
+              <p>แทนที่จะต้องอ่านทีละหน้า ข้อความจะไหลลื่นตามนิ้วของคุณ ไม่ว่าคุณจะอ่านนิยาย เอกสารทางวิชาการ หรือหนังสือเตรียมสอบ คุณก็อ่านเนื้อหาได้ต่อเนื่องไม่มีสะดุด</p>
+              <p>ลดการขัดจังหวะสายตา ช่วยให้คุณอ่านได้เร็วกว่าเดิมและเพลิดเพลินขึ้นอย่างรู้สึกได้</p>
+              <div class="feature-box">
+                <h4>✨ อ่านไหลลื่นไร้สิ่งรบกวน</h4>
+                <p>ไม่ต้องรออนิเมชันพลิกหน้า และไม่เสียสมาธิระหว่างเปลี่ยนบท</p>
+              </div>
+            </div>
+          </div>
+          <!-- Japanese -->
+          <div class="lang-jp">
+            <div class="step-title"><span class="step-number">1</span>シームレスな連続読書体験</div>
+            <div class="step-desc">
+              <p>ページ単位の区切りがなくなり、文章がスクロールに合わせて自然に流れます。小説、専門書、学習参考書など、集中を途切れさせることなく読み進められます。</p>
+              <div class="feature-box">
+                <h4>✨ アニメーションの待ち時間ゼロ</h4>
+                <p>ページめくりのアニメーション待ちや視線の再配置が不要になります。</p>
+              </div>
+            </div>
+          </div>
+          <!-- Chinese -->
+          <div class="lang-cn">
+            <div class="step-title"><span class="step-number">1</span>浑然一体的流畅阅读体验</div>
+            <div class="step-desc">
+              <p>不再受限于一页页的框格，文本随着滑屏自然流动。无论是阅读长篇小说、技术文档还是学术教材，都能一贯到底。</p>
+              <div class="feature-box">
+                <h4>✨ 无视线中断与等待</h4>
+                <p>告别翻页动画延迟，始终保持高度专注的阅读节奏。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2: One-Thumb Reading -->
+        <section class="tutorial-step">
+          <!-- English -->
+          <div class="lang-en">
+            <div class="step-title"><span class="step-number">2</span>Comfortable One-Thumb Reading</div>
+            <div class="step-desc">
+              <p>Infinite scrolling is optimized for smartphones. Holding your phone with one hand on a commute or lying in bed? Simply scroll with your thumb at your own comfortable speed.</p>
+            </div>
+          </div>
+          <!-- Thai -->
+          <div class="lang-th">
+            <div class="step-title"><span class="step-number">2</span>อ่านง่ายด้วยนิ้วโป้งข้างเดียว (One-Thumb Comfort)</div>
+            <div class="step-desc">
+              <p>ออกแบบให้เหมาะกับการใช้งานสมาร์ทโฟนที่สุด ถือมือถือมือเดียวบนรถไฟฟ้าหรือนอนอ่านบนเตียง? เลื่อนอ่านด้วยนิ้วโป้งข้างเดียวได้สบายตามความเร็วที่คุณต้องการ</p>
+            </div>
+          </div>
+          <!-- Japanese -->
+          <div class="lang-jp">
+            <div class="step-title"><span class="step-number">2</span>親指一本で快適な操作性</div>
+            <div class="step-desc">
+              <p>スマホ操作に最適化されています。片手でスマホを持っている時も、親指一本でスクロールするだけで自分のペースに合わせて快適に読書できます。</p>
+            </div>
+          </div>
+          <!-- Chinese -->
+          <div class="lang-cn">
+            <div class="step-title"><span class="step-number">2</span>单手拇指轻滑，自然随心</div>
+            <div class="step-desc">
+              <p>专为现代智能手机人机工程学打造。无论是在通勤途中还是躺在床上，单手握持手机，用拇指轻滑即可掌控阅读速度。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3: Stay Focused -->
+        <section class="tutorial-step">
+          <!-- English -->
+          <div class="lang-en">
+            <div class="step-title"><span class="step-number">3</span>Stay Deeply Focused on the Story</div>
+            <div class="step-desc">
+              <p>When pages disappear, interface distractions vanish too. Many readers find it significantly easier to enter a state of flow because there are no repeated interruptions every few hundred words.</p>
+            </div>
+          </div>
+          <!-- Thai -->
+          <div class="lang-th">
+            <div class="step-title"><span class="step-number">3</span>ดิ่งลึกสู่เนื้อหา ปราศจากสิ่งรบกวน (Stay Focused)</div>
+            <div class="step-desc">
+              <p>เมื่อไม่มีการตัดหน้า ความฟิเน่และสมาธิกับการอ่านก็แนบแน่นขึ้น นักอ่านจำนวนมากพบว่าสามารถจดจ่อกับเนื้อเรื่องได้ดีกว่าเดิม เพราะไม่มีขอบหน้ามาคอยขัดจังหวะความคิดทุกๆ ไม่กี่ร้อยคำ</p>
+            </div>
+          </div>
+          <!-- Japanese -->
+          <div class="lang-jp">
+            <div class="step-title"><span class="step-number">3</span>物語の世界へ深く没入</div>
+            <div class="step-desc">
+              <p>ページの切れ目がなくなることで、読書への没入感が格段に高まります。数十行ごとに訪れる途切れがなくなり、ストーリーに集中できます。</p>
+            </div>
+          </div>
+          <!-- Chinese -->
+          <div class="lang-cn">
+            <div class="step-title"><span class="step-number">3</span>全情沉浸，远离阅读打扰</div>
+            <div class="step-desc">
+              <p>当翻页的物理界限消失，UI 界面的存在感也随之降低。许多读者反馈，无缝滚动让他们更容易进入沉浸式的深度阅读状态。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 4: Powerful Integration -->
+        <section class="tutorial-step">
+          <!-- English -->
+          <div class="lang-en">
+            <div class="step-title"><span class="step-number">4</span>Works Great with Other Shiori Tools</div>
+            <div class="step-desc">
+              <p>Infinite Scroll seamlessly pairs with Shiori's advanced suite:</p>
+              <ul style="padding-left: 1.25rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>🎧 <strong>Multi-language TTS:</strong> Karaoke word highlighting scrolls synchronized automatically.</li>
+                <li>🌍 <strong>AI Translation:</strong> Translate selected paragraphs side-by-side without page shifts.</li>
+                <li>📝 <strong>Notes &amp; Bookmarks:</strong> Anchor notes directly to paragraph points.</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Thai -->
+          <div class="lang-th">
+            <div class="step-title"><span class="step-number">4</span>ทำงานร่วมกับเครื่องมืออ่านอื่นๆ ของ Shiori ได้อย่างสมบูรณ์</div>
+            <div class="step-desc">
+              <p>Infinite Scroll ทำงานประสานกับฟีเจอร์เด่นอื่นๆ ของ Shiori ได้อย่างราบรื่น:</p>
+              <ul style="padding-left: 1.25rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>🎧 <strong>อ่านออกเสียง TTS:</strong> เสียงอ่านคาราโอเกะสโครลเลื่อนหน้าจอตามคำที่อ่านให้อัตโนมัติ</li>
+                <li>🌍 <strong>แปลภาษาอัจฉริยะ:</strong> แปลข้อความข้างๆ ย่อหน้าได้ทันทีโดยไม่ต้องเปลี่ยนหน้า</li>
+                <li>📝 <strong>ไฮไลต์และโน้ต:</strong> ปักหมุดโน้ตตรงตำแหน่งย่อหน้าได้อย่างแม่นยำ</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Japanese -->
+          <div class="lang-jp">
+            <div class="step-title"><span class="step-number">4</span>他の高機能ツールとの完璧な連携</div>
+            <div class="step-desc">
+              <p>インフィニット・スクロールは、Shioriの各種機能とスムーズに連動します：</p>
+              <ul style="padding-left: 1.25rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>🎧 <strong>多言語TTS：</strong> カラオケ風ハイライトに合わせて画面が自動スクロール。</li>
+                <li>🌍 <strong>AI翻訳：</strong> ページ移動なしで段落横に対訳を表示。</li>
+                <li>📝 <strong>ノート＆しおり：</strong> 段落位置に直接メモを記録。</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Chinese -->
+          <div class="lang-cn">
+            <div class="step-title"><span class="step-number">4</span>与 Shiori 核心功能完美无缝协作</div>
+            <div class="step-desc">
+              <p>Infinite Scroll 与 Shiori 的高级阅读工具自然联动：</p>
+              <ul style="padding-left: 1.25rem; color: var(--text-secondary); line-height: 1.8;">
+                <li>🎧 <strong>多语言 TTS 朗读：</strong> 卡拉 OK 实时高亮伴随文本自动向下滚动。</li>
+                <li>🌍 <strong>AI 对照翻译：</strong> 原处展开段落对照翻译，无需跨页定位。</li>
+                <li>📝 <strong>高亮与笔记：</strong> 笔记直接锚定至对应段落。</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column: Interactive Phone Mockup with Long Scroll Image -->
+      <div class="phone-mockup-frame animate-fade-in delay-100">
+        <div class="phone-mockup-speaker"></div>
+        <div class="phone-mockup-screen" id="mockup-screen">
+          <img src="001-reading-infinitescroll.jpg" alt="Shiori EPUB Reader Infinite Scroll Full-length Screenshot" class="tall-scroll-img" id="tall-img" />
+        </div>
+        <div class="scroll-hint-badge">
+          <span>📜 Scroll to view / Tap to zoom</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Experience Infinite Scroll in Shiori</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;">
+        Download Shiori EPUB Reader today and enjoy a clean, modern, distraction-free reading experience without page turns.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="001-reading-infinitescroll.jpg" alt="Full length Infinite Scroll view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption">Shiori EPUB Reader - Infinite Scroll Full Length View</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox & Mockup Scroll Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tallImg = document.getElementById('tall-img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxClose = document.getElementById('lightbox-close');
+
+      function openLightbox() {
+        lightbox.classList.add('active');
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      if (tallImg) {
+        tallImg.addEventListener('click', openLightbox);
+      }
+
+      if (lightboxClose) {
+        lightboxClose.addEventListener('click', closeLightbox);
+      }
+
+      if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
