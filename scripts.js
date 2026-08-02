@@ -188,6 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p9-title": "Read EPUB Books Without Turning Pages: The Power of Infinite Scroll",
       "blog-p9-desc": "Discover how Shiori EPUB Reader's Infinite Scroll feature transforms ebook reading into one smooth, continuous, distraction-free document experience.",
 
+      // Blog Post 10
+      "blog-p10-date": "📅 August 2, 2026",
+      "blog-p10-cat": "🏷️ Calibre Integration",
+      "blog-p10-title": "Wirelessly Send Books from Calibre to Your Android Device",
+      "blog-p10-desc": "Learn how to wirelessly transfer EPUB ebooks from Calibre on your computer to Shiori EPUB Reader on Android over local Wi-Fi without USB cables.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -390,6 +396,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p9-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p9-title": "อ่านหนังสือ EPUB โดยไม่ต้องพลิกหน้า — สัมผัสความลื่นไหลด้วยระบบ Infinite Scroll",
       "blog-p9-desc": "สัมผัสประสบการณ์การอ่านหนังสือแบบ Infinite Scroll อ่านต่อเนื่องยาวทั้งเล่ม ไร้ขอบหน้า ไร้สิ่งรบกวนด้วยนิ้วโป้งข้างเดียวใน Shiori",
+
+      // Blog Post 10
+      "blog-p10-date": "📅 2 สิงหาคม 2026",
+      "blog-p10-cat": "🏷️ การเชื่อมต่อ Calibre",
+      "blog-p10-title": "วิธีส่งหนังสือจาก Calibre เข้า Android ผ่าน Wi-Fi ไร้สาย ไม่ต้องเสียบสาย USB",
+      "blog-p10-desc": "คู่มือขั้นตอนการส่งไฟล์หนังสือ EPUB จากโปรแกรม Calibre บนคอมพิวเตอร์ไปยังแอป Shiori บนมือถือ Android ผ่านสัญญาณ Wi-Fi โดยไม่ต้องง้อสาย USB",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -594,6 +606,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p9-title": "ページめくりのいらないEPUB読書 — インフィニット・スクロールの魅力",
       "blog-p9-desc": "Shioriのインフィニット・スクロール（連続スクロール）機能を使って、ページめくりのストレスなく一冊の本をなめらかに読み進める方法を解説します。",
 
+      // Blog Post 10
+      "blog-p10-date": "📅 2026年8月2日",
+      "blog-p10-cat": "🏷️ Calibre連携",
+      "blog-p10-title": "USBケーブル不要！CalibreからAndroidへワイヤレスで本を送信する方法",
+      "blog-p10-desc": "パソコンのCalibreライブラリからAndroid端末のShiori EPUBリーダーへ、Wi-Fi経由で直接本をワイヤレス転送する方法を解説します。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -796,6 +814,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p9-cat": "🏷️ 阅读体验",
       "blog-p9-title": "无需翻页的 EPUB 阅读体验 — 体验 Infinite Scroll 无缝滚动的魅力",
       "blog-p9-desc": "了解 Shiori EPUB 阅读器的 Infinite Scroll 无缝无界滚动功能，感受从头至尾一气呵成的沉浸式阅读。",
+
+      // Blog Post 10
+      "blog-p10-date": "📅 2026年8月2日",
+      "blog-p10-cat": "🏷️ Calibre 联动",
+      "blog-p10-title": "无需 USB 数据线！如何将 Calibre 图书无线发送至 Android 设备",
+      "blog-p10-desc": "指引步骤：如何在局域网 Wi-Fi 下将电脑端 Calibre 藏书一键无线发送至 Android 端的 Shiori EPUB 阅读器。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",

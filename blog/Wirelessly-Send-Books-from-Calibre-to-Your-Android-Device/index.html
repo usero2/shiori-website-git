@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Wirelessly Send Books from Calibre to Your Android Device — Shiori Blog</title>
+  <meta name="description" content="Learn how to wirelessly transfer EPUB ebooks from Calibre on your computer to Shiori EPUB Reader on Android over local Wi-Fi without USB cables." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/Wirelessly-Send-Books-from-Calibre-to-Your-Android-Device/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Wirelessly Send Books from Calibre to Your Android Device",
+    "description": "Step-by-step guide to sending EPUB books from your Calibre library directly to your Android device over Wi-Fi using Shiori's Wireless Device feature.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/Wirelessly-Send-Books-from-Calibre-to-Your-Android-Device/"
+  }
+  </script>
+  
+  <style>
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.75rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.25);
+    }
+
+    .feature-box {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    .feature-box h4 {
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .feature-box p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Video Embed Container */
+    .video-container {
+      max-width: 800px;
+      margin: 2.5rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p10-date">📅 August 2, 2026</span>
+        <span data-i18n="blog-p10-cat">🏷️ Calibre Integration</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Wirelessly Send Books from Calibre<br><span class="text-gradient">to Your Android Device</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีส่งหนังสือจาก Calibre เข้า Android<br><span class="text-gradient">ผ่าน Wi-Fi ไร้สาย ไม่ต้องเสียบสาย USB</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">USBケーブル不要！<br><span class="text-gradient">CalibreからAndroidへワイヤレス送信</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">无需 USB 数据线！<br><span class="text-gradient">将 Calibre 图书无线发送至 Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('001-on-calibre-program-click-Connect Share-Start wireless device connection.png') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📶</span>
+    </div>
+
+    <!-- Intro Subtitles -->
+    <p class="hero-subtitle lang-en" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      Managing an e-book library with <strong>Calibre</strong> is one of the best ways to organize your digital collection. Transferring books to your Android phone or tablet doesn't have to involve USB cables. With <strong>Shiori EPUB Reader</strong>, connect directly via <strong>Calibre Wireless Device</strong> over Wi-Fi in seconds!
+    </p>
+    <p class="hero-subtitle lang-th" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      การจัดการคลังหนังสือด้วยโปรแกรม <strong>Calibre</strong> บนคอมพิวเตอร์เป็นวิธีจัดระเบียบหนังสือที่ดีที่สุด แต่การส่งหนังสือเข้ามือถือหรือแท็บเล็ต Android ไม่จำเป็นต้องหา สาย USB มาเสียบอีกต่อไป! ด้วย <strong>Shiori EPUB Reader</strong> คุณสามารถเชื่อมต่อกับ <strong>Calibre Wireless Device</strong> ผ่าน Wi-Fi และส่งหนังสือเข้าเครื่องได้ทันที
+    </p>
+    <p class="hero-subtitle lang-jp" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      パソコンの<strong>Calibre</strong>で電子書籍を管理するのは非常に便利ですが、Android端末へ本を転送するのにUSBケーブルを探す必要はもうありません。<strong>Shiori EPUB Reader</strong>のワイヤレスデバイス接続機能を使えば、Wi-Fi経由でワンクリック送信が可能です。
+    </p>
+    <p class="hero-subtitle lang-cn" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">
+      在电脑上使用 <strong>Calibre</strong> 管理电子书文库非常高效，但向 Android 设备传输图书不再需要繁琐的 USB 数据线。借助 <strong>Shiori EPUB 阅读器</strong> 的 <strong>Calibre 无线设备连接</strong> 功能，在同一 Wi-Fi 下几秒即可完成无线图书一键发送！
+    </p>
+
+    <!-- Video Tutorial Embed -->
+    <div style="margin: 2.5rem 0 3.5rem; text-align: center;">
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-en">Video Tutorial (How-to Guide)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-th">วิดีโอสาธิตการเชื่อมต่ออย่างละเอียด</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-jp">動画で見る接続ガイド</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-cn">视频操作演示指南</h3>
+
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;" class="lang-en">Watch the full step-by-step walkthrough to connect Calibre and Shiori wirelessly:</p>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;" class="lang-th">รับชมวิดีโอแนะนำขั้นตอนการเปิดใช้งาน Calibre Wireless ใน Shiori แบบก้าวต่อก้าว:</p>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;" class="lang-jp">CalibreとShioriをワイヤレスで接続する手順を動画で確認できます：</p>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;" class="lang-cn">观看完整视频演示，轻松学会 Calibre 与 Shiori 的无线连接与传输：</p>
+
+      <div class="video-container">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube-nocookie.com/embed/TETKlVay6kM" title="Wirelessly Send Books from Calibre to Android - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Setup Guide</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการเชื่อมต่อและส่งหนังสือ (8 สเต็ปง่ายๆ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-jp">8ステップでわかる設定・送信手順</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-cn">Step-by-Step 8 步设置与传输指引</h2>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Start Wireless Device Connection in Calibre</div>
+          <div class="step-desc">
+            <p>Open the <strong>Calibre</strong> desktop software on your computer. In the top toolbar, click <strong>Connect / share</strong> and select <strong>Start wireless device connection</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เริ่มการเชื่อมต่อ Wireless Device บนโปรแกรม Calibre</div>
+          <div class="step-desc">
+            <p>เปิดโปรแกรม <strong>Calibre</strong> บนคอมพิวเตอร์ของคุณ ที่แถบเครื่องมือด้านบน ให้กดคลิกเมนู <strong>Connect / share (เชื่อมต่อ / แบ่งปัน)</strong> แล้วเลือก <strong>Start wireless device connection</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>Calibreでワイヤレス接続を開始</div>
+          <div class="step-desc">
+            <p>パソコンで <strong>Calibre</strong> を開きます。上部ツールバーの <strong>「接続/共有」</strong> をクリックし、<strong>「ワイヤレスデバイス接続を開始」</strong> を選択します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>在 Calibre 中开启无线设备连接</div>
+          <div class="step-desc">
+            <p>在电脑上打开 <strong>Calibre</strong> 软件。在顶部工具栏中点击 <strong>“连接/共享”</strong>，然后选择 <strong>“启动无线设备连接”</strong>。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="001-on-calibre-program-click-Connect Share-Start wireless device connection.png" alt="Step 1: Click Connect share and Start wireless device connection in Calibre" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Note Calibre IP Address and Port</div>
+          <div class="step-desc">
+            <p>A dialog box will pop up displaying Calibre's listener IP Address and Port number (e.g. <code>192.168.1.x : 9090</code>). Keep this dialog open or note down the numbers, then click OK.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ตรวจสอบและจดจำหมายเลข IP Address และ Port</div>
+          <div class="step-desc">
+            <p>หน้าต่างแจ้งเตือนจะแสดงหมายเลข IP Address และ Port ของเครื่องคอมพิวเตอร์ขึ้นมา (เช่น <code>192.168.1.x:9090</code>) ให้จดหมายเลขนี้ไว้แล้วกด OK</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>IPアドレスとポート番号を確認</div>
+          <div class="step-desc">
+            <p>ポップアップ画面にCalibreのIPアドレスとポート番号（例：<code>192.168.1.x:9090</code>）が表示されます。番号を控えてOKをクリックします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>记录 Calibre 的 IP 地址与端口号</div>
+          <div class="step-desc">
+            <p>弹窗将显示电脑的 IP 地址与端口号（例如 <code>192.168.1.x:9090</code>）。请记下该地址与端口号，然后点击确定。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="002-see-calibre IP address and port-the click ok.png" alt="Step 2: Note Calibre IP address and port number" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Open Settings on Shiori Bookshelf</div>
+          <div class="step-desc">
+            <p>Open <strong>Shiori EPUB Reader</strong> on your Android phone or tablet (connected to the same local Wi-Fi). Tap the <strong>Settings (⚙️)</strong> icon at the top right of the Bookshelf tab.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เปิดเมนูตั้งค่า (Settings) บนชั้นหนังสือ Shiori</div>
+          <div class="step-desc">
+            <p>เปิดแอป <strong>Shiori EPUB Reader</strong> บนมือถือหรือแท็บเล็ต Android (ที่เชื่อมต่อ Wi-Fi วงเดียวกัน) แล้วแตะที่ไอคอน <strong>ตั้งค่า (⚙️)</strong> ที่มุมขวาบนของชั้นหนังสือ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>Shioriの本棚から設定を開く</div>
+          <div class="step-desc">
+            <p>同じWi-Fiに接続したAndroid端末で <strong>Shiori EPUB Reader</strong> を開き、本棚画面右上にある <strong>設定（⚙️）</strong> アイコンをタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>在 Shiori 书架中打开设置</div>
+          <div class="step-desc">
+            <p>在同局域网 Wi-Fi 下的 Android 设备上打开 <strong>Shiori EPUB 阅读器</strong>，在书架界面右上角点击 <strong>设置 (⚙️)</strong> 图标。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="003-touch-icon-setting-on-Bookshelf.jpg" alt="Step 3: Tap settings icon on Shiori bookshelf" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 4 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Navigate to Experimental / Calibre Connection</div>
+          <div class="step-desc">
+            <p>Scroll down in the settings list and select the <strong>Experimental / Calibre Wireless Device</strong> menu item.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เลือกเมนูทดลอง / เชื่อมต่อ Calibre</div>
+          <div class="step-desc">
+            <p>เลื่อนลงมาในเมนูตั้งค่า แล้วเลือกหัวข้อ <strong>Experimental / Calibre Wireless Device (ฟีเจอร์ทดลองเชื่อมต่อ Calibre)</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>実験的機能 / Calibre接続を選択</div>
+          <div class="step-desc">
+            <p>設定リストをスクロールし、<strong>「Experimental / Calibre Wireless Device」</strong> メニュー項目をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>进入实验性功能 / Calibre 连接菜单</div>
+          <div class="step-desc">
+            <p>向下滑动设置菜单，点击进入 <strong>“Experimental / Calibre Wireless Device”</strong> 选项。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="004-touch-experimental menu.jpg" alt="Step 4: Tap experimental menu in settings" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 5 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Enable Calibre Companion Wireless Connection</div>
+          <div class="step-desc">
+            <p>Toggle ON the switch for <strong>Calibre Companion / Wireless Device</strong> to activate the wireless receiver engine in Shiori.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เปิดสวิตช์ Calibre Companion Wireless Connection</div>
+          <div class="step-desc">
+            <p>กดเปิดสวิตช์ <strong>Calibre Companion / Wireless Device</strong> เพื่อเปิดใช้งานระบบตัวรับสัญญาณไร้สายในแอป Shiori</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>ワイヤレス接続機能をオン</div>
+          <div class="step-desc">
+            <p><strong>「Calibre Companion / Wireless Device」</strong> のトグルスイッチをオンにして、受信機能を有効化します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>开启 Calibre Companion 无线连接开关</div>
+          <div class="step-desc">
+            <p>将 <strong>“Calibre Companion / Wireless Device”</strong> 开关切换至开启状态，激活接收引擎。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="005-turn on-Calibre Companion.jpg" alt="Step 5: Turn on Calibre Companion toggle" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 6 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Enter IP Address &amp; Port and Tap Connect</div>
+          <div class="step-desc">
+            <p>Input your Calibre computer's <strong>IP Address</strong> and <strong>Port</strong> number into the fields, then tap the <strong>Connect</strong> button.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>กรอกหมายเลข IP Address และ Port แล้วกด Connect</div>
+          <div class="step-desc">
+            <p>ป้อนหมายเลข <strong>IP Address</strong> และ <strong>Port</strong> ของคอมพิวเตอร์ลงในช่อง แล้วกดปุ่ม <strong>Connect (เชื่อมต่อ)</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>IPアドレスとポートを入力して接続</div>
+          <div class="step-desc">
+            <p>ステップ2で確認したパソコンの <strong>IPアドレス</strong> と <strong>ポート番号</strong> を入力し、<strong>「Connect」</strong> ボタンをタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>输入 IP 地址与端口号并点击 Connect</div>
+          <div class="step-desc">
+            <p>在输入框中填入步骤 2 中记录的 <strong>IP 地址</strong> 与 <strong>端口号</strong>，然后轻触 <strong>Connect</strong> 按钮。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="006-fill calibre IP address and port-click Connect.jpg" alt="Step 6: Enter IP address and port and click connect" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 7 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Verify Connected Status</div>
+          <div class="step-desc">
+            <p>Observe the status indicator. When it displays <strong>Connected</strong>, your Android device is now successfully paired with Calibre!</p>
+            <div class="feature-box">
+              <h4>✅ Success Indicator</h4>
+              <p>The green "Connected" badge confirms active bi-directional communication between desktop Calibre and Shiori.</p>
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>ยืนยันสถานะการเชื่อมต่อ (Connected)</div>
+          <div class="step-desc">
+            <p>สังเกตสถานะการเชื่อมต่อ เมื่อขึ้นข้อความว่า <strong>Connected (เชื่อมต่อแล้ว)</strong> แสดงว่ามือถือของคุณจับคู่กับ Calibre สำเร็จแล้ว!</p>
+            <div class="feature-box">
+              <h4>✅ สถานะเชื่อมต่อสมบูรณ์</h4>
+              <p>แถบสถานะสีเขียว Connected ยืนยันการสื่อสารแบบไร้สายสองทางระหว่างคอมพิวเตอร์และแอป Shiori</p>
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>接続完了ステータスを確認</div>
+          <div class="step-desc">
+            <p>画面のステータス表示を確認します。<strong>「Connected」</strong> と表示されれば、Android端末とCalibreのワイヤレスペアリング成功です！</p>
+            <div class="feature-box">
+              <h4>✅ 接続成功</h4>
+              <p>緑色のConnectedバッジが、パソコンのCalibreとShioriの双方向接続を証明します。</p>
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>确认 Connected 成功连接状态</div>
+          <div class="step-desc">
+            <p>检查状态指示器。当界面显示 <strong>Connected</strong> 时，即表明 Android 设备已成功与电脑 Calibre 完成配对！</p>
+            <div class="feature-box">
+              <h4>✅ 连接成功标志</h4>
+              <p>绿色的 Connected 状态确认识别并建立了电脑与 Shiori 应用之间的双向无线通信。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="007-see status-Connected-is success.jpg" alt="Step 7: View connected status success" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 8 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">8</span>Send Books Directly to Device in Calibre</div>
+          <div class="step-desc">
+            <p>Switch back to Calibre on your computer. You will see a new <strong>Send to device</strong> button on the main toolbar! Select any EPUB books in your library and click <strong>Send to device</strong> to instantly send them wirelessly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">8</span>กดส่งหนังสือเข้าอุปกรณ์ได้ทันทีใน Calibre</div>
+          <div class="step-desc">
+            <p>สลับกลับมาที่หน้าต่างโปรแกรม Calibre บนคอมพิวเตอร์ จะมีปุ่มไอคอน <strong>Send to device (ส่งไปยังอุปกรณ์)</strong> ปรากฏขึ้นบนแถบเครื่องมือ! เลือกหนังสือ EPUB เล่มที่คุณต้องการอ่าน แล้วกดปุ่ม <strong>Send to device</strong> เพื่อส่งเข้ามือถือแบบไร้สายทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">8</span>Calibreから端末へ直接本を送信</div>
+          <div class="step-desc">
+            <p>パソコンのCalibre画面に戻ると、上部ツールバーに <strong>「端末に送信 (Send to device)」</strong> ボタンが出現します。好きな本を選んでクリックするだけでワイヤレス転送完了です！</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">8</span>在 Calibre 中直接发送图书至设备</div>
+          <div class="step-desc">
+            <p>切回电脑端 Calibre 软件，主工具栏将出现全新的 <strong>“发送至设备 (Send to device)”</strong> 图标！选择要阅读的 EPUB 图书，点击即可瞬间无线传输至手机。</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="008-on-calibre-program-icon-Send to device appear-you can sent books to device yeah.png" alt="Step 8: Click Send to device in Calibre to send books wirelessly" class="img-preview" data-index="7" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">No Cables. Just Read.</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;">
+        Download Shiori EPUB Reader today and enjoy seamless wireless book transfers from Calibre, multi-language TTS, AI translation, and cloud sync.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
