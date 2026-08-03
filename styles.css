@@ -1017,7 +1017,7 @@ textarea.form-control {
 }
 
 /* Multi-language display styling */
-.lang-th {
+.lang-th, .lang-jp, .lang-cn, .lang-pt, .lang-es {
   display: none;
 }
 

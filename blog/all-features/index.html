@@ -908,7 +908,7 @@
     function scrollToFeature(targetKey) {
       const candidateSections = document.querySelectorAll(`[data-feature="${targetKey}"], #${targetKey}`);
       for (let sec of candidateSections) {
-        const parentLang = sec.closest('.lang-en, .lang-th, .lang-jp, .lang-cn');
+        const parentLang = sec.closest('.lang-en, .lang-th, .lang-jp, .lang-cn, .lang-pt, .lang-es');
         if (!parentLang || window.getComputedStyle(parentLang).display !== 'none') {
           const yOffset = -140; // Navbar (80px) + Sticky Chip Bar (60px)
           const y = sec.getBoundingClientRect().top + window.pageYOffset + yOffset;

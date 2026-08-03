@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "hero-vision-quote": "\"From Reading to Learning.\"",
       "hero-tag": "EPUB Reader for Android",
       "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
-      "hero-sub": "Experience next-level reading and listening. Designed for Thai readers with automatic multi-language Text-to-Speech and in-app translation.",
+      "hero-sub": "Experience next-level reading and listening. Designed for readers with automatic multi-language Text-to-Speech and in-app translation.",
       "hero-get-play": "▶ Get it on Google Play",
       
       // Vision Section
@@ -836,6 +836,424 @@ document.addEventListener('DOMContentLoaded', () => {
       "chip-f13": "13. 书库服务器",
       "chip-f14": "14. 云端同步",
       "chip-f18": "18. 隐私安全"
+    },
+    pt: {
+      // Navbar
+      "nav-home": "Início",
+      "nav-download": "Download",
+      "nav-blog": "Blog",
+      
+      // Footer
+      "footer-desc": "Um leitor de EPUB para Android com experiência de leitura e Conversão de Texto em Voz (TTS) flexível e premium.",
+      "footer-app": "Aplicativo",
+      "footer-legal": "Informações Legais",
+      "footer-privacy": "Política de Privacidade",
+      "footer-terms": "Termos de Serviço",
+      "footer-blog": "Blog",
+      
+      // Home Hero
+      "hero-vision-tag": "VISÃO",
+      "hero-vision-quote": "\"Da Leitura ao Aprendizado.\"",
+      "hero-tag": "Leitor EPUB para Android",
+      "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
+      "hero-sub": "Experimente a leitura e audição de nível avançado. Projetado para leitores com Conversão de Texto em Voz multilíngue automática e tradução integrada.",
+      "hero-get-play": "▶ Baixe no Google Play",
+      
+      // Vision Section
+      "vision-sec-tag": "Nossa Visão",
+      "vision-sec-title": "\"Da Leitura ao Aprendizado.\"",
+      "vision-sec-desc": "O Shiori conecta a leitura passiva ao aprendizado ativo. Com Conversão de Texto em Voz multilíngue automática, tradução instantânea no aplicativo, regras personalizáveis de substituição de palavras e ferramentas inteligentes de IA, cada livro se torna um portal para um conhecimento mais profundo.",
+      "footer-vision": "— Da Leitura ao Aprendizado.",
+      
+      // Permanent Knowledge Section
+      "know-tag": "CONHECIMENTO PERMANENTE",
+      "know-title": "Seu Conhecimento de Leitura <span>Permanece com Você</span>",
+      "know-sub": "Os livros podem ir e vir, mas o seu conhecimento não deve ir embora.",
+      "know-hero-badge": "🔒 Salvo Além dos Livros",
+      "know-intro": "O Shiori preserva tudo o que você cria enquanto lê, mesmo que o livro original seja removido do seu dispositivo, devolvido a uma biblioteca ou não esteja mais disponível.",
+      "know-data-head": "Seus dados pessoais de leitura permanecem armazenados com segurança, incluindo:",
+      "know-item-1": "Marcadores",
+      "know-item-2": "Anotações",
+      "know-item-3": "Destaques",
+      "know-item-4": "Resumos de IA",
+      "know-item-5": "Conversas com IA",
+      "know-item-6": "Progresso e Histórico de Leitura",
+      "know-outro": "Isso significa que você pode sempre revisitar ideias, insights e conhecimentos coletados sem precisar do livro original.",
+      "know-card1-title": "Perfeito para Livros de Biblioteca",
+      "know-card1-desc": "Livros emprestados eventualmente expiram ou devem ser devolvidos. Normalmente, isso significaria perder o acesso ao seu contexto de leitura. Com o Shiori, suas anotações pessoais e insights gerados por IA permanecem disponíveis mesmo após o livro ser devolvido.",
+      "know-card2-title": "Seus Dados, Seu Conhecimento",
+      "know-card2-desc": "O Shiori armazena seus dados de leitura, não o livro em si. Mesmo se você excluir um livro para economizar espaço de armazenamento, sua base pessoal de conhecimento permanece intacta — pronta para quando você precisar revisar uma ideia ou citação importante.",
+      "know-motto": "\"Porque grandes livros podem sair da sua biblioteca, mas o conhecimento que você adquiriu com eles deve permanecer.\"",
+      
+      // Home Screenshots
+      "ss-tag": "Capturas de Tela",
+      "ss-title": "Explore a Interface do <span>Shiori</span>",
+      "ss-sub": "Capturas de tela reais do Shiori EPUB Reader no Android mostrando seu design limpo, premium e minimalista.",
+      
+      // Home Features
+      "feat-tag": "Recursos Principais",
+      "feat-title": "Recursos Criados para <span>Todos os Leitores</span>",
+      "feat-sub": "Projetamos cuidadosamente esses recursos para maximizar sua produtividade de leitura.",
+      "feat-1-title": "Biblioteca Inteligente",
+      "feat-1-desc": "Gerencie sua coleção EPUB com 3 modos de visualização (Miniatura, Lista, Detalhes). Acompanha o progresso de leitura automaticamente.",
+      "feat-2-title": "Leitor EPUB Fluido",
+      "feat-2-desc": "Navegação por rolagem contínua (Infinite Scroll) com lista de capítulos pesquisável. Retoma no parágrafo exato — mesmo de onde o TTS parou.",
+      "feat-3-title": "Marcadores, Destaques e Notas",
+      "feat-3-desc": "Destaque textos em várias cores, anexe notas e marque parágrafos com contornos visuais sutis.",
+      "feat-4-title": "Controles Flutuantes",
+      "feat-4-desc": "Painel flutuante de TTS funciona sobre qualquer app. Ajuste o tamanho, fixe na borda e ouça em movimento.",
+      "feat-5-title": "Substituição Inteligente de Texto",
+      "feat-5-desc": "Modifique palavras antes da reprodução TTS. Suporta mais de 5.000 entradas e expressões regulares para corrigir a pronúncia.",
+      "feat-6-title": "Selecionar e Traduzir",
+      "feat-6-desc": "Toque em qualquer palavra para traduzir, copiar, iniciar o TTS a partir da seleção ou adicionar às regras instantaneamente.",
+      
+      // Home Pro Features
+      "pro-tag": "Recursos Avançados",
+      "pro-title": "Aprofunde-se nos <span>Recursos Pro</span>",
+      "pro-sub": "Recursos criados para oferecer controle total sobre sua experiência de leitura.",
+      "pro-tts-title": "TTS Avançado e Controle de Idioma",
+      "pro-tts-sub": "Controle preciso de reprodução com troca automática e inteligente de voz multilíngue.",
+      "pro-tts-1": "🎯 <strong>Detecção Automática:</strong> Detecta automaticamente o idioma de 6 scripts (TH, EN, ZH, JA, KO, DE) e altera as vozes sem interrupções por parágrafo.",
+      "pro-tts-2": "▲▼ <strong>Ordem de Prioridade:</strong> Resolva conflitos de idiomas compartilhados organizando a prioridade dos scripts.",
+      "pro-tts-3": "⇅ <strong>Rolar e Destacar:</strong> Rola automaticamente a visualização do leitor para acompanhar o parágrafo lido no momento.",
+      "pro-rep-title": "Substituição de Texto em Modo Duplo",
+      "pro-rep-sub": "Corrija problemas de pronúncia ou layouts visuais de forma independente com configurações avançadas de regras.",
+      "pro-rep-1": "🎨 <strong>Substituição Visual:</strong> Substitua palavras correspondentes visualmente no leitor e na leitura TTS.",
+      "pro-rep-2": "🔊 <strong>Substituição TTS:</strong> Substitua palavras apenas ao enviar para o mecanismo TTS, mantendo o texto original visível na página.",
+      "pro-rep-3": "⚡ <strong>Sistema de Importação/Exportação:</strong> Pesquisa rápida de regras, suporte a Regex e importação/exportação via arquivos de texto.",
+      "pro-float-title": "Painel Flutuante Inteligente",
+      "pro-float-sub": "Continue ouvindo em segundo plano ou com a tela desligada através de controles flutuantes interativos.",
+      "pro-float-1": "🤏 <strong>Ajuste de Tamanho:</strong> Ajuste a área de exibição da caixa de texto sem alterar o tamanho da fonte de leitura.",
+      "pro-float-2": "🧲 <strong>Fixar na Borda:</strong> Arrastar mais de 50% para fora da tela fixa o painel em 15% de visibilidade, mantendo a tela livre.",
+      "pro-float-3": "🔄 <strong>Toque Duplo para Centralizar:</strong> Dê um duplo toque rápido no painel para trazê-lo de volta ao centro da tela.",
+      "pro-vis-title": "Personalização Visual Avançada",
+      "pro-vis-sub": "Supere problemas de renderização e estilos personalizados incorporados nos arquivos de livros.",
+      "pro-vis-1": "🔤 <strong>Forçar Fonte do Sistema:</strong> Force a fonte padrão do dispositivo para uma leitura estável.",
+      "pro-vis-2": "🚫 <strong>Desativar CSS do EPUB:</strong> Descarte as folhas de estilo da editora e formate o layout usando os padrões limpos do app.",
+      "pro-vis-3": "🌈 <strong>Remover Cor de Fonte:</strong> Remove cores pré-definidas para manter o conforto visual nos temas Escuro ou Sépia.",
+      
+      // Home Advanced TTS Card
+      "card-tts-title": "Conversão de Texto em Voz (TTS) Multilíngue Avançada",
+      "card-tts-desc": "Detecta automaticamente textos em vários idiomas no mesmo parágrafo e alterna as vozes perfeitamente. Ajuste velocidade, tom e voz por idioma. Funciona offline com o mecanismo TTS nativo do seu dispositivo.",
+      
+      // Home Google Drive Cloud Sync Card
+      "card-sync-title": "Sincronização em Nuvem do Google Drive",
+      "card-sync-sub": "(Google Drive Cloud Sync)",
+      "card-sync-desc": "Sincronização em nuvem opcional. Salve livros, progresso de leitura e regras de substituição diretamente no seu Google Drive privado. 100% seguro: não temos servidor de banco de dados e não podemos acessar seus dados.",
+      "card-sync-1": "✓ Conexão direta e segura entre o aplicativo e o Google Drive",
+      "card-sync-2": "✓ Sincronize em todos os seus dispositivos Android pessoais",
+      "card-sync-3": "✓ Os dados permanecem sob o controle do seu próprio armazenamento",
+      
+      // Home Blog Section
+      "home-blog-tag": "Últimos Artigos",
+      "home-blog-title": "Dicas, Guias e <span>Insights</span>",
+      "home-blog-sub": "Descubra como personalizar o Shiori, configurar servidores de biblioteca e aproveitar ao máximo sua leitura.",
+      
+      // Home CTA
+      "cta-title": "Pronto para Elevar Sua Leitura?",
+      "cta-desc": "Baixe o Shiori EPUB Reader gratuitamente na Google Play Store.",
+      "cta-play": "▶ Baixe no Google Play",
+      
+      // Video section
+      "video-tag": "Guias em Vídeo",
+      "video-title": "Aprenda a Usar o <span>Shiori</span>",
+      "video-sub": "Assista aos nossos tutoriais em vídeo passo a passo para dominar os recursos avançados do Shiori.",
+      
+      // Download page
+      "dl-tag": "Obtenha o Shiori ePub Reader",
+      "dl-title": "Baixe o <span>Shiori EPUB Reader</span>",
+      "dl-sub": "Escolha seu método de instalação preferido. Suporta Android 8.0 (API 26) ou superior. 100% livre de anúncios durante a leitura.",
+      "dl-card-play-title": "Google Play Store",
+      "dl-card-play-desc": "Recomendado. Instala e atualiza automaticamente. Seguro e verificado pelo Google Play Protect.",
+      "dl-card-play-btn": "Baixe na Play Store",
+      
+      // Blog list
+      "blog-tag": "Blog Oficial",
+      "blog-title": "Blog &amp; <span>Atualizações</span>",
+      "blog-sub": "Leia os últimos anúncios, tutoriais, guias e lançamentos de versões.",
+      "blog-p1-date": "📅 29 de junho de 2026",
+      "blog-p1-cat": "🏷️ Anúncios",
+      "blog-p1-title": "Apresentando o Shiori EPUB Reader para Android",
+      "blog-p1-desc": "Descubra o Shiori (栞), um leitor de EPUB offline projetado para elevar sua experiência de leitura digital com TTS multilíngue avançado...",
+      "blog-p1-btn": "Ler Artigo Completo",
+      "blog-p2-date": "📅 Em breve",
+      "blog-p2-cat": "🏷️ Dicas e Truques",
+      "blog-p2-title": "Configurando o Mecanismo TTS para Pronúncia Natural",
+      "blog-p2-desc": "Guia passo a passo para instalar arquivos de voz de alta qualidade nas configurações do Android e otimizar a leitura no Shiori...",
+      "blog-p2-status": "Em breve",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 17 de julho de 2026",
+      "blog-p3-cat": "🏷️ E-Books",
+      "blog-p3-title": "Os 5 Melhores Sites para Baixar Livros EPUB Gratuitos",
+      "blog-p3-desc": "Procurando novos livros? Aqui estão os melhores sites para encontrar arquivos EPUB legais, gratuitos e de alta qualidade.",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 17 de julho de 2026",
+      "blog-p4-cat": "🏷️ Guias",
+      "blog-p4-title": "Como Sincronizar o Shiori com o Kavita (OPDS e API REST)",
+      "blog-p4-desc": "Transmita sua biblioteca digital e sincronize seu progresso de leitura conectando o Shiori EPUB Reader ao seu servidor Kavita.",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 19 de julho de 2026",
+      "blog-p5-cat": "🏷️ Guias",
+      "blog-p5-title": "Como Importar Fontes Personalizadas no Shiori",
+      "blog-p5-desc": "Personalize sua leitura importando seus arquivos de fonte favoritos e atribuindo diferentes tipografias para cada idioma.",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 22 de julho de 2026",
+      "blog-p6-cat": "🏷️ Recursos",
+      "blog-p6-title": "Como Traduzir EPUB para Vários Idiomas Simultaneamente",
+      "blog-p6-desc": "Aprenda a usar o painel de tradução multilíngue do Shiori para traduzir parágrafos em vários idiomas de destino ao mesmo tempo.",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 23 de julho de 2026",
+      "blog-p7-cat": "🏷️ Guia Completo",
+      "blog-p7-title": "Guia Completo de Recursos do Shiori: 19 Recursos Explicados",
+      "blog-p7-desc": "Explore todos os recursos do Shiori EPUB Reader, desde TTS multilíngue e tradução com IA até PDFs inteligentes, OCR de quadrinhos CBZ e sincronização no Google Drive.",
+
+      // Blog Post 8
+      "blog-p8-date": "📅 2 de agosto de 2026",
+      "blog-p8-cat": "🏷️ Insights e Estatísticas",
+      "blog-p8-title": "Acompanhe Sua Jornada de Leitura com a Linha do Tempo e Progresso do Livro",
+      "blog-p8-desc": "Aprenda como o recurso de Linha do Tempo e Insights do Shiori permite acompanhar a velocidade de leitura, tempo gasto e gráficos de progresso.",
+
+      // Blog Post 9
+      "blog-p9-date": "📅 2 de agosto de 2026",
+      "blog-p9-cat": "🏷️ Experiência de Leitura",
+      "blog-p9-title": "Leia Livros EPUB sem Virar Páginas: O Poder do Infinite Scroll",
+      "blog-p9-desc": "Descubra como o recurso de Rolagem Contínua (Infinite Scroll) do Shiori transforma a leitura de e-books em uma experiência fluida e sem distrações.",
+
+      // Blog Post 10
+      "blog-p10-date": "📅 2 de agosto de 2026",
+      "blog-p10-cat": "🏷️ Integração Calibre",
+      "blog-p10-title": "Envie Livros do Calibre sem Fio para Seu Dispositivo Android",
+      "blog-p10-desc": "Aprenda como transferir e-books EPUB do Calibre no seu computador para o Shiori EPUB Reader no Android via Wi-Fi sem cabos USB.",
+
+      // Feature Chips
+      "chip-f1": "1. Formatos",
+      "chip-f2": "2. Leitura",
+      "chip-f3": "3. Marcadores",
+      "chip-f4": "4. Voz TTS",
+      "chip-f5": "5. Regras de Palavras",
+      "chip-f6": "6. Tradução",
+      "chip-f7": "7. IA no Dispositivo",
+      "chip-f8": "8. Quadrinhos (CBZ)",
+      "chip-f9": "9. PDF Reflow",
+      "chip-f10": "10. Insights",
+      "chip-f11": "11. Memória",
+      "chip-f13": "13. Servidor de Biblioteca",
+      "chip-f14": "14. Sincronização em Nuvem",
+      "chip-f18": "18. Privacidade"
+    },
+    es: {
+      // Navbar
+      "nav-home": "Inicio",
+      "nav-download": "Descargar",
+      "nav-blog": "Blog",
+      
+      // Footer
+      "footer-desc": "Un lector de EPUB para Android con una experiencia de lectura y Conversión de Texto a Voz (TTS) flexible y premium.",
+      "footer-app": "Aplicación",
+      "footer-legal": "Información Legal",
+      "footer-privacy": "Política de Privacidad",
+      "footer-terms": "Términos de Servicio",
+      "footer-blog": "Blog",
+      
+      // Home Hero
+      "hero-vision-tag": "VISIÓN",
+      "hero-vision-quote": "\"De la Lectura al Aprendizaje.\"",
+      "hero-tag": "Lector EPUB para Android",
+      "hero-title": "Shiori <br><span class=\"text-gradient\">ePub Reader</span>",
+      "hero-sub": "Experimente la lectura y escucha de siguiente nivel. Diseñado para lectores con Conversión de Texto a Voz multilingüe automática y traducción integrada.",
+      "hero-get-play": "▶ Consíguelo en Google Play",
+      
+      // Vision Section
+      "vision-sec-tag": "Nuestra Visión",
+      "vision-sec-title": "\"De la Lectura al Aprendizaje.\"",
+      "vision-sec-desc": "Shiori conecta la lectura pasiva con el aprendizaje activo. Con Conversión de Texto a Voz multilingüe automática, traducción en tiempo real dentro de la aplicación, reglas personalizables de sustitución de palabras y herramientas inteligentes de IA, cada libro se convierte en un portal hacia un conocimiento más profundo.",
+      "footer-vision": "— De la Lectura al Aprendizaje.",
+      
+      // Permanent Knowledge Section
+      "know-tag": "CONOCIMIENTO PERMANENTE",
+      "know-title": "Tu Conocimiento de Lectura <span>Permanece Contigo</span>",
+      "know-sub": "Los libros pueden ir y venir, pero tu conocimiento no debería desaparecer.",
+      "know-hero-badge": "🔒 Guardado Más Allá de los Libros",
+      "know-intro": "Shiori conserva todo lo que creas mientras lees, incluso si el libro original se elimina de tu dispositivo, se devuelve a la biblioteca o ya no está disponible.",
+      "know-data-head": "Tus datos personales de lectura permanecen almacenados de forma segura, incluyendo:",
+      "know-item-1": "Marcadores",
+      "know-item-2": "Notas",
+      "know-item-3": "Resaltados",
+      "know-item-4": "Resúmenes de IA",
+      "know-item-5": "Conversaciones con IA",
+      "know-item-6": "Progreso e Historial de Lectura",
+      "know-outro": "Esto significa que siempre puedes volver a consultar las ideas, conceptos y conocimientos recopilados sin necesidad de tener el libro original.",
+      "know-card1-title": "Perfecto para Libros de Biblioteca",
+      "know-card1-desc": "Los libros prestados eventualmente vencen o deben devolverse. Normally, esto significaría perder el acceso a tu contexto de lectura. Con Shiori, tus notas personales y los análisis generados por IA permanecen disponibles incluso después de devolver el libro.",
+      "know-card2-title": "Tus Datos, Tu Conocimiento",
+      "know-card2-desc": "Shiori almacena tus datos de lectura, no el libro en sí. Incluso si eliminas un libro para ahorrar espacio, tu base personal de conocimiento se mantiene intacta, lista para cuando necesites repasar una idea o cita importante.",
+      "know-motto": "\"Porque los grandes libros pueden salir de tu biblioteca, pero el conocimiento que obtuviste de ellos no debería desaparecer.\"",
+      
+      // Home Screenshots
+      "ss-tag": "Capturas de Pantalla",
+      "ss-title": "Explora la Interfaz de <span>Shiori</span>",
+      "ss-sub": "Capturas de pantalla reales de Shiori EPUB Reader en Android mostrando su diseño limpio, premium y minimalista.",
+      
+      // Home Features
+      "feat-tag": "Características Clave",
+      "feat-title": "Funciones Diseñadas para <span>Todos los Lectores</span>",
+      "feat-sub": "Diseñamos cuidadosamente estas características para maximizar tu productividad de lectura.",
+      "feat-1-title": "Biblioteca Inteligente",
+      "feat-1-desc": "Gestiona tu colección EPUB con 3 modos de vista (Miniatura, Lista, Detalle). Registra el progreso de lectura automáticamente.",
+      "feat-2-title": "Lector EPUB Fluido",
+      "feat-2-desc": "Navegación de desplazamiento continuo (Infinite Scroll) con lista de capítulos con buscador. Reanuda en el párrafo exacto, incluso donde se detuvo el TTS.",
+      "feat-3-title": "Marcadores, Resaltados y Notas",
+      "feat-3-desc": "Resalta texto en múltiples colores, adjunta notas y marca párrafos con sutiles contornos visuales.",
+      "feat-4-title": "Controles Flotantes",
+      "feat-4-desc": "El panel flotante de TTS funciona sobre cualquier app. Ajusta el tamaño, fíjalo al borde y escucha mientras te desplazas.",
+      "feat-5-title": "Sustitución Inteligente de Texto",
+      "feat-5-desc": "Modifica palabras antes de la reproducción TTS. Soporta más de 5,000 entradas y expresiones regulares para corregir la pronunciación.",
+      "feat-6-title": "Seleccionar y Traducir",
+      "feat-6-desc": "Toca cualquier palabra para traducir, copiar, iniciar TTS desde la selección o agregar a las reglas al instante.",
+      
+      // Home Pro Features
+      "pro-tag": "Funciones Avanzadas",
+      "pro-title": "Explora las <span>Funciones Pro</span>",
+      "pro-sub": "Herramientas diseñadas para brindarte control total sobre tu experiencia de lectura.",
+      "pro-tts-title": "TTS Avanzado y Control de Idioma",
+      "pro-tts-sub": "Control preciso de reproducción con cambio automático e inteligente de voz multilingüe.",
+      "pro-tts-1": "🎯 <strong>Detección Automática:</strong> Detecta automáticamente el idioma de 6 alfabetos (TH, EN, ZH, JA, KO, DE) y cambia de voz sin interrupciones por párrafo.",
+      "pro-tts-2": "▲▼ <strong>Orden de Prioridad:</strong> Resuelve conflictos de alfabetos compartidos ajustando la prioridad de los idiomas.",
+      "pro-tts-3": "⇅ <strong>Desplazamiento y Resaltado:</strong> Desplaza automáticamente la vista del lector para acompañar el párrafo que se lee en tiempo real.",
+      "pro-rep-title": "Sustitución de Texto en Modo Doble",
+      "pro-rep-sub": "Corrige problemas de pronunciación o diseños visuales de forma independiente con configuraciones de reglas avanzadas.",
+      "pro-rep-1": "🎨 <strong>Sustitución Visual:</strong> Sustituye palabras coincidentes visualmente en el lector y en la lectura TTS.",
+      "pro-rep-2": "🔊 <strong>Sustitución TTS:</strong> Sustituye palabras solo al enviarlas al motor TTS, manteniendo el texto original visible en la página.",
+      "pro-rep-3": "⚡ <strong>Sistema de Importación/Exportación:</strong> Búsqueda rápida de reglas, soporte para Regex e importación/exportación mediante archivos de texto.",
+      "pro-float-title": "Panel Flotante Inteligente",
+      "pro-float-sub": "Continúa escuchando en segundo plano o con la pantalla apagada mediante controles flotantes interactivos.",
+      "pro-float-1": "🤏 <strong>Ajuste de Tamaño:</strong> Ajusta el área de visualización del cuadro de texto sin cambiar el tamaño de fuente del lector.",
+      "pro-float-2": "🧲 <strong>Fijar al Borde:</strong> Arrastar más del 50% fuera de la pantalla fija el panel al 15% de visibilidad para mantener la pantalla despejada.",
+      "pro-float-3": "🔄 <strong>Doble Toque para Centrar:</strong> Toca rápidamente dos veces el panel para volver a centrarlo en la pantalla.",
+      "pro-vis-title": "Personalización Visual Avanzada",
+      "pro-vis-sub": "Supera problemas de renderizado y estilos personalizados incrustados en los archivos de libros.",
+      "pro-vis-1": "🔤 <strong>Forzar Fuente del Sistema:</strong> Fuerza la fuente estándar del dispositivo para una lectura estable.",
+      "pro-vis-2": "🚫 <strong>Desactivar CSS del EPUB:</strong> Descarta las hojas de estilo de la editorial y da formato al diseño usando los ajustes limpios de la app.",
+      "pro-vis-3": "🌈 <strong>Eliminar Color de Fuente:</strong> Elimina colores predeterminados para mantener el confort visual en temas Oscuro o Sepia.",
+      
+      // Home Advanced TTS Card
+      "card-tts-title": "Conversión de Texto a Voz (TTS) Multilingüe Avanzada",
+      "card-tts-desc": "Detecta automáticamente textos en varios idiomas dentro del mismo párrafo y cambia de voz fluidamente. Ajusta velocidad, tono y voz por idioma. Funciona sin conexión con el motor TTS nativo de tu dispositivo.",
+      
+      // Home Google Drive Cloud Sync Card
+      "card-sync-title": "Sincronización en la Nube con Google Drive",
+      "card-sync-sub": "(Google Drive Cloud Sync)",
+      "card-sync-desc": "Sincronización opcional en la nube. Guarda libros, progreso de lectura y reglas de texto directamente en tu Google Drive privado. 100% seguro: no tenemos servidores de bases de datos y no podemos acceder a tus datos.",
+      "card-sync-1": "✓ Conexión directa y segura entre la aplicación y Google Drive",
+      "card-sync-2": "✓ Sincroniza en todos tus dispositivos Android personales",
+      "card-sync-3": "✓ Los datos permanecen bajo el control de tu propio almacenamiento",
+      
+      // Home Blog Section
+      "home-blog-tag": "Últimos Artículos",
+      "home-blog-title": "Consejos, Guías y <span>Insights</span>",
+      "home-blog-sub": "Descubre cómo personalizar Shiori, configurar servidores de biblioteca y sacar el máximo provecho de tu lectura.",
+      
+      // Home CTA
+      "cta-title": "¿Listo para Elevar tu Experiencia de Lectura?",
+      "cta-desc": "Descarga Shiori EPUB Reader gratis en Google Play Store.",
+      "cta-play": "▶ Consíguelo en Google Play",
+      
+      // Video section
+      "video-tag": "Guías en Video",
+      "video-title": "Aprende a Usar <span>Shiori</span>",
+      "video-sub": "Mira nuestros tutoriales en video paso a paso para dominar las funciones avanzadas de Shiori.",
+      
+      // Download page
+      "dl-tag": "Obtén Shiori ePub Reader",
+      "dl-title": "Descarga <span>Shiori EPUB Reader</span>",
+      "dl-sub": "Elige tu método de instalación preferido. Compatible con Android 8.0 (API 26) o superior. 100% libre de anuncios durante la lectura.",
+      "dl-card-play-title": "Google Play Store",
+      "dl-card-play-desc": "Recomendado. Se instala y actualiza automáticamente. Seguro y verificado por Google Play Protect.",
+      "dl-card-play-btn": "Consíguelo en Play Store",
+      
+      // Blog list
+      "blog-tag": "Blog Oficial",
+      "blog-title": "Blog y <span>Actualizaciones</span>",
+      "blog-sub": "Lee los últimos anuncios, tutoriales, guias y publicaciones de nuevas versiones.",
+      "blog-p1-date": "📅 29 de junio de 2026",
+      "blog-p1-cat": "🏷️ Anuncios",
+      "blog-p1-title": "Presentamos Shiori EPUB Reader para Android",
+      "blog-p1-desc": "Descubre Shiori (栞), un lector de EPUB sin conexión diseñado para mejorar tu experiencia de lectura digital con TTS multilingüe avanzado...",
+      "blog-p1-btn": "Leer Artículo Completo",
+      "blog-p2-date": "📅 Próximamente",
+      "blog-p2-cat": "🏷️ Consejos y Trucos",
+      "blog-p2-title": "Configuración del Motor TTS para una Pronunciación Natural",
+      "blog-p2-desc": "Guía paso a paso para instalar archivos de voz de alta calidad en los ajustes del sistema Android y optimizar la lectura en Shiori...",
+      "blog-p2-status": "Próximamente",
+      
+      // Blog Post 3
+      "blog-p3-date": "📅 17 de julio de 2026",
+      "blog-p3-cat": "🏷️ E-Books",
+      "blog-p3-title": "Los 5 Mejores Sitios para Descargar Libros EPUB Gratis",
+      "blog-p3-desc": "¿Buscas nuevos libros para leer? Aquí tienes los mejores sitios web para encontrar archivos EPUB legales, gratuitos y de alta calidad.",
+      
+      // Blog Post 4
+      "blog-p4-date": "📅 17 de julio de 2026",
+      "blog-p4-cat": "🏷️ Guías",
+      "blog-p4-title": "Cómo Sincronizar Shiori con Kavita (OPDS y REST API)",
+      "blog-p4-desc": "Transmite tu biblioteca digital y sincroniza tu progreso de lectura conectando Shiori EPUB Reader a tu servidor Kavita.",
+      
+      // Blog Post 5
+      "blog-p5-date": "📅 19 de julio de 2026",
+      "blog-p5-cat": "🏷️ Guías",
+      "blog-p5-title": "Cómo Importar Fuentes Personalizadas en Shiori",
+      "blog-p5-desc": "Personaliza tu lectura importando tus archivos de fuente favoritos y asignando tipografías personalizadas para diferentes idiomas.",
+      
+      // Blog Post 6
+      "blog-p6-date": "📅 22 de julio de 2026",
+      "blog-p6-cat": "🏷️ Funciones",
+      "blog-p6-title": "Cómo Traducir EPUB a Múltiples Idiomas Simultáneamente",
+      "blog-p6-desc": "Aprende a usar el panel de traducción multilingüe de Shiori para traducir párrafos a varios idiomas de destino al mismo tiempo.",
+      
+      // Blog Post 7
+      "blog-p7-date": "📅 23 de julio de 2026",
+      "blog-p7-cat": "🏷️ Guía Completa",
+      "blog-p7-title": "Guía Completa de Funciones de Shiori: Las 19 Capacidades Explicadas",
+      "blog-p7-desc": "Explora el desglose completo de funciones de Shiori EPUB Reader, desde TTS multilingüe y traducción con IA hasta PDF inteligentes, OCR de cómics CBZ y sincronización con Google Drive.",
+
+      // Blog Post 8
+      "blog-p8-date": "📅 2 de agosto de 2026",
+      "blog-p8-cat": "🏷️ Insights y Estadísticas",
+      "blog-p8-title": "Sigue tu Viaje de Lectura con la Línea de Tiempo y Progreso del Libro",
+      "blog-p8-desc": "Aprende cómo la función de Línea de Tiempo e Insights de Shiori te permite rastrear la velocidad de lectura, el tiempo dedicado y los gráficos de progreso.",
+
+      // Blog Post 9
+      "blog-p9-date": "📅 2 de agosto de 2026",
+      "blog-p9-cat": "🏷️ Experiencia de Lectura",
+      "blog-p9-title": "Lee Libros EPUB sin Pasar Páginas: El Poder del Infinite Scroll",
+      "blog-p9-desc": "Descubre cómo la función de Desplazamiento Continuo (Infinite Scroll) de Shiori transforma la lectura de libros electrónicos en una experiencia fluida y sin distracciones.",
+
+      // Blog Post 10
+      "blog-p10-date": "📅 2 de agosto de 2026",
+      "blog-p10-cat": "🏷️ Integración con Calibre",
+      "blog-p10-title": "Envía Libros de Calibre Inalámbricamente a tu Dispositivo Android",
+      "blog-p10-desc": "Aprende a transferir e-books EPUB desde Calibre en tu computadora a Shiori EPUB Reader en Android mediante Wi-Fi local sin cables USB.",
+
+      // Feature Chips
+      "chip-f1": "1. Formatos",
+      "chip-f2": "2. Lectura",
+      "chip-f3": "3. Marcadores",
+      "chip-f4": "4. Voz TTS",
+      "chip-f5": "5. Reglas de Texto",
+      "chip-f6": "6. Traducción",
+      "chip-f7": "7. IA en Dispositivo",
+      "chip-f8": "8. Cómics (CBZ)",
+      "chip-f9": "9. PDF Reflow",
+      "chip-f10": "10. Insights",
+      "chip-f11": "11. Memoria",
+      "chip-f13": "13. Servidor de Biblioteca",
+      "chip-f14": "14. Nube",
+      "chip-f18": "18. Privacidad"
     }
   };
 
@@ -881,8 +1299,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Check saved lang or system preference
   let currentLang = localStorage.getItem('lang');
   if (!currentLang) {
-    const userLanguage = navigator.language || navigator.userLanguage;
-    currentLang = userLanguage.startsWith('th') ? 'th' : 'en';
+    const userLanguage = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (userLanguage.startsWith('th')) currentLang = 'th';
+    else if (userLanguage.startsWith('ja')) currentLang = 'jp';
+    else if (userLanguage.startsWith('zh')) currentLang = 'cn';
+    else if (userLanguage.startsWith('pt')) currentLang = 'pt';
+    else if (userLanguage.startsWith('es')) currentLang = 'es';
+    else currentLang = 'en';
   }
 
   function setLanguage(lang) {
@@ -892,7 +1315,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update language button text
     if (langToggleBtn) {
-      langToggleBtn.innerHTML = `🌐 ${lang.toUpperCase()}`;
+      const labels = { en: '🌐 EN', th: '🌐 TH', jp: '🌐 JP', cn: '🌐 CN', pt: '🌐 PT', es: '🌐 ES' };
+      langToggleBtn.innerHTML = labels[lang] || `🌐 ${lang.toUpperCase()}`;
       langToggleBtn.setAttribute('aria-label', `Toggle Language. Current: ${lang.toUpperCase()}`);
     }
 
@@ -918,7 +1342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggle block-level languages (for static articles/sections)
-    const availableLangs = ['en', 'th', 'jp', 'cn'];
+    const availableLangs = ['en', 'th', 'jp', 'cn', 'pt', 'es'];
     availableLangs.forEach(l => {
       document.querySelectorAll(`.lang-${l}`).forEach(el => {
         el.style.display = (l === lang) ? 'block' : 'none';
@@ -938,7 +1362,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentLang === 'en') nextLang = 'th';
       else if (currentLang === 'th') nextLang = 'jp';
       else if (currentLang === 'jp') nextLang = 'cn';
-      else if (currentLang === 'cn') nextLang = 'en';
+      else if (currentLang === 'cn') nextLang = 'pt';
+      else if (currentLang === 'pt') nextLang = 'es';
+      else if (currentLang === 'es') nextLang = 'en';
       setLanguage(nextLang);
     });
   }
