@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Why Tracking Your Reading Statistics Can Help You Read More Books — Shiori Blog</title>
+  <meta name="description" content="Discover how tracking reading statistics, reading velocity, and sharing beautiful milestone cards in Shiori EPUB Reader builds consistent reading habits." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/Why-Tracking-Your-Reading-Statistics-Can-Help-You-Read-More-Books/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Why Tracking Your Reading Statistics Can Help You Read More Books",
+    "description": "Learn why measuring your reading habits, tracking time spent per book, and generating shareable statistics cards helps you finish more books effortlessly.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/Why-Tracking-Your-Reading-Statistics-Can-Help-You-Read-More-Books/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.25rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* YouTube Short Embed */
+    .short-video-container {
+      max-width: 360px;
+      margin: 2.5rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p11-date">📅 August 3, 2026</span>
+        <span data-i18n="blog-p11-cat">🏷️ Reading Habits</span>
+      </div>
+      
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Why Tracking Your Reading Statistics<br><span class="text-gradient">Can Help You Read More Books</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ทำไมการติดตามสถิติการอ่าน<br><span class="text-gradient">ถึงช่วยให้คุณอ่านหนังสือได้จบเล่มมากขึ้น</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">読書統計を記録すると<br><span class="text-gradient">本がもっと読めるようになる理由</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">为什么记录阅读统计数据<br><span class="text-gradient">能帮助您读更多书</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Por Que Acompanhar Suas Estatísticas<br><span class="text-gradient">Ajuda a Ler Mais Livros</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Por Qué Registrar tus Estadísticas<br><span class="text-gradient">Te Ayuda a Leer Más Libros</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('004-demo-memory-image-share-card.png') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📊</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Have you ever finished a great book and wondered how much time you've actually spent reading this year?</p>
+        <p>Many readers set goals like reading 20, 50, or even 100 books a year. But without tracking your progress, it's easy to lose motivation or underestimate how much you've accomplished.</p>
+        <p>That's where reading statistics can make a real difference.</p>
+
+        <h2>Why Reading Statistics Matter</h2>
+        <p>Tracking your reading isn't about turning books into a competition. It's about understanding your reading habits and celebrating your progress.</p>
+        <p>Simple statistics can answer questions like:</p>
+        <ul class="article-bullet-list">
+          <li>How many books have I finished?</li>
+          <li>How much time have I spent reading?</li>
+          <li>How many days in a row have I read?</li>
+          <li>Which books took me the longest to finish?</li>
+          <li>How often do I listen with text-to-speech?</li>
+        </ul>
+        <p>Seeing your progress visually can make reading more rewarding and help you stay consistent.</p>
+
+        <h2>Build Better Reading Habits</h2>
+        <p>One of the easiest ways to build a habit is to measure it.</p>
+        <p>Even reading for just 15–20 minutes every day can lead to dozens of finished books each year. Watching your reading streak grow gives you a small sense of achievement that encourages you to keep going.</p>
+        <p>Instead of focusing only on finishing books, you can celebrate every reading session.</p>
+
+        <h2>Share Your Reading Journey</h2>
+        <p>Reading doesn't have to be a solitary hobby.</p>
+        <p>Sharing your reading statistics with friends or on social media can inspire others to read more and help you stay accountable to your goals.</p>
+        <p>Whether you've finished your first book of the month or reached a 100-day reading streak, every milestone is worth celebrating.</p>
+
+        <h2>More Than Just an EPUB Reader</h2>
+        <p>Modern reading apps do much more than open EPUB files. They can help you:</p>
+        <ul class="article-bullet-list">
+          <li>Track reading statistics &amp; velocity</li>
+          <li>Monitor total reading progress</li>
+          <li>Read aloud with Text-to-Speech (TTS)</li>
+          <li>Translate books into multiple languages</li>
+          <li>Highlight important passages &amp; quotes</li>
+          <li>Add notes and bookmarks</li>
+          <li>Sync your library across devices</li>
+        </ul>
+        <p>These features help transform reading into a more enjoyable and productive experience.</p>
+
+        <h2>Discover Your Reading Patterns</h2>
+        <p>After tracking your reading for a few weeks, you may notice interesting patterns. For example:</p>
+        <ul class="article-bullet-list">
+          <li>You read longer on weekends.</li>
+          <li>Audiobooks or TTS help you finish more books.</li>
+          <li>Short reading sessions add up to hours each month.</li>
+          <li>Certain genres keep your attention longer than others.</li>
+        </ul>
+        <p>These insights can help you create a reading routine that works for you.</p>
+
+        <h2>Start Tracking Today</h2>
+        <p>Every page you read is progress. Whether your goal is to build a daily reading habit, finish more books, or simply understand your reading journey, tracking your reading statistics is a simple way to stay motivated.</p>
+        <p>Small reading sessions become big achievements over time. Your next reading milestone starts with the first page.</p>
+
+        <h2>Share Your Reading Statistics</h2>
+        <p>Reading is more fun when you can celebrate your progress.</p>
+        <p>With <strong>Share Reading Statistics</strong>, you can turn your reading achievements into a beautiful card that is ready to post on social media or send to friends.</p>
+        <p>Whether you've finished your first book, reached a 30-day reading streak, or simply want to show how much you've read this month, sharing your progress is a great way to stay motivated and inspire others.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Books Finished</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⏱</span>
+            <div class="stat-badge-title">Total Reading Time</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔥</span>
+            <div class="stat-badge-title">Reading Streak</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📈</span>
+            <div class="stat-badge-title">Reading Progress</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">TTS Listening Time</div>
+          </div>
+        </div>
+
+        <p>Sharing your reading statistics isn't about competing with others—it's about celebrating your personal reading journey. Many readers find that sharing milestones helps them stay consistent and encourages friends and family to read more as well.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>เคยอ่านหนังสือจบเล่มแล้วสงสัยไหมว่าปีนี้เราใช้เวลาอ่านหนังสือไปทั้งหมดกี่ชั่วโมง?</p>
+        <p>นักอ่านหลายคนตั้งเป้าหมายไว้ เช่น อ่านให้ได้ 20, 50 หรือ 100 เล่มต่อปี แต่หากปราศจากการบันทึกและติดตามผล ความมุ่งมั่นก็อาจค่อยๆ ลดลงได้ สถิติการอ่านจึงเป็นตัวช่วยสำคัญที่ทำให้เห็นผลงานอย่างเป็นรูปธรรม</p>
+
+        <h2>ทำไมสถิติการอ่านถึงมีความสำคัญ</h2>
+        <p>การติดตามสถิติไม่ได้เกี่ยวกับการแข่งขันกับผู้อื่น แต่คือการเข้าใจพฤติกรรมการอ่านและเฉลิมฉลองให้กับความก้าวหน้าของตัวคุณเอง</p>
+        <p>สถิติการอ่านง่ายๆ สามารถตอบคำถามเหล่านี้ได้:</p>
+        <ul class="article-bullet-list">
+          <li>ปีนี้เราอ่านหนังสือจบไปแล้วกี่เล่ม?</li>
+          <li>เราสะสมเวลาอ่านหนังสือไปทั้งหมดกี่ชั่วโมง?</li>
+          <li>เราอ่านหนังสือติดต่อกันมาแล้วกี่วัน (Streak)?</li>
+          <li>เล่มไหนที่เราใช้เวลาอ่านนานที่สุด?</li>
+          <li>เราใช้ฟังด้วยเสียงอ่านสังเคราะห์ (TTS) บ่อยแค่ไหน?</li>
+        </ul>
+        <p>การได้เห็นความก้าวหน้าในรูปแบบกราฟและตัวเลขช่วยสร้างกำลังใจและทำให้คุณอ่านหนังสือได้อย่างสม่ำเสมอ</p>
+
+        <h2>สร้างนิสัยการอ่านที่ดีกว่าเดิม</h2>
+        <p>วิธีที่ง่ายที่สุดในการสร้างนิสัยคือการวัดผลมัน</p>
+        <p>แม้จะอ่านหนังสือเพียงแค่วันละ 15–20 นาที ก็สามารถรวมเป็นหนังสือที่อ่านจบหลายสิบเล่มในแต่ละปี การเห็นจำนวนวันอ่านต่อเนื่องเติบโตขึ้นจะสร้างความภูมิใจเล็กๆ ที่ช่วยกระตุ้นให้คุณอ่านต่อไป</p>
+
+        <h2>แบ่งปันเส้นทางการอ่านของคุณ</h2>
+        <p>การอ่านหนังสือไม่จำเป็นต้องเป็นกิจกรรมที่โดดเดี่ยว การแบ่งปันสถิติการอ่านกับเพื่อนหรือบนโซเชียลมีเดียช่วยสร้างแรงบันดาลใจให้ผู้อื่น และช่วยเตือนความจำถึงเป้าหมายที่คุณตั้งไว้</p>
+
+        <h2>เป็นมากกว่าแอปอ่าน EPUB ทั่วไป</h2>
+        <p>แอปอ่านหนังสือยุคใหม่ทำได้มากกว่าแค่เปิดไฟล์ EPUB โดยช่วยให้คุณ:</p>
+        <ul class="article-bullet-list">
+          <li>ติดตามสถิติและความเร็วในการอ่าน</li>
+          <li>ตรวจสอบความคืบหน้าการอ่านสะสม</li>
+          <li>ฟังเสียงอ่านด้วย Text-to-Speech (TTS)</li>
+          <li>แปลภาษาหนังสือพร้อมกันหลายภาษา</li>
+          <li>ไฮไลต์ข้อความและโควตสำคัญ</li>
+          <li>บันทึกโน้ตและที่คั่นหน้า</li>
+          <li>ซิงค์คลังหนังสือข้ามอุปกรณ์</li>
+        </ul>
+
+        <h2>ค้นพบรูปแบบการอ่านของคุณ</h2>
+        <p>หลังจากบันทึกสถิติไปได้ไม่กี่สัปดาห์ คุณอาจสังเกตรูปแบบการอ่านที่น่าสนใจ เช่น:</p>
+        <ul class="article-bullet-list">
+          <li>คุณมักจะอ่านได้ยาวนานขึ้นในวันหยุดเสาร์-อาทิตย์</li>
+          <li>การฟัง TTS ช่วยให้อ่านหนังสือจบเล่มได้เร็วขึ้น</li>
+          <li>ช่วงเวลาอ่านสั้นๆ รวมกันกลายเป็นเวลาหลายชั่วโมงต่อเดือน</li>
+        </ul>
+
+        <h2>เริ่มต้นติดตามสถิติตั้งแต่วันนี้</h2>
+        <p>ทุกๆ หน้าที่คุณอ่านคือความก้าวหน้า ไม่ว่าเป้าหมายของคุณคือการสร้างนิสัยอ่านประจำวัน อ่านให้จบเล่มมากขึ้น หรือเพียงแค่เข้าใจเส้นทางการอ่านของตัวเอง การติดตามสถิติคือวิธีง่ายๆ ที่ช่วยให้คุณมีแรงบันดาลใจอยู่เสมอ</p>
+
+        <h2>แชร์การ์ดสถิติการอ่านของคุณ</h2>
+        <p>ด้วยฟีเจอร์ <strong>Share Reading Statistics (แชร์การ์ดความทรงจำ)</strong> ใน Shiori คุณสามารถแปลงผลงานการอ่านของคุณให้อยู่ในการ์ดรูปภาพสุดงดงามที่พร้อมโพสต์ลงโซเชียลมีเดียหรือส่งให้เพื่อนได้ทันที</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>素晴らしい本を読み終えた後、「今年自分は合計でどれくらい読書に時間を費やしたのだろう？」と考えたことはありませんか？</p>
+        <p>年間20冊、50冊、100冊といった目標を立てる読書家は多いですが、進捗を記録していないとモチベーションが続きにくくなります。そこで読書統計が大きな効果を発揮します。</p>
+
+        <h2>なぜ読書統計が重要なのか</h2>
+        <p>読書を記録することは、他人と競い合うためではありません。自分の読書習慣を理解し、自分の成長を祝福するためのものです。</p>
+        <ul class="article-bullet-list">
+          <li>これまでに何冊の本を読み終えたか？</li>
+          <li>合計でどれくらいの時間を読書に費やしたか？</li>
+          <li>何日連続で本を読んでいるか（Streak）？</li>
+          <li>どの本に一番時間がかかったか？</li>
+          <li>音声読み上げ（TTS）をどれくらい活用しているか？</li>
+        </ul>
+
+        <h2>より良い読書習慣を構築する</h2>
+        <p>習慣を身につける最も簡単な方法は、それを測定することです。毎日わずか15〜20分の読書でも、年間で数十冊の読了につながります。</p>
+
+        <h2>読書体験を共有する</h2>
+        <p>読書統計を友人やSNSで共有することで、他の人に刺激を与え、自分自身の読書目標へのモチベーションを維持できます。</p>
+
+        <h2>単なるEPUBリーダー以上の存在</h2>
+        <ul class="article-bullet-list">
+          <li>読書統計と読書速度の追跡</li>
+          <li>全体の読書進捗の確認</li>
+          <li>TTS（音声読み上げ）による聴く読書</li>
+          <li>多言語同時翻訳</li>
+          <li>ハイライトとメモの管理</li>
+          <li>デバイス間での同期</li>
+        </ul>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在读完一本好书后，您是否曾好奇自己今年到底花了多少时间在阅读上？</p>
+        <p>许多读者设定了每年阅读 20、50 甚至 100 本书的目标。然而，如果没有记录进度，很容易失去动力。这就是阅读统计数据能发挥巨大作用的地方。</p>
+
+        <h2>为什么阅读统计数据至关重要</h2>
+        <p>记录阅读并不是为了将看书变成一场竞争，而是为了了解自己的阅读习惯并庆祝每一个微小的进步。</p>
+        <ul class="article-bullet-list">
+          <li>我一共读完了多少本书？</li>
+          <li>我在阅读上累计花费了多少时间？</li>
+          <li>我已经连续多少天保持阅读打卡？</li>
+          <li>哪本书花费了我最长的阅读时间？</li>
+          <li>我使用语音朗读 (TTS) 的频率有多高？</li>
+        </ul>
+
+        <h2>建立更好的阅读习惯</h2>
+        <p>培养习惯最简单的方法就是度量它。每天即使只阅读 15–20 分钟，一年下来也能读完数十本书。</p>
+
+        <h2>分享您的阅读之旅</h2>
+        <p>与朋友或在社交平台上分享您的阅读统计数据，不仅能激励他人，也能帮您保持专注。</p>
+
+        <h2>超越普通 EPUB 阅读器</h2>
+        <ul class="article-bullet-list">
+          <li>追踪阅读速度与时长统计</li>
+          <li>监控总体阅读进度</li>
+          <li>Text-to-Speech 语音朗读</li>
+          <li>多语言实时翻译</li>
+          <li>划线高亮与笔记书签</li>
+          <li>跨设备云端同步</li>
+        </ul>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você já terminou um ótimo livro e se perguntou quanto tempo realmente passou lendo este ano?</p>
+        <p>Muitos leitores definem metas como ler 20, 50 ou 100 livros por ano. No entanto, sem acompanhar seu progresso, é fácil perder a motivação. É aí que as estatísticas de leitura fazem uma diferença real.</p>
+
+        <h2>Por Que as Estatísticas de Leitura Importam</h2>
+        <p>Acompanhar sua leitura não é transformar livros em uma competição, mas sim entender seus hábitos e celebrar seu progresso.</p>
+        <ul class="article-bullet-list">
+          <li>Quantos livros eu já terminei?</li>
+          <li>Quanto tempo passei lendo?</li>
+          <li>Quantos dias seguidos eu li?</li>
+          <li>Qual livro levei mais tempo para terminar?</li>
+          <li>Com que frequência ouço com Conversão de Texto em Voz?</li>
+        </ul>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>¿Alguna vez has terminado un gran libro y te has preguntado cuánto tiempo has pasado leyendo este año?</p>
+        <p>Muchos lectores se proponen leer 20, 50 o 100 libros al año. Sin embargo, sin registrar el progreso, es fácil perder la motivación. Ahí es donde las estadísticas de lectura marcan la diferencia.</p>
+
+        <h2>Por Qué Las Estadísticas de Lectura Importan</h2>
+        <p>Registrar tu lectura no es competir con nadie, sino comprender tus hábitos y celebrar cada logro.</p>
+        <ul class="article-bullet-list">
+          <li>¿Cuántos libros he terminado?</li>
+          <li>¿Cuánto tiempo he dedicado a leer?</li>
+          <li>¿Cuántos días seguidos he leído?</li>
+          <li>¿Qué libro me tomó más tiempo terminar?</li>
+          <li>¿Con qué frecuencia escucho con Texto a Voz?</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Video Walkthrough Section -->
+    <div style="margin: 2.5rem 0 3.5rem; text-align: center;">
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-en">Video Walkthrough (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-th">วิดีโอสาธิตการใช้งาน (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-jp">動画で見るガイド (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-cn">视频演示指南 (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-pt">Demonstração em Vídeo (YouTube Shorts)</h3>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);" class="lang-es">Demostración en Video (YouTube Shorts)</h3>
+
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-en">Watch how to generate and share your reading stats card in seconds:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-th">รับชมวิดีโอแนะนำสั้นเพื่อดูวิธีเปิดหน้าสถิติการอ่านและกดแชร์การ์ดความทรงจำ:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-jp">読書統計カードを生成して共有する手順を動画でご覧ください：</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-cn">观看短视频演示，了解如何一键生成并分享精美的阅读成就卡片：</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-pt">Veja como gerar e compartilhar seu cartão de estatísticas de leitura em segundos:</p>
+      <p style="color: var(--text-secondary); max-width: 550px; margin: 0 auto 1.5rem;" class="lang-es">Mira cómo generar y compartir tu tarjeta de estadísticas de lectura en segundos:</p>
+
+      <div class="short-video-container">
+        <div class="short-video-wrapper">
+          <iframe src="https://www.youtube-nocookie.com/embed/wCBPbkXUaTA" title="Share Reading Statistics & Milestone Cards - Shiori EPUB Reader" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-en">How to View &amp; Share Your Reading Statistics (Step-by-Step)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการดูสถิติและกดแชร์การ์ดความทรงจำ (4 สเต็ปง่ายๆ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-jp">読書統計の確認＆マイルストーンカード共有の4ステップ</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-cn">查看统计与分享阅读卡片的 4 步指引</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-pt">Como Ver e Compartilhar Suas Estatísticas de Leitura (4 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);" class="lang-es">Cómo Ver y Compartir tus Estadísticas de Lectura (4 Pasos)</h2>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Long-press Any Book on Bookshelf</div>
+          <div class="step-desc">
+            <p>On your Shiori Bookshelf, tap and hold (long-press) the cover of the book you want to view reading insights for.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>กดแตะค้างที่ปกหนังสือบนชั้นหนังสือ</div>
+          <div class="step-desc">
+            <p>บนหน้าชั้นหนังสือ Shiori ให้แตะค้าง (Long-press) บนรูปปกหนังสือเล่มที่คุณต้องการดูสถิติและ Insights</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>本棚で対象の本を長押し</div>
+          <div class="step-desc">
+            <p>Shioriの本棚画面で、読書インサイトを確認したい本を長押しします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>在书架上长按目标图书</div>
+          <div class="step-desc">
+            <p>在 Shiori 书架界面中，长按您想要查看阅读统计信息的图书封面。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Pressione e Segure Qualquer Livro na Estante</div>
+          <div class="step-desc">
+            <p>Na sua estante do Shiori, toque e segure a capa do livro que deseja visualizar as estatísticas.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Mantén Presionado Cualquier Libro en la Estantería</div>
+          <div class="step-desc">
+            <p>En tu estantería de Shiori, mantén presionada la portada del libro del cual deseas ver las estadísticas.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="001-long-touch-your-book-want-to-share-insight.jpg" alt="Step 1: Long-press book on Shiori bookshelf" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Select "Insights" from Context Menu</div>
+          <div class="step-desc">
+            <p>When the action menu pops up, tap <strong>Insights</strong> to open the dedicated reading statistics dashboard for that book.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เลือกเมนู "Insights" จากรายการตัวเลือก</div>
+          <div class="step-desc">
+            <p>เมื่อเมนูป๊อบอัพแสดงขึ้นมา ให้กดเลือกรายการ <strong>Insights (สถิติการอ่าน)</strong> เพื่อเข้าสู่หน้าสถิติของหนังสือเล่มนั้น</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>メニューから「インサイト」を選択</div>
+          <div class="step-desc">
+            <p>ポップアップ表示されたアクションメニューから <strong>「インサイト (Insights)」</strong> をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>在弹出的菜单中选择 “Insights”</div>
+          <div class="step-desc">
+            <p>在弹出的操作菜单中，轻触 <strong>Insights（阅读统计）</strong> 选项。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Selecione "Insights" no Menu</div>
+          <div class="step-desc">
+            <p>Quando o menu de ações aparecer, toque em <strong>Insights</strong> para abrir o painel de estatísticas do livro.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Selecciona "Insights" en el Menú</div>
+          <div class="step-desc">
+            <p>Cuando aparezca el menú de acciones, toca <strong>Insights</strong> para abrir el panel de estadísticas del libro.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="002-menu-appear-touch-insights.jpg" alt="Step 2: Select Insights from context menu" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Explore Stats &amp; Tap Share Card</div>
+          <div class="step-desc">
+            <p>Review your total reading duration, reading velocity, and completion timeline. Tap the <strong>Share Card / Memory</strong> icon to generate your shareable graphic.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ดูสถิติลายเล่มและกดปุ่มแชร์การ์ดความทรงจำ</div>
+          <div class="step-desc">
+            <p>สำรวจสถิติเวลาที่ใช้ ความเร็วในการอ่าน และกราฟความคืบหน้า จากนั้นแตะปุ่ม <strong>Share Card / Memory (แชร์การ์ดความทรงจำ)</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>統計を確認してカード共有をタップ</div>
+          <div class="step-desc">
+            <p>読書時間、読書速度、進捗グラフを確認し、<strong>「Share Card / Memory」</strong> アイコンをタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>查看统计并点击生成分享卡片</div>
+          <div class="step-desc">
+            <p>查看总阅读时长、阅读速度与进度曲线，然后点击 <strong>Share Card / Memory</strong> 图标。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Explore as Estatísticas e Toque em Compartilhar</div>
+          <div class="step-desc">
+            <p>Revise a duração total da leitura, velocidade e linha de tempo. Toque no ícone <strong>Share Card / Memory</strong> para gerar sua imagem.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Explora las Estadísticas y Toca Compartir</div>
+          <div class="step-desc">
+            <p>Revisa la duración total de lectura, velocidad y línea de tiempo. Toca el ícono <strong>Share Card / Memory</strong> para generar tu imagen.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="003-insight-of-book-appear-your-can-share.jpg" alt="Step 3: View stats dashboard and tap share card" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- ==================== STEP 4 ==================== -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Share Your Beautiful Memory Milestone Card</div>
+          <div class="step-desc">
+            <p>Shiori generates a high-resolution, beautifully formatted card displaying book cover, completion status, total reading time, and reading streak—ready to post on Instagram, X, Facebook, or send directly to friends!</p>
+            <div class="quote-callout">
+              <strong>🎉 Celebrate Every Page</strong><br />
+              Sharing your milestones builds habit accountability and inspires friends in your reading circle.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>แชร์การ์ดความทรงจำสุดงดงามลงโซเชียลมีเดีย</div>
+          <div class="step-desc">
+            <p>แอป Shiori จะสร้างการ์ดรูปภาพสรุปผลงานการอ่านความละเอียดสูง ดีไซน์สวยงาม พร้อมแสดงรูปปก เวลาอ่านสะสม และเปอร์เซ็นต์อ่านจบ พร้อมส่งต่อให้เพื่อนหรือโพสต์ลงโซเชียลมีเดียได้ทันที!</p>
+            <div class="quote-callout">
+              <strong>🎉 เฉลิมฉลองทุกความสำเร็จของการอ่าน</strong><br />
+              การแบ่งปันเป้าหมายช่วยสร้างวินัย และสร้างแรงบันดาลใจให้นักอ่านคนอื่นๆ รอบตัวคุณ
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>美しいメモリカードをSNSへ共有</div>
+          <div class="step-desc">
+            <p>Shioriが表紙画像、読書時間、進捗状況を美しい高解像度カード画像として自動生成します。Instagram、X、Facebookで簡単に共有できます！</p>
+            <div class="quote-callout">
+              <strong>🎉 読書の達成感をシェア</strong><br />
+              読書マイルストーンを共有することで、習慣化のモチベーションが高まります。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>将精美的成就记忆卡片分享至社交平台</div>
+          <div class="step-desc">
+            <p>Shiori 自动生成包含图书封面、总阅读时间、进度百分比的高分辨率高清卡片，可即刻一键分享至微信朋友圈、微博、X 或发送给好友！</p>
+            <div class="quote-callout">
+              <strong>🎉 庆祝每一个阅读里程碑</strong><br />
+              分享阅读成就不仅能督促自己坚持阅读，更能激励身边的好友一同加入阅读。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Compartilhe Seu Lindo Cartão de Conquistas</div>
+          <div class="step-desc">
+            <p>O Shiori gera um cartão de alta resolução exibindo a capa do livro, tempo total de leitura e progresso — pronto para postar nas redes sociais!</p>
+            <div class="quote-callout">
+              <strong>🎉 Celebre Cada Página</strong><br />
+              Compartilhar seus marcos ajuda a manter a consistência e inspira seus amigos leitores.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Comparte tu Hermosa Tarjeta de Logros</div>
+          <div class="step-desc">
+            <p>Shiori genera una tarjeta de alta resolución que muestra la portada del libro, el tiempo total de lectura y el progreso, ¡lista para publicar en redes sociales!</p>
+            <div class="quote-callout">
+              <strong>🎉 Celebra Cada Página</strong><br />
+              Compartir tus logros te ayuda a mantener la constancia e inspira a tus amigos lectores.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="004-demo-memory-image-share-card.png" alt="Step 4: Beautiful generated reading statistics memory share card" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Every Page You Read is Progress</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;">
+        Download Shiori EPUB Reader today and start tracking your reading velocity, building daily habits, and celebrating reading milestones.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

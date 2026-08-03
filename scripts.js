@@ -194,6 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-title": "Wirelessly Send Books from Calibre to Your Android Device",
       "blog-p10-desc": "Learn how to wirelessly transfer EPUB ebooks from Calibre on your computer to Shiori EPUB Reader on Android over local Wi-Fi without USB cables.",
 
+      // Blog Post 11
+      "blog-p11-date": "📅 August 3, 2026",
+      "blog-p11-cat": "🏷️ Reading Habits",
+      "blog-p11-title": "Why Tracking Your Reading Statistics Can Help You Read More Books",
+      "blog-p11-desc": "Discover how tracking reading velocity, total time spent, and sharing beautiful milestone cards in Shiori builds consistent reading habits.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -402,6 +408,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-cat": "🏷️ การเชื่อมต่อ Calibre",
       "blog-p10-title": "วิธีส่งหนังสือจาก Calibre เข้า Android ผ่าน Wi-Fi ไร้สาย ไม่ต้องเสียบสาย USB",
       "blog-p10-desc": "คู่มือขั้นตอนการส่งไฟล์หนังสือ EPUB จากโปรแกรม Calibre บนคอมพิวเตอร์ไปยังแอป Shiori บนมือถือ Android ผ่านสัญญาณ Wi-Fi โดยไม่ต้องง้อสาย USB",
+
+      // Blog Post 11
+      "blog-p11-date": "📅 3 สิงหาคม 2026",
+      "blog-p11-cat": "🏷️ นิสัยการอ่าน",
+      "blog-p11-title": "ทำไมการติดตามสถิติการอ่านถึงช่วยให้คุณอ่านหนังสือได้จบเล่มมากขึ้น",
+      "blog-p11-desc": "เรียนรู้วิธีติดตามสถิติการอ่าน เวลาที่ใช้ พร้อมวิธีสร้างการ์ดความทรงจำสวยงามเพื่อแชร์ความสำเร็จของการอ่านบนโซเชียลมีเดียใน Shiori",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -612,6 +624,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-title": "USBケーブル不要！CalibreからAndroidへワイヤレスで本を送信する方法",
       "blog-p10-desc": "パソコンのCalibreライブラリからAndroid端末のShiori EPUBリーダーへ、Wi-Fi経由で直接本をワイヤレス転送する方法を解説します。",
 
+      // Blog Post 11
+      "blog-p11-date": "📅 2026年8月3日",
+      "blog-p11-cat": "🏷️ 読書習慣",
+      "blog-p11-title": "読書統計を記録すると本がもっと読めるようになる理由",
+      "blog-p11-desc": "Shioriの読書統計や所要時間グラフを記録し、美しいマイルストーンカードをSNSで共有して読書習慣を定着させる方法を解説します。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -820,6 +838,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-cat": "🏷️ Calibre 联动",
       "blog-p10-title": "无需 USB 数据线！如何将 Calibre 图书无线发送至 Android 设备",
       "blog-p10-desc": "指引步骤：如何在局域网 Wi-Fi 下将电脑端 Calibre 藏书一键无线发送至 Android 端的 Shiori EPUB 阅读器。",
+
+      // Blog Post 11
+      "blog-p11-date": "📅 2026年8月3日",
+      "blog-p11-cat": "🏷️ 阅读习惯",
+      "blog-p11-title": "为什么记录阅读统计数据能帮助您读更多书",
+      "blog-p11-desc": "了解如何利用 Shiori 的阅读速度统计与时长追溯，一键生成精美里程碑成就卡片并分享至社交平台，建立持续阅读习惯。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1030,6 +1054,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-title": "Envie Livros do Calibre sem Fio para Seu Dispositivo Android",
       "blog-p10-desc": "Aprenda como transferir e-books EPUB do Calibre no seu computador para o Shiori EPUB Reader no Android via Wi-Fi sem cabos USB.",
 
+      // Blog Post 11
+      "blog-p11-date": "📅 3 de agosto de 2026",
+      "blog-p11-cat": "🏷️ Hábitos de Leitura",
+      "blog-p11-title": "Por Que Acompanhar Suas Estatísticas de Leitura Ajuda a Ler Mais Livros",
+      "blog-p11-desc": "Descubra como acompanhar a velocidade de leitura e compartilhar belos cartões de conquistas no Shiori constrói hábitos de leitura consistentes.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1238,6 +1268,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p10-cat": "🏷️ Integración con Calibre",
       "blog-p10-title": "Envía Libros de Calibre Inalámbricamente a tu Dispositivo Android",
       "blog-p10-desc": "Aprende a transferir e-books EPUB desde Calibre en tu computadora a Shiori EPUB Reader en Android mediante Wi-Fi local sin cables USB.",
+
+      // Blog Post 11
+      "blog-p11-date": "📅 3 de agosto de 2026",
+      "blog-p11-cat": "🏷️ Hábitos de Lectura",
+      "blog-p11-title": "Por Qué Registrar tus Estadísticas de Lectura Te Ayuda a Leer Más Libros",
+      "blog-p11-desc": "Descubre cómo registrar la velocidad de lectura, el tiempo total y compartir hermosas tarjetas de logros en Shiori ayuda a mantener el hábito de lectura.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",
