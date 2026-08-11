@@ -224,6 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-title": "Add an S3 Bucket as a Library Server (AWS S3, MinIO, R2)",
       "blog-p15-desc": "Connect any S3-compatible bucket — AWS S3, MinIO, Cloudflare R2, Wasabi or DigitalOcean Spaces — then browse folders and download EPUBs straight to your device.",
 
+      // Blog Post 16
+      "blog-p16-date": "📅 August 11, 2026",
+      "blog-p16-cat": "🏷️ Library & Organization",
+      "blog-p16-title": "Organize Your Ebooks with Collections",
+      "blog-p16-desc": "Create, rename, recolor and reorder shelves, add or remove books, and filter your whole library by reading status — a complete guide to Collections.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -462,6 +468,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-cat": "🏷️ เซิร์ฟเวอร์ห้องสมุด",
       "blog-p15-title": "วิธีเชื่อมต่อ S3 Bucket เป็นคลังหนังสือส่วนตัว (AWS S3, MinIO, R2)",
       "blog-p15-desc": "เปิดอ่านหนังสือจาก Object Storage ได้โดยตรง เชื่อมต่อทั้ง AWS S3, MinIO, Cloudflare R2, Wasabi หรือ DigitalOcean Spaces เปิดดูโฟลเดอร์และดาวน์โหลดไฟล์ EPUB เข้าเครื่องได้ทันที",
+
+      // Blog Post 16
+      "blog-p16-date": "📅 11 สิงหาคม 2026",
+      "blog-p16-cat": "🏷️ จัดการคลังหนังสือ",
+      "blog-p16-title": "จัดระเบียบชั้นหนังสือด้วย Collections: สร้างชั้น ย้อมสี และกรองสถานะ",
+      "blog-p16-desc": "จัดหมวดหมู่หนังสือเล่มโปรดตามใจชอบ สร้างคอลเลกชัน แยกสีสัน จัดเรียงชั้น วางหนังสือได้หลายหมวด และกรองตามสถานะการอ่านได้ในแตะเดียว",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -702,6 +714,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-title": "S3バケットを本棚サーバーとして追加する方法（AWS S3、MinIO、R2）",
       "blog-p15-desc": "AWS S3、MinIO、Cloudflare R2、Wasabi、DigitalOcean SpacesなどのS3互換ストレージを直接接続。フォルダ階層の閲覧からEPUBの直接ダウンロードまでスムーズに行えます。",
 
+      // Blog Post 16
+      "blog-p16-date": "📅 2026年8月11日",
+      "blog-p16-cat": "🏷️ 本棚・整理",
+      "blog-p16-title": "コレクション機能で電子書籍を美しく整理する方法",
+      "blog-p16-desc": "自由にカラーを設定できるコレクション作成、複数棚への登録、並べ替え、そして読書ステータスによる絞り込みまで。本棚を思い通りに整える完全ガイド。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -940,6 +958,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-cat": "🏷️ 书库服务器",
       "blog-p15-title": "如何将 S3 存储桶添加为书库服务器（AWS S3、MinIO、R2）",
       "blog-p15-desc": "直接连接任意兼容 S3 协议的云存储——AWS S3、MinIO、Cloudflare R2、Wasabi 或 DigitalOcean Spaces，随时浏览目录并一键下载 EPUB 电子书。",
+
+      // Blog Post 16
+      "blog-p16-date": "📅 2026年8月11日",
+      "blog-p16-cat": "🏷️ 书架整理",
+      "blog-p16-title": "使用“收藏集”整理电子书：创建、色彩标记与状态筛选",
+      "blog-p16-desc": "随心创建个性化书架并指定专属色彩，一书多归类、自由调整排序，更有一键按阅读状态筛选书库的便捷体验。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1180,6 +1204,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-title": "Como Adicionar um Bucket S3 como Servidor de Biblioteca (AWS S3, MinIO, R2)",
       "blog-p15-desc": "Conecte qualquer bucket compatível com S3 — AWS S3, MinIO, Cloudflare R2, Wasabi ou DigitalOcean Spaces — navegue por pastas e baixe livros EPUB diretamente no seu Android.",
 
+      // Blog Post 16
+      "blog-p16-date": "📅 11 de agosto de 2026",
+      "blog-p16-cat": "🏷️ Organização da Biblioteca",
+      "blog-p16-title": "Organize Seus E-books com Coleções: Crie, Filtre e Gerencie",
+      "blog-p16-desc": "Crie prateleiras personalizadas com cores exclusivas, adicione livros a múltiplas coleções, reordene estantes e filtre por status de leitura com total facilidade.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1418,6 +1448,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p15-cat": "🏷️ Servidores de Biblioteca",
       "blog-p15-title": "Cómo Añadir un Bucket S3 como Servidor de Biblioteca (AWS S3, MinIO, R2)",
       "blog-p15-desc": "Conecta cualquier bucket compatible con S3 (AWS S3, MinIO, Cloudflare R2, Wasabi o DigitalOcean Spaces), explora carpetas y descarga libros EPUB directamente en tu dispositivo.",
+
+      // Blog Post 16
+      "blog-p16-date": "📅 11 de agosto de 2026",
+      "blog-p16-cat": "🏷️ Organización de la Biblioteca",
+      "blog-p16-title": "Organiza tus Libros Electrónicos con Colecciones (Crear, Filtrar y Gestionar)",
+      "blog-p16-desc": "Crea estanterías personalizadas con colores, añade libros a varias colecciones, reordena y filtra toda tu biblioteca por estado de lectura en un solo toque.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

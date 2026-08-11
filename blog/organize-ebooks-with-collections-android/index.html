@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Organize Your Ebooks with Collections — Create, Filter & Manage — Shiori Blog</title>
+  <meta name="description" content="Organize your ebook library with Collections in Shiori: create, rename, recolor and reorder shelves, add or remove books, and filter your library by reading status — all on Android." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/organize-ebooks-with-collections-android/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Organize Your Ebooks with Collections in Shiori for Android",
+    "description": "A complete guide to Collections in the Shiori EPUB reader for Android: creating and coloring shelves, adding and removing books, renaming, reordering and deleting collections, and filtering your library by reading status.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/organize-ebooks-with-collections-android/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p16-date">📅 August 11, 2026</span>
+        <span data-i18n="blog-p16-cat">🏷️ Library & Organization</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">A Place for Every Book<br><span class="text-gradient">Organize Your Library with Collections</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">จัดระเบียบชั้นหนังสือให้อบอุ่น สบายตา<br><span class="text-gradient">ด้วยระบบ Collections บน Shiori สำหรับ Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">本棚を思い通りにデザインする<br><span class="text-gradient">コレクション機能で電子書籍を美しく整理する方法</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">让每本书都各有归宿<br><span class="text-gradient">使用“收藏集”精心打理您的个人数字书架</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Um Lugar Para Cada Livro<br><span class="text-gradient">Organize Sua Biblioteca com Coleções no Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Un Lugar Para Cada Libro<br><span class="text-gradient">Organiza Tu Biblioteca con Colecciones en Shiori</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('01-collections-hub-overview.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📚</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>A growing book collection is one of life's greatest pleasures — until your shelf becomes so vast that finding the right book feels like searching for a needle in a haystack. <strong>Collections</strong> in Shiori are designed to bring harmony back to your library. Rather than forcing your books into rigid folders, Collections give you the flexibility to group titles however your mind naturally categorizes them: by genre, favorite authors, current study topics, cozy weekend reads, or reading mood. Give each shelf a distinct color, tuck your books inside, and watch your personal library transform into an inviting, beautifully curated haven.</p>
+
+        <h2>What You Can Do with Collections</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Create unlimited custom shelves</strong>, each styled with its own distinct accent color.</li>
+          <li><strong>Add or remove books in a few gentle taps</strong> — a single book can effortlessly belong to multiple collections at once (e.g., both "Sci-Fi Classics" and "Favorites").</li>
+          <li><strong>Rename, recolor, and reorder shelves</strong> anytime your reading tastes evolve.</li>
+          <li><strong>Delete collections worry-free</strong> — removing a shelf never deletes the actual book files from your library.</li>
+          <li><strong>Filter your entire bookshelf</strong> by reading status — <em>Reading</em>, <em>Unread</em>, <em>Want to Read</em>, or <em>Finished</em>.</li>
+        </ul>
+
+        <h2>Two Delightful Ways to Explore Your Library</h2>
+        <p>Whether you want to dive into a specific topic or see what's on your immediate reading radar, Shiori gives you two instant paths. Tap any collection shelf to view only its carefully curated titles, or tap a reading status tile at the top of the Collections tab to focus your whole bookshelf on what you are actively reading, books waiting to be started, or finished gems you might want to revisit.</p>
+
+        <h2>Organize in Six Simple Steps</h2>
+        <p>From building your first colorful shelf to filtering your library with ease.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>การมีหนังสือสะสมเพิ่มขึ้นเรื่อยๆ คือความสุขอย่างหนึ่งของคนรักการอ่าน—แต่เมื่อชั้นหนังสือเริ่มแน่น การเลื่อนหาหนังสือเล่มที่อยากอ่านในขณะนั้นอาจกลายเป็นเรื่องชวนตาลายได้ ฟีเจอร์ <strong>Collections (คอลเลกชัน)</strong> ใน Shiori ถูกออกแบบมาเพื่อคืนความเป็นระเบียบและมอบความสบายใจให้คุณ โดยเปิดโอกาสให้คุณจัดหมวดหมู่หนังสือได้ตามความคิดและความรู้สึกของคุณเอง: ไม่ว่าจะแยกตามแนววรรณกรรม, นักเขียนคนโปรด, เรื่องที่ตั้งใจจะอ่านเร็วๆ นี้ หรือแม้แต่หนังสือตามอารมณ์ เพียงตั้งชื่อชั้นหนังสือ แต่งแต้มสีสันประจำหมวด แล้วจัดเก็บเล่มที่ต้องการลงไป คลังหนังสือดิจิทัลของคุณก็จะกลายเป็นมุมโปรดที่น่าหยิบมาอ่านทุกวัน</p>
+
+        <h2>สิ่งที่คุณทำได้ใน Collections</h2>
+        <ul class="article-bullet-list">
+          <li><strong>สร้างชั้นหนังสือได้ไม่จำกัด</strong> พร้อมเลือกสีประจำหมวดหมู่ได้อย่างอิสระ</li>
+          <li><strong>เพิ่มหรือถอนหนังสือได้ในไม่กี่แตะ</strong> — หนังสือหนึ่งเล่มสามารถอยู่ได้หลายคอลเลกชันพร้อมกัน (เช่น อยู่ทั้งในหมวด "วรรณกรรมคลาสสิก" และ "เล่มโปรดตลอดกาล")</li>
+          <li><strong>เปลี่ยนชื่อ เปลี่ยนสี และสลับลำดับชั้น</strong> ได้ตลอดเวลาตามความชอบที่เปลี่ยนไป</li>
+          <li><strong>ลบคอลเลกชันได้อย่างสบายใจ</strong> — การลบชั้นหนังสือจะไม่ลบไฟล์หนังสือเล่มจริงออกจากเครื่องของคุณอย่างแน่นอน</li>
+          <li><strong>กรองดูหนังสือตามสถานะการอ่าน</strong> — ทั้ง <em>กำลังอ่าน (Reading)</em>, <em>ยังไม่ได้อ่าน (Unread)</em>, <em>อยากอ่าน (Want to Read)</em> หรือ <em>อ่านจบแล้ว (Finished)</em></li>
+        </ul>
+
+        <h2>ค้นหาหนังสือง่ายๆ ได้ 2 รูปแบบ</h2>
+        <p>ไม่ว่าคุณจะอยากเจาะจงดูหนังสือเฉพาะหมวด หรืออยากเช็กว่ามีเล่มไหนที่อ่านค้างอยู่บ้าง Shiori ช่วยให้คุณเข้าถึงได้ทันทีในแตะเดียว: แตะที่คอลเลกชันเพื่อดูหนังสือในหมวดนั้น หรือแตะที่กล่องสถานะด้านบนของแท็บ Collections เพื่อกรองทั้งคลังหนังสือให้เหลือเฉพาะเล่มที่คุณต้องการได้อย่างรวดเร็ว</p>
+
+        <h2>6 ขั้นตอนในการจัดระเบียบคลังหนังสือ</h2>
+        <p>มาดูวิธีสร้างชั้นหนังสือ จัดหมวดหมู่ และค้นหาหนังสือเล่มโปรดอย่างง่ายดายกันครับ</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>読みたい本が増えていくのは読書家にとって大きな喜びですが、本棚が広がりすぎると目的の1冊を探すのが大変になることもあります。Shioriの **コレクション（Collections）** 機能は、あなたの本棚に心地よい秩序と美しさをもたらします。ジャンル、お気に入りの著者、今月の読書課題、週末のリラックス読書など、あなたの直感に合わせて自由に棚を作成できます。棚ごとに好きなテーマカラーを設定し、本を分類するだけで、いつでも手に取りたくなる自分だけの書斎が完成します。</p>
+
+        <h2>コレクション機能でできること</h2>
+        <ul class="article-bullet-list">
+          <li><strong>自由なカラーで無制限に棚を作成</strong> できます。</li>
+          <li><strong>数タップで簡単に本を追加・解除</strong> — 1冊の本を複数のコレクション（例：「SF名作」と「お気に入り」）に同時に所属させることができます。</li>
+          <li><strong>棚の名前変更、カラー変更、並び替え</strong> も思いのまま。</li>
+          <li><strong>安心して棚を削除</strong> — コレクションを削除しても、本自体が端末から消えることはありません。</li>
+          <li><strong>読書ステータスで一括絞り込み</strong> — <em>読書中（Reading）</em>、<em>未読（Unread）</em>、<em>読みたい（Want to Read）</em>、<em>読了（Finished）</em> をワンタップで確認できます。</li>
+        </ul>
+
+        <h2>目的の本へ素早くアクセスする2つの方法</h2>
+        <p>特定のコレクションをタップしてその棚の本だけをじっくり眺めることも、画面上部のステータスパネルをタップして「いま読んでいる本」や「読了した本」だけを一瞬で抽出することも可能です。どちらの方法でも、迷うことなく読書に入り込めます。</p>
+
+        <h2>6つのステップで本棚をすっきり整理</h2>
+        <p>最初のコレクション作成から、本棚の絞り込み表示までの手順を分かりやすくご紹介します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>藏书日益丰富本是爱书人的一大乐事，但若书架过于庞大，寻找想读的书便可能变得费时费力。Shiori 的 **收藏集（Collections）** 功能旨在为您的数字书房带来井然秩序与优雅美感。您可以完全依照自己的思维习惯来归类图书：按文学体裁、心仪作家、研读专题、周末消遣或当下心境皆可。为每个书架赋予专属色彩，将书籍轻巧归入，属于您的精选书阁便跃然眼前。</p>
+
+        <h2>收藏集功能的强大特性</h2>
+        <ul class="article-bullet-list">
+          <li><strong>随心创建无上限的个性化书架</strong>，每个书架均可指定专属的主题色点。</li>
+          <li><strong>轻点几下即可添加或移除书籍</strong> — 一本书可同时归入多个收藏集（例如同时存在于“科幻经典”与“挚爱必读”中）。</li>
+          <li><strong>随时重命名、更换颜色与调整前后顺序</strong>，紧跟您的阅读品味变化。</li>
+          <li><strong>无忧删除书架</strong> — 删除收藏集绝不会删除图书文件本身。</li>
+          <li><strong>全书架按阅读状态即时筛选</strong> — 支持 <em>在读（Reading）</em>、<em>未读（Unread）</em>、<em>想读（Want to Read）</em> 与 <em>已读（Finished）</em>。</li>
+        </ul>
+
+        <h2>两种便捷方式，秒速找到想读之书</h2>
+        <p>无论是想细细品味某一专题藏书，还是想查看当前在读进度，Shiori 都为您提供了极速入口：点击任意收藏集即可仅浏览该分组图书；或点击顶部的状态卡片，瞬间将整个书库过滤为在读书目或待读书单。</p>
+
+        <h2>只需 6 步，轻松打理私人书房</h2>
+        <p>跟随以下图文步骤，从创建第一个专属书架开始，享受井井有条的阅读乐趣。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Uma coleção de livros crescente é um dos maiores prazeres da vida — até que sua estante fique tão cheia que encontrar um livro específico se torne uma tarefa demorada. O recurso de **Coleções (Collections)** no Shiori foi criado para trazer harmonia e beleza à sua biblioteca. Agrupe seus títulos do jeito que fizer mais sentido para você: por gênero literário, autores favoritos, estudos atuais ou leituras para o fim de semana. Dê a cada prateleira uma cor exclusiva e veja sua biblioteca se transformar em um espaço acolhedor e perfeitamente organizado.</p>
+
+        <h2>O Que Você Pode Fazer com as Coleções</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Crie prateleiras ilimitadas</strong>, cada uma com sua própria cor de destaque.</li>
+          <li><strong>Adicione ou remova livros com poucos toques</strong> — um mesmo livro pode pertencer a várias coleções simultaneamente (ex: "Ficção Científica" e "Favoritos").</li>
+          <li><strong>Renomeie, mude de cor e reordene prateleiras</strong> sempre que seus gostos mudarem.</li>
+          <li><strong>Exclua coleções com total segurança</strong> — apagar uma prateleira nunca remove os arquivos dos livros do seu aparelho.</li>
+          <li><strong>Filtre toda a biblioteca por status de leitura</strong> — <em>Lendo</em>, <em>Não lido</em>, <em>Quero ler</em> ou <em>Concluído</em>.</li>
+        </ul>
+
+        <h2>Duas Maneiras Rápidas de Encontrar Seus Livros</h2>
+        <p>Toque em qualquer coleção para ver apenas os livros daquela prateleira, ou toque nos cartões de status no topo da aba Coleções para filtrar toda a sua biblioteca instantaneamente pelo que você está lendo agora ou livros já finalizados.</p>
+
+        <h2>Organize Sua Biblioteca em 6 Passos Simples</h2>
+        <p>Confira o passo a passo completo desde a criação da primeira prateleira até a filtragem avançada.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Ver crecer tu colección de libros es una auténtica satisfacción, hasta que la biblioteca es tan amplia que encontrar el libro adecuado requiere desplazarse sin fin. Las **Colecciones (Collections)** de Shiori están pensadas para devolver el orden y la armonía a tu espacio de lectura. Agrupa tus libros con total libertad: por género, autores predilectos, temas de estudio o lecturas de fin de semana. Asigna un color distintivo a cada estantería y transforma tu biblioteca en un rincón personal y acogedor.</p>
+
+        <h2>Qué Puedes Hacer con las Colecciones</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Crea estanterías personalizadas sin límite</strong>, cada una con su propio color temático.</li>
+          <li><strong>Añade o quita libros en un par de toques</strong>: un mismo libro puede formar parte de varias colecciones a la vez (por ejemplo, "Clásicos de Ciencia Ficción" y "Favoritos").</li>
+          <li><strong>Renombra, cambia de color y reordena tus estantes</strong> según evolucionen tus gustos.</li>
+          <li><strong>Elimina colecciones sin preocupaciones</strong>: borrar una estantería nunca elimina los archivos de tus libros.</li>
+          <li><strong>Filtra toda tu biblioteca por estado de lectura</strong>: <em>Leyendo</em>, <em>No leído</em>, <em>Por leer</em> o <em>Terminado</em>.</li>
+        </ul>
+
+        <h2>Dos Formas Cómodas de Explorar Tus Libros</h2>
+        <p>Toca en cualquier colección para ver únicamente los títulos que contiene, o pulsa en las tarjetas de estado de la parte superior para filtrar toda tu biblioteca en un instante según lo que estás leyendo ahora o lo que ya has terminado.</p>
+
+        <h2>Organiza Tu Biblioteca en 6 Sencillos Pasos</h2>
+        <p>Sigue esta guía paso a paso para crear estanterías a tu gusto y tener cada libro siempre a mano.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (6 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการใช้งานอย่างละเอียด (6 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">使い方の手順ガイド（6つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文操作指南（6 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (6 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (6 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Meet the Collections Tab</div>
+          <div class="step-desc">
+            <p>Open the <strong>Collections</strong> tab from the bottom navigation. At the top are reading-status filter tiles; below them, <strong>My Collections</strong> holds all the personalized shelves you've created, each showing its color dot and book count.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ทำความรู้จักกับแท็บ Collections</div>
+          <div class="step-desc">
+            <p>เปิดแท็บ <strong>Collections (คอลเลกชัน)</strong> จากเมนูด้านล่าง ด้านบนสุดจะพบกล่องตัวกรองสถานะการอ่าน ถัดลงมาในส่วน <strong>My Collections</strong> จะรวบรวมชั้นหนังสือทั้งหมดที่คุณสร้างไว้ พร้อมแสดงแถบสีและจำนวนเล่มอย่างชัดเจน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>「コレクション」タブを開く</div>
+          <div class="step-desc">
+            <p>下部ナビゲーションから <strong>Collections（コレクション）</strong> タブを開きます。上部には読書ステータスのフィルターカードが並び、その下の <strong>My Collections</strong> に作成済みの棚一覧がカラーマークと冊数とともに美しく並びます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>了解“藏书 / 收藏集”主界面</div>
+          <div class="step-desc">
+            <p>从底部导航进入 <strong>Collections（藏书）</strong> 标签页。顶部是快速阅读状态筛选区；下方 <strong>My Collections</strong> 则汇集了您创建的所有个性化书架，清晰标注主题色与藏书量。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Conheça a Aba de Coleções</div>
+          <div class="step-desc">
+            <p>Abra a aba <strong>Collections (Coleções)</strong> na barra inferior. No topo estão os cartões de status de leitura; abaixo, em <strong>My Collections</strong>, ficam todas as prateleiras que você criou, com suas cores e contagem de livros.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Descubre la Pestaña de Colecciones</div>
+          <div class="step-desc">
+            <p>Abre la pestaña <strong>Collections (Colecciones)</strong> en la barra inferior. En la parte superior encontrarás las tarjetas de estado de lectura; debajo, en <strong>My Collections</strong>, verás tus estantes con su color distintivo y número de libros.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-collections-hub-overview.jpg" alt="The Collections tab in Shiori showing reading-status tiles and custom collections" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Create a Collection</div>
+          <div class="step-desc">
+            <p>Tap <strong>Create new</strong> (or the <strong>+</strong> icon beside My Collections). Type a name for your shelf, choose a pleasant color that reflects its spirit, and tap <strong>Save</strong>. That is all it takes to start a fresh collection.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>สร้างคอลเลกชันใหม่ในไม่กี่วินาที</div>
+          <div class="step-desc">
+            <p>แตะที่ <strong>Create new</strong> (หรือเครื่องหมาย <strong>+</strong> ข้างหัวข้อ My Collections) ตั้งชื่อชั้นหนังสือ เลือกโทนสีที่เข้ากับธีม แล้วแตะ <strong>Save</strong> เพียงเท่านี้ชั้นหนังสือใหม่ก็พร้อมใช้งานทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>新しいコレクションを作成する</div>
+          <div class="step-desc">
+            <p><strong>Create new</strong>（または「My Collections」の横にある <strong>+</strong> ボタン）をタップします。棚の名前を入力し、お好みのカラーパレットを選んで <strong>Save</strong> をタップするだけで、新しい棚が完成します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>创建全新的收藏集书架</div>
+          <div class="step-desc">
+            <p>点击 <strong>Create new</strong>（或“My Collections”旁的 <strong>+</strong> 号）。输入书架名称，挑选一枚契合心情的色彩，点击 <strong>Save</strong> 保存，全新书架即刻建立完成。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Crie Uma Nova Coleção</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Create new</strong> (ou no ícone <strong>+</strong> ao lado de My Collections). Dê um nome à sua prateleira, escolha uma cor harmoniosa e toque em <strong>Save</strong>. É rápido e descomplicado.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Crea una Nueva Colección</div>
+          <div class="step-desc">
+            <p>Toca en <strong>Create new</strong> (o en el icono <strong>+</strong> junto a My Collections). Escribe un nombre para la estantería, elige un color armonioso y pulsa <strong>Save</strong>. Tu nueva colección estará lista al instante.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-create-a-collection.jpg" alt="Creating a new collection in Shiori with a name and color" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Add Books to Your Shelves</div>
+          <div class="step-desc">
+            <p>On your bookshelf, simply long-press any book and select <strong>Collection</strong>. Tick every collection the book belongs to, then tap <strong>Save</strong>. To remove a book later, just reopen this dialog and untick the shelf.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เพิ่มหนังสือเข้าสู่คอลเลกชัน</div>
+          <div class="step-desc">
+            <p>ในหน้าชั้นหนังสือหลัก เพียงกดค้างที่ปกหนังสือเล่มที่ต้องการ แล้วเลือก <strong>Collection</strong> ติ๊กเลือกคอลเลกชันทั้งหมดที่ต้องการให้หนังสือเล่มนี้ไปอยู่ แล้วแตะ <strong>Save</strong> (หากต้องการนำหนังสือออกจากหมวดในภายหลัง ก็เพียงกดเข้ามาติ๊กเครื่องหมายถูกออกได้เลยครับ)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>本をコレクションに追加する</div>
+          <div class="step-desc">
+            <p>本棚画面で書籍を長押しし、メニューから <strong>Collection</strong> を選択します。所属させたいコレクションにチェックを入れて <strong>Save</strong> をタップします（後から解除したい場合もチェックを外すだけです）。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>将图书归入相应书架</div>
+          <div class="step-desc">
+            <p>在书架主界面长按任意图书封面，选择 <strong>Collection</strong>。勾选该书所属的所有收藏集并点击 <strong>Save</strong> 即可。（日后若想移出某书架，只需取消勾选保存即可。）</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Adicione Livros às Prateleiras</div>
+          <div class="step-desc">
+            <p>Na sua estante, pressione e segure qualquer livro e selecione <strong>Collection</strong>. Marque todas as coleções às quais o livro pertence e toque em <strong>Save</strong>. Para remover depois, basta desmarcar a caixa.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Añade Libros a tus Estantes</div>
+          <div class="step-desc">
+            <p>En tu biblioteca principal, mantén pulsado cualquier libro y elige <strong>Collection</strong>. Marca todas las colecciones a las que pertenezca y pulsa <strong>Save</strong>. Para quitarlo más adelante, basta con desmarcarlo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-add-book-to-collection.jpg" alt="Choosing which collections a book belongs to in Shiori" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Open a Collection</div>
+          <div class="step-desc">
+            <p>Tap a collection to view only its books. Every book also wears a subtle colored tag showing the collections it belongs to, so you always know where each title lives at a single glance.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิดดูหนังสือในคอลเลกชัน</div>
+          <div class="step-desc">
+            <p>แตะที่คอลเลกชันเพื่อเปิดดูเฉพาะหนังสือในหมวดนั้น ใต้ชื่อหนังสือแต่ละเล่มจะมีป้ายแท็กสีเล็กๆ ระบุว่าหนังสือเล่มนี้สังกัดอยู่ในคอลเลกชันใดบ้าง ทำให้มองเห็นภาพรวมได้อย่างรวดเร็ว</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>コレクションを開いて本を閲覧</div>
+          <div class="step-desc">
+            <p>コレクションをタップすると、その棚に含まれる本だけが一覧表示されます。各書籍には所属コレクションのカラータグが付くため、どの棚に分類されているか一目で把握できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>打开收藏集专注阅读</div>
+          <div class="step-desc">
+            <p>点击任意收藏集即可专享该分类下的书目。每本书下方均带有精巧的彩色标签，标明其归属的各个收藏集，分类一览无余。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Abra e Navegue pela Coleção</div>
+          <div class="step-desc">
+            <p>Toque em uma coleção para ver apenas seus livros. Cada livro exibe pequenas etiquetas coloridas das coleções a que pertence, facilitando a identificação imediata.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Abre y Explora la Colección</div>
+          <div class="step-desc">
+            <p>Pulsa en una colección para ver exclusivamente sus libros. Cada obra muestra pequeñas etiquetas de color con sus colecciones correspondientes para que lo identifiques de un vistazo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-open-collection-view-books.jpg" alt="Viewing the books inside a collection in Shiori" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Rename, Reorder, or Delete Shelves</div>
+          <div class="step-desc">
+            <p>Long-press any collection to open its manage menu. Here you can <strong>Rename</strong> and recolor it, move it left or right to reorder your shelves, or <strong>Delete</strong> it — deleting a collection never deletes the books themselves.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เปลี่ยนชื่อ สลับลำดับ หรือลบชั้นหนังสือ</div>
+          <div class="step-desc">
+            <p>กดค้างที่คอลเลกชันเพื่อเปิดเมนูจัดการ คุณสามารถ <strong>Rename</strong> เพื่อเปลี่ยนชื่อและสี ย้ายตำแหน่งไปทางซ้ายหรือขวาเพื่อจัดลำดับชั้นใหม่ หรือเลือก <strong>Delete</strong> เพื่อลบคอลเลกชัน (การลบคอลเลกชันจะไม่ลบไฟล์หนังสือออกจากเครื่องครับ)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>名前変更・並び替え・削除を管理</div>
+          <div class="step-desc">
+            <p>コレクションを長押しして管理メニューを開きます。<strong>Rename</strong> で名前やカラーを変更したり、左右に移動して並び順を整えたり、不要になった棚を <strong>Delete</strong> で削除できます（本自体は削除されません）。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>重命名、调整顺序与随心管理</div>
+          <div class="step-desc">
+            <p>长按任意收藏集即可呼出管理菜单。您可以点击 <strong>Rename</strong> 修改名称与色彩，左右移动调整书架顺序，或选择 <strong>Delete</strong> 删除书架（删除书架绝不会影响实际图书文件）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Renomeie, Reordene ou Exclua Prateleiras</div>
+          <div class="step-desc">
+            <p>Pressione e segure uma coleção para abrir seu menu de gerenciamento. Você pode usar <strong>Rename</strong> para mudar nome e cor, mover para esquerda/direita para reordenar, ou <strong>Delete</strong> para apagar a prateleira (os livros continuam seguros no aparelho).</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Renombra, Reordena o Elimina Estantes</div>
+          <div class="step-desc">
+            <p>Mantén pulsada una colección para abrir su menú de gestión. Puedes usar <strong>Rename</strong> para cambiar nombre y color, moverla para reordenar, o <strong>Delete</strong> para borrarla (los libros permanecen intactos en tu dispositivo).</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-rename-delete-collection.jpg" alt="The manage menu for a collection in Shiori with rename, reorder and delete" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Filter by Reading Status</div>
+          <div class="step-desc">
+            <p>Back on the Collections tab, tap any status tile — <strong>Reading, Unread, Want to Read,</strong> or <strong>Finished</strong> — to filter your entire library at once. Tap the <strong>×</strong> on the filter chip to clear it.</p>
+            <div class="quote-callout">
+              <strong>💡 Pro Tip</strong><br />
+              Color-code by genre or mood — calm green for science fiction, deep blue for history, warm rose for all-time favorites. Because books can live on multiple shelves simultaneously, you never have to choose just one place for a beloved title.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>กรองหนังสือตามสถานะการอ่าน</div>
+          <div class="step-desc">
+            <p>กลับมาที่แท็บ Collections แตะที่กล่องสถานะ — <strong>Reading (กำลังอ่าน), Unread (ยังไม่อ่าน), Want to Read (อยากอ่าน)</strong> หรือ <strong>Finished (อ่านจบแล้ว)</strong> เพื่อกรองหนังสือทั้งคลังในพริบตา เมื่อต้องการยกเลิกตัวกรอง เพียงแตะเครื่องหมาย <strong>×</strong> บนป้ายตัวกรองด้านบน</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับน่ารู้</strong><br />
+              ลองจับคู่สีให้เข้ากับแนวหนังสือดูครับ เช่น สีเขียวสำหรับแนวไซไฟ, สีน้ำเงินสำหรับประวัติศาสตร์, สีชมพูสำหรับเล่มโปรด และเนื่องจากหนังสือหนึ่งเล่มสามารถอยู่ได้หลายหมวดหมู่พร้อมกัน คุณจึงไม่ต้องลังเลเลยว่าจะเก็บหนังสือเล่มโปรดไว้ที่ชั้นไหนดี
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>読書ステータスでライブラリを絞り込み</div>
+          <div class="step-desc">
+            <p>コレクションタブで上部のステータスカード（<strong>Reading、Unread、Want to Read、Finished</strong>）をタップすると、ライブラリ全体を一瞬で絞り込めます。解除時はフィルターチップの <strong>×</strong> をタップします。</p>
+            <div class="quote-callout">
+              <strong>💡 お役立ちメモ</strong><br />
+              SFはグリーン、歴史はブルー、愛読書は温かみのあるレッドなど、ジャンルや気分に合わせてカラーリングすると視認性が格段に高まります。1冊を複数の棚に登録できるため、分類に悩む必要もありません。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>按阅读状态一键筛选全书库</div>
+          <div class="step-desc">
+            <p>在“藏书”标签页中，点击顶部的状态卡片——<strong>Reading（在读）、Unread（未读）、Want to Read（想读）</strong> 或 <strong>Finished（已读）</strong>，即可快速筛选全库图书。点击筛选标签上的 <strong>×</strong> 即可清除过滤。</p>
+            <div class="quote-callout">
+              <strong>💡 实用小贴士</strong><br />
+              推荐按体裁或心情进行色彩搭配——比如科幻用青绿、历史用沉稳蓝、珍藏用温暖玫瑰红。由于支持一书多分类，您再也不用为爱书该归于哪一类而犹豫不决。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Filtre por Status de Leitura</div>
+          <div class="step-desc">
+            <p>Na aba Coleções, toque em qualquer cartão de status — <strong>Reading (Lendo), Unread (Não lido), Want to Read (Quero ler)</strong> ou <strong>Finished (Lido)</strong> — para filtrar toda a sua biblioteca de uma só vez. Toque no <strong>×</strong> do filtro para limpá-lo.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica Útil</strong><br />
+              Crie códigos de cores por gênero — verde para ficção científica, azul para história, vermelho para favoritos. Como um livro pode pertencer a várias coleções ao mesmo tempo, você nunca precisa limitá-lo a uma única prateleira.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Filtra por Estado de Lectura</div>
+          <div class="step-desc">
+            <p>En la pestaña Colecciones, toca cualquier tarjeta de estado — <strong>Reading (Leyendo), Unread (No leído), Want to Read (Por leer)</strong> o <strong>Finished (Terminado)</strong> — para filtrar toda tu biblioteca al instante. Toca en la <strong>×</strong> para restablecer el filtro.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo Práctico</strong><br />
+              Organiza por colores según género o estado de ánimo: verde para ciencia ficción, azul para historia, rojo para tus favoritos de siempre. Como un libro puede estar en varios estantes a la vez, nunca tendrás que elegir un único lugar para tu obra preferida.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-filter-shelf-by-status.jpg" alt="Filtering the Shiori library by reading status such as Reading" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">A Library That Truly Feels Like Home</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader and shape your library with Collections — group, color-code, filter, and find every book in seconds.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">สร้างคลังหนังสือที่เป็นตัวคุณอย่างแท้จริง</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ แล้วจัดระเบียบคลังหนังสือด้วย Collections — สร้างชั้น ย้อมสี แยกหมวดหมู่ และค้นหาหนังสือเล่มโปรดได้ในเสี้ยววินาที
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">自分だけの特別なデジタル書斎を作ろう</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードして、コレクション機能で本棚を自由にコーディネート。読みたい本がいつでも見つかる快適な読書空間を手に入れましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">打造独一无二、井然有序的私人书房</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，利用“收藏集”轻松分类、色彩标记并快速筛选，让每一本好书都在指尖随时待命。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Uma Biblioteca que Realmente Tem a Sua Cara</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e organize sua estante com Coleções — agrupe, defina cores, filtre e encontre qualquer livro em segundos.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Una Biblioteca que Realmente Sientes Tuya</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader y organiza tu estantería con Colecciones: clasifica, asigna colores, filtra y encuentra cualquier obra al instante.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
