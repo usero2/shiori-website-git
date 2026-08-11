@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Add an S3 Bucket as a Library Server (AWS S3, MinIO, R2) — Shiori Blog</title>
+  <meta name="description" content="Connect any S3-compatible cloud storage — AWS S3, MinIO, Cloudflare R2, Wasabi, or DigitalOcean Spaces — as a library server in Shiori for Android. Browse folders and download EPUBs with ease." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/s3-bucket-library-server-android-epub/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Add an S3 Bucket as a Library Server in Shiori (AWS S3, MinIO, R2)",
+    "description": "A comprehensive guide to connecting S3-compatible cloud object storage (AWS S3, MinIO, Cloudflare R2, Wasabi, DigitalOcean Spaces) directly to Shiori EPUB Reader for Android.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/s3-bucket-library-server-android-epub/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p15-date">📅 August 11, 2026</span>
+        <span data-i18n="blog-p15-cat">🏷️ Library Servers</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Read Your Cloud Bookshelf<br><span class="text-gradient">Add an S3 Bucket as a Library Server</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">เปลี่ยน S3 Bucket ให้เป็นคลังหนังสือส่วนตัว<br><span class="text-gradient">เชื่อมต่อ Cloud Object Storage เข้ากับ Shiori บน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">クラウド本棚を直接読む<br><span class="text-gradient">S3バケットをライブラリサーバーとして追加する（AWS S3、MinIO、R2）</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">将云端书库装进口袋<br><span class="text-gradient">如何将 S3 存储桶添加为书库服务器（AWS S3、MinIO、R2）</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Leia Sua Estante na Nuvem<br><span class="text-gradient">Adicione um Bucket S3 como Servidor de Biblioteca</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Lee Tu Biblioteca en la Nube<br><span class="text-gradient">Añade un Bucket S3 como Servidor de Biblioteca</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('04-browse-download-books-from-s3.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">☁️</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>If you love keeping your ebook collection safely stored in cloud object storage, Shiori gives you the freedom to browse and read it directly. Simply point the app at your bucket address, and your entire library appears as organized, browsable folders ready to stream or download — no complex web servers, no third-party sync apps, and no middlemen. It works natively with <strong>Amazon S3</strong> as well as any service that speaks the S3 standard: <strong>MinIO, Cloudflare R2, Wasabi,</strong> and <strong>DigitalOcean Spaces</strong>.</p>
+
+        <h2>What Makes an S3 Library Server So Convenient?</h2>
+        <p>S3 object storage has become the global standard for cloud storage because it is fast, durable, and reliable. Shiori communicates with it natively: signing authentication requests securely on your device, displaying your bucket contents in clean folders, and letting you download any EPUB, PDF, or CBZ with a single tap. Your books always remain under your full ownership in your own storage; Shiori simply serves as your personal reader.</p>
+
+        <h2>What You Will Need to Get Started</h2>
+        <ul class="article-bullet-list">
+          <li>A cloud bucket containing your books (EPUB, PDF, or CBZ files).</li>
+          <li>The <strong>Bucket Address URL</strong> (for instance, <code>https://my-books.s3.ap-southeast-1.amazonaws.com/</code> or a custom MinIO path like <code>https://minio.example.com/my-books/ebooks/</code>).</li>
+          <li>An <strong>Access Key</strong> and <strong>Secret Key</strong> for private buckets (or leave credentials empty if your bucket is public).</li>
+        </ul>
+
+        <h2>Complete Privacy — Your Books, Your Storage</h2>
+        <p>Because Shiori establishes a direct, private connection between your phone and your cloud bucket, you maintain absolute control over your digital library. Whether you host a private MinIO server at home on a Raspberry Pi, take advantage of Cloudflare R2's generous free tier with zero egress fees, or store rare volumes in an AWS bucket — the setup process is delightfully identical.</p>
+
+        <h2>Connect Your Bucket in Four Simple Steps</h2>
+        <p>Follow along below to link your storage bucket and start downloading books to your personal shelf.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>สำหรับใครที่เก็บสะสมคลังหนังสือ E-Book ไว้บน Cloud Object Storage ข่าวดีคือคุณสามารถเปิดอ่านหนังสือเหล่านั้นบน <strong>Shiori</strong> ได้โดยตรงอย่างสะดวกสบาย เพียงแค่ระบุที่อยู่ของ Bucket ในแอป คลังหนังสือทั้งหมดของคุณจะถูกแปลงเป็นโฟลเดอร์ที่จัดหมวดหมู่อย่างสวยงาม พร้อมให้เปิดดูและดาวน์โหลดหนังสือลงเครื่องได้ทันที โดยไม่ต้องตั้งค่า Web App หรือพึ่งพาแอปตัวกลางใดๆ รองรับทั้ง <strong>Amazon S3</strong> และผู้ให้บริการมาตรฐาน S3 API ยอดนิยมอย่าง <strong>MinIO, Cloudflare R2, Wasabi</strong> และ <strong>DigitalOcean Spaces</strong></p>
+
+        <h2>S3 Library Server คืออะไร และสะดวกอย่างไร?</h2>
+        <p>S3 ถือเป็นมาตรฐานการจัดเก็บข้อมูลบนคลาวด์ที่ทั่วโลกยอมรับว่าเสถียรและยืดหยุ่นสูง Shiori รองรับการเชื่อมต่อกับ S3 ได้อย่างเป็นธรรมชาติ โดยตัวแอปจะทำการยืนยันสิทธิ์อย่างปลอดภัย แสดงรายชื่อหนังสือและโฟลเดอร์อย่างเป็นระเบียบ และดาวน์โหลดไฟล์ EPUB, PDF หรือ CBZ ที่ต้องการได้ในแตะเดียว หนังสือทั้งหมดจะยังคงอยู่ในพื้นที่จัดเก็บส่วนตัวของคุณ 100% โดยมี Shiori เป็นหน้าต่างบานสวยที่ช่วยเปิดโลกการอ่านของคุณ</p>
+
+        <h2>สิ่งที่ต้องเตรียมก่อนเริ่มต้น</h2>
+        <ul class="article-bullet-list">
+          <li>Bucket ที่เก็บไฟล์หนังสือของคุณ (รองรับทั้ง EPUB, PDF และ CBZ)</li>
+          <li><strong>ที่อยู่ Bucket (URL)</strong> เช่น <code>https://my-books.s3.ap-southeast-1.amazonaws.com/</code> หรือลิงก์ MinIO เช่น <code>https://minio.example.com/my-books/ebooks/</code></li>
+          <li><strong>Access Key</strong> และ <strong>Secret Key</strong> สำหรับ Bucket ส่วนตัว (หากเป็น Bucket สาธารณะ สามารถเว้นว่างไว้ได้เลย)</li>
+        </ul>
+
+        <h2>เป็นส่วนตัว ปลอดภัย อยู่ในพื้นที่ของคุณเอง</h2>
+        <p>เนื่องจาก Shiori เชื่อมต่อไปยัง Bucket โดยตรงจากโทรศัพท์ของคุณ คุณจึงเป็นผู้ควบคุมคลังหนังสือได้อย่างเบ็ดเสร็จ ไม่ว่าจะเปิดเซิร์ฟเวอร์ MinIO ไว้ที่บ้าน, ใช้ Cloudflare R2 ที่ไม่มีค่าแบนด์วิดท์ดาวน์โหลด (Zero Egress Fees), หรือฝากไฟล์ไว้บน AWS — ทุกระบบใช้วิธีตั้งค่าเหมือนกันอย่างง่ายดาย</p>
+
+        <h2>วิธีเชื่อมต่อ Bucket ใน 4 ขั้นตอนง่ายๆ</h2>
+        <p>มาดูขั้นตอนการเพิ่มคลังหนังสือและการดาวน์โหลดไฟล์เข้าสู่ชั้นหนังสือของคุณกันครับ</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>クラウドオブジェクトストレージにお気に入りの電子書籍コレクションを保管しているなら、Shioriを使えば余計なサーバー設定なしで直接閲覧・読書が可能です。アプリにバケットのアドレスを登録するだけで、クラウド内のフォルダ構造がそのまま美しい本棚として展開され、読みたい本を瞬時にダウンロードできます。<strong>Amazon S3</strong> はもちろん、S3互換プロトコルに対応した <strong>MinIO、Cloudflare R2、Wasabi、DigitalOcean Spaces</strong> など多彩なストレージに対応しています。</p>
+
+        <h2>S3ライブラリサーバーの魅力とは？</h2>
+        <p>S3は世界中のクラウドで広く採用されている堅牢なストレージ規格です。Shioriは端末内で安全に署名認証を行い、バケット内のオブジェクトを整理されたフォルダ階層として表示。EPUB、PDF、CBZファイルをワンタップで取得できます。書籍データは常にあなた自身のストレージ内に安全に保たれ、Shioriは読書に専念できる快適なビューアとして機能します。</p>
+
+        <h2>接続に必要なもの</h2>
+        <ul class="article-bullet-list">
+          <li>電子書籍ファイル（EPUB、PDF、CBZ）を保存したクラウドバケット</li>
+          <li><strong>バケットのアドレス（URL）</strong>（例：<code>https://my-books.s3.ap-southeast-1.amazonaws.com/</code> や MinIOの <code>https://minio.example.com/my-books/ebooks/</code>）</li>
+          <li>プライベートバケット用の <strong>Access Key</strong> と <strong>Secret Key</strong>（公開バケットの場合は入力不要）</li>
+        </ul>
+
+        <h2>プライバシーも万全：完全な自己所有ストレージ</h2>
+        <p>Shioriはスマートフォンから直接バケットへ通信するため、第三者の同期サービスを経由しません。自宅のRaspberry Piで立てたMinIOサーバーでも、転送料金無料のCloudflare R2でも、AWS S3でも、まったく同じシンプルな手順で接続できます。</p>
+
+        <h2>4つのステップでバケットに接続</h2>
+        <p>サーバーの追加から最初の1冊をダウンロードするまでの流れをご案内します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>如果您习惯将电子书藏书保存在云端对象存储中，Shiori 可以让您直接浏览并随时阅读。只需在应用中填入存储桶地址，您的整个云端书库便会化作井然有序的目录文件夹，即点即下——无需搭建复杂的 Web 服务，无需第三方同步中转。全面原生支持 <strong>Amazon S3</strong> 以及兼容 S3 协议的 <strong>MinIO、Cloudflare R2、Wasabi、DigitalOcean Spaces</strong> 等各主流服务商。</p>
+
+        <h2>S3 书库服务器的核心优势</h2>
+        <p>S3 是业界公认的高可用存储标准。Shiori 原生支持 S3 协议签名认证，将存储桶中的内容直观呈现为清晰的文件夹目录，只需轻轻一点即可下载 EPUB、PDF 或 CBZ 格式图书。所有图书始终妥善存放于您自己的云端空间，数据归属全权由您掌控。</p>
+
+        <h2>连接前需准备的信息</h2>
+        <ul class="article-bullet-list">
+          <li>存放了电子书文件的云端存储桶（支持 EPUB、PDF、CBZ）。</li>
+          <li><strong>存储桶地址（URL）</strong>（例如 <code>https://my-books.s3.ap-southeast-1.amazonaws.com/</code> 或 MinIO 路径 <code>https://minio.example.com/my-books/ebooks/</code>）。</li>
+          <li>私有存储桶所需的 <strong>Access Key</strong> 与 <strong>Secret Key</strong>（若为公开存储桶则无需填写认证信息）。</li>
+        </ul>
+
+        <h2>私密安全，自主掌控</h2>
+        <p>Shiori 直接从手机端安全直连您的存储桶，保护数据隐私。无论是在家中搭建的私有 MinIO 服务，还是享受零出流量费用的 Cloudflare R2，亦或是 AWS 存储桶，配置方式皆同样简明高效。</p>
+
+        <h2>只需 4 步，轻松连接云端书库</h2>
+        <p>跟随以下图文指引，轻松添加书库服务器并开始下载阅读。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Se você guarda sua coleção de e-books em um armazenamento de objetos na nuvem, o Shiori permite navegar e ler seus livros diretamente. Basta apontar o app para o endereço do seu bucket e toda a sua biblioteca aparecerá organizada em pastas fáceis de explorar e baixar — sem necessidade de servidores web complexos ou intermediários. Funciona perfeitamente com o <strong>Amazon S3</strong> e com qualquer serviço compatível com a API S3: <strong>MinIO, Cloudflare R2, Wasabi</strong> e <strong>DigitalOcean Spaces</strong>.</p>
+
+        <h2>Por Que Usar um Servidor de Biblioteca S3?</h2>
+        <p>O S3 é o padrão universal para armazenamento na nuvem por sua velocidade e alta confiabilidade. O Shiori comunica-se diretamente com o bucket: autentica com segurança no seu dispositivo, lista os livros em pastas limpas e permite baixar qualquer EPUB, PDF ou CBZ com um toque. Seus arquivos permanecem sob seu controle absoluto em seu próprio armazenamento.</p>
+
+        <h2>O Que Você Precisa para Começar</h2>
+        <ul class="article-bullet-list">
+          <li>Um bucket contendo seus livros (arquivos EPUB, PDF ou CBZ).</li>
+          <li>O <strong>endereço URL do bucket</strong> (por exemplo <code>https://meus-livros.s3.ap-southeast-1.amazonaws.com/</code> ou um link MinIO como <code>https://minio.exemplo.com/meus-livros/ebooks/</code>).</li>
+          <li>Uma <strong>Access Key</strong> e <strong>Secret Key</strong> para buckets privados (deixe em branco se o bucket for público).</li>
+        </ul>
+
+        <h2>Privacidade Total: Seus Livros, Seu Espaço</h2>
+        <p>Como a conexão é feita diretamente do celular para a nuvem, você mantém total privacidade. Seja hospedando um servidor MinIO em casa, aproveitando o Cloudflare R2 sem taxas de tráfego ou usando a AWS, o processo de configuração é exatamente o mesmo.</p>
+
+        <h2>Conecte Seu Bucket em Quatro Passos</h2>
+        <p>Veja como é simples adicionar o servidor e baixar seu primeiro livro.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Si guardas tu colección de libros electrónicos en un almacenamiento de objetos en la nube, Shiori te permite explorarla y leerla directamente en tu móvil. Solo tienes que introducir la dirección de tu bucket en la app y toda tu biblioteca aparecerá organizada en carpetas listas para explorar y descargar, sin necesidad de servidores web adicionales ni intermediarios. Compatible con <strong>Amazon S3</strong> y cualquier plataforma compatible con la API S3: <strong>MinIO, Cloudflare R2, Wasabi</strong> y <strong>DigitalOcean Spaces</strong>.</p>
+
+        <h2>¿Por Qué Conectar un Servidor S3 en Shiori?</h2>
+        <p>El protocolo S3 es el estándar indiscutible de almacenamiento en la nube por su velocidad y solidez. Shiori se comunica de forma nativa: firma las peticiones de autenticación de forma segura en tu dispositivo, muestra tus libros en carpetas limpias y te permite descargar cualquier archivo EPUB, PDF o CBZ con un toque. Tus libros permanecen siempre en tu propio almacenamiento bajo tu control total.</p>
+
+        <h2>Qué Necesitas para Empezar</h2>
+        <ul class="article-bullet-list">
+          <li>Un bucket con tus libros (archivos EPUB, PDF o CBZ).</li>
+          <li>La <strong>dirección URL del bucket</strong> (por ejemplo <code>https://mis-libros.s3.ap-southeast-1.amazonaws.com/</code> o una dirección MinIO como <code>https://minio.ejemplo.com/mis-libros/ebooks/</code>).</li>
+          <li>Una <strong>Access Key</strong> y <strong>Secret Key</strong> para buckets privados (o déjalo en blanco si el bucket es público).</li>
+        </ul>
+
+        <h2>Privacidad Total en Tu Propia Nube</h2>
+        <p>Al realizar una conexión directa entre tu dispositivo Android y tu bucket, la privacidad de tu biblioteca es absoluta. Ya sea un servidor MinIO en tu red local, Cloudflare R2 sin costes de descarga o un bucket en AWS, la configuración es igual de sencilla.</p>
+
+        <h2>Conecta tu Bucket en Cuatro Sencillos Pasos</h2>
+        <p>Sigue esta guía paso a paso para vincular tu almacenamiento y disfrutar de tus lecturas.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (4 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการเชื่อมต่ออย่างละเอียด (4 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定手順ガイド（4つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文操作指南（4 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (4 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (4 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open Collections → Library Server</div>
+          <div class="step-desc">
+            <p>Go to the <strong>Collections</strong> tab and find the <strong>Library Server</strong> section. Tap the <strong>+</strong> button to add a new server. (Any existing servers are listed here with sensitive details safely masked.)</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ไปที่แท็บ Collections → Library Server</div>
+          <div class="step-desc">
+            <p>เปิดแท็บ <strong>Collections (คอลเลกชัน)</strong> เลื่อนลงมาที่หัวข้อ <strong>Library Server</strong> แล้วแตะปุ่ม <strong>+</strong> เพื่อเพิ่มเซิร์ฟเวอร์ใหม่ (เซิร์ฟเวอร์เดิมที่เคยเพิ่มไว้จะแสดงที่นี่พร้อมปิดบังข้อมูลสำคัญเพื่อความปลอดภัย)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>「コレクション」→「ライブラリサーバー」を開く</div>
+          <div class="step-desc">
+            <p><strong>Collections（コレクション）</strong> タブを開き、<strong>Library Server（ライブラリサーバー）</strong> セクションを見つけます。<strong>+</strong> ボタンをタップして新しいサーバーを追加します。（登録済みのサーバーもここに安全にマスクされて一覧表示されます。）</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>进入“藏书” → “书库服务器”</div>
+          <div class="step-desc">
+            <p>打开 <strong>Collections（藏书）</strong> 标签页，找到 <strong>Library Server（书库服务器）</strong> 分组，点击 <strong>+</strong> 按钮添加新服务器。（已添加的服务器也会在此列出，并妥善隐藏敏感地址信息。）</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra Coleções → Servidor de Biblioteca</div>
+          <div class="step-desc">
+            <p>Acesse a aba <strong>Collections (Coleções)</strong> e localize a seção <strong>Library Server</strong>. Toque no botão <strong>+</strong> para adicionar um novo servidor. (Seus servidores existentes também ficam listados aqui com dados protegidos.)</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre Colecciones → Servidor de Biblioteca</div>
+          <div class="step-desc">
+            <p>Ve a la pestaña <strong>Collections (Colecciones)</strong> y busca la sección <strong>Library Server</strong>. Pulsa el botón <strong>+</strong> para añadir un servidor nuevo. (Tus servidores actuales aparecerán listados con sus datos protegidos.)</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-collections-library-server-add.jpg" alt="The Library Server section in the Collections tab of Shiori with an add button" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Enter the Bucket URL and Credentials</div>
+          <div class="step-desc">
+            <p>Paste your <strong>Bucket Address</strong> into the Catalog URL field. Put your <strong>Access Key</strong> in the Username box and your <strong>Secret Key</strong> in the Password box. Shiori intelligently recognizes S3 URLs — the password label automatically switches to <strong>“Secret access key.”</strong> For public buckets, simply leave the login fields empty.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>กรอกที่อยู่ Bucket URL และรหัสผ่าน</div>
+          <div class="step-desc">
+            <p>วาง <strong>ที่อยู่ Bucket</strong> ลงในช่อง Catalog URL จากนั้นใส่ <strong>Access Key</strong> ในช่อง Username และใส่ <strong>Secret Key</strong> ในช่อง Password ระบบของ Shiori จะตรวจจับว่าเป็น S3 อัตโนมัติ โดยช่องรหัสผ่านจะเปลี่ยนป้ายชื่อเป็น <strong>“Secret access key”</strong> ให้ทันที (หากเป็น Bucket สาธารณะ ไม่ต้องกรอกชื่อผู้ใช้และรหัสผ่าน)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>バケットURLと認証情報を入力</div>
+          <div class="step-desc">
+            <p>Catalog URL欄に <strong>バケットのアドレス</strong> を貼り付けます。ユーザー名欄に <strong>Access Key</strong>、パスワード欄に <strong>Secret Key</strong> を入力します。ShioriがS3アドレスを自動認識し、パスワード欄の表記が <strong>“Secret access key”</strong> に変化します。（公開バケットの場合は空欄のままで構いません。）</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>输入存储桶 URL 与访问密钥</div>
+          <div class="step-desc">
+            <p>将 <strong>存储桶地址</strong> 粘贴至 Catalog URL 输入框中。在 Username 处填入 <strong>Access Key</strong>，在 Password 处填入 <strong>Secret Key</strong>。Shiori 会自动识别 S3 协议，密码栏标签会自动切换为 <strong>“Secret access key”</strong>。（若为公开存储桶，认证信息留空即可。）</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Insira a URL do Bucket e as Chaves de Acesso</div>
+          <div class="step-desc">
+            <p>Cole o <strong>endereço do bucket</strong> no campo Catalog URL. Coloque sua <strong>Access Key</strong> no campo Username e a <strong>Secret Key</strong> no campo Password. O Shiori detecta a URL S3 automaticamente — o campo de senha mudará o rótulo para <strong>“Secret access key.”</strong> Para buckets públicos, deixe os campos de login em branco.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Introduce la URL del Bucket y tus Claves</div>
+          <div class="step-desc">
+            <p>Pega la <strong>dirección del bucket</strong> en el campo Catalog URL. Escribe tu <strong>Access Key</strong> en Username y tu <strong>Secret Key</strong> en Password. Shiori reconoce automáticamente la dirección S3 y cambiará el texto del campo a <strong>“Secret access key.”</strong> Si tu bucket es público, deja los campos de inicio de sesión vacíos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-add-s3-bucket-url-access-key.jpg" alt="Adding an S3 bucket URL with access key and secret access key in Shiori" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Works with S3, MinIO, R2 and More</div>
+          <div class="step-desc">
+            <p>The built-in help guide provides handy examples for popular providers: AWS S3, self-hosted MinIO, Cloudflare R2, Wasabi, and DigitalOcean Spaces. Tap <strong>Test connection</strong> to confirm everything works, then tap <strong>Save</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>รองรับทั้ง AWS, MinIO, R2 และผู้ให้บริการชั้นนำ</div>
+          <div class="step-desc">
+            <p>หน้าต่างช่วยเหลือมีคำแนะนำและตัวอย่าง URL สำหรับบริการ S3 ทุกค่าย (ทั้ง AWS S3, MinIO, Cloudflare R2, Wasabi, DigitalOcean Spaces) เมื่อกรอกเสร็จแล้ว ให้แตะ <strong>Test connection</strong> เพื่อทดสอบการเชื่อมต่อ เมื่อขึ้นว่าสำเร็จจึงแตะ <strong>Save</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>AWS S3、MinIO、R2など多彩なストレージに対応</div>
+          <div class="step-desc">
+            <p>ヘルプ画面には、AWS S3、自宅のMinIO、Cloudflare R2、Wasabi、DigitalOcean SpacesなどのURL設定例が分かりやすく記載されています。入力後に <strong>Test connection</strong> をタップして接続を確認し、<strong>Save</strong> で保存します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>广泛兼容 AWS S3、MinIO、Cloudflare R2 等主流服务</div>
+          <div class="step-desc">
+            <p>内置的帮助指南列出了常见服务商的 URL 示例（包括 AWS S3、私有 MinIO、Cloudflare R2、Wasabi 与 DigitalOcean Spaces）。填写完成后点击 <strong>Test connection</strong> 测试连接，确认无误后点击 <strong>Save</strong> 保存。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Compatível com AWS S3, MinIO, R2 e Muito Mais</div>
+          <div class="step-desc">
+            <p>O guia de ajuda integrado traz exemplos claros para os principais provedores: AWS S3, MinIO próprio, Cloudflare R2, Wasabi e DigitalOcean Spaces. Toque em <strong>Test connection</strong> para confirmar e depois em <strong>Save</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Compatible con AWS S3, MinIO, R2 y Más</div>
+          <div class="step-desc">
+            <p>La ayuda integrada incluye ejemplos prácticos para los servicios más populares: AWS S3, MinIO local, Cloudflare R2, Wasabi y DigitalOcean Spaces. Pulsa <strong>Test connection</strong> para verificar la conexión y luego <strong>Save</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-s3-supported-servers-help.jpg" alt="Shiori's supported-servers help describing S3 bucket setup and example URLs" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Browse Folders and Download Your Books</div>
+          <div class="step-desc">
+            <p>Open the server and your bucket appears as cleanly organized, browsable folders. Tap the <strong>Download</strong> icon on any title to save it to your bookshelf; books you already have will show <strong>“Already on your bookshelf.”</strong> You can also search your entire cloud catalog from the top search bar.</p>
+            <div class="quote-callout">
+              <strong>💡 Pro Tip</strong><br />
+              Running MinIO or a home server on your local network? Use your computer's local LAN IP address (such as <code>192.168.1.x</code>) rather than <code>localhost</code>, since Shiori runs on your mobile device.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิดดูโฟลเดอร์และดาวน์โหลดหนังสือเล่มโปรด</div>
+          <div class="step-desc">
+            <p>เมื่อเปิดเซิร์ฟเวอร์ขึ้นมา คุณจะเห็นคลังหนังสือเรียงเป็นโฟลเดอร์สะอาดตา แตะไอคอน <strong>ดาวน์โหลด</strong> เพื่อบันทึกหนังสือเข้าชั้นหนังสือในเครื่องได้ทันที เล่มไหนที่เคยโหลดไว้แล้วระบบจะขึ้นข้อความแจ้งว่า <strong>“Already on your bookshelf”</strong> และยังมีช่องค้นหาด้านบนให้ค้นหาหนังสือข้ามทั้งคลังได้อย่างรวดเร็ว</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับนักอ่าน</strong><br />
+              หากคุณรัน MinIO หรือเซิร์ฟเวอร์เองในบ้าน ให้ใช้หมายเลข IP ในวงแลน (เช่น <code>192.168.1.x</code>) แทนการใช้ <code>localhost</code> เพราะแอปทำงานอยู่บนมือถือของคุณครับ
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>フォルダを閲覧して書籍をダウンロード</div>
+          <div class="step-desc">
+            <p>サーバーを開くと、バケット内の書籍がすっきりとしたフォルダ階層で表示されます。読みたい本の <strong>ダウンロード</strong> アイコンをタップするだけで、端末の本棚へ直接保存されます。すでに保存済みの書籍には <strong>“Already on your bookshelf”</strong> と表示され、画面上部からカタログ全体の検索も可能です。</p>
+            <div class="quote-callout">
+              <strong>💡 お役立ちメモ</strong><br />
+              自宅のローカルネットワークでMinIOを運用している場合は、<code>localhost</code> ではなくLAN内のIPアドレス（例：<code>192.168.1.x</code>）を指定してください（アプリはスマホ側で動作するためです）。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>浏览分类目录，一键下载图书</div>
+          <div class="step-desc">
+            <p>打开服务器后，存储桶内的图书将以结构清晰的文件夹形式呈现。点击任意图书右侧的 <strong>下载</strong> 图标即可将其保存至本地书架；已下载的图书会贴心标注 <strong>“Already on your bookshelf”</strong>。顶部还支持全书库快速搜索。</p>
+            <div class="quote-callout">
+              <strong>💡 实用小贴士</strong><br />
+              如果您在局域网内自建了 MinIO 服务，请使用电脑的局域网 IP（如 <code>192.168.1.x</code>）而非 <code>localhost</code>，因为 Shiori 运行在您的手机端。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Navegue pelas Pastas e Baixe Seus Livros</div>
+          <div class="step-desc">
+            <p>Ao abrir o servidor, seu bucket é exibido em pastas estruturadas. Toque no ícone de <strong>Download</strong> em qualquer livro para salvá-lo na sua estante local; títulos já baixados exibirão <strong>“Already on your bookshelf.”</strong> Você também pode pesquisar títulos no topo do catálogo.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica Útil</strong><br />
+              Executando o MinIO ou outro servidor na sua rede local? Use o endereço IP da rede local (ex: <code>192.168.1.x</code>) em vez de <code>localhost</code>, pois o app roda no seu smartphone.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Explora las Carpetas y Descarga tus Libros</div>
+          <div class="step-desc">
+            <p>Abre el servidor y verás el contenido de tu bucket organizado en cómodas carpetas. Toca el icono de <strong>Descarga</strong> en cualquier título para guardarlo en tu estantería; los libros ya descargados mostrarán <strong>“Already on your bookshelf.”</strong> Además, puedes buscar cualquier título desde la barra superior.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo Práctico</strong><br />
+              ¿Utilizas MinIO en tu red local? Usa la dirección IP de tu red local (por ejemplo, <code>192.168.1.x</code>) en lugar de <code>localhost</code>, ya que Shiori se ejecuta en tu teléfono.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-browse-download-books-from-s3.jpg" alt="Browsing and downloading EPUB books from an S3 bucket in Shiori" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Your Cloud Library, Always in Your Hands</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, connect your S3, MinIO, or Cloudflare R2 bucket, and enjoy your personal cloud collection anywhere.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">พกพาคลังหนังสือบนคลาวด์ ไปอ่านได้ทุกที่ทุกเวลา</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader แล้วเชื่อมต่อกับ Bucket S3, MinIO หรือ Cloudflare R2 ของคุณ เพื่อสัมผัสอิสระในการอ่านจากคลังส่วนตัวบนคลาวด์
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">クラウドの蔵書を、いつでも手のひらに</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードして、AWS S3、MinIO、Cloudflare R2バケットを接続し、自分だけのクラウド本棚をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">将云端藏书随身携带，随时随地畅快阅读</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，无缝直连您的 S3、MinIO 或 Cloudflare R2 存储桶，尽享私人云端书库的阅读乐趣。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Sua Biblioteca na Nuvem, Sempre com Você</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader, conecte seu bucket S3, MinIO ou Cloudflare R2 e aproveite toda a sua coleção na nuvem onde quiser.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Tu Biblioteca en la Nube, Siempre Contigo</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader, conecta tu bucket S3, MinIO o Cloudflare R2 y disfruta de toda tu colección personal en cualquier lugar.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

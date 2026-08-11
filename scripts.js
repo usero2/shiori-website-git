@@ -218,6 +218,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-title": "The Two-Line Reader Top Bar: Every Action, One Tap Away",
       "blog-p14-desc": "The experimental two-line top bar puts the full book title on top and every reading action in one scrollable row below — nothing hidden behind an overflow menu.",
 
+      // Blog Post 15
+      "blog-p15-date": "📅 August 11, 2026",
+      "blog-p15-cat": "🏷️ Library Servers",
+      "blog-p15-title": "Add an S3 Bucket as a Library Server (AWS S3, MinIO, R2)",
+      "blog-p15-desc": "Connect any S3-compatible bucket — AWS S3, MinIO, Cloudflare R2, Wasabi or DigitalOcean Spaces — then browse folders and download EPUBs straight to your device.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -450,6 +456,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p14-title": "แถบเครื่องมือด้านบนแบบ 2 แถว: ครบทุกฟังก์ชันในแตะเดียว",
       "blog-p14-desc": "โหมดทดลองแถบด้านบนแบบ 2 แถว แสดงชื่อหนังสือเต็มบรรทัดบน พร้อมเรียงไอคอนเครื่องมือทั้งหมดไว้ในแถบล่าง เลื่อนใช้ง่าย ไม่ต้องกดเปิดเมนูซ่อน",
+
+      // Blog Post 15
+      "blog-p15-date": "📅 11 สิงหาคม 2026",
+      "blog-p15-cat": "🏷️ เซิร์ฟเวอร์ห้องสมุด",
+      "blog-p15-title": "วิธีเชื่อมต่อ S3 Bucket เป็นคลังหนังสือส่วนตัว (AWS S3, MinIO, R2)",
+      "blog-p15-desc": "เปิดอ่านหนังสือจาก Object Storage ได้โดยตรง เชื่อมต่อทั้ง AWS S3, MinIO, Cloudflare R2, Wasabi หรือ DigitalOcean Spaces เปิดดูโฟลเดอร์และดาวน์โหลดไฟล์ EPUB เข้าเครื่องได้ทันที",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -684,6 +696,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-title": "2行表示のリーダートップバー：すべての操作をワンタップで",
       "blog-p14-desc": "実験機能の2行トップバーなら、上の行に書籍タイトルを全文表示し、下の行にすべての読書ツールを横スクロールで配置。隠れたメニューを開く手間を省きます。",
 
+      // Blog Post 15
+      "blog-p15-date": "📅 2026年8月11日",
+      "blog-p15-cat": "🏷️ ライブラリサーバー",
+      "blog-p15-title": "S3バケットを本棚サーバーとして追加する方法（AWS S3、MinIO、R2）",
+      "blog-p15-desc": "AWS S3、MinIO、Cloudflare R2、Wasabi、DigitalOcean SpacesなどのS3互換ストレージを直接接続。フォルダ階層の閲覧からEPUBの直接ダウンロードまでスムーズに行えます。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -916,6 +934,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-cat": "🏷️ 阅读体验",
       "blog-p14-title": "双行阅读顶部栏：所有常用功能，触手可及",
       "blog-p14-desc": "实验性的双行顶部栏让书名在上行完整展示，所有阅读工具在下行横向滑动排列——无需再点开折叠菜单，一切操作一触即发。",
+
+      // Blog Post 15
+      "blog-p15-date": "📅 2026年8月11日",
+      "blog-p15-cat": "🏷️ 书库服务器",
+      "blog-p15-title": "如何将 S3 存储桶添加为书库服务器（AWS S3、MinIO、R2）",
+      "blog-p15-desc": "直接连接任意兼容 S3 协议的云存储——AWS S3、MinIO、Cloudflare R2、Wasabi 或 DigitalOcean Spaces，随时浏览目录并一键下载 EPUB 电子书。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1150,6 +1174,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-title": "Barra Superior em Duas Linhas: Todas as Ferramentas a Um Toque",
       "blog-p14-desc": "A barra superior experimental em duas linhas exibe o título completo em cima e todas as ações de leitura em uma linha rolável abaixo — nada escondido em menus.",
 
+      // Blog Post 15
+      "blog-p15-date": "📅 11 de agosto de 2026",
+      "blog-p15-cat": "🏷️ Servidores de Biblioteca",
+      "blog-p15-title": "Como Adicionar um Bucket S3 como Servidor de Biblioteca (AWS S3, MinIO, R2)",
+      "blog-p15-desc": "Conecte qualquer bucket compatível com S3 — AWS S3, MinIO, Cloudflare R2, Wasabi ou DigitalOcean Spaces — navegue por pastas e baixe livros EPUB diretamente no seu Android.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1382,6 +1412,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p14-cat": "🏷️ Experiencia de Lectura",
       "blog-p14-title": "Barra Superior en Dos Líneas: Todas las Herramientas a un Solo Toque",
       "blog-p14-desc": "La barra superior experimental de dos líneas muestra el título completo arriba y todas las acciones de lectura en una fila deslizable abajo, sin menús ocultos.",
+
+      // Blog Post 15
+      "blog-p15-date": "📅 11 de agosto de 2026",
+      "blog-p15-cat": "🏷️ Servidores de Biblioteca",
+      "blog-p15-title": "Cómo Añadir un Bucket S3 como Servidor de Biblioteca (AWS S3, MinIO, R2)",
+      "blog-p15-desc": "Conecta cualquier bucket compatible con S3 (AWS S3, MinIO, Cloudflare R2, Wasabi o DigitalOcean Spaces), explora carpetas y descarga libros EPUB directamente en tu dispositivo.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",
