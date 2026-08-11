@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How to Use the E-Ink Theme for EPUB Reading on Android — Shiori Blog</title>
+  <meta name="description" content="Turn Shiori into a paper-like, high-contrast, distraction-free EPUB reader with the E-Ink theme — pure black on white, animations off, applied app-wide. Perfect for Onyx Boox and e-paper Android devices." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/eink-theme-for-android-epub-reader/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Use the E-Ink Theme for EPUB Reading on Android",
+    "description": "A step-by-step guide to enabling Shiori's E-Ink theme: pure black-on-white contrast, animations turned off to stop e-paper ghosting, applied across the whole app — ideal for Onyx Boox and other e-ink Android readers.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/eink-theme-for-android-epub-reader/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.25rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* YouTube Short Embed */
+    .short-video-container {
+      max-width: 360px;
+      margin: 2.5rem auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      background: var(--bg-secondary);
+      padding: 12px;
+    }
+    .short-video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* 9:16 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .short-video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p12-date">📅 August 11, 2026</span>
+        <span data-i18n="blog-p12-cat">🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Use the E-Ink Theme<br><span class="text-gradient">for Paper-Like EPUB Reading on Android</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีใช้ธีม E-Ink<br><span class="text-gradient">อ่าน EPUB สบายตาเหมือนกระดาษบน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">E-Inkテーマの使い方<br><span class="text-gradient">Androidで紙のようなEPUB読書体験を</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何使用 E-Ink 墨水屏主题<br><span class="text-gradient">在 Android 上享受如纸般的 EPUB 阅读体验</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Como Usar o Tema E-Ink<br><span class="text-gradient">para Leitura EPUB Semelhante ao Papel no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Cómo Usar el Tema E-Ink<br><span class="text-gradient">para una Lectura EPUB Similar al Papel en Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('02-eink-theme-reader-black-on-white.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📖</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>If you read for hours on your phone or on an e-paper device, a bright, colorful, animated interface can quickly become tiring. The <strong>E-Ink theme</strong> in Shiori strips reading back to its essentials: crisp black text on a clean white page, with nothing moving to distract you.</p>
+        <p>It was designed for e-ink and e-paper Android devices such as Onyx Boox, but it works beautifully on any phone or tablet when you want the calmest, most paper-like reading experience possible.</p>
+
+        <h2>What the E-Ink Theme Does</h2>
+        <p>Choosing E-Ink changes more than just the page color. It reshapes the whole reading experience for high-contrast, low-distraction displays:</p>
+        <ul class="article-bullet-list">
+          <li><strong>Pure black on pure white</strong> — maximum contrast for the sharpest, most legible text.</li>
+          <li><strong>Animations turned off</strong> — page changes are instant, so e-paper panels never smear or "ghost" during motion.</li>
+          <li><strong>Flat, borderless-free design</strong> — soft shadows and gradients are replaced with clean outlines that e-ink screens render perfectly.</li>
+          <li><strong>Applied across the whole app</strong> — not just the reader, but your bookshelf, collections, and reading statistics too.</li>
+        </ul>
+
+        <h2>Why Read in E-Ink Mode</h2>
+        <p>High contrast and a still, quiet interface are easier on the eyes during long reading sessions. On real e-paper hardware, turning off animations also avoids the ghosting and flicker that motion causes, and a mostly-white, static screen is gentle on battery.</p>
+        <p>Even on a regular LCD or OLED phone, many readers prefer E-Ink mode simply because it feels like paper — no glow, no color, no motion, just the words.</p>
+
+        <h2>Enable E-Ink in Three Taps</h2>
+        <p>You can switch to the E-Ink theme any time from the reading settings — no restart needed. Here is exactly how.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>ถ้าคุณอ่านหนังสือบนมือถือหรือบนอุปกรณ์ e-paper นานๆ หน้าจอที่สว่าง มีสีสัน และมีแอนิเมชันเยอะๆ อาจทำให้ล้าตาได้ง่าย ธีม <strong>E-Ink</strong> ใน Shiori ตัดทุกอย่างออกให้เหลือแค่สิ่งจำเป็น—ตัวอักษรสีดำคมบนพื้นขาวสะอาด โดยไม่มีอะไรเคลื่อนไหวมารบกวนสายตา</p>
+        <p>ธีมนี้ออกแบบมาเพื่ออุปกรณ์ e-ink / e-paper บน Android เช่น Onyx Boox แต่ก็ใช้งานได้สวยงามบนมือถือหรือแท็บเล็ตทั่วไปเมื่อคุณอยากได้บรรยากาศการอ่านที่สงบและเหมือนกระดาษที่สุด</p>
+
+        <h2>ธีม E-Ink ทำอะไรบ้าง</h2>
+        <p>การเลือก E-Ink ไม่ได้เพียงเปลี่ยนสีพื้นหน้า แต่ปรับทั้งประสบการณ์ให้เหมาะกับจอคอนทราสต์สูงและรบกวนน้อยที่สุด:</p>
+        <ul class="article-bullet-list">
+          <li><strong>ดำสนิทบนขาวสะอาด</strong> — คอนทราสต์สูงสุด ตัวอักษรคมชัด อ่านง่ายที่สุด</li>
+          <li><strong>ปิดแอนิเมชันทั้งหมด</strong> — เปลี่ยนหน้าแบบทันที หน้าจอ e-paper จึงไม่เกิดอาการภาพค้าง (ghosting) ขณะเลื่อน</li>
+          <li><strong>ดีไซน์แบนเรียบๆ</strong> — เงาและไล่สีถูกแทนด้วยเส้นขอบคมที่จอ e-ink แสดงผลได้คมชัด</li>
+          <li><strong>ใช้กับทั้งแอป</strong> — ไม่ใช่แค่หน้าอ่าน แต่รวมถึงชั้นหนังสือ คอลเลกชัน และหน้าสถิติการอ่านด้วย</li>
+        </ul>
+
+        <h2>ทำไมควรอ่านด้วยโหมด E-Ink</h2>
+        <p>คอนทราสต์สูงและหน้าจอที่นิ่ง ไม่มีอะไรเคลื่อนไหว ช่วยถนอมสายตาเวลาอ่านนานๆ บนอุปกรณ์ e-paper จริง การปิดแอนิเมชันยังช่วยลดอาการภาพค้างและการกะพริบ ขณะที่หน้าจอสีขาวเป็นหลักก็ช่วยประหยัดแบตเตอรี่</p>
+        <p>แม้บนมือถือ LCD หรือ OLED ทั่วไป หลายคนก็ชอบโหมด E-Ink เพราะมันให้ความรู้สึกเหมือนอ่านกระดาษ—ไม่มีแสงจ้า ไม่มีสี ไม่มีการเคลื่อนไหว เหลือไว้แค่ตัวหนังสือ</p>
+
+        <h2>เปิด E-Ink ได้ในสามแตะ</h2>
+        <p>คุณสลับมาใช้ธีม E-Ink เมื่อไหร่ก็ได้จากหน้าตั้งค่าการอ่าน โดยไม่ต้องรีสตาร์ทแอป ดังนี้</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>スマートフォンや電子ペーパー端末で長時間読書をしていると、明るくカラフルで動きの多い画面は目を疲れさせる原因になります。Shioriの<strong>E-Inkテーマ</strong>は、読書をその本質だけに研ぎ澄まします。清潔な白いページにくっきりとした黒い文字、集中を妨げる余計なアニメーションは一切ありません。</p>
+        <p>Onyx BooxなどのAndroid搭載E-Ink・電子ペーパー端末向けに最適化されていますが、紙のような静かで目に優しい読書環境を求めるなら、通常のスマートフォンやタブレットでも驚くほど快適にご利用いただけます。</p>
+
+        <h2>E-Inkテーマの主な特徴</h2>
+        <p>E-Inkテーマを選択すると、背景色が変わるだけではありません。高コントラストで視覚的ノイズの少ない画面表示へと読書体験全体が再設計されます：</p>
+        <ul class="article-bullet-list">
+          <li><strong>純白に漆黒の文字（Pure Black on White）</strong> — 最大のコントラストにより、最も鮮明で読みやすい文字表示を実現。</li>
+          <li><strong>アニメーションの完全停止</strong> — 画面遷移が瞬時に行われるため、電子ペーパー特有の残像（ゴースト）やチラつきを徹底排除。</li>
+          <li><strong>フラット＆ボーダーレスデザイン</strong> — 影やグラデーションを廃し、E-Ink画面でも美しく描写されるシャープな輪郭線を採用。</li>
+          <li><strong>アプリ全体への一括適用</strong> — リーダー画面だけでなく、本棚、コレクション、読書統計画面までアプリ全体がE-Ink仕様に切り替わります。</li>
+        </ul>
+
+        <h2>なぜE-Inkモードで読むのか？</h2>
+        <p>高いコントラストと動きのない静かな画面は、長時間の読書でも目の負担を大幅に軽減します。実際の電子ペーパー端末では、アニメーションを切ることで描画遅延やゴーストを防ぎ、白ベースの静止画面によりバッテリー消費も極めて少なくなります。</p>
+        <p>通常の液晶やOLEDのスマホユーザーでも、「発光感や派手な色、余計な動きがなく、純粋に文字だけに没頭できる紙の感覚」を理由にE-Inkモードを愛用する読者が増えています。</p>
+
+        <h2>わずか3タップでE-Inkを有効化</h2>
+        <p>読書設定からいつでも手軽にE-Inkテーマへ切り替えられます（アプリの再起動は不要）。具体的な設定手順は以下の通りです。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>如果您经常在手机或电子墨水屏设备上连续阅读数小时，明亮、色彩丰富且充满动态效果的界面很容易让眼睛产生疲劳。Shiori 中的 <strong>E-Ink 墨水屏主题</strong> 让阅读回归纯粹的本质：纯白页面上的锐利黑字，没有任何动态干扰。</p>
+        <p>该主题专为文石 Onyx Boox 等 Android 电子墨水屏设备量身打造；同时，当您希望在普通手机或平板上享受最沉静、如纸张般舒适的阅读体验时，它同样表现卓越。</p>
+
+        <h2>E-Ink 主题的核心改变</h2>
+        <p>开启 E-Ink 不仅是改变页面底色，而是为高对比度、低干扰的显示环境全面重塑了整个阅读体验：</p>
+        <ul class="article-bullet-list">
+          <li><strong>纯黑字纯白底（Pure Black on White）</strong> — 极高对比度，呈现最清晰锐利的文字排版。</li>
+          <li><strong>停用所有界面动画</strong> — 瞬时翻页与切换，彻底消除电子墨水屏在动态过渡中的残影（Ghosting）与闪烁。</li>
+          <li><strong>极简扁平化线条设计</strong> — 用清晰利落的轮廓线条取代柔和阴影与渐变，确保在墨水屏上完美显色。</li>
+          <li><strong>全局应用于整个应用</strong> — 不仅是阅读器界面，书架、分类列表以及阅读统计等所有界面均自动同步适配。</li>
+        </ul>
+
+        <h2>为什么选择 E-Ink 模式阅读？</h2>
+        <p>高对比度且静止沉稳的界面能够在长时间阅读中极大减轻双眼负担。在真实的电子墨水屏硬件上，关闭动画还能避免动态造成的残影与刷新闪烁，同时静态白底画面也非常省电。</p>
+        <p>即使在普通的 LCD 或 OLED 手机上，许多读者也青睐 E-Ink 模式，只因它带来接近真实纸张的质感——没有刺眼眩光，没有花哨色彩，没有多余动效，唯有文字流淌。</p>
+
+        <h2>轻触三下，即刻开启 E-Ink</h2>
+        <p>您可以随时从阅读设置中切换至 E-Ink 主题，无需重启应用。具体操作步骤如下：</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Se você lê por horas no celular ou em um dispositivo e-paper, uma interface brilhante, colorida e cheia de animações pode cansar a visão rapidamente. O <strong>tema E-Ink</strong> no Shiori reduz a leitura ao essencial: texto preto nítido em uma página branca limpa, sem nada em movimento para distrair você.</p>
+        <p>Ele foi projetado especialmente para dispositivos Android e-ink e e-paper como o Onyx Boox, mas funciona com perfeição em qualquer celular ou tablet quando você deseja a experiência de leitura mais calma e semelhante ao papel possível.</p>
+
+        <h2>O que o Tema E-Ink Faz</h2>
+        <p>Escolher o E-Ink muda mais do que apenas a cor da página. Ele remodela toda a experiência de leitura para telas de alto contraste e baixa distração:</p>
+        <ul class="article-bullet-list">
+          <li><strong>Preto puro no branco puro</strong> — contraste máximo para um texto o mais nítido e legível possível.</li>
+          <li><strong>Animações desativadas</strong> — as trocas de página são instantâneas, evitando rastros ou "efeito fantasma" (ghosting) nos painéis e-paper.</li>
+          <li><strong>Design plano e limpo</strong> — sombras suaves e gradientes são substituídos por contornos bem definidos que as telas e-ink renderizam com perfeição.</li>
+          <li><strong>Aplicado em todo o aplicativo</strong> — não apenas no leitor, mas também na estante de livros, coleções e estatísticas de leitura.</li>
+        </ul>
+
+        <h2>Por Que Ler no Modo E-Ink?</h2>
+        <p>O alto contraste e uma interface estática e silenciosa são mais confortáveis para os olhos durante longas sessões de leitura. No hardware e-paper real, desativar animações também evita o efeito fantasma e a cintilação do movimento, além de economizar bateria com uma tela predominantemente branca e estática.</p>
+        <p>Mesmo em celulares com tela LCD ou OLED comum, muitos leitores preferem o modo E-Ink simplesmente porque parece papel de verdade — sem brilho excessivo, sem cores chamativas, sem movimento, apenas as palavras.</p>
+
+        <h2>Ative o E-Ink em Três Toques</h2>
+        <p>Você pode mudar para o tema E-Ink a qualquer momento nas configurações de leitura — sem necessidade de reiniciar. Veja exatamente como fazer.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Si lees durante horas en tu teléfono o en un dispositivo de tinta electrónica (e-paper), una interfaz brillante, llena de color y animaciones puede cansar rápidamente la vista. El <strong>tema E-Ink</strong> de Shiori devuelve la lectura a lo esencial: texto negro nítido sobre una página blanca y limpia, sin elementos en movimiento que te distraigan.</p>
+        <p>Fue diseñado para dispositivos Android e-ink y e-paper como Onyx Boox, pero funciona de maravilla en cualquier teléfono o tableta cuando buscas la experiencia de lectura más tranquila y similar al papel posible.</p>
+
+        <h2>Qué Hace el Tema E-Ink</h2>
+        <p>Elegir E-Ink cambia mucho más que el color de la página. Rediseña toda la experiencia de lectura para pantallas de alto contraste y mínimas distracciones:</p>
+        <ul class="article-bullet-list">
+          <li><strong>Negro puro sobre blanco puro</strong> — máximo contraste para un texto más nítido y legible.</li>
+          <li><strong>Animaciones desactivadas</strong> — los cambios de página son instantáneos, evitando que los paneles e-paper generen efecto fantasma o imágenes residuales (ghosting).</li>
+          <li><strong>Diseño plano y nítido</strong> — las sombras suaves y los degradados se reemplazan con contornos limpios que las pantallas e-ink representan a la perfección.</li>
+          <li><strong>Aplicado en toda la aplicación</strong> — no solo en el lector, sino también en tu estantería, colecciones y estadísticas de lectura.</li>
+        </ul>
+
+        <h2>¿Por Qué Leer en Modo E-Ink?</h2>
+        <p>El alto contraste y una interfaz estática y tranquila son más agradables para la vista durante largas sesiones de lectura. En dispositivos e-paper reales, desactivar las animaciones evita el parpadeo y las imágenes residuales, además de optimizar la batería con una pantalla estática en blanco.</p>
+        <p>Incluso en un teléfono tradicional con pantalla LCD u OLED, muchos lectores prefieren el modo E-Ink simplemente porque se siente como papel: sin brillo excesivo, sin colores saturados, sin movimiento, solo las palabras.</p>
+
+        <h2>Activa E-Ink en Tres Toques</h2>
+        <p>Puedes cambiar al tema E-Ink en cualquier momento desde los ajustes de lectura, sin necesidad de reiniciar la app. Aquí te mostramos exactamente cómo hacerlo.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Turn On the E-Ink Theme (4 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">เปิดใช้ธีม E-Ink (4 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">E-Inkテーマを有効にする（4つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">开启 E-Ink 墨水屏主题（4 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Ativar o Tema E-Ink (4 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Activar el Tema E-Ink (4 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open Reading Settings &amp; Choose "E-Ink"</div>
+          <div class="step-desc">
+            <p>Go to <strong>Settings → Reading</strong> (or open the reading settings while a book is open). Under <strong>Theme</strong>, tap <strong>E-Ink</strong>. The change applies instantly — no restart required.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดตั้งค่าการอ่านแล้วเลือก "E-Ink"</div>
+          <div class="step-desc">
+            <p>ไปที่ <strong>ตั้งค่า (Settings) → Reading</strong> (หรือเปิดตั้งค่าการอ่านขณะเปิดหนังสือก็ได้) ที่หัวข้อ <strong>Theme</strong> ให้แตะเลือก <strong>E-Ink</strong> ระบบจะเปลี่ยนทันทีโดยไม่ต้องรีสตาร์ทแอป</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>読書設定を開き「E-Ink」を選択</div>
+          <div class="step-desc">
+            <p><strong>設定 → 読書設定</strong>（または読書中に設定メニューを開く）に移動します。<strong>テーマ</strong>の項目で<strong>E-Ink</strong>をタップします。再起動不要で瞬時に適用されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>打开阅读设置并选择“E-Ink”</div>
+          <div class="step-desc">
+            <p>前往 <strong>设置 → 阅读设置</strong>（或在打开书籍时呼出阅读设置）。在<strong>主题</strong>下轻触 <strong>E-Ink</strong>。更改即时生效，无需重启应用。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra as Configurações de Leitura e Escolha "E-Ink"</div>
+          <div class="step-desc">
+            <p>Vá em <strong>Configurações → Leitura</strong> (ou abra as configurações de leitura com um livro aberto). Em <strong>Tema</strong>, toque em <strong>E-Ink</strong>. A alteração é aplicada instantaneamente — sem necessidade de reiniciar.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre los Ajustes de Lectura y Elige "E-Ink"</div>
+          <div class="step-desc">
+            <p>Ve a <strong>Ajustes → Lectura</strong> (o abre los ajustes de lectura mientras lees un libro). En <strong>Tema</strong>, toca <strong>E-Ink</strong>. El cambio se aplica al instante, sin necesidad de reiniciar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-reading-settings-select-eink-theme.jpg" alt="Select the E-Ink theme in Shiori reading settings on Android" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Read in Crisp Black on White</div>
+          <div class="step-desc">
+            <p>Open any book and enjoy pure black text on a clean white page. Page turns are instant, so text stays sharp and never ghosts — exactly what e-paper displays are made for.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>อ่านด้วยตัวอักษรสีดำบนพื้นขาว</div>
+          <div class="step-desc">
+            <p>เปิดหนังสือเล่มไหนก็ได้ ตัวอักษรสีดำสนิทบนพื้นขาวสะอาด เปลี่ยนหน้าแบบทันที ตัวอักษรจึงคมชัดไม่มีภาพค้าง—เหมาะกับหน้าจอ e-paper ที่สุด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>鮮明な白黒ハイコントラストで読書</div>
+          <div class="step-desc">
+            <p>任意の本を開くと、清潔な白いページに漆黒の文字が表示されます。ページめくりは瞬時で残像（ゴースト）が発生せず、文字が常に鮮明に保たれます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>在纯白背景上享受清晰的纯黑文字</div>
+          <div class="step-desc">
+            <p>打开任意书籍，享受纯净白底上的清晰纯黑文字。翻页瞬间完成，文字保持锐利且绝无残影——这正是电子墨水屏的最佳阅读状态。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Leia em Preto e Branco Nítido</div>
+          <div class="step-desc">
+            <p>Abra qualquer livro e aproveite o texto preto puro em uma página branca e limpa. As mudanças de página são instantâneas, mantendo o texto nítido e sem fantasmas — perfeito para telas e-paper.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Lee con Texto Negro Nítido sobre Fondo Blanco</div>
+          <div class="step-desc">
+            <p>Abre cualquier libro y disfruta de texto negro puro sobre una página blanca limpia. El cambio de página es instantáneo, por lo que el texto se mantiene nítido y sin efecto fantasma, perfecto para pantallas e-paper.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-eink-theme-reader-black-on-white.jpg" alt="Shiori EPUB reader in E-Ink theme with black text on a white page" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>The Whole App Goes E-Ink</div>
+          <div class="step-desc">
+            <p>E-Ink isn't limited to the reader. Your bookshelf switches to a flat, high-contrast layout with clean outlines instead of shadows — easy to see and comfortable to browse on any e-paper screen.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ทั้งแอปกลายเป็น E-Ink</div>
+          <div class="step-desc">
+            <p>โหมด E-Ink ไม่ได้มีแค่หน้าอ่าน ชั้นหนังสือของคุณจะเปลี่ยนเป็นเลย์เอาต์แบนคอนทราสต์สูง ใช้เส้นขอบแทนเงา—มองเห็นชัดและเลือกหนังสือได้สบายบนจอ e-paper</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>アプリ全体がE-Ink仕様に変化</div>
+          <div class="step-desc">
+            <p>E-Inkモードは読書画面だけに留まりません。本棚もシャドウを廃したフラットで高コントラストな輪郭レイアウトに切り替わり、電子ペーパー画面でも快適にブラウジングできます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>整个应用全面适配 E-Ink</div>
+          <div class="step-desc">
+            <p>E-Ink 模式不仅限于阅读器界面。您的书架也会转换为高对比度的扁平化布局，以清晰的线条轮廓取代阴影与渐变——在任何电子墨水屏上都能清晰浏览。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>O Aplicativo Inteiro Fica em Modo E-Ink</div>
+          <div class="step-desc">
+            <p>O modo E-Ink não se limita ao leitor. Sua estante muda para um layout plano de alto contraste com contornos limpos em vez de sombras — fácil de visualizar e navegar em qualquer tela e-paper.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Toda la Aplicación se Adapta a E-Ink</div>
+          <div class="step-desc">
+            <p>El modo E-Ink no se limita al lector. Tu estantería cambia a un diseño plano de alto contraste con contornos limpios en lugar de sombras, fácil de ver y navegar en cualquier pantalla e-paper.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-eink-theme-bookshelf-app-wide.jpg" alt="Shiori bookshelf in E-Ink theme showing app-wide high-contrast layout" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Even Your Reading Stats Stay Readable</div>
+          <div class="step-desc">
+            <p>Your reading calendar and statistics render in the same clean, monochrome style — so tracking your progress looks great on e-ink too.</p>
+            <div class="quote-callout">
+              <strong>💡 Tip</strong><br />
+              On real e-paper devices, keep animations off and brightness low. E-Ink mode already disables motion for you, so pages stay crisp with no ghosting.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>แม้แต่หน้าสถิติก็อ่านง่าย</div>
+          <div class="step-desc">
+            <p>ปฏิทินการอ่านและหน้าสถิติต่างๆ จะแสดงผลด้วยสไตล์ขาว–ดำสะอาดตาเดียวกัน ดูความคืบหน้าได้สบายตาแม้บนจอ e-ink</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับ</strong><br />
+              บนอุปกรณ์ e-paper จริง ควรปิดแอนิเมชันและลดความสว่าง ซึ่งโหมด E-Ink ปิดแอนิเมชันให้แล้ว หน้าจึงคมชัดไม่มีภาพค้าง
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>読書統計画面もクリアで見やすい</div>
+          <div class="step-desc">
+            <p>読書カレンダーや各種統計データも同様にすっきりとしたモノクロスタイルで描画され、E-Ink端末上でも快適に進捗を確認できます。</p>
+            <div class="quote-callout">
+              <strong>💡 ヒント</strong><br />
+              実際の電子ペーパー端末ではアニメーションを無効にし、輝度を控えめに設定してください。E-Inkモードでは自動でアニメーションが無効化されるため、残像なく鮮明なページを維持できます。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>阅读统计界面同样清晰易读</div>
+          <div class="step-desc">
+            <p>您的阅读日历和统计数据均以同样的纯粹黑白单色风格呈现——在墨水屏上追踪阅读进度同样清晰赏心悦目。</p>
+            <div class="quote-callout">
+              <strong>💡 提示</strong><br />
+              在实际的电子墨水屏设备上，建议关闭系统动画并调低背光。E-Ink 模式已为您自动停用所有动态过渡，确保页面锐利清爽无残影。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Até Suas Estatísticas de Leitura Ficam Fáceis de Ler</div>
+          <div class="step-desc">
+            <p>Seu calendário e estatísticas de leitura são renderizados no mesmo estilo monocromático limpo — acompanhar seu progresso fica ótimo também no e-ink.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica</strong><br />
+              Em dispositivos e-paper reais, mantenha as animações desativadas e o brilho baixo. O modo E-Ink já desativa as animações para você, mantendo as páginas nítidas e sem fantasmas.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Incluso tus Estadísticas de Lectura se Mantienen Legibles</div>
+          <div class="step-desc">
+            <p>Tu calendario de lectura y estadísticas se muestran con el mismo estilo monocromático limpio, para que seguir tu progreso se vea excelente también en e-ink.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo</strong><br />
+              En dispositivos e-paper reales, mantén las animaciones desactivadas y el brillo bajo. El modo E-Ink ya desactiva el movimiento por ti, garantizando páginas nítidas y sin imágenes residuales.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-eink-theme-insights-reading-stats.jpg" alt="Reading statistics and calendar shown in E-Ink theme in Shiori" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Read the Way Paper Feels</h2>
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">อ่านสบายตาเหมือนอ่านกระดาษจริง</h2>
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">紙のような読み心地を体験</h2>
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">感受如纸张般的沉浸阅读</h2>
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Leia com a Sensação do Papel Real</h2>
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Lee con la Sensación del Papel Real</h2>
+
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-en">
+        Download Shiori EPUB Reader and switch on the E-Ink theme for calm, high-contrast, paper-like reading on any Android or e-paper device.
+      </p>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader แล้วเปิดธีม E-Ink เพื่อการอ่านที่สงบ คมชัดสูง สบายตาเหมือนกระดาษ บน Android และอุปกรณ์ e-paper ทุกเครื่อง
+      </p>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-jp">
+        Shiori EPUBリーダーをダウンロードしてE-Inkテーマをオンにし、あらゆるAndroid端末や電子ペーパー機器で落ち着いた高コントラストの紙のような読書をお楽しみください。
+      </p>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器并开启 E-Ink 墨水屏主题，在任何 Android 或电子墨水屏设备上享受静谧、高对比度、如纸张般舒适的阅读时光。
+      </p>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e ative o tema E-Ink para uma leitura calma, de alto contraste e semelhante ao papel em qualquer dispositivo Android ou e-paper.
+      </p>
+      <p style="opacity: 0.9; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.6;" class="lang-es">
+        Descarga Shiori EPUB Reader y activa el tema E-Ink para disfrutar de una lectura tranquila, de alto contraste y similar al papel en cualquier dispositivo Android o e-paper.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

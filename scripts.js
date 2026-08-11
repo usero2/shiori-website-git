@@ -200,6 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-title": "Why Tracking Your Reading Statistics Can Help You Read More Books",
       "blog-p11-desc": "Discover how tracking reading velocity, total time spent, and sharing beautiful milestone cards in Shiori builds consistent reading habits.",
 
+      // Blog Post 12
+      "blog-p12-date": "📅 August 11, 2026",
+      "blog-p12-cat": "🏷️ Reading Experience",
+      "blog-p12-title": "How to Use the E-Ink Theme for EPUB Reading on Android",
+      "blog-p12-desc": "Turn Shiori into a paper-like, high-contrast, distraction-free reader — pure black on white, animations off, applied app-wide. Perfect for Onyx Boox and e-paper devices.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -414,6 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-cat": "🏷️ นิสัยการอ่าน",
       "blog-p11-title": "ทำไมการติดตามสถิติการอ่านถึงช่วยให้คุณอ่านหนังสือได้จบเล่มมากขึ้น",
       "blog-p11-desc": "เรียนรู้วิธีติดตามสถิติการอ่าน เวลาที่ใช้ พร้อมวิธีสร้างการ์ดความทรงจำสวยงามเพื่อแชร์ความสำเร็จของการอ่านบนโซเชียลมีเดียใน Shiori",
+
+      // Blog Post 12
+      "blog-p12-date": "📅 11 สิงหาคม 2026",
+      "blog-p12-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p12-title": "วิธีใช้ธีม E-Ink อ่าน EPUB สบายตาเหมือนกระดาษบน Android",
+      "blog-p12-desc": "เปลี่ยน Shiori ให้เป็นแอปอ่านคมชัดเหมือนกระดาษ — ตัวอักษรดำบนพื้นขาว ปิดแอนิเมชัน ใช้ทั้งแอป เหมาะกับ Onyx Boox และอุปกรณ์ e-paper",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -630,6 +642,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-title": "読書統計を記録すると本がもっと読めるようになる理由",
       "blog-p11-desc": "Shioriの読書統計や所要時間グラフを記録し、美しいマイルストーンカードをSNSで共有して読書習慣を定着させる方法を解説します。",
 
+      // Blog Post 12
+      "blog-p12-date": "📅 2026年8月11日",
+      "blog-p12-cat": "🏷️ 読書体験",
+      "blog-p12-title": "E-Inkテーマの使い方：Androidで紙のようなEPUB読書体験を",
+      "blog-p12-desc": "Shioriを紙のように目に優しく高コントラストな読書環境へ。白黒反転なしの純白背景、アニメーション完全停止、アプリ全体に適用。Onyx Boox等の電子ペーパー端末に最適。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -844,6 +862,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-cat": "🏷️ 阅读习惯",
       "blog-p11-title": "为什么记录阅读统计数据能帮助您读更多书",
       "blog-p11-desc": "了解如何利用 Shiori 的阅读速度统计与时长追溯，一键生成精美里程碑成就卡片并分享至社交平台，建立持续阅读习惯。",
+
+      // Blog Post 12
+      "blog-p12-date": "📅 2026年8月11日",
+      "blog-p12-cat": "🏷️ 阅读体验",
+      "blog-p12-title": "如何使用 E-Ink 墨水屏主题在 Android 上获得如纸般的 EPUB 阅读体验",
+      "blog-p12-desc": "将 Shiori 变为高对比度、无干扰的纸感阅读器——纯黑白对比、全停动画、全局适配。专为 Onyx Boox 等墨水屏设备打造。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1060,6 +1084,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-title": "Por Que Acompanhar Suas Estatísticas de Leitura Ajuda a Ler Mais Livros",
       "blog-p11-desc": "Descubra como acompanhar a velocidade de leitura e compartilhar belos cartões de conquistas no Shiori constrói hábitos de leitura consistentes.",
 
+      // Blog Post 12
+      "blog-p12-date": "📅 11 de agosto de 2026",
+      "blog-p12-cat": "🏷️ Experiência de Leitura",
+      "blog-p12-title": "Como Usar o Tema E-Ink para Leitura EPUB Semelhante ao Papel no Android",
+      "blog-p12-desc": "Transforme o Shiori em um leitor de alto contraste e sem distrações — preto puro no branco, sem animações, aplicado em todo o app. Perfeito para Onyx Boox e telas e-paper.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1274,6 +1304,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p11-cat": "🏷️ Hábitos de Lectura",
       "blog-p11-title": "Por Qué Registrar tus Estadísticas de Lectura Te Ayuda a Leer Más Libros",
       "blog-p11-desc": "Descubre cómo registrar la velocidad de lectura, el tiempo total y compartir hermosas tarjetas de logros en Shiori ayuda a mantener el hábito de lectura.",
+
+      // Blog Post 12
+      "blog-p12-date": "📅 11 de agosto de 2026",
+      "blog-p12-cat": "🏷️ Experiencia de Lectura",
+      "blog-p12-title": "Cómo Usar el Tema E-Ink para una Lectura EPUB Similar al Papel en Android",
+      "blog-p12-desc": "Convierte Shiori en un lector de alto contraste y sin distracciones: blanco y negro puro, sin animaciones y aplicado en toda la app. Ideal para Onyx Boox y dispositivos e-paper.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",
