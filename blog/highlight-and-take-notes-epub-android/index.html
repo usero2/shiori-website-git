@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How to Highlight Text and Take Notes in an Android EPUB Reader — Shiori Blog</title>
+  <meta name="description" content="Highlight EPUB passages in eight gentle colors, attach personal notes, and collect every insight into one searchable place — the Memory tab in Shiori for Android." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/highlight-and-take-notes-epub-android/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Highlight Text and Take Notes in an Android EPUB Reader",
+    "description": "A step-by-step guide to highlighting text in eight colors, adding personal notes to highlights, and organizing every insight in the Memory tab in Shiori EPUB Reader for Android.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/highlight-and-take-notes-epub-android/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p13-date">📅 August 11, 2026</span>
+        <span data-i18n="blog-p13-cat">🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Highlight Text and Take Notes<br><span class="text-gradient">in an Android EPUB Reader</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีไฮไลต์ข้อความและจดบันทึก<br><span class="text-gradient">ในแอปอ่าน EPUB บน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">AndroidでEPUBのハイライトとメモを活用する方法<br><span class="text-gradient">心に響く言葉を美しく記録する</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何在 Android EPUB 阅读器中高亮划线与记录笔记<br><span class="text-gradient">让每一次阅读都留下思考的印记</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Como Destacar Textos e Fazer Anotações<br><span class="text-gradient">em um Leitor EPUB no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Cómo Resaltar Texto y Tomar Notas<br><span class="text-gradient">en un Lector EPUB para Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('02-choose-highlight-color.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">✍️</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>There is something deeply satisfying about stumbling upon a sentence that resonates with you, marking it in a gentle color, and noting down the thought that just sparked in your mind. <strong>Shiori</strong> is designed to make this rhythm effortless: highlight any passage in a single tap, attach your personal reflections, and revisit every insight in a beautifully organized space — the <strong>Memory</strong> tab.</p>
+
+        <h2>Eight Harmonious Colors for Every Thought</h2>
+        <p>Select any text and tap <strong>Highlight</strong>, then choose from eight gentle shades: Yellow, Green, Blue, Pink, Orange, Purple, Teal, or Red. The highlight applies immediately without breaking your reading flow and stays permanently with your book — perfect for color-coding memorable quotes, key takeaways, character notes, or new vocabulary.</p>
+
+        <h2>Give Every Highlight a Voice with Notes</h2>
+        <p>A highlight captures what the author said; a note captures what <em>you</em> felt. Choose <strong>“Highlight with a note…”</strong> to jot down a reflection, a quick translation, or a personal reminder. You can edit your notes or switch colors whenever inspiration strikes, keeping your private thoughts neatly tied to the text.</p>
+
+        <h2>The Memory Tab: Your Personal Commonplace Book</h2>
+        <p>Every highlight and note you create flows naturally into the <strong>Memory</strong> tab. Filter by <strong>Highlight</strong> or <strong>Note</strong>, search across your entire library, or tap any card to instantly return to that exact paragraph in the book. You can even export your favorite quotes into elegant cards to share with friends. It’s more than a list — it’s your personal treasury of knowledge and inspiration.</p>
+
+        <h2>Highlight &amp; Take Notes in Five Steps</h2>
+        <p>Here is the full flow, from selecting a memorable passage to rediscovering it in Memory.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>เวลาที่เราได้เจอประโยคที่โดนใจหรือสะกิดความคิด การได้ขีดเส้นเน้นข้อความและจดสิ่งที่แวบเข้ามาในหัวไว้ทันที คือเสน่ห์ที่ทำให้การอ่านมีความหมายและมีชีวิตชีวายิ่งขึ้น ใน <strong>Shiori</strong> เราตั้งใจออกแบบให้ทุกการไฮไลต์และจดบันทึกเรียบง่าย ไหลลื่นที่สุด—เพียงแค่แตะครั้งเดียวก็เน้นข้อความได้ในสีที่ถูกใจ ใส่โน้ตความรู้สึกควบคู่กัน และที่พิเศษที่สุดคือ ทุกความทรงจำที่คุณบันทึกไว้จะถูกรวบรวมไว้อย่างประณีตในแท็บ <strong>Memory</strong> ให้คุณกลับมาเปิดดูเมื่อไหร่ก็อบอุ่นใจ</p>
+
+        <h2>ไฮไลต์แต่งแต้มสีสันได้ถึง 8 โทนสี</h2>
+        <p>เพียงเลือกข้อความที่ประทับใจแล้วแตะ <strong>Highlight</strong> คุณสามารถเลือกโทนสีได้ถึง 8 สี (เหลือง, เขียว, ฟ้า, ชมพู, ส้ม, ม่วง, เขียวมิ้นต์ และแดง) ไฮไลต์จะถูกบันทึกติดตรึงไว้กับหนังสือเล่มโปรดทันที เหมาะอย่างยิ่งสำหรับการจัดระเบียบความคิด เช่น แยกสีสำหรับประโยคกินใจ ข้อมูลสำคัญ คำศัพท์ใหม่ หรือข้อคิดในการใช้ชีวิต</p>
+
+        <h2>แนบโน้ตบอกเล่าความคิดเคียงคู่ทุกไฮไลต์</h2>
+        <p>ไฮไลต์ไม่ได้เป็นแค่แถบสี แต่ยังเป็นพื้นที่ให้คุณฝากความคิดไว้ได้ เพียงเลือก <strong>“Highlight with a note…”</strong> ก็สามารถพิมพ์ความรู้สึก คำแปล หรือข้อเตือนใจสั้นๆ ได้ทันที โดยสามารถกลับมาแก้ไขข้อความหรือเปลี่ยนสีได้เสมอ ทุกโน้ตถูกเก็บรักษาไว้อย่างปลอดภัยบนเครื่องเคียงข้างประโยคสำคัญนั้นเสมอ</p>
+
+        <h2>คลังความทรงจำในแท็บ Memory — รวมทุกสิ่งที่มีค่าไว้ที่เดียว</h2>
+        <p>ไฮไลต์และโน้ตทั้งหมดที่คุณเคยบันทึกไว้ จะเดินทางมารวมกันอยู่ที่แท็บ <strong>Memory</strong> คุณสามารถเลือกกรองเฉพาะไฮไลต์หรือโน้ต ค้นหาคำที่ต้องการข้ามหนังสือทุกเล่ม หรือแตะที่การ์ดเพื่อวาร์ปกลับไปยังหน้าและย่อหน้าเดิมได้ทันที นอกจากนี้ยังสามารถเปลี่ยนไฮไลต์ที่ชอบให้เป็นการ์ดข้อความสวยงามเพื่อแชร์ต่อให้เพื่อนๆ ได้อีกด้วย เปรียบเสมือนสมุดบันทึกเล่มโปรด (Commonplace Book) ที่เก็บเกี่ยวปัญญาและแรงบันดาลใจทั้งหมดจากการอ่านของคุณไว้ในที่เดียว</p>
+
+        <h2>ไฮไลต์และจดโน้ตใน 5 ขั้นตอนง่ายๆ</h2>
+        <p>นี่คือขั้นตอนทั้งหมด ตั้งแต่การเลือกข้อความไปจนถึงการกลับมาทบทวนในแท็บ Memory</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>読書中、ふと心に響いた言葉に出会ったとき、その一文に優しい色を添え、浮かんだ思いを言葉に残す――それは読書を何倍も豊かにしてくれる特別な時間です。<strong>Shiori</strong> は、そんな読書の歓びをシームレスに支えます。ワンタップでお好みの色にハイライトし、自分だけのメモを書き添え、記録したすべてを「**Memory（メモリー）**」タブに美しく集約できます。</p>
+
+        <h2>読書のリズムを邪魔しない8色のハイライト</h2>
+        <p>気になる文章を選択して <strong>Highlight</strong> をタップするだけで、8つの美しいカラー（イエロー、グリーン、ブルー、ピンク、オレンジ、パープル、ティール、レッド）から選べます。確認ダイアログなしで瞬時に反映されるため、読書の没入感を妨げません。名言、重要な学び、新しい語彙など、テーマごとに色分けして整理するのにも最適です。</p>
+
+        <h2>ハイライトに自分だけのメモを添える</h2>
+        <p>ハイライトは、著者の言葉を残すもの。メモは、あなた自身の思考を残すもの。<strong>「Highlight with a note…」</strong> を選べば、ふと思い浮かんだ考察や翻訳、後で振り返りたいアイデアをその場で記録できます。メモの編集や色の変更はいつでも自由自在。大切な記録はあなたの端末内に安全に保管されます。</p>
+
+        <h2>Memoryタブ — すべての気付きが集まる読書ノート</h2>
+        <p>あなたが残したハイライトやメモは、すべて <strong>Memory</strong> タブに自動でまとめられます。ハイライトやメモ別の絞り込み、本棚全体を横断した検索、カードをタップして元の文章へ瞬時にジャンプできる機能など、振り返りがとても快適です。心に残る一節を美しい共有カードとして書き出すこともできます。まさにあなただけの「知の宝箱（Commonplace Book）」です。</p>
+
+        <h2>5つのステップでハイライト＆メモを活用</h2>
+        <p>文章の選択からMemoryタブでの振り返りまで、実際の手順を分かりやすくご紹介します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在阅读的旅程中，最动人的时刻莫过于遇见一段击中内心的文字，随手轻轻描上一抹温润的色彩，并写下此刻脑海中闪烁的思绪。<strong>Shiori</strong> 让这一切变得格外自然流畅：轻触一下即可高亮划线，随心附上个人笔记，所有留下的印记都会井然有序地汇集在“**Memory（记忆画廊）**”中，随时等候您的重温。</p>
+
+        <h2>8 种雅致色彩，随心分类点缀</h2>
+        <p>选中任何触动您的段落并点击 <strong>Highlight</strong>，即可从 8 种和谐色彩中自由选择：明黄、柔绿、海蓝、粉红、暖橙、雅紫、青碧与朱红。划线即时呈现，无需多余弹窗确认，绝不打断您的沉浸心流。无论是金句摘抄、人物线索还是生词学习，都能通过色彩轻松归类。</p>
+
+        <h2>为每一道高亮，附上专属思考笔记</h2>
+        <p>高亮记录的是作者的智慧，而笔记承载的是您当下的感悟。选择 <strong>“Highlight with a note…”</strong>，即可记录您的见解、译文或灵感随笔。随时都能重新编辑文字或更换颜色，所有私人笔记都会与原文段落紧密相依、安全存放于本地。</p>
+
+        <h2>Memory 记忆画廊 — 属于您的个人思考随身库</h2>
+        <p>您在所有书籍中留下的高亮与笔记，都会汇聚在 <strong>Memory</strong> 选项卡中。支持按高亮或笔记智能筛选、跨全书架关键词搜索，只需轻触卡片即可一秒直达原文所在段落。您还可以将挚爱的金句一键生成精美卡片分享给挚友。这里就是您的数字随笔札记（Commonplace Book），珍藏每一次阅读带来的启发。</p>
+
+        <h2>只需 5 步，轻松开启高亮与笔记</h2>
+        <p>以下是从选中文本到在 Memory 中重温记录的完整操作流程。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Há algo muito gratificante em encontrar uma frase marcante durante a leitura, colori-la suavemente e registrar no mesmo instante o pensamento que acabou de surgir. O <strong>Shiori</strong> foi criado para tornar esse momento simples e natural: destaque qualquer trecho com um único toque, anexe suas reflexões pessoais e encontre todos os seus apontamentos reunidos com carinho na aba <strong>Memory (Memória)</strong>.</p>
+
+        <h2>Oito Cores Harmoniosas para Organizar Suas Ideias</h2>
+        <p>Basta selecionar o texto desejado e tocar em <strong>Highlight</strong> para escolher entre oito tonalidades: Amarelo, Verde, Azul, Rosa, Laranja, Roxo, Verde-azulado ou Vermelho. O destaque é aplicado na hora, sem interromper o ritmo da sua leitura, e fica salvo com o livro — ideal para categorizar citações favoritas, conceitos importantes ou vocabulário novo.</p>
+
+        <h2>Dê Vida aos Destaques com Suas Próprias Anotações</h2>
+        <p>Enquanto o destaque guarda as palavras do autor, a nota registra o que você sentiu. Escolha <strong>“Highlight with a note…”</strong> para escrever uma reflexão, tradução ou lembrete. Você pode editar o texto ou trocar de cor a qualquer momento, mantendo suas notas guardadas com total privacidade junto ao trecho original.</p>
+
+        <h2>Aba Memory: Seu Caderno Pessoal de Citações e Insights</h2>
+        <p>Cada destaque e anotação que você faz ganha um lar na aba <strong>Memory</strong>. Filtre por destaques ou notas, pesquise palavras em todos os seus livros ou toque em qualquer cartão para retornar instantaneamente ao parágrafo original. Você também pode compartilhar suas frases favoritas em cartões elegantes. É o seu caderno de anotações pessoal (Commonplace Book), com tudo o que vale a pena lembrar em um só lugar.</p>
+
+        <h2>Destaque e Faça Anotações em Cinco Passos</h2>
+        <p>Confira o passo a passo completo, desde a seleção do texto até a revisão na aba Memory.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Pocas cosas son tan placenteras durante la lectura como toparse con una frase que resuena contigo, subrayarla con un color suave y apuntar al instante esa idea que acaba de nacer. <strong>Shiori</strong> está diseñado para que este proceso sea totalmente fluido: resalta cualquier pasaje con un solo toque, añade tus propias notas y encuentra todos tus momentos memorables organizados en la pestaña <strong>Memory (Memoria)</strong>.</p>
+
+        <h2>Ocho Colores Cuidadosamente Elegidos para Cada Detalle</h2>
+        <p>Selecciona cualquier texto y toca <strong>Highlight</strong> para elegir entre ocho tonos armoniosos: Amarillo, Verde, Azul, Rosa, Naranja, Púrpura, Turquesa o Rojo. El resaltado se aplica al instante sin ventanas emergentes que interrumpan tu lectura y permanece guardado en tu libro — ideal para clasificar citas favoritas, conceptos clave o vocabulario nuevo.</p>
+
+        <h2>Acompaña Cada Resaltado con Tus Propias Notas</h2>
+        <p>El resaltado guarda lo que dijo el autor; la nota guarda lo que <em>tú</em> pensaste. Elige <strong>“Highlight with a note…”</strong> para redactar una reflexión, una traducción o un recordatorio. Puedes editar tus notas o cambiar de color en cualquier momento, manteniendo tus pensamientos guardados de forma segura y privada junto al texto original.</p>
+
+        <h2>Pestaña Memory: Tu Cuaderno de Citas y Conocimiento Personal</h2>
+        <p>Cada pasaje subrayado y cada nota que escribes se reúnen automáticamente en la pestaña <strong>Memory</strong>. Filtra por <strong>Highlight</strong> o <strong>Note</strong>, busca palabras en toda tu biblioteca o toca cualquier tarjeta para regresar al párrafo exacto del libro. Además, puedes compartir tus citas favoritas en tarjetas visuales muy cuidadas. Es tu cuaderno de anotaciones personal (Commonplace Book), donde todo lo que vale la pena recordar está siempre a mano.</p>
+
+        <h2>Resalta y Toma Notas en Cinco Sencillos Pasos</h2>
+        <p>Aquí tienes la guía completa, desde seleccionar un texto hasta redescubrirlo en Memory.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Highlight &amp; Take Notes (5 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการไฮไลต์และจดบันทึก (5 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">ハイライト＆メモを活用する（5つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">高亮划线与记录笔记（5 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Destacar e Anotar (5 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Resaltar y Tomar Notas (5 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Select Text and Tap "Highlight"</div>
+          <div class="step-desc">
+            <p>Long-press any word to start a selection, drag the handles smoothly to encompass the phrase or passage, then tap <strong>Highlight</strong> on the floating menu.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เลือกข้อความแล้วแตะ "Highlight"</div>
+          <div class="step-desc">
+            <p>แตะค้างที่คำเพื่อเริ่มการเลือก ลากแถบจับให้ครอบคลุมประโยคหรือย่อหน้าที่ประทับใจ แล้วแตะ <strong>Highlight</strong> บนแถบเมนูที่ปรากฏขึ้นมา</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>テキストを選択して「Highlight」をタップ</div>
+          <div class="step-desc">
+            <p>気になる単語を長押しして選択を開始し、ハンドルをドラッグして文章全体を囲みます。表示されたメニューから <strong>Highlight</strong> をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>长按选中文字并点击 “Highlight”</div>
+          <div class="step-desc">
+            <p>长按任意文字开启选择，拖动两侧选择光标完整覆盖心仪段落，然后在弹出的工具栏中点击 <strong>Highlight</strong>（高亮）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Selecione o Texto e Toque em "Highlight"</div>
+          <div class="step-desc">
+            <p>Pressione e segure qualquer palavra para iniciar a seleção, arraste os controles para cobrir o trecho desejado e toque em <strong>Highlight</strong> no menu flutuante.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Selecciona el Texto y Pulsa "Highlight"</div>
+          <div class="step-desc">
+            <p>Mantén pulsada cualquier palabra para iniciar la selección, arrastra los controladores para abarcar el pasaje y toca <strong>Highlight</strong> en el menú flotante.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-select-text-tap-highlight.jpg" alt="Select text in the Shiori EPUB reader and tap Highlight in the selection menu" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Pick Your Favorite Color</div>
+          <div class="step-desc">
+            <p>Choose from eight curated colors. The highlight applies instantly without annoying confirmation popups, keeping your reading completely uninterrupted.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เลือกเฉดสีที่ถูกใจ</div>
+          <div class="step-desc">
+            <p>เลือก 1 ใน 8 เฉดสีที่ต้องการ ไฮไลต์จะถูกแต่งแต้มลงบนหน้าหนังสือทันทีโดยไม่มีกล่องข้อความมาขัดจังหวะอารมณ์การอ่านของคุณ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>お好みのハイライトカラーを選択</div>
+          <div class="step-desc">
+            <p>8色のパレットから好きな色をタップします。確認画面などの余計なステップを挟まず、その場ですぐにハイライトが反映されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>挑选心仪的高亮色彩</div>
+          <div class="step-desc">
+            <p>从 8 种精选调色板中轻触您喜欢的颜色。高亮即时生效，绝无多余确认弹窗，丝毫不打断阅读沉浸感。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Escolha Sua Cor Preferida</div>
+          <div class="step-desc">
+            <p>Selecione uma das oito cores disponíveis. O destaque é aplicado instantaneamente sem caixas de confirmação, mantendo sua leitura fluida.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Elige tu Color Favorito</div>
+          <div class="step-desc">
+            <p>Escoge uno de los ocho colores disponibles. El resaltado se aplica al instante sin cuadros de confirmación molestos, manteniendo tu ritmo de lectura intacto.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-choose-highlight-color.jpg" alt="Choose one of eight highlight colors in Shiori" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Saved Instantly — Add a Note</div>
+          <div class="step-desc">
+            <p>The passage is now highlighted in your chosen color. A gentle shortcut lets you <strong>add a note</strong> right away — or you can simply continue reading and add one later.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>บันทึกไฮไลต์เรียบร้อย พร้อมเพิ่มโน้ตต่อได้ทันที</div>
+          <div class="step-desc">
+            <p>ข้อความจะเปล่งประกายด้วยสีที่คุณเลือก พร้อมตัวเลือกให้คุณเริ่มเขียน <strong>โน้ตบันทึก</strong> ได้ทันที หรือจะอ่านต่ออย่างสบายใจแล้วค่อยกลับมาเติมทีหลังก็ได้</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>瞬時に保存 — メモの追加もスムーズ</div>
+          <div class="step-desc">
+            <p>選択した色で文章が美しくハイライトされます。そのまま続けて <strong>メモを追加</strong> するショートカットも用意されており、後からゆっくり追加することも可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>划线即刻保存 — 随时添加笔记</div>
+          <div class="step-desc">
+            <p>文字已按照您选定的色彩高亮呈现。轻触提示即可立即 <strong>添加思考笔记</strong>，您也可以先畅快读下去，待稍后闲暇时再补充笔记。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Salvo Instantaneamente — Adicione uma Nota</div>
+          <div class="step-desc">
+            <p>O trecho agora está destacado na cor escolhida. Um atalho rápido permite <strong>adicionar uma anotação</strong> imediatamente — ou você pode continuar lendo e anotar mais tarde.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Guardado al Instante — Añade una Nota</div>
+          <div class="step-desc">
+            <p>El texto queda resaltado con el color seleccionado. Un práctico atajo te permite <strong>añadir una nota</strong> de inmediato, o bien seguir disfrutando de la lectura y completarla más tarde.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-highlighted-text-add-note.jpg" alt="A gentle highlight is saved with an option to add a note" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Write Down Your Reflections</div>
+          <div class="step-desc">
+            <p>In the <strong>Highlight &amp; Note</strong> editor, write your thoughts, insights, or translations, and feel free to change the color anytime. Everything saves automatically the moment you close the editor.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เขียนบันทึกความรู้สึกในกล่องข้อความ</div>
+          <div class="step-desc">
+            <p>ในหน้าต่างแก้ไข <strong>Highlight &amp; Note</strong> คุณสามารถพิมพ์ข้อคิด คำแปล หรือความรู้สึกได้อย่างอิสระ พร้อมปรับเปลี่ยนสีไฮไลต์ได้ตามต้องการ เมื่อพิมพ์เสร็จ ระบบจะบันทึกให้อัตโนมัติทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>思い浮かんだ気付きやメモを入力</div>
+          <div class="step-desc">
+            <p><strong>Highlight &amp; Note</strong> 編集画面で、浮かんだアイデアや翻訳、感想を自由に入力できます。色の変更も可能で、画面を閉じると自動的に安全に保存されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>随心写下当下的感悟与思考</div>
+          <div class="step-desc">
+            <p>在 <strong>Highlight &amp; Note</strong> 笔记编辑器中，键入您的见解、译文或灵感随笔，还可以随时微调高亮颜色。关闭窗口即可自动保存全部内容。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Escreva Suas Anotações e Pensamentos</div>
+          <div class="step-desc">
+            <p>No editor de <strong>Highlight &amp; Note</strong>, digite suas reflexões, traduções ou ideias e altere a cor quando quiser. Tudo é salvo automaticamente ao fechar a janela.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Escribe tus Notas y Reflexiones</div>
+          <div class="step-desc">
+            <p>En el editor <strong>Highlight &amp; Note</strong>, plasma tus pensamientos, dudas o traducciones, y cambia de color si lo deseas. Todo se guarda automáticamente al cerrar la ventana.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-write-a-note-editor.jpg" alt="The Highlight and Note editor with a color picker and a note field" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Rediscover Everything in the Memory Tab</div>
+          <div class="step-desc">
+            <p>Open the <strong>Memory</strong> tab to browse all your highlights and notes across every book. Filter by type, search for keywords, tap a card to jump straight to that exact paragraph, or share it as an elegant visual card.</p>
+            <div class="quote-callout">
+              <strong>💡 Pro Tip</strong><br />
+              Create your own gentle color system — like warm yellow for quotes, cool blue for vocabulary, and calming green for actionable ideas. When you filter by color in Memory, reviewing insights feels effortless.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>ย้อนดูทุกความทรงจำในแท็บ Memory</div>
+          <div class="step-desc">
+            <p>เปิดแท็บ <strong>Memory</strong> เพื่อค้นหา ทบทวน หรือแชร์ข้อความสำคัญ โดยแต่ละโน้ตจะปรากฏอยู่ใต้ไฮไลต์อย่างเป็นระเบียบ พร้อมบอกชื่อหนังสือและบทที่มาอย่างชัดเจน แตะที่การ์ดเพื่อวาร์ปกลับไปอ่านจุดเดิม หรือกดแชร์เป็นการ์ดรูปภาพสวยๆ ได้ทันที</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับนักอ่าน</strong><br />
+              ลองสร้างระบบสีส่วนตัวดูนะครับ เช่น สีเหลืองสำหรับประโยคกินใจ สีฟ้าสำหรับคำศัพท์ใหม่ และสีเขียวสำหรับข้อคิดสำคัญ เมื่อเวลาผ่านไป การกรองดูในแท็บ Memory จะทำให้คุณทบทวนสิ่งที่ได้เรียนรู้ได้อย่างเพลิดเพลินและตรงจุด
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>Memoryタブでいつでも振り返り・共有</div>
+          <div class="step-desc">
+            <p><strong>Memory</strong> タブを開けば、すべての本から集まったハイライトとメモが一覧表示されます。条件別の絞り込みや検索はもちろん、カードをタップして元の文章へ瞬時に戻ったり、洗練された引用カードとしてシェアすることも可能です。</p>
+            <div class="quote-callout">
+              <strong>💡 読書のヒント</strong><br />
+              「黄色＝心に響いた名言」「青色＝新しい言葉」「緑色＝実践したいアイデア」といった自分だけのカラールールを作っておくと、Memoryタブでの振り返りがより楽しく、スマートになります。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>在 Memory 记忆画廊中重温与分享</div>
+          <div class="step-desc">
+            <p>打开 <strong>Memory</strong> 选项卡，浏览跨越所有书籍的高亮与随笔。支持按类型筛选、关键词搜索，点击任意卡片即可一键直达原文章节，或一键导出为设计典雅的金句卡片与好友分享。</p>
+            <div class="quote-callout">
+              <strong>💡 阅读小贴士</strong><br />
+              建立属于自己的色彩体系，例如“明黄＝金句箴言”、“海蓝＝新词积累”、“柔绿＝实践灵感”。日后在 Memory 选项卡中按颜色筛选回顾，知识整理将变得格外轻松自如。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Reencontre e Compartilhe Tudo na Aba Memory</div>
+          <div class="step-desc">
+            <p>Abra a aba <strong>Memory</strong> para navegar por todos os seus destaques e anotações de todos os livros. Filtre por tipo, pesquise palavras-chave, toque em um cartão para voltar ao parágrafo original ou compartilhe como um belo cartão visual.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica de Leitura</strong><br />
+              Crie seu próprio código de cores — amarelo para citações inspiradoras, azul para vocabulário e verde para ideias práticas. Ao filtrar na aba Memory, revisar seus aprendizados será rápido e prazeroso.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Redescubre y Comparte Todo en Memory</div>
+          <div class="step-desc">
+            <p>Abre la pestaña <strong>Memory</strong> para explorar todos tus resaltados y notas de todos tus libros. Filtra por tipo, busca palabras clave, toca una tarjeta para volver al párrafo exacto o compártela como una tarjeta visual elegante.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo de Lectura</strong><br />
+              Crea tu propio sistema de colores: amarillo para citas inspiradoras, azul para palabras nuevas y verde para ideas prácticas. Al filtrar por color en la pestaña Memory, repasar lo aprendido será un auténtico placer.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-highlights-notes-in-memory.jpg" alt="The Memory tab in Shiori listing highlights and notes with their source book and chapter" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Read Actively, Remember Deeply</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader and start highlighting, taking personal notes, and cultivating your own searchable treasury of knowledge.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">เปลี่ยนการอ่านธรรมดา ให้เป็นความรู้ที่คงอยู่ตลอดไป</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ แล้วมาเริ่มต้นไฮไลต์ จดบันทึกความรู้สึก และสร้างคลังความทรงจำส่วนตัวของทุกสิ่งที่คุณอ่านไปด้วยกัน
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">心を動かす読書を、一生モノの学びに</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードして、ハイライトやメモを活用し、あなただけの読書知見ライブラリを築きましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">让被动阅读，沉淀为长久相伴的智慧</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，开启划线摘录与思考记录，打造专属于您的随身数字知识宝库。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Leia com Propósito, Lembre-se para Sempre</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e comece a destacar, fazer anotações e construir seu próprio tesouro de conhecimento pesquisável.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Lee con Pasión, Recuerda para Siempre</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader hoy mismo y comienza a resaltar pasajes, tomar notas y crear tu propio tesoro de conocimiento personalizado.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

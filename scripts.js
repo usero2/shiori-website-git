@@ -206,6 +206,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-title": "How to Use the E-Ink Theme for EPUB Reading on Android",
       "blog-p12-desc": "Turn Shiori into a paper-like, high-contrast, distraction-free reader — pure black on white, animations off, applied app-wide. Perfect for Onyx Boox and e-paper devices.",
 
+      // Blog Post 13
+      "blog-p13-date": "📅 August 11, 2026",
+      "blog-p13-cat": "🏷️ Reading Experience",
+      "blog-p13-title": "How to Highlight Text and Take Notes in an Android EPUB Reader",
+      "blog-p13-desc": "Highlight passages in eight colors, attach notes, and find every highlight and note in one place — the Memory tab in Shiori.",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 August 11, 2026",
+      "blog-p14-cat": "🏷️ Reading Experience",
+      "blog-p14-title": "The Two-Line Reader Top Bar: Every Action, One Tap Away",
+      "blog-p14-desc": "The experimental two-line top bar puts the full book title on top and every reading action in one scrollable row below — nothing hidden behind an overflow menu.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -426,6 +438,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p12-title": "วิธีใช้ธีม E-Ink อ่าน EPUB สบายตาเหมือนกระดาษบน Android",
       "blog-p12-desc": "เปลี่ยน Shiori ให้เป็นแอปอ่านคมชัดเหมือนกระดาษ — ตัวอักษรดำบนพื้นขาว ปิดแอนิเมชัน ใช้ทั้งแอป เหมาะกับ Onyx Boox และอุปกรณ์ e-paper",
+
+      // Blog Post 13
+      "blog-p13-date": "📅 11 สิงหาคม 2026",
+      "blog-p13-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p13-title": "วิธีไฮไลต์ข้อความและจดบันทึกในแอปอ่าน EPUB บน Android",
+      "blog-p13-desc": "ขีดเน้นข้อความประทับใจได้ 8 สี แนบโน้ตความรู้สึก และรวบรวมทุกความทรงจำไว้ในที่เดียว — แท็บ Memory ของ Shiori",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 11 สิงหาคม 2026",
+      "blog-p14-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p14-title": "แถบเครื่องมือด้านบนแบบ 2 แถว: ครบทุกฟังก์ชันในแตะเดียว",
+      "blog-p14-desc": "โหมดทดลองแถบด้านบนแบบ 2 แถว แสดงชื่อหนังสือเต็มบรรทัดบน พร้อมเรียงไอคอนเครื่องมือทั้งหมดไว้ในแถบล่าง เลื่อนใช้ง่าย ไม่ต้องกดเปิดเมนูซ่อน",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -648,6 +672,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-title": "E-Inkテーマの使い方：Androidで紙のようなEPUB読書体験を",
       "blog-p12-desc": "Shioriを紙のように目に優しく高コントラストな読書環境へ。白黒反転なしの純白背景、アニメーション完全停止、アプリ全体に適用。Onyx Boox等の電子ペーパー端末に最適。",
 
+      // Blog Post 13
+      "blog-p13-date": "📅 2026年8月11日",
+      "blog-p13-cat": "🏷️ 読書体験",
+      "blog-p13-title": "AndroidでEPUBのハイライトとメモを活用する方法",
+      "blog-p13-desc": "心に響く文章を8色でハイライトし、思い浮かんだメモを書き添えて「Memory」タブに美しく集約。自分だけの読書ノートを構築できます。",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 2026年8月11日",
+      "blog-p14-cat": "🏷️ 読書体験",
+      "blog-p14-title": "2行表示のリーダートップバー：すべての操作をワンタップで",
+      "blog-p14-desc": "実験機能の2行トップバーなら、上の行に書籍タイトルを全文表示し、下の行にすべての読書ツールを横スクロールで配置。隠れたメニューを開く手間を省きます。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -868,6 +904,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-cat": "🏷️ 阅读体验",
       "blog-p12-title": "如何使用 E-Ink 墨水屏主题在 Android 上获得如纸般的 EPUB 阅读体验",
       "blog-p12-desc": "将 Shiori 变为高对比度、无干扰的纸感阅读器——纯黑白对比、全停动画、全局适配。专为 Onyx Boox 等墨水屏设备打造。",
+
+      // Blog Post 13
+      "blog-p13-date": "📅 2026年8月11日",
+      "blog-p13-cat": "🏷️ 阅读体验",
+      "blog-p13-title": "如何在 Android EPUB 阅读器中高亮划线与记录笔记",
+      "blog-p13-desc": "8 种雅致色彩随心点缀金句，随手附上思考笔记，所有心动瞬间汇聚于 Memory 记忆画廊，让阅读沉淀为持久的智慧。",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 2026年8月11日",
+      "blog-p14-cat": "🏷️ 阅读体验",
+      "blog-p14-title": "双行阅读顶部栏：所有常用功能，触手可及",
+      "blog-p14-desc": "实验性的双行顶部栏让书名在上行完整展示，所有阅读工具在下行横向滑动排列——无需再点开折叠菜单，一切操作一触即发。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1090,6 +1138,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-title": "Como Usar o Tema E-Ink para Leitura EPUB Semelhante ao Papel no Android",
       "blog-p12-desc": "Transforme o Shiori em um leitor de alto contraste e sem distrações — preto puro no branco, sem animações, aplicado em todo o app. Perfeito para Onyx Boox e telas e-paper.",
 
+      // Blog Post 13
+      "blog-p13-date": "📅 11 de agosto de 2026",
+      "blog-p13-cat": "🏷️ Experiência de Leitura",
+      "blog-p13-title": "Como Destacar Textos e Fazer Anotações em um Leitor EPUB no Android",
+      "blog-p13-desc": "Destaque trechos marcantes em 8 cores suaves, anexe reflexões pessoais e encontre todas as suas anotações reunidas na aba Memory do Shiori.",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 11 de agosto de 2026",
+      "blog-p14-cat": "🏷️ Experiência de Leitura",
+      "blog-p14-title": "Barra Superior em Duas Linhas: Todas as Ferramentas a Um Toque",
+      "blog-p14-desc": "A barra superior experimental em duas linhas exibe o título completo em cima e todas as ações de leitura em uma linha rolável abaixo — nada escondido em menus.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1310,6 +1370,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p12-cat": "🏷️ Experiencia de Lectura",
       "blog-p12-title": "Cómo Usar el Tema E-Ink para una Lectura EPUB Similar al Papel en Android",
       "blog-p12-desc": "Convierte Shiori en un lector de alto contraste y sin distracciones: blanco y negro puro, sin animaciones y aplicado en toda la app. Ideal para Onyx Boox y dispositivos e-paper.",
+
+      // Blog Post 13
+      "blog-p13-date": "📅 11 de agosto de 2026",
+      "blog-p13-cat": "🏷️ Experiencia de Lectura",
+      "blog-p13-title": "Cómo Resaltar Texto y Tomar Notas en un Lector EPUB para Android",
+      "blog-p13-desc": "Resalta pasajes memorables en 8 colores armoniosos, añade tus propias notas y redescubre cada aprendizaje en la pestaña Memory de Shiori.",
+
+      // Blog Post 14
+      "blog-p14-date": "📅 11 de agosto de 2026",
+      "blog-p14-cat": "🏷️ Experiencia de Lectura",
+      "blog-p14-title": "Barra Superior en Dos Líneas: Todas las Herramientas a un Solo Toque",
+      "blog-p14-desc": "La barra superior experimental de dos líneas muestra el título completo arriba y todas las acciones de lectura en una fila deslizable abajo, sin menús ocultos.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

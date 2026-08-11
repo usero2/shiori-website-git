@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>The Two-Line Reader Top Bar: Every Action, One Tap Away — Shiori Blog</title>
+  <meta name="description" content="Discover Shiori's experimental two-line reader top bar: full book title on top, and every reading tool in a smooth, scrollable row beneath — always one tap away." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/two-line-reader-top-bar-android-epub/" />
+  
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The Two-Line Reader Top Bar: Every Action, One Tap Away",
+    "description": "A guide to enabling and enjoying Shiori's experimental two-line top bar for EPUB reading on Android: full book titles and quick access to all tools without overflow menus.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/two-line-reader-top-bar-android-epub/"
+  }
+  </script>
+  
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p14-date">📅 August 11, 2026</span>
+        <span data-i18n="blog-p14-cat">🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Every Reading Tool, One Tap Away<br><span class="text-gradient">The Two-Line Reader Top Bar</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ครบทุกเครื่องมืออ่านในแตะเดียว<br><span class="text-gradient">ด้วยแถบเครื่องมือด้านบนแบบ 2 แถว</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">2行表示のリーダートップバー<br><span class="text-gradient">すべての読書ツールをワンタップで呼び出す</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">双行阅读顶部栏<br><span class="text-gradient">所有常用功能，触手可及</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Barra Superior em Duas Linhas<br><span class="text-gradient">Todas as Ferramentas de Leitura a Um Toque</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Barra Superior en Dos Líneas<br><span class="text-gradient">Todas las Herramientas de Lectura a un Solo Toque</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('03-two-line-top-bar-all-actions.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🧰</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>The top bar is the heart of your reading screen — it is where you search, bookmark, translate, listen, and tailor the reading experience to your liking. But on a mobile screen with limited width, squeezing the book title and a dozen handy tools into a single row often means making compromises. Shiori's experimental <strong>Two-Line Reader Top Bar</strong> solves this gracefully: it gives the book title its own dedicated line above, while laying out every single action in a smooth, scrollable row beneath it.</p>
+
+        <h2>The Frustration with a Cramped Single-Line Bar</h2>
+        <p>In the traditional single-line layout, title and tool buttons fight for the same narrow space. The result? Your book title gets cut short with ellipses ("..."), and most features are forced into a hidden <strong>⋮ overflow menu</strong>. Whenever you want to translate a sentence, start Text-to-Speech, or change a font, it takes extra taps and interrupts your concentration.</p>
+
+        <h2>The Two-Line Top Bar: Room to Breathe</h2>
+        <p>Turn on the two-line top bar, and the whole header opens up. The complete title of your book sits proudly on the top row. Right below it, all your reading companions — search, bookmarks, AI assistant, instant translation, Text-to-Speech, typography, reader settings, and playback controls — glide together in a scrollable row. Nothing is hidden away; whatever you need is always just a gentle tap away.</p>
+
+        <h2>Designed for Effortless, Focused Reading</h2>
+        <p>Shiori comes packed with thoughtful capabilities — from multi-language voice narration to on-device AI and dictionary lookup. The two-line top bar ensures that power never gets in the way of simplicity. You spend less time navigating menus and more time immersed in your story. (It is enabled by default for new installs; if you have been with us for a while, turning it on takes just a couple of taps.)</p>
+
+        <h2>See the Difference in Action</h2>
+        <p>Here is how the single-line layout compares to the clean, two-line layout, and how to enable it in your settings.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>แถบด้านบนของหน้าอ่านหนังสือเปรียบเสมือนศูนย์รวมความสะดวกสบาย—ไม่ว่าจะเป็นการค้นหาคำ, คั่นหน้า, แปลภาษา, ฟังเสียงอ่าน หรือปรับแต่งหน้ากระดาษให้สบายตาที่สุด แต่เพราะหน้าจอมือถือมีความกว้างจำกัด การพยายามเบียดทั้งชื่อหนังสือและเครื่องมือทั้งหมดลงในแถวเดียว มักทำให้ต้องยอมแลกบางอย่างไป โหมดทดลอง <strong>แถบเครื่องมือด้านบนแบบ 2 แถว (Two-Line Reader Top Bar)</strong> ใน Shiori จึงถูกออกแบบมาเพื่อแก้ปัญหานี้อย่างลงตัว: โดยยกชื่อหนังสือให้อยู่บรรทัดบนอย่างสง่างาม พร้อมจัดวางเครื่องมือทุกชิ้นไว้ในแถวเลื่อนด้านล่างอย่างเป็นระเบียบ</p>
+
+        <h2>ปัญหาของแถบด้านบนแบบแถวเดียวที่คุ้นเคย</h2>
+        <p>ในเลย์เอาต์แถวเดียวแบบเดิม ชื่อหนังสือและปุ่มเครื่องมือต้องแย่งพื้นที่แคบๆ ร่วมกัน ทำให้ชื่อเรื่องยาวๆ ถูกตัดทอนจนเหลือเพียงจุดไข่ปลา ("...") และแสดงไอคอนได้เพียงไม่กี่อันเท่านั้น ฟังก์ชันดีๆ ที่เหลือจึงต้องถูกซ่อนไว้ใน <strong>เมนูจุดสามจุด (⋮)</strong> ทำให้ทุกครั้งที่คุณอยากแปลประโยค เปิดเสียงอ่าน หรือตั้งค่าฟอนต์ ต้องแตะเพิ่มอีกจังหวะเสมอ</p>
+
+        <h2>แถบ 2 แถว — ปลอดโปร่ง ครบถ้วน สบายตา</h2>
+        <p>เมื่อเปิดใช้งานแถบ 2 แถว พื้นที่ด้านบนจะโปร่งสบายขึ้นทันตา ชื่อหนังสือเล่มโปรดของคุณจะแสดงอย่างครบถ้วนที่บรรทัดบน ส่วนบรรทัดล่างจะรวบรวมเครื่องมือทั้งหมด—ทั้งการค้นหา, บุ๊กมาร์ก, ผู้ช่วย AI, แปลภาษา, เสียงอ่าน TTS, ฟอนต์, ตั้งค่าการอ่าน และการควบคุมเสียง—เรียงร้อยเป็นแถวแนวนอนที่คุณใช้นิ้วปาดเลื่อนได้ง่ายๆ ไม่มีอะไรถูกซ่อนไว้หลังเมนูอีกต่อไป ทุกสิ่งอยู่ใกล้แค่ปลายนิ้วสัมผัส</p>
+
+        <h2>อ่านหนังสือได้ต่อเนื่อง ไม่สะดุดอารมณ์</h2>
+        <p>Shiori มีฟังก์ชันที่หลากหลายเพื่อสนับสนุนการอ่านอย่างลึกซึ้ง แถบเครื่องมือ 2 แถวนี้ช่วยให้คุณเข้าถึงฟังก์ชันทรงพลังเหล่านั้นได้ทันทีโดยไม่ต้องเสียเวลาควานหาในเมนูย่อย ช่วยให้คุณจดจ่ออยู่กับเนื้อหาในหนังสือได้ยาวนานยิ่งขึ้น (สำหรับผู้ใช้ใหม่ระบบจะเปิดใช้งานไว้ให้อัตโนมัติ ส่วนผู้ใช้เดิมสามารถเปิดได้ง่ายๆ ในหน้าตั้งค่า)</p>
+
+        <h2>เปรียบเทียบความแตกต่างอย่างชัดเจน</h2>
+        <p>มาดูความแตกต่างระหว่างแถบแบบเดิมกับแถบ 2 แถวแบบใหม่ และวิธีเปิดใช้งานง่ายๆ ดังนี้ครับ</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>読書画面のトップバーは、検索、しおり、翻訳、音声読み上げ、表示設定などを素早く呼び出せる重要なコントロールセンターです。しかし、スマートフォンの画面幅には限りがあり、書籍タイトルと多彩な機能を1行に詰め込もうとすると、どうしても妥協が必要でした。Shioriの実験機能「**2行表示リーダートップバー（Two-Line Reader Top Bar）**」は、この課題を美しく解決します。上の行に書籍タイトルをゆったり配置し、下の行にすべてのツールを横スクロール可能なバーとして整理しました。</p>
+
+        <h2>従来の1行トップバーが抱えていた悩み</h2>
+        <p>1行表示では、タイトルとツールボタンが狭いスペースを取り合ってしまいます。その結果、タイトルが途中で途切れて「…」と省略されたり、一部のアイコンしか表示できず、残りの機能は **「⋮」オーバーフローメニュー** の奥に隠れてしまっていました。翻訳やTTS、設定変更のたびにメニューを開く余計なタップが発生し、読書の集中が途切れる原因になっていました。</p>
+
+        <h2>2行トップバー：すべてが見渡せる快適さ</h2>
+        <p>2行表示を有効にすると、ヘッダー全体が心地よく広がります。上の行には愛読書のタイトルが省略されずに美しく表示され、下の行には検索、しおり、AIアシスタント、翻訳、TTS読み上げ、フォント変更、読書設定、再生コントロールなど、あらゆるツールが一直線に並びます。指先でスワイプするだけで、使いたい機能へ瞬時にワンタップでアクセスできます。</p>
+
+        <h2>没入感を邪魔しないスムーズな読書体験</h2>
+        <p>多言語自動TTSやAI機能など、Shioriのパワフルな機能群も、探す手間があっては真価を発揮できません。2行トップバーなら、メニューを探し回る時間を減らし、物語や学びに没頭する時間を最大化できます。（新規インストール時は自動で有効になっています。既存のユーザー様も設定から簡単にオンに切り替えられます。）</p>
+
+        <h2>実際の画面で違いをチェック</h2>
+        <p>1行表示の課題と、2行表示のすっきりとした使い心地、そして設定方法をステップ順にご案内します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>阅读界面的顶部栏就像是整个阅读体验的中枢——无论是搜索文本、添加书签、划词翻译、听书朗读，还是精细调节排版，都需要通过它来完成。然而手机屏幕的横向空间有限，将长书名与十多项常用工具挤在同一行，往往只能做出妥协。Shiori 推出的实验性功能——<strong>双行阅读顶部栏（Two-Line Reader Top Bar）</strong> 巧妙化解了这一痛点：它让图书标题独占上方一行完整呈现，并在下方整齐排布可左右滑动的全部工具栏。</p>
+
+        <h2>传统单行顶部栏的局限与不便</h2>
+        <p>在传统的单行布局中，书名与功能图标必须共挤狭小空间。结果是：较长的书名被省略号（“…”）截断，且只能显示少数几个图标，其余强大功能都被收进右侧的 <strong>“⋮”折叠菜单</strong> 中。每次想要翻译长句、开启朗读或调整字号，都必须多点一次菜单，打断了沉浸的阅读心流。</p>
+
+        <h2>双行顶部栏：舒展通透，尽收眼底</h2>
+        <p>开启双行顶部栏后，整个界面豁然开朗。书名在第一行完整展现；而在第二行，搜索、书签、AI 助手、即时翻译、TTS 朗读、字体样式、阅读设置与播放控制等所有功能一字排开。只需轻轻滑动，任何工具都在一触之间，再无多余层级。</p>
+
+        <h2>让每一次操作都行云流水</h2>
+        <p>Shiori 具备多语言自动切换 TTS、端侧 AI 助手等丰富功能，而双行顶部栏正是让这些强大工具触手可及的绝佳设计。减少在菜单中翻找的时间，把更多精力留给书中的精彩世界。（新安装用户默认已开启；老用户只需在设置中轻松勾选即可体验。）</p>
+
+        <h2>直观对比：双行顶部栏的独特优势</h2>
+        <p>以下为您呈现单行与双行的直观对比，以及如何一键开启该功能。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>A barra superior é o coração da sua tela de leitura — é por onde você pesquisa, marca páginas, traduz, ouve por voz e ajusta cada detalhe do texto. Contudo, em telas de celular com largura limitada, espremer o título do livro e dezenas de ferramentas úteis em uma única linha sempre exige concessões. A barra experimental <strong>Top Bar em Duas Linhas</strong> do Shiori resolve isso com maestria: ela eleva o título completo para uma linha própria e organiza todas as ações em uma fileira rolável logo abaixo.</p>
+
+        <h2>O Problema da Barra Superior em Linha Única</h2>
+        <p>No layout clássico de linha única, o título e os botões disputam o mesmo espaço estreito. O resultado? O título do livro acaba cortado com reticências ("...") e apenas alguns ícones cabem na tela. As demais funções acabam escondidas no <strong>menu de três pontos (⋮)</strong> — exigindo um toque extra toda vez que você deseja traduzir um trecho, iniciar o TTS ou alterar o tamanho da fonte.</p>
+
+        <h2>Barra em Duas Linhas: Espaço para Respirar</h2>
+        <p>Ao ativar a barra em duas linhas, o cabeçalho se torna muito mais agradável e funcional. O título completo do livro repousa com elegância na linha de cima. Logo abaixo, todas as suas ferramentas — busca, marcadores, assistente de IA, tradução, narração por voz, tipografia, ajustes de leitura e controles de áudio — deslizam juntas em uma fileira suave. Nada fica escondido em submenus.</p>
+
+        <h2>Feito para uma Leitura Focada e Fluida</h2>
+        <p>O Shiori é repleto de recursos avançados, e a barra em duas linhas garante que todo esse poder permaneça ao alcance do seu polegar. Você gasta menos tempo procurando em menus e mais tempo aproveitando sua leitura. (Já vem ativado por padrão em novas instalações; se você já usa o app há mais tempo, basta ativar em segundos nas configurações.)</p>
+
+        <h2>Confira a Diferença na Prática</h2>
+        <p>Veja como a barra em linha única se compara à nova barra em duas linhas e como ativá-la facilmente.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>La barra superior es el centro de control de tu pantalla de lectura: desde allí buscas palabras, guardas marcadores, traduces frases, escuchas la narración y personalizas la página a tu gusto. Sin embargo, en la pantalla de un móvil con ancho limitado, comprimir el título del libro y decenas de herramientas en una sola fila siempre implica renuncias. La función experimental <strong>Barra Superior en Dos Líneas</strong> de Shiori soluciona esto con total elegancia: sitúa el título completo en su propia fila superior y coloca todas las herramientas en una fila deslizable justo debajo.</p>
+
+        <h2>El Inconveniente de la Barra en una Sola Línea</h2>
+        <p>En el diseño tradicional de una sola línea, el título y los iconos de herramientas compiten por el mismo espacio reducido. ¿El resultado? El título del libro se recorta con puntos suspensivos ("...") y solo caben unos pocos botones. El resto queda oculto tras el <strong>menú de opciones (⋮)</strong>, obligándote a dar toques adicionales cada vez que quieres traducir, iniciar la lectura por voz o ajustar el tamaño de letra.</p>
+
+        <h2>Barra en Dos Líneas: Todo a la Vista con Total Claridad</h2>
+        <p>Al activar la barra en dos líneas, el encabezado gana amplitud y comodidad. El título completo de tu libro se muestra sin recortes en la fila superior. Justo debajo, todos tus aliados de lectura —búsqueda, marcadores, asistente de IA, traducción instantánea, voz TTS, tipografía, ajustes de lectura y controles de reproducción— se alinean en una fila horizontal por la que puedes deslizar el dedo. Nada se oculta en menús secundarios.</p>
+
+        <h2>Diseñado para una Lectura Fluida y Sin Fricciones</h2>
+        <p>Shiori está lleno de funciones pensadas para lectores exigentes. La barra en dos líneas garantiza que toda esa potencia esté siempre al alcance de tu mano, permitiéndote pasar menos tiempo buscando en menús y más tiempo sumergido en tu historia. (Viene activada por defecto en nuevas instalaciones; si eres usuario habitual, puedes activarla en un par de toques en los ajustes.)</p>
+
+        <h2>Descubre la Diferencia Paso a Paso</h2>
+        <p>Comprueba la diferencia entre ambos diseños y aprende a activar esta cómoda vista en tus ajustes.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Visual Walkthrough (4 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนและภาพเปรียบเทียบ (4 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">画面で見る違いと設定手順（4つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文对比与开启步骤（4 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Passo a Passo Visual (4 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Comparativa Visual y Pasos (4 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>The Single-Line Bar Runs Out of Room</div>
+          <div class="step-desc">
+            <p>With everything squeezed into one row, long titles shrink to “Pride and …” and only a couple of action icons fit. The rest get pushed behind the <strong>⋮</strong> menu on the far right.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>แถบแถวเดียวกระชับจนพื้นที่ไม่พอ</div>
+          <div class="step-desc">
+            <p>เมื่อรวมทุกอย่างไว้ในแถวเดียว ชื่อเรื่องจะถูกตัดทอนเหลือเพียง "Pride and …" และมีที่ว่างให้ไอคอนเพียงไม่กี่อัน ส่วนที่เหลือจะถูกเก็บไว้หลังเมนู <strong>⋮</strong> ทางขวาสุด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>1行表示ではスペースが不足しがち</div>
+          <div class="step-desc">
+            <p>1行にすべてを詰め込むと、書名は「Pride and …」のように途中で省略され、配置できるアイコンもわずかです。他のツールは右端の <strong>⋮</strong> メニューに追いやられてしまいます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>单行顶部栏空间拥挤受限</div>
+          <div class="step-desc">
+            <p>当所有元素挤在单行时，书名被迫缩短为“Pride and …”，仅能容纳极少数图标，其余工具均被推挤至右侧的 <strong>⋮</strong> 菜单中。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>A Barra de Linha Única Fica Sem Espaço</div>
+          <div class="step-desc">
+            <p>Com tudo espremido em uma só linha, títulos longos encolhem para “Pride and …” e apenas poucos ícones cabem. O restante é empurrado para trás do menu <strong>⋮</strong> no canto direito.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>La Barra en una Línea se Queda Sin Espacio</div>
+          <div class="step-desc">
+            <p>Con todo comprimido en una sola fila, los títulos largos se acortan a “Pride and …” y solo caben un par de iconos. El resto queda relegado al menú <strong>⋮</strong> de la derecha.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-single-line-top-bar-cramped.jpg" alt="Single-line reader top bar in Shiori with a truncated book title and an overflow menu" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Useful Tools Get Buried in the Menu</div>
+          <div class="step-desc">
+            <p>Opening the overflow menu reveals all the tools that couldn't fit — <strong>Translate, Text-to-Speech, Page by page,</strong> and <strong>Reading settings</strong> — each requiring an extra tap every time.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เครื่องมือสำคัญถูกซ่อนไว้ในเมนูย่อย</div>
+          <div class="step-desc">
+            <p>เมื่อกดเปิดเมนู ⋮ จะพบเครื่องมือสำคัญมากมายที่ใส่ไม่พอ เช่น <strong>แปลภาษา (Translate), เสียงอ่าน (Text-to-Speech), อ่านทีละหน้า (Page by page)</strong> และ <strong>ตั้งค่าการอ่าน (Reading settings)</strong> ซึ่งต้องแตะหลายขั้นตอน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>便利な機能がメニューの奥に隠れてしまう</div>
+          <div class="step-desc">
+            <p>オーバーフローメニューを開くと、<strong>翻訳、音声読み上げ（TTS）、ページめくり設定、読書設定</strong> など、よく使うツールが隠れており、使うたびに余分なタップが必要でした。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>实用工具被深埋在二级菜单中</div>
+          <div class="step-desc">
+            <p>点开折叠菜单才能看到未展示的工具——<strong>即时翻译、TTS 朗读、单页翻页模式</strong> 以及 <strong>阅读排版设置</strong>，每次使用都要多点一步。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Ferramentas Úteis Ficam Escondidas no Menu</div>
+          <div class="step-desc">
+            <p>Ao abrir o menu suspenso, encontramos funções essenciais que não couberam — <strong>Traduzir, Conversão de Voz (TTS), Página por página</strong> e <strong>Configurações de leitura</strong> — cada uma exigindo um toque extra.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Herramientas Clave Quedan Ocultas en el Menú</div>
+          <div class="step-desc">
+            <p>Al desplegar el menú de opciones encontramos funciones indispensables como <strong>Traducir, Lectura por voz (TTS), Página por página</strong> y <strong>Ajustes de lectura</strong>, requiriendo un toque adicional cada vez.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-overflow-menu-hidden-actions.jpg" alt="The overflow menu in Shiori revealing Translate, Text-to-Speech, Page by page and Reading settings" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>The Two-Line Bar Shows Everything at a Glance</div>
+          <div class="step-desc">
+            <p>With the two-line layout enabled, the full title rests comfortably on top, and every action icon lines up in one scrollable row underneath — no clipped text, no overflow menus, nothing hidden.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>แถบ 2 แถวแสดงทุกอย่างครบถ้วนในพริบตา</div>
+          <div class="step-desc">
+            <p>เมื่อเปิดโหมด 2 แถว ชื่อเรื่องจะแสดงเต็มบรรทัดบนอย่างสง่างาม และไอคอนเครื่องมือทั้งหมดจะเรียงแถวด้านล่างให้เลื่อนดูได้อย่างลื่นไหล—ไม่มีชื่อขาด ไม่มีปุ่มซ่อน แตะใช้ได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>2行トップバーなら一目で全ツールが揃う</div>
+          <div class="step-desc">
+            <p>2行表示に切り替えると、書名が上の行にフル表示され、下の行にすべての操作アイコンが横スクロールで快適に並びます。タイトルの省略も隠れたメニューも一切ありません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>双行顶部栏一目了然，所有功能尽收眼底</div>
+          <div class="step-desc">
+            <p>开启双行布局后，完整书名优雅居于上方，所有功能图标在下方横向平滑排列——没有截断的书名，没有隐藏的子菜单，一触即发。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>A Barra em Duas Linhas Mostra Tudo de Forma Clara</div>
+          <div class="step-desc">
+            <p>Com o layout de duas linhas ativado, o título completo repousa no topo e cada ícone de ação fica alinhado em uma fileira rolável abaixo — sem cortes, sem menus ocultos, nada escondido.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>La Barra en Dos Líneas Muestra Todo con Claridad</div>
+          <div class="step-desc">
+            <p>Con el diseño de dos líneas activado, el título completo se lee perfectamente arriba y todas las herramientas se disponen en una fila deslizable abajo: sin recortes ni menús escondidos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-two-line-top-bar-all-actions.jpg" alt="Two-line reader top bar in Shiori with the full title and every action visible in a scrollable row" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Turn It On in Settings → Experimental</div>
+          <div class="step-desc">
+            <p>Go to <strong>Settings → Experimental</strong> and toggle on <strong>Two-line reader top bar</strong>. The new layout takes effect instantly the next time you open any book — no restart needed.</p>
+            <div class="quote-callout">
+              <strong>💡 Good to know</strong><br />
+              New installations of Shiori have this enabled by default. If your top bar still shows a ⋮ menu, this simple switch is all you need to bring every tool into view.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิดใช้งานง่ายๆ ที่ ตั้งค่า → ฟีเจอร์ทดลอง (Experimental)</div>
+          <div class="step-desc">
+            <p>ไปที่ <strong>ตั้งค่า (Settings) → Experimental</strong> แล้วเปิดสวิตช์ <strong>Two-line reader top bar</strong> เมื่อเปิดหนังสือเล่มถัดไป เลย์เอาต์ใหม่จะพร้อมใช้งานทันทีโดยไม่ต้องรีสตาร์ทแอป</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับน่ารู้</strong><br />
+              สำหรับผู้ที่เพิ่งติดตั้งแอปใหม่ ฟีเจอร์นี้จะเปิดให้อัตโนมัติอยู่แล้ว แต่หากหน้าอ่านของคุณยังมีปุ่มเมนู ⋮ อยู่ เพียงเปิดสวิตช์นี้ เครื่องมือทั้งหมดก็จะพร้อมให้ใช้งานทันที
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>設定 → 実験機能（Experimental）から簡単に有効化</div>
+          <div class="step-desc">
+            <p><strong>設定 → 実験機能（Experimental）</strong> に進み、<strong>Two-line reader top bar</strong> のスイッチをオンにします。次回本を開いた瞬間から新しいレイアウトが適用されます（アプリ再起動不要）。</p>
+            <div class="quote-callout">
+              <strong>💡 お役立ちメモ</strong><br />
+              新規インストール版では本機能が標準で有効になっています。もし読書画面に「⋮」ボタンが表示されている場合は、この設定をオンにするだけで快適な2行表示に切り替わります。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>前往 设置 → 实验功能（Experimental）轻松开启</div>
+          <div class="step-desc">
+            <p>前往 <strong>设置 → Experimental（实验功能）</strong>，开启 <strong>Two-line reader top bar</strong> 开关。下次打开任意图书时即刻生效，无需重启应用。</p>
+            <div class="quote-callout">
+              <strong>💡 温馨提示</strong><br />
+              最新安装的 Shiori 默认已启用该选项。如果您当前的阅读界面仍显示“⋮”菜单，只需打开此开关，即可将所有工具一览无余地呈现于眼前。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ative em Configurações → Recursos Experimentais</div>
+          <div class="step-desc">
+            <p>Acesse <strong>Configurações → Experimental</strong> e ative a opção <strong>Two-line reader top bar</strong>. A alteração entra em vigor na próxima vez que você abrir um livro — sem necessidade de reiniciar.</p>
+            <div class="quote-callout">
+              <strong>💡 Vale lembrar</strong><br />
+              Novas instalações do Shiori já vêm com essa opção ativada. Se a sua barra ainda exibe o menu ⋮, basta acionar essa chave para colocar todas as ferramentas à vista.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Actívalo en Ajustes → Funciones Experimentales</div>
+          <div class="step-desc">
+            <p>Ve a <strong>Ajustes → Experimental</strong> y activa el interruptor <strong>Two-line reader top bar</strong>. El nuevo diseño se aplicará de inmediato al abrir cualquier libro, sin necesidad de reiniciar.</p>
+            <div class="quote-callout">
+              <strong>💡 Información útil</strong><br />
+              Las instalaciones recientes de Shiori ya incluyen esta función activada por defecto. Si tu lector aún muestra el botón ⋮, este ajuste es todo lo que necesitas para tener cada herramienta siempre a mano.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-enable-two-line-top-bar-setting.jpg" alt="Enabling the Two-line reader top bar toggle in Shiori's Experimental settings" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Keep Every Tool Within Easy Reach</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader and experience the two-line top bar — crystal-clear titles and every reading tool, always one tap away.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">รวมทุกเครื่องมือไว้ใกล้ปลายนิ้วคุณ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ แล้วสัมผัสความโปร่งสบายของแถบเครื่องมือ 2 แถว — เห็นชื่อหนังสือชัดเจน พร้อมใช้ทุกฟังก์ชันได้ในแตะเดียว
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">すべての読書ツールを、いつも手元に</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードして、すっきりと見やすい2行トップバーの快適な読書体験をお試しください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">让所有强大工具，皆在指尖流转</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，体验舒展清晰的双行顶部栏——完整书名呈现，所有工具一触即达。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Tenha Todas as Ferramentas Sempre ao Seu Alcance</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e experimente a barra superior em duas linhas — títulos nítidos e todas as ações a um único toque.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Ten Todas las Herramientas Siempre a tu Alcance</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader y disfruta de la barra superior en dos líneas: títulos completos y todas las herramientas a un solo toque.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+        
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+      
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
