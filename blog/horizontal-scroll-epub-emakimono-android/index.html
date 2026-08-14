@@ -462,83 +462,419 @@
   <main class="post-layout animate-fade-in" style="max-width: 960px;">
     <header class="post-header">
       <div class="post-meta">
-        <span>📅 August 15, 2026</span>
-        <span>🏷️ Reading Experience</span>
+        <span data-i18n="blog-p18-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p18-cat">🏷️ Reading Experience</span>
       </div>
 
-      <h1 class="post-title">Books That Move Sideways<br><span class="text-gradient">Horizontal Scrolling EPUBs and Japanese Picture Scrolls</span></h1>
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Books That Move Sideways<br><span class="text-gradient">Horizontal Scrolling EPUBs and Japanese Picture Scrolls</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">เปิดมิติการอ่านแบบเลื่อนแนวนอน<br><span class="text-gradient">สัมผัสความงดงามของภาพม้วนโบราณ Emakimono บน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">横スクロールでひらく物語<br><span class="text-gradient">Androidで味わう絵巻物と縦書きの世界</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">随指尖缓缓舒展的长卷<br><span class="text-gradient">在 Android 上体验横向滚动与古典绘卷</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Histórias que Fluem na Horizontal<br><span class="text-gradient">Aprecie Rolos de Pintura Japoneses e Texto Vertical no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Historias que Fluyen en Horizontal<br><span class="text-gradient">Disfruta de Pergaminos Japoneses y Lectura Vertical en Android</span></h1>
     </header>
 
     <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.35), rgba(11, 15, 25, 0.55)), url('08-emakimono-horizontal-scroll-hero.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
       <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🖌️</span>
     </div>
 
-    <!-- Article Content Body (English) -->
+    <!-- Article Content Body -->
     <article class="article-section">
-      <p>Not every book is meant to move downward. A Japanese <strong>emakimono</strong> (絵巻物) — a painted handscroll — unrolls sideways, and so does a 縦書き novel, whose columns march from the right edge of the page toward the left. EPUB 3 can describe both, and Shiori's <strong>Horizontal scroll</strong> reading mode plays them back the way they were drawn.</p>
-      <p>The best way to understand it is to try it, so here is a free sample you can download right now.</p>
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Not every book is meant to move downward. A Japanese <strong>emakimono</strong> (絵巻物) — a painted handscroll — unrolls sideways, and so does a 縦書き novel, whose columns march from the right edge of the page toward the left. EPUB 3 can describe both, and Shiori's <strong>Horizontal scroll</strong> reading mode plays them back the way they were drawn.</p>
+        <p>The best way to understand it is to try it, so here is a free sample you can download right now.</p>
 
-      <div class="download-card">
-        <span class="dl-icon">📜</span>
-        <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
-        <div class="dl-meta">A free EPUB 3 sample · about 5 MB · opens in any EPUB reader</div>
-        <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
-          <span>⬇ Download the sample EPUB</span>
-        </a>
-        <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
-      </div>
-
-      <h2>What You Are About to Read</h2>
-      <p>The sample comes from the <strong>EPUB 3 samples project</strong>, the official collection of test books for the EPUB standard. The book is <em>Shigisan Engi</em> (信貴山縁起), "The Legend of Mount Shigi" — a twelfth-century picture scroll attributed to Toba Sōjō Kakuyū and one of the most famous narrative paintings in Japan.</p>
-      <p>This volume is 山崎長者の巻, <em>the Flying Granary</em>: a monk sends his begging bowl across the sky, and it carries a rich man's entire storehouse away with it. Twenty-five stitched photographs of the original scroll become one continuous painting several screens wide. The sample's own colophon page notes that its text is available under a Creative Commons Attribution–ShareAlike licence.</p>
-
-      <div class="stat-badge-grid">
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">📜</span>
-          <div class="stat-badge-title">Picture scrolls</div>
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">A free EPUB 3 sample · about 5 MB · opens in any EPUB reader</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ Download the sample EPUB</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
         </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">🈁</span>
-          <div class="stat-badge-title">縦書き vertical text</div>
-        </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">↔️</span>
-          <div class="stat-badge-title">RTL or LTR</div>
-        </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">🔖</span>
-          <div class="stat-badge-title">Remembered per book</div>
-        </div>
-      </div>
 
-      <h2>What Makes an EPUB Scroll Sideways?</h2>
-      <p>Three declarations inside the book do the work — worth knowing if you ever build one yourself:</p>
+        <h2>What You Are About to Read</h2>
+        <p>The sample comes from the <strong>EPUB 3 samples project</strong>, the official collection of test books for the EPUB standard. The book is <em>Shigisan Engi</em> (信貴山縁起), "The Legend of Mount Shigi" — a twelfth-century picture scroll attributed to Toba Sōjō Kakuyū and one of the most famous narrative paintings in Japan.</p>
+        <p>This volume is 山崎長者の巻, <em>the Flying Granary</em>: a monk sends his begging bowl across the sky, and it carries a rich man's entire storehouse away with it. Twenty-five stitched photographs of the original scroll become one continuous painting several screens wide. The sample's own colophon page notes that its text is available under a Creative Commons Attribution–ShareAlike licence.</p>
 
-      <div class="code-block">
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">Picture scrolls</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">縦書き vertical text</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">RTL or LTR</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">Remembered per book</div>
+          </div>
+        </div>
+
+        <h2>What Makes an EPUB Scroll Sideways?</h2>
+        <p>Three declarations inside the book do the work — worth knowing if you ever build one yourself:</p>
+
+        <div class="code-block">
 <pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
 &lt;spine page-progression-direction="rtl"&gt;
 html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — the content is one continuous scroll rather than a stack of pages.</li>
+          <li><strong>page-progression-direction="rtl"</strong> — the reading direction runs right to left, as a handscroll does.</li>
+          <li><strong>writing-mode: vertical-rl</strong> — text stacks into vertical columns, and the document lays itself out horizontally.</li>
+        </ul>
+
+        <h2>Seven Steps From Download to Unrolled Scroll</h2>
+        <p>Everything below was captured on a phone, in the order you will do it.</p>
       </div>
 
-      <ul class="article-bullet-list">
-        <li><strong>scrolled-doc</strong> — the content is one continuous scroll rather than a stack of pages.</li>
-        <li><strong>page-progression-direction="rtl"</strong> — the reading direction runs right to left, as a handscroll does.</li>
-        <li><strong>writing-mode: vertical-rl</strong> — text stacks into vertical columns, and the document lays itself out horizontally.</li>
-      </ul>
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>หนังสือในโลกนี้ไม่ได้ถูกออกแบบมาให้เลื่อนขึ้นลงในแนวตั้งเสมอไป ภาพม้วนโบราณของญี่ปุ่นอย่าง <strong>เอมากิโมโนะ (Emakimono 絵巻物)</strong> ถูกรังสรรค์มาให้ค่อยๆ คลี่ออกในแนวนอน เช่นเดียวกับวรรณกรรมแนวตั้ง (縦書き - Tategaki) ที่เรียงแถวจากขวาไปซ้ายตามธรรมเนียมดั้งเดิม มาตรฐาน EPUB 3 สามารถถ่ายทอดมนต์เสน่ห์นี้ได้อย่างสมบูรณ์แบบ และโหมด <strong>Horizontal scroll (เลื่อนแนวนอน)</strong> ใน Shiori ก็พร้อมพาคุณสัมผัสผลงานศิลปะเหล่านี้ตามความตั้งใจของผู้วาดอย่างแท้จริง</p>
+        <p>วิธีสัมผัสประสบการณ์ที่ดีที่สุดคือการได้ลองเปิดอ่านด้วยตัวเอง คุณสามารถดาวน์โหลดไฟล์ตัวอย่างฟรีด้านล่างนี้ไปทดลองได้ทันทีครับ</p>
 
-      <h2>Seven Steps From Download to Unrolled Scroll</h2>
-      <p>Everything below was captured on a phone, in the order you will do it.</p>
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">ไฟล์ตัวอย่างมาตรฐาน EPUB 3 · ขนาดประมาณ 5 MB · เปิดอ่านได้ฟรี</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ ดาวน์โหลดไฟล์ EPUB ตัวอย่าง</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+        </div>
+
+        <h2>ผลงานชิ้นเอกที่คุณกำลังจะได้สัมผัส</h2>
+        <p>ไฟล์ตัวอย่างนี้มาจากโครงการ <strong>EPUB 3 Samples Project</strong> ซึ่งเป็นชุดหนังสือทดสอบมาตรฐานระดับสากล นำเสนอภาพม้วน <em>Shigisan Engi</em> (信貴山縁起 - ตำนานภูเขาชิกิ) ผลงานชิ้นเอกสมัยศตวรรษที่ 12 โดยพระโทบะ โซโจ (Toba Sōjō Kakuyū) ซึ่งนับเป็นหนึ่งในภาพวาดเล่าเรื่องที่มีชื่อเสียงที่สุดในประวัติศาสตร์ญี่ปุ่น</p>
+        <p>ตอนนี้มีชื่อว่า 山崎長者の巻 (ตำนานยุ้งฉางลอยฟ้า) เล่าเรื่องราวของพระภิกษุที่ส่งบาตรลอยข้ามขอบฟ้าไปพายกยุ้งฉางของเศรษฐีลอยตามมา ภาพถ่ายความละเอียดสูง 25 ภาพถูกนำมาเรียงต่อกันเป็นภาพวาดผืนเดียวยาวต่อเนื่องไร้รอยต่อข้ามหลายหน้าจอ โดยข้อความในไฟล์นี้เผยแพร่ภายใต้สัญญาอนุญาต Creative Commons Attribution–ShareAlike</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">ภาพม้วนโบราณต่อเนื่อง</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">อักษรแนวตั้ง 縦書き</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">เลือกทิศทาง RTL หรือ LTR</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">จำการตั้งค่าแยกตามเล่ม</div>
+          </div>
+        </div>
+
+        <h2>เบื้องหลังที่ทำให้ EPUB เลื่อนในแนวนอนได้</h2>
+        <p>ภายในโค้ดของไฟล์หนังสือ มีคำสั่งสำคัญ 3 บรรทัดที่ทำงานร่วมกัน หากคุณสนใจทำ E-Book ของตนเอง นี่คือหัวใจสำคัญครับ:</p>
+
+        <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — กำหนดให้เนื้อหาไหลยาวเป็นผืนเดียวกัน แทนที่จะแบ่งตัดเป็นหน้าๆ</li>
+          <li><strong>page-progression-direction="rtl"</strong> — กำหนดทิศทางการอ่านให้เริ่มจากขวาไปซ้ายตามแบบฉบับภาพม้วนญี่ปุ่น</li>
+          <li><strong>writing-mode: vertical-rl</strong> — จัดตัวอักษรเป็นแถวแนวตั้ง และวางโครงสร้างเอกสารให้เลื่อนในแนวนอน</li>
+        </ul>
+
+        <h2>7 ขั้นตอนในการเปิดอ่านภาพม้วนโบราณ</h2>
+        <p>มาดูวิธีนำไฟล์เข้า Shiori และเปิดคลี่ภาพวาดอันงดงามบนหน้าจอมือถือของคุณกันครับ</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>すべての本が上から下へと読み進めるように作られているわけではありません。日本の伝統的な **絵巻物（えまきもの）** は横へと優雅に広がり、縦書き小説の行もまたページの右端から左へと流れていきます。EPUB 3規格はこの両方を美しく表現でき、Shioriの **横スクロール（Horizontal scroll）** 読書モードは、制作者が意図した本来の姿そのままに作品を再生します。</p>
+        <p>百聞は一見に如かず。まずは下記の無料サンプルをダウンロードして、指先で絵巻物をひらく感動を体験してみてください。</p>
+
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">公式EPUB 3テストサンプル · 約5MB · どなたでも無料で利用可能</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ サンプルEPUBをダウンロード</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+        </div>
+
+        <h2>作品について：『信貴山縁起絵巻』</h2>
+        <p>本サンプルは、EPUB標準の公式テストコレクションである **EPUB 3 samples project** から提供されています。収録されているのは平安時代（12世紀）に鳥羽僧正覚猷の作と伝わる国宝『信貴山縁起絵巻』です。</p>
+        <p>巻名は「山崎長者の巻（飛倉の巻）」。法力を持つ僧が鉢を飛ばし、欲深な長者の倉ごと空中を持ち去ってしまう痛快な説話が描かれています。原本の高精細写真25枚を継ぎ目なく結合し、画面何枚分にも及ぶ一続きの絵巻として再現。本文はクリエイティブ・コモンズ（表示-継承）ライセンスの下で公開されています。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">継ぎ目のない絵巻物</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">本格的な縦書き対応</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">RTL / LTR 方向切替</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">本ごとに設定を記憶</div>
+          </div>
+        </div>
+
+        <h2>EPUBが横スクロールする仕組み</h2>
+        <p>書籍の内部では、主に以下の3つの宣言によって横スクロールが実現されています。</p>
+
+        <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — ページ分割を行わず、一続きの長い巻物としてコンテンツをレンダリングします。</li>
+          <li><strong>page-progression-direction="rtl"</strong> — 日本の絵巻物と同様に、右から左へと物語が進行します。</li>
+          <li><strong>writing-mode: vertical-rl</strong> — テキストを縦書きにし、全体のレイアウトを水平方向に展開します。</li>
+        </ul>
+
+        <h2>ダウンロードから鑑賞までの7ステップ</h2>
+        <p>スマートフォンの画面キャプチャとともに、実際の手順を順を追ってご案内します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>并非所有书籍都应当自上而下滚动翻阅。古典日本 **绘卷（Emakimono 絵巻物）** 自右向左横向缓缓舒展，而中文与日文传统的竖排排版（縦書き），其字行亦是从页面右缘向左依序推进。EPUB 3 标准能够完美描述这两种形态，而 Shiori 的 **横向滚动（Horizontal scroll）** 模式，则让这些艺术杰作按照创作者最初的构想在手机屏幕上重焕生机。</p>
+        <p>体验这一特性的最佳方式莫过于亲自上手。您可以立即下载下方的免费样本进行体验。</p>
+
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">官方 EPUB 3 测试样本 · 约 5 MB · 免费开放阅读</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ 下载绘卷 EPUB 样本</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+        </div>
+
+        <h2>您即将欣赏的传世名作</h2>
+        <p>该样本出自官方 **EPUB 3 Samples Project** 测试书库，内容为十二世纪日本国宝级画卷《信贵山缘起》（信貴山縁起，相传为鸟羽僧正觉猷所作），是日本叙事性绘画的巅峰之作之一。</p>
+        <p>本卷为《山崎长者之卷》（又称飞仓之卷），生动描绘了一位法力高强的僧人将钵盂掷向天际、连同富商巨贾的整座粮仓一同托举飞走的奇妙传说。二十五张高精度照片无缝缝合为一幅横跨数屏的长卷画卷，文本遵循知识共享署名-相同方式共享（CC BY-SA）协议分发。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">连续绘卷画廊</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">正统竖排文本</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">RTL / LTR 方向自选</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">单书独立记忆配置</div>
+          </div>
+        </div>
+
+        <h2>让 EPUB 横向滚动的核心代码</h2>
+        <p>电子书内部通过以下三行标准声明实现横向排布，极具参考价值：</p>
+
+        <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — 声明内容为连续长卷，而非传统分页。</li>
+          <li><strong>page-progression-direction="rtl"</strong> — 指定阅读方向由右向左，还原古典长卷展开方式。</li>
+          <li><strong>writing-mode: vertical-rl</strong> — 文本呈竖排展示，整体版面横向连续延展。</li>
+        </ul>
+
+        <h2>图文实操：只需 7 步展开千里画卷</h2>
+        <p>跟随以下详细步骤，在手机上轻松开启横向沉浸式阅读。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Nem todo livro foi feito para ser lido de cima para baixo. Os tradicionais rolos ilustrados japoneses, conhecidos como <strong>emakimono (絵巻物)</strong>, desenrolam-se horizontalmente, assim como romances em escrita vertical (縦書き) que fluem da direita para a esquerda. O formato EPUB 3 suporta essa estética com perfeição, e o modo de <strong>Rolagem Horizontal (Horizontal scroll)</strong> do Shiori exibe essas obras exatamente como foram concebidas.</p>
+        <p>A melhor forma de compreender é experimentando. Baixe a amostra gratuita abaixo para testar no seu celular.</p>
+
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">Amostra oficial EPUB 3 · cerca de 5 MB · gratuita</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ Baixar Amostra de EPUB</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+        </div>
+
+        <h2>A Obra Que Você Irá Apreciar</h2>
+        <p>Esta amostra vem do projeto oficial <strong>EPUB 3 samples project</strong> e traz o rolo do século XII <em>Shigisan Engi</em> (信貴山縁起 - A Lenda do Monte Shigi), uma das narrativas visuais mais célebres do Japão, atribuída a Toba Sōjō Kakuyū.</p>
+        <p>Neste volume, 25 fotografias unidas formam uma pintura contínua e fluida de vários ecrãs de largura, retratando a lenda do celeiro voador. O texto é disponibilizado sob licença Creative Commons Attribution-ShareAlike.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">Rolos Ilustrados</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">Texto Vertical (縦書き)</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">Direção RTL ou LTR</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">Memória por Livro</div>
+          </div>
+        </div>
+
+        <h2>O Que Faz um EPUB Rolar na Horizontal?</h2>
+        <p>Três regras dentro do livro tornam essa experiência possível:</p>
+
+        <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — define que o conteúdo flui como um rolo contínuo, sem quebra de páginas.</li>
+          <li><strong>page-progression-direction="rtl"</strong> — define o avanço da leitura da direita para a esquerda.</li>
+          <li><strong>writing-mode: vertical-rl</strong> — posiciona o texto em colunas verticais com avanço horizontal.</li>
+        </ul>
+
+        <h2>7 Passos do Download à Leitura Horizontal</h2>
+        <p>Acompanhe o passo a passo com capturas reais do aplicativo.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>No todos los libros están pensados para desplazarse de arriba hacia abajo. Los tradicionales pergaminos ilustrados japoneses, conocidos como <strong>emakimono (絵巻物)</strong>, se desenrollan lateralmente, al igual que las novelas en escritura vertical (縦書き), cuyas columnas avanzan de derecha a izquierda. El estándar EPUB 3 reproduce esta experiencia fielmente y el modo de <strong>Desplazamiento horizontal (Horizontal scroll)</strong> de Shiori las presenta exactamente como fueron concebidas.</p>
+        <p>La mejor manera de descubrirlo es probándolo tú mismo. Puedes descargar la muestra gratuita a continuación:</p>
+
+        <div class="download-card">
+          <span class="dl-icon">📜</span>
+          <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+          <div class="dl-meta">Muestra oficial de EPUB 3 · aprox. 5 MB · totalmente gratuita</div>
+          <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+            <span>⬇ Descargar muestra en EPUB</span>
+          </a>
+          <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+        </div>
+
+        <h2>La Obra Maestra que Vas a Disfrutar</h2>
+        <p>La muestra procede del proyecto oficial <strong>EPUB 3 samples project</strong> y contiene el célebre pergamino del siglo XII <em>Shigisan Engi</em> (信貴山縁起 - La leyenda del Monte Shigi), atribuido a Toba Sōjō Kakuyū y considerado una de las mayores joyas narrativas de Japón.</p>
+        <p>En este tomo, 25 fotografías de alta calidad se unen para formar un lienzo continuo que abarca varias pantallas de ancho. El texto se publica bajo licencia Creative Commons Attribution-ShareAlike.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📜</span>
+            <div class="stat-badge-title">Pergaminos Ilustrados</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🈁</span>
+            <div class="stat-badge-title">Texto Vertical (縦書き)</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">↔️</span>
+            <div class="stat-badge-title">Dirección RTL o LTR</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔖</span>
+            <div class="stat-badge-title">Memoria Individual por Libro</div>
+          </div>
+        </div>
+
+        <h2>¿Cómo Funciona el Desplazamiento Horizontal en EPUB?</h2>
+        <p>El libro incluye tres declaraciones clave en su estructura interna:</p>
+
+        <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+        </div>
+
+        <ul class="article-bullet-list">
+          <li><strong>scrolled-doc</strong> — configura el contenido como un pergamino continuo sin divisiones artificiales.</li>
+          <li><strong>page-progression-direction="rtl"</strong> — establece el avance de derecha a izquierda según la tradición oriental.</li>
+          <li><strong>writing-mode: vertical-rl</strong> — ordena el texto en columnas verticales y expande el documento horizontalmente.</li>
+        </ul>
+
+        <h2>7 Pasos para Disfrutar de tu Pergamino</h2>
+        <p>Sigue esta guía visual paso a paso para abrir y configurar la obra en tu móvil.</p>
+      </div>
     </article>
 
     <!-- ==================== STEP-BY-STEP ==================== -->
-    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);">Step-by-Step Guide (7 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (7 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่าและเปิดอ่าน (7 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定と鑑賞の手順（7つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文操作指南（7 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (7 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (7 Pasos)</h2>
 
     <!-- STEP 1 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">1</span>Download and Import the Sample</div>
-        <div class="step-desc">
-          <p>Tap the download link above, then bring the file into Shiori with the <strong>+</strong> button on the bookshelf and <strong>Pick an EPUB file</strong>. It arrives as an ordinary book — cover, title (信貴山縁起), author, two chapters, 5 MB.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Download and Import the Sample</div>
+          <div class="step-desc">
+            <p>Tap the download button above, then import the file into Shiori using the <strong>+</strong> button on your bookshelf and selecting <strong>Pick an EPUB file</strong>. It lands on your shelf like any ordinary book — complete with cover, title (信貴山縁起), author, and two chapters.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ดาวน์โหลดและนำไฟล์เข้าสู่ชั้นหนังสือ</div>
+          <div class="step-desc">
+            <p>แตะปุ่มดาวน์โหลดด้านบน จากนั้นเปิดแอป Shiori แตะเครื่องหมาย <strong>+</strong> บนชั้นหนังสือ แล้วเลือก <strong>Pick an EPUB file</strong> เพื่อเลือกไฟล์ที่เพิ่งดาวน์โหลด หนังสือจะปรากฏบนชั้นของคุณพร้อมภาพปกและชื่อเรื่อง (信貴山縁起) อย่างเรียบร้อย</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>サンプルをダウンロードして本棚へ追加</div>
+          <div class="step-desc">
+            <p>上部のダウンロードボタンからファイルを取得し、Shioriの本棚画面で <strong>+</strong> ボタンをタップして <strong>Pick an EPUB file</strong> から追加します。表紙、タイトル（信貴山縁起）、目次を含む通常の本として本棚に並びます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>下载并导入样书至书架</div>
+          <div class="step-desc">
+            <p>点击上方按钮下载文件，在 Shiori 书架页面点击 <strong>+</strong> 号，选择 <strong>Pick an EPUB file</strong> 导入。该书将以完整图书形式安放于书架上，包含封面、书名（信貴山縁起）与两章内容。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Baixe e Importe a Amostra</div>
+          <div class="step-desc">
+            <p>Toque no link de download acima e adicione o arquivo no Shiori pelo botão <strong>+</strong> na estante, escolhendo <strong>Pick an EPUB file</strong>. O livro aparecerá na sua estante com capa e título (信貴山縁起).</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Descarga e Importa la Muestra</div>
+          <div class="step-desc">
+            <p>Descarga el archivo desde el enlace superior e impórtalo en Shiori pulsando en el botón <strong>+</strong> de la estantería y seleccionando <strong>Pick an EPUB file</strong>. Aparecerá en tu biblioteca con su portada y título original (信貴山縁起).</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -549,10 +885,47 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 2 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">2</span>Open It</div>
-        <div class="step-desc">
-          <p>With <strong>Reading mode</strong> on <strong>Auto</strong> — the default — Shiori reads what the book declares and lays the scroll out sideways on its own.</p>
-          <p>If it instead appears as a stack of separate panels running down the screen, like the screenshot here, then this particular book was set to another mode earlier. The next two steps put it right.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Open It</div>
+          <div class="step-desc">
+            <p>With <strong>Reading mode</strong> set to <strong>Auto</strong> (the default), Shiori reads what the book declares and automatically lays the scroll out sideways.</p>
+            <p>If it instead appears as a vertical stack of separate images (as shown in this screenshot), this particular book was opened in another mode previously. The next two steps will set it right in seconds.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เปิดหนังสือขึ้นมาอ่าน</div>
+          <div class="step-desc">
+            <p>หากตั้งค่า <strong>Reading mode</strong> เป็น <strong>Auto</strong> (ค่าเริ่มต้น) Shiori จะตรวจพบโครงสร้างและเปิดภาพม้วนในแนวนอนให้อัตโนมัติ</p>
+            <p>แต่หากเปิดมาแล้วพบว่าภาพถูกตัดแบ่งเป็นชิ้นๆ เรียงต่อกันลงมาในแนวตั้งดังในภาพตัวอย่าง ไม่ต้องกังวลครับ นั่นเป็นเพราะหนังสือเคยถูกเปิดด้วยโหมดอื่นมาก่อน เราสามารถปรับให้ถูกต้องได้ในสองขั้นตอนถัดไป</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>書籍を開く</div>
+          <div class="step-desc">
+            <p>読書モードが <strong>Auto</strong>（デフォルト）の場合、Shioriは書籍のメタデータを自動判別して横スクロールで展開します。</p>
+            <p>もし画像のように縦方向に画像が並んで表示された場合は、過去に別のモードが適用されていた状態です。次の2つのステップで簡単に修正できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>打开书籍</div>
+          <div class="step-desc">
+            <p>若阅读模式为默认的 <strong>Auto</strong>，Shiori 会自动识别排版规则并以横向长卷展开。</p>
+            <p>若画面如右图所示呈现为上下堆叠的单张切片图，说明该书先前记录了其他阅读模式。只需按照接下来的两步即可秒速修正。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Abra o Livro</div>
+          <div class="step-desc">
+            <p>Com o modo de leitura em <strong>Auto</strong>, o Shiori reconhece o formato e exibe o rolo horizontalmente.</p>
+            <p>Se as imagens aparecerem empilhadas na vertical como na captura ao lado, basta seguir os dois próximos passos para ajustar o modo de exibição.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Abre la Obra</div>
+          <div class="step-desc">
+            <p>Si el modo de lectura está en <strong>Auto</strong>, Shiori detectará la estructura y desplegará el pergamino en horizontal automáticamente.</p>
+            <p>Si por el contrario ves las imágenes apiladas en vertical como en la captura, no te preocupes: los siguientes dos pasos lo solucionarán al instante.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -563,9 +936,41 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 3 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">3</span>Open the Reading Mode Panel</div>
-        <div class="step-desc">
-          <p>Tap the reading-mode icon in the reader's top bar. The icon always shows the mode the current book is in — <strong>↕</strong> for vertical scroll, <strong>⇄</strong> for horizontal, a sparkle for Auto — so you can tell at a glance what you are looking at.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Open the Reading Mode Panel</div>
+          <div class="step-desc">
+            <p>Tap the reading-mode icon in the top toolbar. The icon dynamically reflects the current mode — <strong>↕</strong> for vertical scroll, <strong>⇄</strong> for horizontal, and a sparkle for Auto — giving you immediate visual confirmation.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เปิดเมนูตั้งค่าโหมดการอ่าน (Reading Mode)</div>
+          <div class="step-desc">
+            <p>แตะที่ไอคอนโหมดการอ่านบนแถบเครื่องมือด้านบน ไอคอนจะเปลี่ยนตามโหมดปัจจุบันเสมอ (เช่น <strong>↕</strong> สำหรับเลื่อนแนวตั้ง, <strong>⇄</strong> สำหรับเลื่อนแนวนอน หรือรูปประกายดาวสำหรับ Auto) ทำให้สังเกตได้ง่ายในพริบตา</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>読書モードパネルを開く</div>
+          <div class="step-desc">
+            <p>画面上部ツールバーの読書モードアイコンをタップします。現在のモードに応じてアイコン（縦スクロール <strong>↕</strong>、横スクロール <strong>⇄</strong>、自動 <strong>✨</strong>）が変化します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>打开阅读模式面板</div>
+          <div class="step-desc">
+            <p>点击顶部工具栏中的阅读模式图标。图标会直观显示当前状态：纵向滚动为 <strong>↕</strong>，横向滚动为 <strong>⇄</strong>，自动模式为 <strong>✨</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Abra o Painel de Modo de Leitura</div>
+          <div class="step-desc">
+            <p>Toque no ícone de modo de leitura na barra superior. O ícone indica o status atual: <strong>↕</strong> para vertical, <strong>⇄</strong> para horizontal e uma estrela para Auto.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Abre el Panel de Modo de Lectura</div>
+          <div class="step-desc">
+            <p>Toca en el icono de modo de lectura de la barra superior. El icono muestra el modo activo: <strong>↕</strong> para vertical, <strong>⇄</strong> para horizontal y un destello para Auto.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -576,10 +981,47 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 4 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">4</span>Choose Horizontal Scroll</div>
-        <div class="step-desc">
-          <p>Four chips: <strong>Auto</strong>, <strong>Vertical scroll</strong>, <strong>Horizontal scroll</strong> and <strong>Page turn</strong>. The hint above them says it plainly — <em>how this book moves. Auto follows what the book declares.</em> Pick Horizontal scroll and the page rebuilds instantly, the artwork now filling the screen's full height.</p>
-          <p>A <strong>Direction</strong> row appears underneath: <strong>Auto</strong>, <strong>LTR</strong> or <strong>RTL</strong>. RTL is the Japanese convention and what a handscroll or a manga wants. Below it, <strong>Stand other language font upright</strong> decides whether Latin and Thai letters lie on their side inside a vertical column or stand up and stack.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Choose Horizontal Scroll</div>
+          <div class="step-desc">
+            <p>Select the <strong>Horizontal scroll</strong> chip. The page rebuilds instantly, with the artwork seamlessly expanding to fill the screen's full height.</p>
+            <p>A <strong>Direction</strong> row appears beneath: choose <strong>RTL</strong> (Right-to-Left) for authentic Japanese handscrolls and manga, or <strong>LTR</strong> for Western-style picture scrolls. Below that, <strong>Stand other language font upright</strong> controls whether Latin or Thai characters stack upright or rotate inside vertical columns.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เลือกโหมด Horizontal Scroll</div>
+          <div class="step-desc">
+            <p>แตะเลือก <strong>Horizontal scroll</strong> หน้ากระดาษจะจัดโครงสร้างใหม่ทันที โดยภาพวาดจะขยายเต็มความสูงของหน้าจออย่างงดงาม</p>
+            <p>แถบ <strong>Direction (ทิศทาง)</strong> จะปรากฏขึ้นด้านล่าง: เลือก <strong>RTL</strong> (ขวาไปซ้าย) สำหรับภาพม้วนญี่ปุ่นหรือมังงะ และเลือก <strong>LTR</strong> สำหรับหนังสือภาพสากลทั่วไป นอกจากนี้ยังมีตัวเลือก <strong>Stand other language font upright</strong> สำหรับกำหนดให้ตัวอักษรละตินหรือภาษาไทยตั้งตรงในคอลัมน์แนวตั้ง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>「Horizontal scroll（横スクロール）」を選択</div>
+          <div class="step-desc">
+            <p><strong>Horizontal scroll</strong> チップを選択すると、画面全体の高さいっぱいに絵巻が美しく再配置されます。</p>
+            <p>下部の <strong>Direction</strong> で進行方向（絵巻物やマンガには <strong>RTL</strong>、左から右へ読む作品には <strong>LTR</strong>）を設定できます。さらに <strong>Stand other language font upright</strong> で欧文・他言語フォントを縦書き内で直立させるかどうかも選べます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>选择“Horizontal scroll（横向滚动）”</div>
+          <div class="step-desc">
+            <p>点击选择 <strong>Horizontal scroll</strong> 标签，页面瞬间重新编排，画卷随即铺满整个屏幕高度。</p>
+            <p>下方将出现 <strong>Direction（方向）</strong> 设置：选择 <strong>RTL</strong>（从右至左）以契合日本古画卷与漫画习惯，选择 <strong>LTR</strong> 则适合从左至右作品；下方还可开启西文/泰文字符竖排直立显示。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Selecione Rolagem Horizontal</div>
+          <div class="step-desc">
+            <p>Escolha <strong>Horizontal scroll</strong> para que a arte preencha toda a altura da tela imediatamente.</p>
+            <p>A linha <strong>Direction</strong> permite escolher <strong>RTL</strong> (direita para esquerda) para mangás e rolos japoneses ou <strong>LTR</strong> para rolos ocidentais, com ajuste de fontes verticais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Selecciona Desplazamiento Horizontal</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>Horizontal scroll</strong> para que la ilustración se adapte a toda la altura de la pantalla al instante.</p>
+            <p>En la fila <strong>Direction</strong> puedes elegir <strong>RTL</strong> (derecha a izquierda) para pergaminos y manga o <strong>LTR</strong> para obras occidentales, con ajuste para caracteres verticales.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -590,9 +1032,41 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 5 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">5</span>Start at the Right-Hand End</div>
-        <div class="step-desc">
-          <p>A right-to-left scroll begins where a real handscroll does — at its right edge, with the title cartouche and the collector's seals. The progress readout shows 0.00%, and the whole height of the painting fits the screen.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Start at the Right-Hand End</div>
+          <div class="step-desc">
+            <p>A right-to-left scroll begins precisely where a physical handscroll does — at its right edge, presenting the title cartouche and authentic collector's seals, with progress reading 0.00%.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เริ่มต้นที่ขอบด้านขวาตามต้นฉบับ</div>
+          <div class="step-desc">
+            <p>ภาพม้วนแบบ RTL จะเริ่มต้นจากขอบด้านขวาสุดเหมือนม้วนกระดาษจริงในประวัติศาสตร์ โดยจะแสดงชื่อเรื่อง ตราประทับของนักสะสมโบราณ และแถบความคืบหน้าจะเริ่มต้นที่ 0.00%</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>右端の巻頭から鑑賞をスタート</div>
+          <div class="step-desc">
+            <p>本物の絵巻物と同様に、右端の題箋（タイトル）や収蔵印が押された巻頭から物語が始まります。進捗率は 0.00% と表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>从右侧卷首开启赏阅</div>
+          <div class="step-desc">
+            <p>正如徐徐展开一幅实体古画长卷一般，画面从最右侧的题签与鉴藏印处展开，阅读进度显示为 0.00%。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Comece pela Extremidade Direita</div>
+          <div class="step-desc">
+            <p>Um rolo RTL começa exatamente como uma peça histórica real: na borda direita, exibindo o selo e o título, com o progresso em 0.00%.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Comienza por el Extremo Derecho</div>
+          <div class="step-desc">
+            <p>Un pergamino RTL empieza exactamente como una pieza histórica real: en el margen derecho, mostrando los sellos y el título original con el progreso al 0.00%.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -603,9 +1077,41 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 6 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">6</span>Swipe to Unroll It</div>
-        <div class="step-desc">
-          <p>Drag sideways and the painting travels past continuously — a fleeing crowd, a temple roof, then hills and pines drawn in a single unbroken sweep. There are no page seams to interrupt a composition that was never meant to have any, and the percentage climbs as you go, so you always know how much scroll is left.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Swipe to Unroll the Panorama</div>
+          <div class="step-desc">
+            <p>Drag sideways with your thumb and watch the painted world glide past continuously — fleeing crowds, temple roofs, serene hills, and ancient pines rendered in an unbroken visual flow with zero page seams.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>ปัดนิ้วเพื่อคลี่ภาพวาดพาโนรามาต่อเนื่อง</div>
+          <div class="step-desc">
+            <p>เพียงใช้นิ้วลากเลื่อนไปทางด้านข้าง ภาพวาดจะเคลื่อนผ่านอย่างนุ่มนวลและต่อเนื่อง—ตั้งแต่ผู้คนที่กำลังแตกตื่น, หลังคาวัดโบราณ ไปจนถึงทิวเขาและแมกไม้ โดยไม่มีรอยต่อของหน้ากระดาษมาขัดจังหวะสายตา</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>スワイプしてパノラマを滑らかに広げる</div>
+          <div class="step-desc">
+            <p>指先で横にスライドすると、逃げ惑う群衆、寺院の屋根、山並みや松林が、ページの継ぎ目なく一つの雄大なパノラマとして滑らかに流れていきます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>滑动指尖，全景画卷连绵呈现</div>
+          <div class="step-desc">
+            <p>横向轻滑屏幕，生动的画面连绵掠过——奔走的百姓、寺院飞檐、远山青松皆融为一体，毫无任何分页断层，尽显全景画卷的恢弘气势。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Deslize para Desenrolar o Panorama</div>
+          <div class="step-desc">
+            <p>Arraste para o lado e veja a paisagem fluir continuamente — multidões, templos e montanhas desenhados em um fluxo sem cortes de página.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Desliza para Desplegar el Panorama</div>
+          <div class="step-desc">
+            <p>Arrastra hacia un lado y contempla cómo fluye la pintura de forma ininterrumpida: templos, personajes y paisajes naturales en un solo trazo continuo sin saltos de página.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -616,12 +1122,64 @@ html { writing-mode: vertical-rl; }</pre>
     <!-- STEP 7 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">7</span>The Same Mode Carries Vertical Text</div>
-        <div class="step-desc">
-          <p>Keep going into the second chapter and the artwork gives way to Japanese prose — set in vertical columns that run right to left, panning in exactly the same way. That is the whole point of the mode: 縦書き text and painted scrolls move alike, so one setting serves both.</p>
-          <div class="quote-callout">
-            <strong>💡 Pro Tip</strong><br />
-            The reading mode is remembered <strong>per book</strong>. Set a tategaki novel to Horizontal scroll and it stays that way, while your English paperbacks keep scrolling down as usual. A book you have never touched starts from whichever mode you chose last, so setting up a second manga takes no work at all.
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Seamless Support for Vertical Text</div>
+          <div class="step-desc">
+            <p>Navigate into the second chapter and the illustration transitions naturally into Japanese prose arranged in vertical columns running right to left. That is the true elegance of Horizontal Scroll mode: painted scrolls and vertical Japanese novels share the same motion, so one setting serves both effortlessly.</p>
+            <div class="quote-callout">
+              <strong>💡 Pro Tip</strong><br />
+              Shiori remembers your reading mode <strong>individually per book</strong>. Set a vertical Japanese novel to Horizontal scroll and it stays that way, while your standard English books continue scrolling downward normally.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>รองรับตัวอักษรแนวตั้ง (縦書き) ได้อย่างสมบูรณ์แบบ</div>
+          <div class="step-desc">
+            <p>เมื่อเลื่อนเข้าสู่บทที่สอง ภาพวาดจะส่งต่อไปยังบทความภาษาญี่ปุ่นที่จัดเรียงเป็นคอลัมน์แนวตั้งจากขวาไปซ้ายอย่างงดงาม นี่คือจุดเด่นของโหมดเลื่อนแนวนอนที่ออกแบบมาเพื่อทั้งภาพม้วนและวรรณกรรมแนวตั้งในหนึ่งเดียว</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับน่ารู้</strong><br />
+              Shiori จะจดจำโหมดการอ่าน <strong>แยกอิสระเป็นรายเล่ม</strong> หนังสือแนวตั้งที่ตั้งค่าแนวนอนไว้จะคงอยู่ตลอดไป ในขณะที่หนังสือทั่วไปภาษาไทยหรือภาษาอังกฤษก็จะยังคงเลื่อนขึ้นลงในแนวตั้งตามปกติ
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>縦書き小説やテキストにもそのまま対応</div>
+          <div class="step-desc">
+            <p>第2章に進むと、絵巻から美しい縦書き日本語テキストへと自然に移行します。右から左へと流れる縦書きの行送りと絵巻物の進行は全く同じ原理であるため、ひとつの設定で両方を快適に味わえます。</p>
+            <div class="quote-callout">
+              <strong>💡 お役立ちメモ</strong><br />
+              Shioriは読書モードを <strong>作品ごとに個別に記憶</strong> します。縦書き小説を横スクロールに設定しても、通常の横書き洋書はいつもの縦スクロールのまま快適に読めます。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>完美契合古典竖排文本</div>
+          <div class="step-desc">
+            <p>进入第二章后，画卷自然过渡为优雅的竖排文本。这正是横向滚动模式的精髓所在：古典长卷与竖排排版遵循相同的流动逻辑，一套模式即可兼顾二者。</p>
+            <div class="quote-callout">
+              <strong>💡 实用小贴士</strong><br />
+              Shiori 为每本书 <strong>独立记忆阅读模式与方向</strong>。将竖排书籍设为横向滚动后，普通横排书籍仍会保持常规的上下滚动，互不干扰。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Suporte Perfeito para Texto Vertical</div>
+          <div class="step-desc">
+            <p>No segundo capítulo, a pintura dá lugar a textos verticais em japonês. A beleza deste modo é que tanto rolos artísticos quanto textos verticais compartilham a mesma dinâmica de leitura.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica Útil</strong><br />
+              O Shiori salva o modo de leitura <strong>individualmente para cada livro</strong>, mantendo seus romances verticais na horizontal e seus livros comuns na vertical.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Soporte Total para Texto Vertical</div>
+          <div class="step-desc">
+            <p>Al avanzar al segundo capítulo, la ilustración da paso a columnas de texto vertical en japonés. La ventaja de este modo es que tanto los pergaminos como las novelas en vertical comparten la misma fluidez.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo Práctico</strong><br />
+              Shiori recuerda el modo de lectura <strong>de forma independiente para cada libro</strong>: tus novelas verticales se abrirán en horizontal mientras tus libros tradicionales conservan el desplazamiento vertical.
+            </div>
           </div>
         </div>
       </div>
@@ -630,39 +1188,190 @@ html { writing-mode: vertical-rl; }</pre>
       </div>
     </section>
 
-    <!-- FAQ -->
-    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);">Frequently Asked Questions</h2>
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
 
+    <!-- FAQ 1 -->
     <div class="faq-item">
-      <div class="faq-q">What is an emakimono?</div>
-      <div class="faq-a">A Japanese painted handscroll: a long horizontal roll of paper or silk on which a story unfolds continuously as you unroll it from right to left. <em>Shigisan Engi</em> is one of the classic examples, and the sample above is a digital edition of it.</div>
+      <div class="lang-en">
+        <div class="faq-q">What is an emakimono?</div>
+        <div class="faq-a">An emakimono (絵巻物) is a traditional Japanese painted handscroll: a continuous horizontal roll of paper or silk where illustrations and narrative prose unfold together as you unroll it from right to left. <em>Shigisan Engi</em> is one of Japan's classic masterpieces.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">เอมากิโมโนะ (Emakimono) คืออะไร?</div>
+        <div class="faq-a">เอมากิโมโนะ (絵巻物) คือภาพม้วนกระดาษหรือผ้าไหมโบราณของญี่ปุ่นที่เล่าเรื่องราวเหตุการณ์ต่างๆ อย่างต่อเนื่อง โดยผู้อ่านจะค่อยๆ คลี่ม้วนกระดาษออกเพื่อชมภาพและอ่านข้อความจากขวาไปซ้าย โดยมี <em>Shigisan Engi</em> เป็นหนึ่งในผลงานชิ้นเอกระดับตำนาน</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">絵巻物（えまきもの）とは何ですか？</div>
+        <div class="faq-a">紙や絹をつなぎ合わせて横長にした巻物に、絵と言葉（詞書）を交互に配して物語を展開させた日本の伝統的な絵画形式です。右から左へと巻き広げながら鑑賞するもので、『信貴山縁起絵巻』はその代表的な傑作です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">什么是绘卷（Emakimono）？</div>
+        <div class="faq-a">绘卷（絵巻物）是日本古典的长卷绘画艺术形式。在长条形的纸绢上，图画与文字交替出现，自右向左徐徐展开以叙述故事，《信贵山缘起》便是其中的典范之作。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que é um emakimono?</div>
+        <div class="faq-a">É um rolo ilustrado tradicional japonês em papel ou seda, no qual histórias e pinturas fluem continuamente da direita para a esquerda. <em>Shigisan Engi</em> é um dos maiores clássicos desse gênero.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué es un emakimono?</div>
+        <div class="faq-a">Es un pergamino ilustrado tradicional japonés en papel o seda en el que la historia y el arte se despliegan de forma continua de derecha a izquierda. <em>Shigisan Engi</em> es una de sus obras maestras más reconocidas.</div>
+      </div>
     </div>
 
+    <!-- FAQ 2 -->
     <div class="faq-item">
-      <div class="faq-q">Why does my scroll book look like a stack of separate images?</div>
-      <div class="faq-a">It is being rendered in vertical-scroll mode. Open the reading-mode panel in the top bar and pick <strong>Horizontal scroll</strong> — or <strong>Auto</strong>, which follows whatever the book itself declares.</div>
+      <div class="lang-en">
+        <div class="faq-q">Why does my scroll book look like a vertical stack of separate images?</div>
+        <div class="faq-a">The reader is currently set to vertical-scroll mode. Open the reading-mode panel in the top bar and select <strong>Horizontal scroll</strong> (or <strong>Auto</strong>), and the panels will merge into a single seamless panorama.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมภาพม้วนถึงแสดงผลเป็นภาพต่อกันในแนวตั้ง?</div>
+        <div class="faq-a">เกิดจากแอปเปิดด้วยโหมดเลื่อนแนวตั้งอยู่ครับ เพียงแตะไอคอนโหมดการอ่านบนแถบเครื่องมือด้านบน แล้วเลือก <strong>Horizontal scroll</strong> (หรือ <strong>Auto</strong>) ภาพทั้งหมดจะกลับมารวมเป็นผืนยาวแนวนอนอย่างต่อเนื่องทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">絵巻物が縦に並んだ画像として表示されてしまうのはなぜですか？</div>
+        <div class="faq-a">縦スクロールモードで表示されているためです。上部バーの読書モードパネルを開き、<strong>Horizontal scroll</strong>（または <strong>Auto</strong>）を選択すると、一続きの横スクロール絵巻に戻ります。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么绘卷会显示为上下断开的切片图片？</div>
+        <div class="faq-a">这是因为当前处于纵向滚动模式。只需点击顶部工具栏的阅读模式图标，切换为 <strong>Horizontal scroll</strong>（或 <strong>Auto</strong>），画卷即可重新无缝拼接为横向长卷。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que o rolo parece uma pilha vertical de imagens separadas?</div>
+        <div class="faq-a">Porque o app está no modo de rolagem vertical. Abra o painel de leitura na barra superior e escolha <strong>Horizontal scroll</strong> (ou <strong>Auto</strong>) para unificar a imagem.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué mi pergamino aparece como una pila vertical de imágenes?</div>
+        <div class="faq-a">Se debe a que está en modo de desplazamiento vertical. Abre el panel de modo de lectura en la barra superior y elige <strong>Horizontal scroll</strong> (o <strong>Auto</strong>) para unir las imágenes en un lienzo continuo.</div>
+      </div>
     </div>
 
+    <!-- FAQ 3 -->
     <div class="faq-item">
-      <div class="faq-q">Does this work with vertical Japanese novels too?</div>
-      <div class="faq-a">Yes. Horizontal scroll is the 縦書き mode: text stacks into vertical columns and the columns run sideways. Set <strong>Direction</strong> to <strong>RTL</strong> for Japanese. See also our guide to <a href="/read-japanese-books">reading Japanese books on Android</a>.</div>
+      <div class="lang-en">
+        <div class="faq-q">Does horizontal scroll work with vertical Japanese novels (縦書き)?</div>
+        <div class="faq-a">Yes! Horizontal scroll is the dedicated 縦書き (tategaki) mode: text stacks into vertical columns that pan horizontally. Set <strong>Direction</strong> to <strong>RTL</strong> for standard Japanese novels. Check out our dedicated guide on <a href="/read-japanese-books">reading Japanese books on Android</a>.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">โหมดเลื่อนแนวนอนใช้กับหนังสือนิยายภาษาญี่ปุ่นแนวตั้ง (縦書き) ได้ด้วยไหม?</div>
+        <div class="faq-a">ใช้ได้สมบูรณ์แบบเลยครับ! โหมดเลื่อนแนวนอนคือโหมดมาตรฐานสำหรับตัวอักษรแนวตั้ง (Tategaki) โดยตัวอักษรจะเรียงเป็นคอลัมน์และเลื่อนไปทางซ้ายตามลำดับ เพียงตั้งค่า <strong>Direction</strong> เป็น <strong>RTL</strong> สามารถอ่านคู่มือเพิ่มเติมได้ที่ <a href="/read-japanese-books">วิธีอ่านหนังสือภาษาญี่ปุ่นบน Android</a></div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">縦書きの日本語小説にも使えますか？</div>
+        <div class="faq-a">はい、縦書き（tategaki）小説に最適なモードです。テキストが縦列に配置され、右から左へと横方向に流れます。進行方向（Direction）を <strong>RTL</strong> に設定してご利用ください。詳しくは <a href="/read-japanese-books">Androidで日本語の電子書籍を読む方法</a> も併せてご覧ください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">横向滚动模式适用于竖排日文小说（縦書き）吗？</div>
+        <div class="faq-a">完全适用！横向滚动正是竖排文字的标准模式：文字呈竖列排布并向左横向推进。只需将 <strong>Direction</strong> 设为 <strong>RTL</strong> 即可。欢迎查阅我们的 <a href="/read-japanese-books">Android 日文电子书阅读指南</a>。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A rolagem horizontal funciona com romances japoneses verticais (縦書き)?</div>
+        <div class="faq-a">Sim! É o modo ideal para escrita vertical (tategaki). Configure a <strong>Direction</strong> como <strong>RTL</strong> para uma leitura natural. Veja também nosso guia sobre <a href="/read-japanese-books">leitura de livros japoneses no Android</a>.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Funciona el desplazamiento horizontal con novelas en japonés vertical (縦書き)?</div>
+        <div class="faq-a">¡Totalmente! Es el modo idóneo para escritura vertical (tategaki). Establece la opción <strong>Direction</strong> en <strong>RTL</strong>. Consulta también nuestra guía sobre <a href="/read-japanese-books">cómo leer libros en japonés en Android</a>.</div>
+      </div>
     </div>
 
+    <!-- FAQ 4 -->
     <div class="faq-item">
-      <div class="faq-q">Can I read a left-to-right scroll?</div>
-      <div class="faq-a">Yes — set <strong>Direction</strong> to <strong>LTR</strong> and the scroll runs the other way, which suits a picture scroll drawn to be read from left to right.</div>
+      <div class="lang-en">
+        <div class="faq-q">Can I read a left-to-right picture scroll?</div>
+        <div class="faq-a">Yes — simply change <strong>Direction</strong> to <strong>LTR</strong>, and the scroll will advance naturally from left to right to suit Western-style scrolls or visual narratives.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถอ่านภาพม้วนที่วาดจากซ้ายไปขวาได้หรือไม่?</div>
+        <div class="faq-a">ได้แน่นอนครับ เพียงปรับค่า <strong>Direction</strong> ให้เป็น <strong>LTR</strong> ภาพม้วนก็จะเลื่อนจากซ้ายไปขวาตามต้องการ เหมาะสำหรับหนังสือภาพหรือการ์ตูนสไตล์ตะวันตก</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">左から右へ読む絵巻物も表示できますか？</div>
+        <div class="faq-a">はい、<strong>Direction</strong> を <strong>LTR</strong> に変更するだけで、左から右へ進む西洋風のパノラマ作品も自然に楽しめます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">可以阅读自左向右展开的西式长卷吗？</div>
+        <div class="faq-a">当然可以。只需在方向设置中选择 <strong>LTR</strong>，画卷便会从左至右顺畅推进。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso ler um rolo que avança da esquerda para a direita?</div>
+        <div class="faq-a">Sim, basta alterar a <strong>Direction</strong> para <strong>LTR</strong> para que o documento avance da esquerda para a direita.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puedo leer un pergamino de izquierda a derecha?</div>
+        <div class="faq-a">Sí, solo tienes que cambiar <strong>Direction</strong> a <strong>LTR</strong> para que el documento avance de izquierda a derecha de forma natural.</div>
+      </div>
     </div>
 
+    <!-- FAQ 5 -->
     <div class="faq-item">
-      <div class="faq-q">Where can I find more EPUB 3 samples?</div>
-      <div class="faq-a">The <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> on GitHub publishes a whole set of test books — fixed layout, vertical writing, media overlays and more — all free to download and open in Shiori.</div>
+      <div class="lang-en">
+        <div class="faq-q">Where can I find more EPUB 3 samples?</div>
+        <div class="faq-a">The <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> on GitHub publishes a complete collection of test books — including fixed layout, vertical writing, and media overlays — all free to download and explore.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถค้นหาไฟล์ตัวอย่าง EPUB 3 เพิ่มเติมได้จากที่ไหน?</div>
+        <div class="faq-a">สามารถเข้าไปดูได้ที่โครงการ <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> บน GitHub ซึ่งรวบรวมตัวอย่างหนังสือหลากหลายรูปแบบ ทั้ง Fixed-layout, การเขียนแนวตั้ง และ Media overlays ให้ดาวน์โหลดฟรีครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">他のEPUB 3サンプルはどこで入手できますか？</div>
+        <div class="faq-a">GitHubの <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> にて、固定レイアウト、縦書き、音声同期（メディアオーバーレイ）など多彩な公式サンプルが無料公開されています。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在哪里可以找到更多 EPUB 3 官方样本？</div>
+        <div class="faq-a">您可以访问 GitHub 上的 <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> 开源项目，免费获取涵盖固定版式、竖排文字及富媒体同步的丰富测试样本。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Onde posso encontrar mais amostras do EPUB 3?</div>
+        <div class="faq-a">No repositório do <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> no GitHub, com diversos exemplos de layout fixo, áudio e escrita vertical.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Dónde puedo encontrar más ejemplos de EPUB 3?</div>
+        <div class="faq-a">En el repositorio de GitHub de <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a>, con multitud de ejemplos de maquetación fija, texto vertical y sincronización multimedia.</div>
+      </div>
     </div>
 
     <!-- Call to Action -->
     <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
-      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">See Your Books the Way They Were Drawn</h2>
-      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">See Your Books the Way They Were Drawn</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
         Download Shiori EPUB Reader, grab the emakimono sample, and unroll a twelfth-century masterpiece with your thumb.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">สัมผัสผลงานศิลปะในมุมมองดั้งเดิมที่แท้จริง</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ โหลดไฟล์ตัวอย่างภาพม้วน แล้วใช้นิ้วของคุณคลี่ชมผลงานชิ้นเอกอายุกว่า 900 ปีได้อย่างเพลิดเพลิน
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">本来の姿で味わう、美しい読書の世界へ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、絵巻物サンプルを手に入れて、平安の傑作を指先で優雅にひらいてみませんか。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">以最原汁原味的方式赏读经典画卷</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，获取绘卷样书，用指尖缓缓舒展跨越九百年的传世艺术珍品。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Aprecie Cada Livro Como Ele Foi Concebido</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader, experimente a amostra de emakimono e desenrole uma obra-prima do século XII na ponta dos seus dedos.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Disfruta de Cada Obra en su Formato Original</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader, hazte con la muestra de emakimono y desenrolla una obra de arte del siglo XII directamente con tu pulgar.
       </p>
 
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">

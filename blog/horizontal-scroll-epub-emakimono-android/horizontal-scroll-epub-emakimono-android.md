@@ -6,7 +6,7 @@ The best way to see it is to try it. Below is a free sample you can download rig
 
 ---
 
-## Get the Sample: horizontally-scrollable-emakimono.epub
+## 1. Get the Sample: horizontally-scrollable-emakimono.epub
 
 **➜ [Download horizontally-scrollable-emakimono.epub](https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub)** (about 5 MB)
 
@@ -14,7 +14,7 @@ It comes from the **EPUB 3 samples project**, the official collection of test bo
 
 The sample's own colophon page notes that its text is available under a Creative Commons Attribution–ShareAlike licence.
 
-## What Makes an EPUB Scroll Sideways?
+## 2. What Makes an EPUB Scroll Sideways?
 
 Three declarations inside the book do the work, and it is worth knowing them if you ever build one yourself:
 
@@ -57,19 +57,19 @@ Keep going into the second chapter and the artwork gives way to Japanese prose �
 
 ## Frequently Asked Questions
 
-**What is an emakimono?**
+**What is an emakimono?**  
 A Japanese painted handscroll: a long horizontal roll of paper or silk on which a story unfolds continuously as you unroll it from right to left. *Shigisan Engi* is one of the classic examples, and the sample above is a faithful digital edition of it.
 
-**Why does my scroll book look like a stack of separate images?**
+**Why does my scroll book look like a stack of separate images?**  
 It is being rendered in vertical-scroll mode. Open the reading-mode panel and pick **Horizontal scroll** (or **Auto**), and the panels join back into one continuous scroll.
 
-**Does this work with vertical Japanese novels too?**
+**Does this work with vertical Japanese novels too?**  
 Yes. Horizontal scroll is the 縦書き mode: text stacks into vertical columns and the columns run sideways. Set **Direction** to **RTL** for Japanese.
 
-**Can I read a left-to-right scroll?**
+**Can I read a left-to-right scroll?**  
 Yes — set **Direction** to **LTR** and the scroll runs the other way.
 
-**Where can I find more EPUB 3 samples?**
+**Where can I find more EPUB 3 samples?**  
 The EPUB 3 samples project on GitHub publishes a whole set of test books — fixed-layout, vertical writing, media overlays and more — all free to download.
 
 ---
