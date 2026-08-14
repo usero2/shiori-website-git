@@ -254,6 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-title": "Cloud Sync with Google Drive: Your Library on Every Device",
       "blog-p20-desc": "From sign-in to a second device — what every auto-sync switch moves, why book files are different from settings, and which side wins when two devices disagree.",
 
+      // Blog Post 21
+      "blog-p21-date": "📅 August 15, 2026",
+      "blog-p21-cat": "🏷️ Text-to-Speech",
+      "blog-p21-title": "Multi-Language Text-to-Speech: One Book, Every Voice",
+      "blog-p21-desc": "Why one voice is never enough for a real book — how Shiori switches voice mid-sentence by script, and how priority settles 漢字 and Latin between languages.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -522,6 +528,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-cat": "🏷️ ซิงก์และสำรองข้อมูล",
       "blog-p20-title": "Cloud Sync ผ่าน Google Drive: อ่านต่อเนื่องได้ทุกเครื่อง ทุกที่ทุกเวลา",
       "blog-p20-desc": "คู่มือการซิงก์ฉบับสมบูรณ์ ตั้งแต่การล็อกอิน, การซิงก์ตำแหน่งอ่าน โน้ต ไฮไลต์ คอลเลกชัน ไปจนถึงการเปิดอ่านต่อบนเครื่องที่สองอย่างราบรื่น ปลอดภัยบน Google Drive ของคุณเอง",
+
+      // Blog Post 21
+      "blog-p21-date": "📅 15 สิงหาคม 2026",
+      "blog-p21-cat": "🏷️ เสียงอ่าน (TTS)",
+      "blog-p21-title": "Multi-Language TTS: อ่านออกเสียงหลายภาษา สลับเสียงอัตโนมัติกลางประโยค",
+      "blog-p21-desc": "ไขความลับระบบอ่านออกเสียงหลายภาษาของ Shiori ที่สามารถสลับเสียงอ่านตามชุดตัวอักษรได้เนียนกริบกลางประโยค พร้อมระบบจัดลำดับความสำคัญของตัวอักษร 漢字 และ Latin",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -792,6 +804,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-title": "Google Drive クラウド同期：どの端末でも続きから快適読書",
       "blog-p20-desc": "初期設定から2台目端末の連携まで徹底解説。読書位置、ハイライト、メモ、本棚設定を自身のGoogle Driveで安全に自動同期する方法。",
 
+      // Blog Post 21
+      "blog-p21-date": "📅 2026年8月15日",
+      "blog-p21-cat": "🏷️ 音声読み上げ（TTS）",
+      "blog-p21-title": "多言語TTS：1冊の本でも言語ごとに音声を自動切り替え",
+      "blog-p21-desc": "本文中の文字体系を検知し、文の途中でも自然に音声をスイッチ。漢字やアルファベットの優先順位設定から言語別の速度調整まで徹底解説。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1060,6 +1078,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-cat": "🏷️ 同步与备份",
       "blog-p20-title": "Google Drive 云端同步：跨设备无缝畅读个人书库",
       "blog-p20-desc": "从账号登录到多设备协同——详解各项自动同步开关、阅读进度与高亮笔记同步机制，数据安全存放于您自有的 Google 云端硬盘中。",
+
+      // Blog Post 21
+      "blog-p21-date": "📅 2026年8月15日",
+      "blog-p21-cat": "🏷️ 语音朗读（TTS）",
+      "blog-p21-title": "多语言 TTS：一本书，多重原声音色自如切换",
+      "blog-p21-desc": "告别单发音引擎的生硬别扭——Shiori 依据文字脚本在句中智能切换发音人，并支持汉字与拉丁字母语言优先级及独立语速微调。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1330,6 +1354,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-title": "Sincronização em Nuvem com Google Drive: Sua Biblioteca em Qualquer Dispositivo",
       "blog-p20-desc": "Do login ao segundo aparelho — entenda como sincronizar progresso, destaques, notas e coleções com segurança no seu próprio Google Drive.",
 
+      // Blog Post 21
+      "blog-p21-date": "📅 15 de agosto de 2026",
+      "blog-p21-cat": "🏷️ Leitura em Voz Alta (TTS)",
+      "blog-p21-title": "TTS Multilíngue: Um Livro, Todas as Vozes",
+      "blog-p21-desc": "Como o Shiori alterna a voz no meio da frase de acordo com o alfabeto e define prioridades para caracteres compartilhados e velocidades por idioma.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1598,6 +1628,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p20-cat": "🏷️ Sincronización y Respaldo",
       "blog-p20-title": "Sincronización en la Nube con Google Drive: Tu Biblioteca en Cualquier Dispositivo",
       "blog-p20-desc": "Del inicio de sesión a un segundo dispositivo: cómo sincronizar tu progreso de lectura, destacados, notas y estanterías en tu propio Google Drive.",
+
+      // Blog Post 21
+      "blog-p21-date": "📅 15 de agosto de 2026",
+      "blog-p21-cat": "🏷️ Lectura en Voz Alta (TTS)",
+      "blog-p21-title": "TTS Multilingüe: Un Solo Libro, Todas las Voces",
+      "blog-p21-desc": "Cómo Shiori cambia de voz a mitad de frase según el tipo de escritura y gestiona prioridades para caracteres compartidos y velocidades por idioma.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

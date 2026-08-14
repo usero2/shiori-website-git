@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Multi-Language Text-to-Speech on Android: Read Books That Mix Scripts With the Right Voice — Shiori Blog</title>
+  <meta name="description" content="How Shiori reads mixed-language EPUBs aloud on Android: per-script voice switching inside a paragraph, priority for shared scripts, per-language voice, pitch and speed, and automatic language detection." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/multi-language-text-to-speech-android-epub/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Multi-Language Text-to-Speech in Shiori: One Book, Every Voice",
+    "description": "A detailed guide to multi-language read-aloud in Shiori EPUB Reader for Android - why a single voice fails on real books, how each paragraph is split by script, how priority resolves shared scripts such as Han and Latin, per-language voice, pitch and speed, and the automatic language prompt.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-15",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/multi-language-text-to-speech-android-epub/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does Shiori detect the language per book or per sentence?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Neither - it works at a finer grain than both. Each paragraph is split into runs of a single script, and every run is spoken by the voice for that script. A single English word inside a Thai sentence gets the English voice and the Thai voice continues after it." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is my Chinese book being read with a Japanese voice?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Han characters are shared between the two languages, so the higher entry in your TTS Languages list wins. Move Chinese above Japanese with the up arrow and the same page switches to the Chinese voice." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install anything for a new language?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Voices come from your device's text-to-speech engine, not from Shiori. If a language sounds wrong or silent, install its voice data in your system text-to-speech settings, then pick the voice you want in Shiori's per-language settings." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does enabling many languages make read-aloud worse?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It can. Every enabled language is another candidate for the scripts it shares, so the more you enable, the more chances there are for a run to be attributed to a language you did not mean. Enabling only the languages you actually read is the most accurate setup." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can each language have its own speed?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pitch, speed and voice are stored per language, so a fast English and a calmer Thai can sit in the same paragraph without either one being wrong." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p21-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p21-cat">🏷️ Text-to-Speech</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">One Book, Every Voice<br><span class="text-gradient">Multi-Language Text-to-Speech, Explained</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">หนังสือหนึ่งเล่ม ครบทุกสำเนียงเสียงอ่าน<br><span class="text-gradient">เจาะลึกระบบ Multi-Language TTS สลับภาษาอัตโนมัติ</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">1冊の本を、多彩なネイティブ音声で<br><span class="text-gradient">多言語テキスト読み上げ（TTS）完全活用ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">一卷在手，原声流转<br><span class="text-gradient">多语言文本朗读（TTS）智能切换深度解析</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Um Livro, Todas as Vozes<br><span class="text-gradient">Guia Completo de Text-to-Speech Multilíngue</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Un Solo Libro, Todas las Voces<br><span class="text-gradient">Guía Completa de Text-to-Speech Multilingüe</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.45), rgba(11, 15, 25, 0.65)), url('02-tts-languages-priority-list.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🗣️</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Most read-aloud features ask a question that real books cannot answer: <em>what language is this?</em> When you pick just one, the voice engine reads everything through that single lens, and the very first foreign word turns into awkward noise. A Thai novel says "smartphone" and the Thai voice spells it out letter by letter. A Japanese essay quotes <em>Hamlet</em> in English, and the Japanese engine recites the alphabet like serial numbers.</p>
+
+        <p>Shiori takes a fundamentally smarter approach: <strong>enable every language you actually read</strong>, and the app seamlessly switches voices mid-sentence wherever the script changes — with zero tagging, no book-by-book reconfiguring, and nothing for you to toggle manually.</p>
+
+        <div class="quote-callout">
+          <strong>In one sentence:</strong> Shiori divides each paragraph into character runs by script, assigns each run to its corresponding native voice, and keeps the word-level highlight perfectly synchronized on the page.
+        </div>
+
+        <h2>Why One Language Is Never Enough</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Loanwords and brand names:</strong> Modern writing in Thai, Japanese, Korean, and Chinese is filled with Latin-script words — tech gadgets, brand names, and scientific acronyms.</li>
+          <li><strong>Quotations:</strong> Great literature frequently cites other works in their original tongue.</li>
+          <li><strong>Language learning:</strong> Bilingual editions and parallel texts place two languages side by side by design.</li>
+          <li><strong>Technical literature:</strong> Code snippets, terminal commands, and English terminology sit directly inside your native sentences.</li>
+          <li><strong>Your reading life:</strong> Switching between a Japanese light novel and an English non-fiction book on the same phone should never require changing global settings.</li>
+        </ul>
+
+        <h2>How Shiori Decides Which Voice Speaks</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Text On The Page</th><th>Voice Engine Used</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Thai script</td><td>Your Thai voice</td></tr>
+              <tr><td>Hangul (Korean)</td><td>Your Korean voice</td></tr>
+              <tr><td>Hiragana &amp; Katakana</td><td>Your Japanese voice</td></tr>
+              <tr><td>Han characters (漢字)</td><td>Chinese or Japanese — shared, resolved by list priority</td></tr>
+              <tr><td>Latin alphabet</td><td>English, Spanish, German — resolved by list priority</td></tr>
+              <tr><td>Punctuation, digits, spaces</td><td>Current active script run (no disruptive switching at commas)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>A character run is the exact span belonging to a single script. Each run preserves its exact text offset, ensuring that word-by-word visual highlights stay locked onto the right words even as voices change hands mid-sentence. If only one language is enabled, Shiori streams the entire paragraph directly to that voice without extra overhead.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>แอปอ่านออกเสียง (TTS) ทั่วไปมักบังคับให้เราตอบคำถามที่หนังสือจริงตอบไม่ได้: <em>"หนังสือเล่มนี้เป็นภาษาอะไร?"</em> เมื่อคุณเลือกภาษาใดภาษาหนึ่ง ระบบจะพยายามอ่านทุกคำด้วยสำเนียงนั้น ผลคือคำทับศัพท์ต่างประเทศจะกลายเป็นเสียงเพี้ยนทันที เช่น นิยายไทยมีคำว่า "smartphone" แต่เสียงอ่านไทยสะกดทีละตัวอักษร หรือบทความภาษาญี่ปุ่นที่ยกคำคมภาษาอังกฤษ แต่ระบบกลับอ่านตัวอักษรภาษาอังกฤษเรียงเหมือนรหัสสินค้า</p>
+
+        <p>Shiori แก้ปัญหานี้ด้วยวิธีที่ฉลาดกว่ามาก: <strong>เพียงเปิดใช้งานภาษาทั้งหมดที่คุณใช้อ่านหนังสือ</strong> ระบบจะตรวจจับชุดตัวอักษรและสลับเสียงอ่านให้เป็นเจ้าของภาษาโดยอัตโนมัติกลางประโยค โดยที่คุณไม่ต้องคอยสลับการตั้งค่าไปมา</p>
+
+        <div class="quote-callout">
+          <strong>สรุปการทำงานในหนึ่งประโยค:</strong> Shiori จะแบ่งย่อหน้าออกเป็นท่อนๆ ตามชุดตัวอักษร ส่งแต่ละท่อนให้เสียงอ่านภาษาแม่นั้นๆ พูด และคอยเลื่อนไฮไลต์คำบนหน้าจอให้ตรงกับคำที่อ่านอยู่ตลอดเวลา
+        </div>
+
+        <h2>ทำไมการตั้งค่าภาษาเดียวถึงไม่เคยพอ?</h2>
+        <ul class="article-bullet-list">
+          <li><strong>คำทับศัพท์และชื่อแบรนด์:</strong> หนังสือยุคใหม่ในภาษาไทย ญี่ปุ่น เกาหลี หรือจีน มักมีคำภาษาอังกฤษปะปนอยู่เสมอ เช่น ชื่อเทคโนโลยี หรือคำศัพท์เฉพาะทาง</li>
+          <li><strong>คำคมและบทกวี:</strong> วรรณกรรมมักอ้างอิงข้อความต้นฉบับในภาษาเดิม</li>
+          <li><strong>หนังสือเรียนภาษา:</strong> หนังสือ 2 ภาษาที่ออกแบบมาให้อ่านเทียบกันประโยคต่อประโยค</li>
+          <li><strong>หนังสือเทคนิคและการเขียนโปรแกรม:</strong> โค้ดคอมพิวเตอร์และคำสั่งภาษาอังกฤษที่แทรกอยู่ในคำอธิบายภาษาไทย</li>
+          <li><strong>ความสะดวกของคุณ:</strong> การอ่านนิยายญี่ปุ่นสลับกับบทความภาษาอังกฤษในเครื่องเดียวกัน ไม่ควรต้องเสียเวลากดเปลี่ยนภาษาในแอปทุกครั้ง</li>
+        </ul>
+
+        <h2>Shiori มีวิธีตัดสินใจเลือกเสียงอ่านอย่างไร?</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ข้อความบนหน้าหนังสือ</th><th>เสียงอ่านที่ระบบจะเลือกใช้</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>ตัวอักษรภาษาไทย</td><td>เสียงอ่านภาษาไทยที่คุณเลือก</td></tr>
+              <tr><td>ฮันกึล (เกาหลี)</td><td>เสียงอ่านภาษาเกาหลี</td></tr>
+              <tr><td>ฮิรางานะ / คาตาคานะ</td><td>เสียงอ่านภาษาญี่ปุ่น</td></tr>
+              <tr><td>ตัวอักษรคันจิ / ฮั่นจื้อ (漢字)</td><td>จีนหรือญี่ปุ่น (ตัดสินตามลำดับ Priority ที่คุณตั้งไว้)</td></tr>
+              <tr><td>ตัวอักษรละติน (A-Z)</td><td>อังกฤษ, สเปน, เยอรมัน (ตัดสินตามลำดับ Priority)</td></tr>
+              <tr><td>เครื่องหมายวรรคตอน ตัวเลข ช่องว่าง</td><td>ใช้เสียงของภาษาก่อนหน้า (ไม่สลับเสียงตอนเจอจุลภาคให้สะดุด)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>ระบบจะจำตำแหน่งของตัวอักษรแต่ละช่วงไว้อย่างแม่นยำ ทำให้แถบไฮไลต์สีบนหน้าจอเคลื่อนที่ตามเสียงพูดได้อย่างเนียนตา และหากคุณเปิดใช้งานไว้เพียงภาษาเดียว ระบบจะส่งข้อความทั้งก้อนให้อ่านตรงๆ เพื่อความรวดเร็วสูงสุด</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>従来の読み上げアプリは、「この本は何語ですか？」という画一的な選択を迫ります。しかし現実の書籍では、日本語の小説に「smartphone」という英単語が混ざったり、エッセイの中にシェイクスピアの英文が引用されたりします。単一言語のエンジンでは、外国語の単語が不自然なアルファベット読みになってしまいます。</p>
+
+        <p>Shioriは違います。**普段読書で使う言語をすべてONにするだけ**で、本文中の文字体系（スクリプト）を判別し、文の途中であっても自然にネイティブ音声へ切り替えて読み上げます。</p>
+
+        <div class="quote-callout">
+          <strong>仕組みの要点：</strong> 段落内の文字体系ごとにテキストを分割し、対応する言語の音声エンジンへ振り分け、画面上のハイライトも狂いなく同期させます。
+        </div>
+
+        <h2>なぜ単一言語の設定では不十分なのか？</h2>
+        <ul class="article-bullet-list">
+          <li><strong>外来語やブランド名：</strong> 現代の文章には英単語やアルファベット略語が自然に登場します。</li>
+          <li><strong>原語の引用文：</strong> 文学作品や評論では、原文のまま引用されることが多々あります。</li>
+          <li><strong>語学学習・対訳本：</strong> 2つの言語が左右や上下に対比して配置されている書籍。</li>
+          <li><strong>専門書・技術書：</strong> プログラミングコードや英名専門用語が日本語の解説文の中に混在します。</li>
+          <li><strong>読者自身の多様性：</strong> 日本語小説と英語のニュースを同じ端末で読む際、毎回設定を変える手間を解消します。</li>
+        </ul>
+
+        <h2>Shiori の音声判定ルール</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>本文の文字</th><th>担当する音声エンジン</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>タイ文字</td><td>タイ語音声</td></tr>
+              <tr><td>ハングル（韓国語）</td><td>韓国語音声</td></tr>
+              <tr><td>ひらがな / カタカナ</td><td>日本語音声</td></tr>
+              <tr><td>漢字（Han characters）</td><td>中国語または日本語（優先順位リストで判定）</td></tr>
+              <tr><td>ラテン文字（アルファベット）</td><td>英語・ドイツ語等（優先順位リストで判定）</td></tr>
+              <tr><td>句読点、数字、空白</td><td>直前に発話していた言語（読点ごとに不自然に途切れません）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>文字単位のオフセットを追跡しているため、文中で音声が切り替わっても画面のハイライト追随は完璧です。なお、1言語のみ有効にしている場合は分割処理を行わず最速で読み上げます。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>大多数朗读软件都会向读者提出一个不合理的问题：“这本书是什么语言？”一旦选定单一语种，遇到外来词便往往沦为刺耳的生硬拼读——中文书里的英文专有名词被按字母机械念出，或者日文书里引用的莎士比亚名句被念成一串代码。</p>
+
+        <p>Shiori 的解决之道十分优雅：**只需开启您平时阅读的所有语种**，应用会在段落之中根据文字所属的书写系统，自如切换至对应的原声音色，完全无需繁琐标记或手动调配。</p>
+
+        <div class="quote-callout">
+          <strong>一句话原理：</strong> Shiori 将每个段落按文字脚本智能切分，交由对应语种的发音人朗读，同时使文字高亮精准同步于书页之上。
+        </div>
+
+        <h2>为什么单一语言模式远远不够？</h2>
+        <ul class="article-bullet-list">
+          <li><strong>外来词与品牌名：</strong> 中文、日文、韩文等现代文本中充满拉丁字母缩写与科技专有名词。</li>
+          <li><strong>名著原文引用：</strong> 文学与学术著作常保留原汁原味的外文引句。</li>
+          <li><strong>双语对照读物：</strong> 语言学习类书籍本身就是多语种交织共存。</li>
+          <li><strong>技术与工具书：</strong> 代码指令、函数名直接嵌入中文讲解。</li>
+          <li><strong>多语读者的日常：</strong> 同一台手机既看中文书也读原版英文，不应在换书时反复修改全局设置。</li>
+        </ul>
+
+        <h2>Shiori 发音判定规则</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>书页上的文字类型</th><th>所选用的发音人</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>泰文字母</td><td>泰语发音人</td></tr>
+              <tr><td>韩文谚文（Hangul）</td><td>韩语发音人</td></tr>
+              <tr><td>平假名 / 片假名</td><td>日语发音人</td></tr>
+              <tr><td>汉字（Han characters）</td><td>中文或日语（根据语言优先级列表决定）</td></tr>
+              <tr><td>拉丁字母（A-Z）</td><td>英语、德语等（根据语言优先级列表决定）</td></tr>
+              <tr><td>标点符号、数字、空格</td><td>由当前正在朗读的语种顺畅接管（遇逗号不突兀切音）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>由于严格追踪字符在段落中的位置，即使发音人在句中切换，逐字高亮依然平滑跟随。如果仅开启了一种语言，系统将整体直通发送，保证单语阅读的最佳效率。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>A maioria dos leitores em voz alta pergunta algo que livros reais não conseguem responder: <em>"qual é o idioma deste livro?"</em> Ao escolher apenas um, termos estrangeiros viram ruído mecânico. O Shiori resolve isso permitindo **ativar todos os idiomas que você lê**: ele detecta o alfabeto e muda de voz no meio da frase com naturalidade.</p>
+
+        <div class="quote-callout">
+          <strong>Em resumo:</strong> O Shiori divide o parágrafo por tipo de alfabeto, envia cada trecho à sua voz nativa e mantém o destaque visual em sincronia perfeita na tela.
+        </div>
+
+        <h2>Por Que Um Só Idioma Não Basta</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Estrangeirismos e marcas:</strong> Palavras em inglês e termos técnicos aparecem constantemente em livros modernos.</li>
+          <li><strong>Citações literárias:</strong> Trechos clássicos citados no idioma original.</li>
+          <li><strong>Leituras bilíngues:</strong> Obras feitas para aprendizado com dois idiomas lado a lado.</li>
+          <li><strong>Livros técnicos:</strong> Comandos e linhas de código inseridos em explicações em português.</li>
+        </ul>
+
+        <h2>Como o Shiori Escolhe a Voz</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Texto na Página</th><th>Voz Utilizada</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Alfabeto Tailandês</td><td>Voz em Tailandês</td></tr>
+              <tr><td>Hangul (Coreano)</td><td>Voz em Coreano</td></tr>
+              <tr><td>Hiragana / Katakana</td><td>Voz em Japonês</td></tr>
+              <tr><td>Ideogramas (漢字)</td><td>Chinês ou Japonês (definido pela prioridade)</td></tr>
+              <tr><td>Alfabeto Latino</td><td>Inglês, Português, etc. (definido pela prioridade)</td></tr>
+              <tr><td>Pontuação e dígitos</td><td>Idioma do trecho atual (sem pausas bruscas em vírgulas)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>La mayoría de aplicaciones de lectura en voz alta fuerzan una elección rígida de idioma. Sin embargo, los libros reales están llenos de términos extranjeros y citas. Shiori lo soluciona permitiéndote **activar todos los idiomas que lees**: la voz cambia fluidamente a mitad de frase según el tipo de escritura.</p>
+
+        <div class="quote-callout">
+          <strong>En una frase:</strong> Shiori divide el párrafo por sistema de escritura, asigna cada fragmento a su voz nativa y sincroniza el resaltado palabra por palabra en pantalla.
+        </div>
+
+        <h2>Por Qué un Solo Idioma Nunca es Suficiente</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Extranjerismos y marcas:</strong> Términos en inglés y siglas técnicas presentes en casi cualquier obra moderna.</li>
+          <li><strong>Citas literarias:</strong> Fragmentos reproducidos en su idioma original.</li>
+          <li><strong>Ediciones bilingües:</strong> Textos paralelos diseñados para el aprendizaje de idiomas.</li>
+          <li><strong>Libros técnicos:</strong> Código y comandos insertados en explicaciones en español.</li>
+        </ul>
+
+        <h2>Cómo Elige Shiori la Voz Adecuada</h2>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Texto en la Página</th><th>Voz Asignada</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Alfabeto Tailandés</td><td>Voz en Tailandés</td></tr>
+              <tr><td>Hangul (Coreano)</td><td>Voz en Coreano</td></tr>
+              <tr><td>Hiragana / Katakana</td><td>Voz en Japonês</td></tr>
+              <tr><td>Caracteres Han (漢字)</td><td>Chino o Japonés (resuelto por prioridad)</td></tr>
+              <tr><td>Alfabeto Latino</td><td>Español, Inglés, etc. (resuelto por prioridad)</td></tr>
+              <tr><td>Puntuación y números</td><td>Idioma del fragmento activo (sin cortes bruscos en comas)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP (5 STEPS) ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Setting It Up (5 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่า (5 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定手順（5つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">操作设置指引（5 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Como Configurar (5 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Cómo Configurarlo (5 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open TTS Listening Settings</div>
+          <div class="step-desc">
+            <p>Go to <strong>Settings → TTS Listening</strong>. Here you will see your device's <strong>TTS Engine</strong> and the <strong>TTS Languages</strong> option displaying your currently enabled voices.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดเมนู TTS Listening</div>
+          <div class="step-desc">
+            <p>ไปที่ <strong>Settings → TTS Listening</strong> คุณจะพบกับตัวเลือก <strong>TTS Engine</strong> ของอุปกรณ์ และเมนู <strong>TTS Languages</strong> ที่แสดงรายชื่อภาษาที่เปิดใช้งานอยู่</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>「TTS Listening」設定を開く</div>
+          <div class="step-desc">
+            <p><strong>設定 → TTS Listening</strong> へ進みます。使用中の <strong>TTS Engine</strong> と、現在有効な言語を表示する <strong>TTS Languages</strong> 項目が表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>打开 TTS Listening 朗读设置</div>
+          <div class="step-desc">
+            <p>进入 <strong>设置 → TTS Listening</strong>。顶部可查看当前设备的 <strong>TTS Engine</strong> 语音引擎以及 <strong>TTS Languages</strong> 已启用语言列表。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra as Configurações de TTS Listening</div>
+          <div class="step-desc">
+            <p>Acesse <strong>Configurações → TTS Listening</strong> para ver o <strong>TTS Engine</strong> e a lista de idiomas ativos em <strong>TTS Languages</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre los Ajustes de TTS Listening</div>
+          <div class="step-desc">
+            <p>Entra en <strong>Ajustes → TTS Listening</strong> para consultar el <strong>TTS Engine</strong> y la lista de idiomas activos en <strong>TTS Languages</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-tts-listening-settings.jpg" alt="Shiori's TTS Listening settings page on Android" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Enable the Languages You Read</div>
+          <div class="step-desc">
+            <p>Shiori supports <strong>44 languages</strong>. Check the box for the languages you actually read. Active languages automatically float to the top of the list for easy management.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เลือกเปิดเฉพาะภาษาที่คุณใช้อ่าน</div>
+          <div class="step-desc">
+            <p>Shiori รองรับถึง <strong>44 ภาษา</strong> ติ๊กเลือกเฉพาะภาษาที่คุณใช้งานจริง โดยภาษาที่เปิดใช้งานจะถูกเลื่อนขึ้นมาอยู่ด้านบนสุดของรายการโดยอัตโนมัติ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>読書に使う言語をチェックして有効化</div>
+          <div class="step-desc">
+            <p>Shioriは <strong>44言語</strong> に対応。実際に読む言語にチェックを入れます。有効化された言語は自動的にリストの最上部にまとまります。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>勾选启用日常阅读语种</div>
+          <div class="step-desc">
+            <p>Shiori 贴心配备 <strong>44 种语言</strong> 支持。仅勾选您实际阅读的语种，已启用的语言会自动置顶便于管理。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Ative os Idiomas Que Você Lê</div>
+          <div class="step-desc">
+            <p>O Shiori suporta <strong>44 idiomas</strong>. Marque os que você usa; os idiomas ativos sobem para o topo da lista.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Activa los Idiomas que Lees</div>
+          <div class="step-desc">
+            <p>Shiori admite <strong>44 idiomas</strong>. Marca los que utilices habitualmente; los idiomas activos se colocarán al inicio de la lista.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-tts-languages-priority-list.jpg" alt="TTS Languages screen in Shiori with enabled languages and priority arrows" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Set Priority for Shared Scripts</div>
+          <div class="step-desc">
+            <p>Use the <strong>▲ ▼</strong> arrows to order languages. When a script is shared (like 漢字 between Chinese and Japanese, or Latin between English and Spanish), <strong>the language higher on the list takes priority</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>จัดลำดับความสำคัญของตัวอักษรที่ใช้ร่วมกัน</div>
+          <div class="step-desc">
+            <p>ใช้ปุ่มลูกศร <strong>▲ ▼</strong> ในการเรียงลำดับ เมื่อเจอชุดตัวอักษรที่ใช้ร่วมกัน (เช่น คันจิ 漢字 ระหว่างจีนกับญี่ปุ่น หรือตัวละติน) <strong>ภาษาที่อยู่สูงกว่าจะได้รับสิทธิ์อ่านก่อน</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>共有文字の優先順位（Priority）を設定</div>
+          <div class="step-desc">
+            <p><strong>▲ ▼</strong> 矢印で順序を入れ替えます。漢字（日中共有）やアルファベットのように複数言語で共有される文字は、<strong>リストの上位にある言語が優先</strong>されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>设置共享字体的优先级</div>
+          <div class="step-desc">
+            <p>利用 <strong>▲ ▼</strong> 箭头调整排序。对于中日共用的“汉字”或多语共用的拉丁字母，<strong>排名靠前的语言享有优先朗读权</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Defina a Prioridade para Letras Compartilhadas</div>
+          <div class="step-desc">
+            <p>Use as setas <strong>▲ ▼</strong> para ordenar: quando dois idiomas compartilham caracteres, o idioma que estiver mais acima terá prioridade.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Ajusta la Prioridad de Caracteres Compartidos</div>
+          <div class="step-desc">
+            <p>Usa las flechas <strong>▲ ▼</strong> para ordenar la lista: el idioma situado más arriba tendrá prioridad al encontrar escrituras compartidas.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-japanese-vertical-book-reader.jpg" alt="A vertical Japanese book open in Shiori's reader on Android" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Customize Pitch and Speed per Language</div>
+          <div class="step-desc">
+            <p>Tap on any language to adjust its specific <strong>voice pitch</strong>, <strong>reading speed</strong>, and voice profile. Tap ▶ to test the speech instantly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ปรับระดับเสียงและความเร็วแยกเฉพาะภาษา</div>
+          <div class="step-desc">
+            <p>แตะที่ชื่อภาษาเพื่อปรับแต่ง <strong>ระดับเสียง (Pitch)</strong> และ <strong>ความเร็ว (Speed)</strong> เฉพาะภาษานั้นๆ พร้อมปุ่ม ▶ ให้กดทดลองฟังเสียงได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>言語ごとに音程と速度を個別調整</div>
+          <div class="step-desc">
+            <p>言語名をタップすると、その言語専用の <strong>音程（Pitch）</strong>・<strong>速度（Speed）</strong>・音色を設定可能。▶ ボタンでその場で試聴できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>按语言独立调节语调与语速</div>
+          <div class="step-desc">
+            <p>点击相应语言可单独微调 <strong>音高（Pitch）</strong> 与 <strong>语速（Speed）</strong>，并可点击 ▶ 按钮进行实时发音试听。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ajuste Tom e Velocidade por Idioma</div>
+          <div class="step-desc">
+            <p>Toque em qualquer idioma para personalizar o <strong>tom</strong> e a <strong>velocidade</strong>, testando com o botão ▶.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Personaliza el Tono y la Velocidad por Idioma</div>
+          <div class="step-desc">
+            <p>Pulsa en cualquier idioma para ajustar su <strong>tono</strong> y <strong>velocidad</strong> de forma independiente y prueba el audio con el botón ▶.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-per-language-voice-pitch-speed.jpg" alt="Language voice settings showing pitch, speed and voice picker in Shiori" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Choose Between Offline and Online Voices</div>
+          <div class="step-desc">
+            <p>The <strong>Voice</strong> dropdown lists available voice profiles from your TTS engine, labeled as <em>Offline</em> (data-free, works anywhere) or <em>Online</em> (higher fidelity).</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เลือกโปรไฟล์เสียง Offline หรือ Online</div>
+          <div class="step-desc">
+            <p>เมนู <strong>Voice</strong> จะแสดงรายชื่อเสียงทั้งหมดที่มีในเครื่อง โดยมีป้ายระบุ <em>Offline</em> (ใช้งานได้แม้ไม่มีเน็ต) หรือ <em>Online</em> (เสียงเป็นธรรมชาติและคมชัดยิ่งขึ้น)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>オフライン／オンライン音声の選択</div>
+          <div class="step-desc">
+            <p><strong>Voice</strong> 一覧からお好みの音色を選択できます。通信不要の <em>Offline</em> 音声と、より肉声に近い高品位な <em>Online</em> 音声が明示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>自主选择离线或高品质在线音色</div>
+          <div class="step-desc">
+            <p><strong>Voice</strong> 下拉菜单列出发音引擎提供的所有音色，清晰标明 <em>Offline</em>（离线无流量可用）与 <em>Online</em>（高自然度云端音质）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Escolha Vozes Offline ou Online</div>
+          <div class="step-desc">
+            <p>O seletor de voz lista perfis <em>Offline</em> (sem consumo de dados) e <em>Online</em> (maior naturalidade sonora).</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Elige Voces Offline u Online</div>
+          <div class="step-desc">
+            <p>El menú de voz muestra opciones <em>Offline</em> (sin gasto de datos) y <em>Online</em> (mayor calidad y naturalidad).</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-voice-picker-offline-online.jpg" alt="Voice picker in Shiori listing regional offline and online voices" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- ==================== AUTO DETECTION & SETUPS ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">Automatic Language Prompts</h2>
+      <h2 class="lang-th">ระบบตรวจจับภาษาในเล่มและแนะนำให้อัตโนมัติ</h2>
+      <h2 class="lang-jp">書籍の言語に応じたスマートな有効化提案</h2>
+      <h2 class="lang-cn">开书即读：智能语种识别与自动推荐</h2>
+      <h2 class="lang-pt">Detecção Inteligente de Idioma no Livro</h2>
+      <h2 class="lang-es">Detección Inteligente de Idioma del Libro</h2>
+
+      <div class="lang-en">
+        <p>When you start reading aloud, Shiori samples the chapter. If the dominant script's language is not yet enabled, Shiori gently asks whether you would like to enable it and places it at the top of your list.</p>
+      </div>
+      <div class="lang-th">
+        <p>เมื่อเริ่มเปิดฟังเสียงอ่าน Shiori จะวิเคราะห์ตัวอักษรในบทนั้น หากพบภาษาที่ยังไม่ได้เปิดใช้งาน แอปจะแสดงหน้าต่างแนะนำและช่วยเปิดใช้งานพร้อมจัดลำดับขึ้นบนสุดให้ในแตะเดียว</p>
+      </div>
+      <div class="lang-jp">
+        <p>朗読開始時に本文の文字体系を分析し、未設定の言語が主要な場合はポップアップで有効化を提案。ワンタップでリスト最上位に設定して朗読を開始できます。</p>
+      </div>
+      <div class="lang-cn">
+        <p>开启朗读时系统会自动分析当前章节。若主要语言尚未开启，Shiori 会弹出温馨提示询问是否开启，并自动将其置顶。</p>
+      </div>
+      <div class="lang-pt">
+        <p>Ao iniciar a leitura, o Shiori analisa o texto e sugere ativar o idioma principal caso ele ainda não esteja habilitado.</p>
+      </div>
+      <div class="lang-es">
+        <p>Al iniciar la lectura, Shiori analiza el texto y te sugiere activar el idioma principal si aún no lo tienes habilitado.</p>
+      </div>
+
+      <div class="step-image-container" style="max-width: 420px; margin: 1.5rem auto 2.5rem;">
+        <img src="05-enable-language-voice-prompt.jpg" alt="Shiori prompt asking to enable a detected language voice" class="img-preview" data-index="5" />
+      </div>
+
+      <h2 class="lang-en">Three Recommended Configurations</h2>
+      <h2 class="lang-th">3 รูปแบบการตั้งค่ายอดนิยมที่แนะนำ</h2>
+      <h2 class="lang-jp">おすすめの3つの設定パターン</h2>
+      <h2 class="lang-cn">三组实用配置推荐方案</h2>
+      <h2 class="lang-pt">Três Configurações Recomendadas</h2>
+      <h2 class="lang-es">Tres Configuraciones Recomendadas</h2>
+
+      <div class="lang-en">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Reader Profile</th><th>Languages to Enable</th><th>Priority Advice</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Single-language reader</strong></td><td>Just that one language</td><td>No conflicts possible; fastest performance</td></tr>
+              <tr><td><strong>Bilingual reader</strong></td><td>Native Language + English</td><td>Keep native language on top; English reads Latin script</td></tr>
+              <tr><td><strong>CJK multi-reader</strong></td><td>Japanese and/or Chinese + English</td><td>Place the language you read most on top to resolve 漢字</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lang-th">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>สไตล์การอ่าน</th><th>ภาษาที่ควรเปิดใช้งาน</th><th>คำแนะนำการจัดลำดับ (Priority)</th></tr></thead>
+            <tbody>
+              <tr><td><strong>อ่านภาษาเดียวเป็นหลัก</strong></td><td>เปิดเฉพาะภาษานั้นภาษาเดียว</td><td>ทำงานเร็วที่สุด ไร้การสลับภาษาผิดพลาด</td></tr>
+              <tr><td><strong>อ่านสองภาษา (ไทย + อังกฤษ)</strong></td><td>ไทย + English</td><td>วางภาษาไทยไว้บนสุด โดยภาษาอังกฤษจะอ่านคำทับศัพท์ภาษาอังกฤษให้</td></tr>
+              <tr><td><strong>อ่านภาษาแถบเอเชีย (CJK)</strong></td><td>ญี่ปุ่น และ/หรือ จีน + English</td><td>วางภาษาที่อ่านบ่อยกว่าไว้ด้านบนเพื่อกำหนดเสียงอ่านตัวอักษรคันจิ (漢字)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lang-jp">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>読書スタイル</th><th>有効化する言語</th><th>優先順位のアドバイス</th></tr></thead>
+            <tbody>
+              <tr><td><strong>単一言語メイン</strong></td><td>その1言語のみ</td><td>誤判定が原理的に起きず、最速処理</td></tr>
+              <tr><td><strong>バイリンガル読書</strong></td><td>母国語 ＋ 英語</td><td>母国語を最上位に配置（英単語は英語音声が担当）</td></tr>
+              <tr><td><strong>CJK（日中韓）読書</strong></td><td>日本語・中国語 ＋ 英語</td><td>最もよく読む言語を上位に配置し、漢字の読み分けを最適化</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lang-cn">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>读者类型</th><th>建议启用的语言</th><th>优先级设置建议</th></tr></thead>
+            <tbody>
+              <tr><td><strong>单语纯享读者</strong></td><td>仅开启该单一语言</td><td>零冲突几率，运行效率最高</td></tr>
+              <tr><td><strong>双语阅读者</strong></td><td>母语 + 英语</td><td>母语置顶，英文单词自动由英语音色精准朗读</td></tr>
+              <tr><td><strong>中日韩 CJK 读者</strong></td><td>中文、日语 + 英语</td><td>将更常读的语言置于上位，用以决定共用汉字的发音归属</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lang-pt">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Perfil</th><th>Idiomas</th><th>Dica de Prioridade</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Leitor de um idioma</strong></td><td>Apenas esse idioma</td><td>Desempenho máximo sem ambiguidades</td></tr>
+              <tr><td><strong>Leitor bilíngue</strong></td><td>Português + Inglês</td><td>Português no topo; inglês lê termos estrangeiros</td></tr>
+              <tr><td><strong>Leitor de idiomas orientais</strong></td><td>Japonês/Chinês + Inglês</td><td>Coloque no topo o idioma mais frequente para os ideogramas</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lang-es">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Perfil</th><th>Idiomas</th><th>Consejo de Prioridad</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Lector de un idioma</strong></td><td>Solo ese idioma</td><td>Rendimiento óptimo sin ambigüedades</td></tr>
+              <tr><td><strong>Lector bilingüe</strong></td><td>Español + Inglés</td><td>Español arriba; el inglés leerá términos extranjeros</td></tr>
+              <tr><td><strong>Lector de idiomas CJK</strong></td><td>Japonés/Chino + Inglés</td><td>Coloca arriba el idioma más habitual para los kanjis</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Does Shiori detect language per book or per sentence?</div>
+        <div class="faq-a">Neither — it works at character-run granularity. Each paragraph is split into segments of matching scripts, allowing a single English loanword inside a Thai sentence to be read with an English voice before seamlessly returning to Thai.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori ตรวจจับภาษาเป็นรายเล่มหรือเป็นรายประโยค?</div>
+        <div class="faq-a">ละเอียดกว่าทั้งสองแบบครับ เพราะ Shiori ตรวจจับเป็นระดับ "ช่วงชุดตัวอักษร" ในแต่ละย่อหน้า ทำให้คำภาษาอังกฤษเพียงคำเดียวที่แทรกอยู่ในประโยคภาษาไทย จะถูกอ่านด้วยเสียงภาษาอังกฤษอย่างถูกต้อง ก่อนจะสลับกลับมาอ่านภาษาไทยต่อทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">言語判定は書籍単位ですか？それとも文単位ですか？</div>
+        <div class="faq-a">そのどちらよりも精密です。文字体系の連続（ラン）単位で判定するため、日本語の文章の中に含まれる1つの英単語だけを英語音声で発音させることができます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">语言判定是按整本书还是按整句话进行的？</div>
+        <div class="faq-a">判定颗粒度更为精细：系统在段落内按“文字脚本片段”进行切分。中文句子中夹杂的单个英文单词由英语音色朗读，之后无缝接续中文发音。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A detecção de idioma é por livro ou por frase?</div>
+        <div class="faq-a">É mais granular: por trecho de alfabeto dentro do parágrafo, alternando vozes em palavras isoladas sem quebras.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿La detección de idioma es por libro o por frase?</div>
+        <div class="faq-a">Es aún más precisa: se realiza por fragmentos de escritura dentro del párrafo, alternando voces en palabras sueltas con total naturalidad.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why is my Chinese book read with a Japanese voice?</div>
+        <div class="faq-a">Han characters are shared between Chinese and Japanese. To fix this, open TTS Languages and move 中文 above 日本語 using the ▲ arrow so Chinese takes precedence.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมหนังสือภาษาจีนถึงถูกอ่านด้วยเสียงภาษาญี่ปุ่น?</div>
+        <div class="faq-a">เนื่องจากตัวอักษรคันจิ (漢字) ถูกใช้ร่วมกันทั้งภาษาจีนและญี่ปุ่น ให้เปิดเมนู TTS Languages แล้วใช้ปุ่มลูกศร ▲ เลื่อนภาษาจีน (中文) ขึ้นมาอยู่เหนือภาษาญี่ปุ่นครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">中国語の本が日本語の音声で読まれてしまうのはなぜ？</div>
+        <div class="faq-a">漢字が日中両言語で共有されているためです。TTS Languages 画面で ▲ 矢印を使い、中文を日本語より上位に移動させれば解決します。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么中文书籍会被日语语音朗读？</div>
+        <div class="faq-a">由于汉字属于中日共享文字。只需在 TTS Languages 列表中通过 ▲ 箭头将“中文”移至“日本語”上方即可赋予中文最高优先级。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que meu livro em chinês está sendo lido em japonês?</div>
+        <div class="faq-a">Porque os ideogramas são compartilhados. Mova o Chinês para cima do Japonês na lista de idiomas com a seta ▲.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué mi libro en chino se lee con voz en japonés?</div>
+        <div class="faq-a">Porque comparten caracteres kanji. Mueve el idioma Chino por encima del Japonés en la lista con la flecha ▲.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Do I need to install additional data for a new language?</div>
+        <div class="faq-a">Voices are provided by your Android device's text-to-speech engine. If a language is silent, download its voice data in your Android system TTS settings, then select it in Shiori.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ต้องติดตั้งไฟล์เสียงเพิ่มเติมสำหรับภาษาใหม่หรือไม่?</div>
+        <div class="faq-a">เสียงอ่านมาจาก TTS Engine ของระบบ Android หากภาษาใดไม่มีเสียง ให้ดาวน์โหลดแพ็กเกจเสียงในตั้งค่าระบบของมือถือ จากนั้นจะสามารถเลือกใช้เสียงนั้นใน Shiori ได้ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">新しい言語を使うには追加インストールが必要ですか？</div>
+        <div class="faq-a">音声データは端末のTTSエンジンから取得されます。発音されない場合は、Android本体の設定から該当言語の音声データをインストールしてください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">使用新语言是否需要额外安装语音包？</div>
+        <div class="faq-a">音色来自于 Android 系统的 TTS 引擎。若某个语言没有声音，只需在手机系统的“文字转语音”设置中下载对应语言包即可。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Preciso instalar dados extras para novos idiomas?</div>
+        <div class="faq-a">As vozes vêm do motor de TTS do seu Android. Basta baixar o pacote de voz nas configurações do sistema do aparelho.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Necesito instalar datos adicionales para nuevos idiomas?</div>
+        <div class="faq-a">Las voces provienen del motor TTS de tu Android. Solo tienes que descargar el paquete de voz en los ajustes del sistema de tu dispositivo.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can each language have its own speed and pitch?</div>
+        <div class="faq-a">Yes. Pitch, speed, and voice model are stored individually per language so faster English and measured Thai narration blend together harmoniously.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">แต่ละภาษาสามารถตั้งค่าความเร็วและระดับเสียงแยกกันได้ไหม?</div>
+        <div class="faq-a">ได้แน่นอนครับ Shiori บันทึกค่า Pitch, Speed และเสียงแยกเฉพาะรายภาษา ทำให้คุณฟังภาษาอังกฤษเร็วๆ ควบคู่กับภาษาไทยในจังหวะผ่อนคลายได้อย่างลงตัว</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">言語ごとに速度や音程を別々に設定できますか？</div>
+        <div class="faq-a">はい。音程・速度・音色プロファイルは言語ごとに保存されるため、早口な英語と落ち着いた日本語を同じ段落内で共存させることができます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">每种语言可以设置独立的语速与音高吗？</div>
+        <div class="faq-a">支持。每种语言的音高、语速与音色完全独立保存，快节奏英语与舒缓中文可在同一段落中和谐共处。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Cada idioma pode ter velocidade e tom próprios?</div>
+        <div class="faq-a">Sim. O tom e a velocidade são salvos de forma independente para cada idioma.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puede tener cada idioma su propia velocidad y tono?</div>
+        <div class="faq-a">Sí. El tono y la velocidad se guardan de forma totalmente independiente para cada idioma.</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Listen to Your Books the Natural Way</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, configure your favorite reading languages, and enjoy seamless, multi-voice narration.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">ฟังหนังสืออย่างเป็นธรรมชาติ ด้วยเสียงสำเนียงเจ้าของภาษา</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ ตั้งค่าภาษาที่คุณใช้อ่าน แล้วสัมผัสประสบการณ์ฟังหนังสือที่ลื่นไหลที่สุด
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">自然なネイティブ音声で楽しむ読書体験</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、多言語読み上げでストレスフリーなオーディオブック体験を始めましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">畅享自然灵动的多语原声听书体验</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，配置常用语言，开启无缝流转的多语言智能语音朗读。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Ouça Seus Livros com Naturalidade</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e aproveite uma experiência de leitura em voz alta fluida e multilíngue.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Escucha Tus Libros con Total Naturalidad</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader y disfruta de una lectura en voz alta multilingüe fluida y natural.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
