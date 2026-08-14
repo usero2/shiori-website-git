@@ -248,6 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-title": "Text Replacement &amp; Regex: Rewrite What You Read and Hear",
       "blog-p19-desc": "Every flow of visual and TTS replacement rules — plus a cookbook of 16 regex patterns, per-voice-language groups and the safety checks that stop a bad pattern.",
 
+      // Blog Post 20
+      "blog-p20-date": "📅 August 15, 2026",
+      "blog-p20-cat": "🏷️ Sync & Backup",
+      "blog-p20-title": "Cloud Sync with Google Drive: Your Library on Every Device",
+      "blog-p20-desc": "From sign-in to a second device — what every auto-sync switch moves, why book files are different from settings, and which side wins when two devices disagree.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -510,6 +516,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p19-title": "Text Replacement + Regex: แก้คำที่เห็นและคำที่ฟังได้ดั่งใจ",
       "blog-p19-desc": "สอนครบทุกขั้นตอนของกฎแทนที่ข้อความทั้งแบบ Visual และ TTS พร้อมสูตร Regex 16 แบบ กลุ่มกฎแยกตามภาษาเสียง และระบบตรวจจับกฎที่ใช้ไม่ได้",
+
+      // Blog Post 20
+      "blog-p20-date": "📅 15 สิงหาคม 2026",
+      "blog-p20-cat": "🏷️ ซิงก์และสำรองข้อมูล",
+      "blog-p20-title": "Cloud Sync ผ่าน Google Drive: อ่านต่อเนื่องได้ทุกเครื่อง ทุกที่ทุกเวลา",
+      "blog-p20-desc": "คู่มือการซิงก์ฉบับสมบูรณ์ ตั้งแต่การล็อกอิน, การซิงก์ตำแหน่งอ่าน โน้ต ไฮไลต์ คอลเลกชัน ไปจนถึงการเปิดอ่านต่อบนเครื่องที่สองอย่างราบรื่น ปลอดภัยบน Google Drive ของคุณเอง",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -774,6 +786,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-title": "テキスト置換と正規表現：見える文字と読み上げを思い通りに",
       "blog-p19-desc": "表示用とTTS専用の置換ルールを全手順で解説。すぐ使える正規表現16パターン、音声言語ごとのグループ分け、危険なパターンを止める安全機能まで。",
 
+      // Blog Post 20
+      "blog-p20-date": "📅 2026年8月15日",
+      "blog-p20-cat": "🏷️ 同期・バックアップ",
+      "blog-p20-title": "Google Drive クラウド同期：どの端末でも続きから快適読書",
+      "blog-p20-desc": "初期設定から2台目端末の連携まで徹底解説。読書位置、ハイライト、メモ、本棚設定を自身のGoogle Driveで安全に自動同期する方法。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1036,6 +1054,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-cat": "🏷️ 阅读体验",
       "blog-p19-title": "文本替换与正则：让所见与所听都如你所愿",
       "blog-p19-desc": "完整讲解视觉替换与朗读替换的每一步操作，附赠 16 条实用正则表达式、按语音语言分组，以及拦截错误正则的安全机制。",
+
+      // Blog Post 20
+      "blog-p20-date": "📅 2026年8月15日",
+      "blog-p20-cat": "🏷️ 同步与备份",
+      "blog-p20-title": "Google Drive 云端同步：跨设备无缝畅读个人书库",
+      "blog-p20-desc": "从账号登录到多设备协同——详解各项自动同步开关、阅读进度与高亮笔记同步机制，数据安全存放于您自有的 Google 云端硬盘中。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1300,6 +1324,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-title": "Substituição de Texto e Regex: Reescreva o que Você Lê e Ouve",
       "blog-p19-desc": "Todos os fluxos das regras visuais e de TTS, além de um livro de receitas com 16 padrões regex, grupos por idioma de voz e as verificações que bloqueiam um padrão ruim.",
 
+      // Blog Post 20
+      "blog-p20-date": "📅 15 de agosto de 2026",
+      "blog-p20-cat": "🏷️ Sincronização e Backup",
+      "blog-p20-title": "Sincronização em Nuvem com Google Drive: Sua Biblioteca em Qualquer Dispositivo",
+      "blog-p20-desc": "Do login ao segundo aparelho — entenda como sincronizar progresso, destaques, notas e coleções com segurança no seu próprio Google Drive.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1562,6 +1592,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p19-cat": "🏷️ Experiencia de Lectura",
       "blog-p19-title": "Reemplazo de Texto y Regex: Reescribe lo que Lees y Escuchas",
       "blog-p19-desc": "Todos los flujos de las reglas visuales y de TTS, más un recetario de 16 patrones regex, grupos por idioma de voz y las comprobaciones que detienen un patrón defectuoso.",
+
+      // Blog Post 20
+      "blog-p20-date": "📅 15 de agosto de 2026",
+      "blog-p20-cat": "🏷️ Sincronización y Respaldo",
+      "blog-p20-title": "Sincronización en la Nube con Google Drive: Tu Biblioteca en Cualquier Dispositivo",
+      "blog-p20-desc": "Del inicio de sesión a un segundo dispositivo: cómo sincronizar tu progreso de lectura, destacados, notas y estanterías en tu propio Google Drive.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

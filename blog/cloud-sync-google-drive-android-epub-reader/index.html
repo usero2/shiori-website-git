@@ -34,42 +34,22 @@
       {
         "@type": "Question",
         "name": "Does Shiori upload all my books automatically?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. Book files are uploaded one at a time, when you long-press a book and choose Sync to Cloud. Everything smaller - settings, highlights, notes, ratings, reading position and statistics - can sync automatically, and does by default." }
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Book files are uploaded individually only when you long-press a book and choose Sync to Cloud. Smaller metadata - reading progress, notes, bookmarks, highlights, and stats - sync automatically by default." }
       },
       {
         "@type": "Question",
-        "name": "Where are my files inside Google Drive?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Book files sit in a normal, visible folder called Shiori Library. Everything else lives in Drive's hidden per-app folder, which does not appear in the Drive interface. Both belong to your account and count towards its storage." }
+        "name": "Can Shiori access or read other files in my Google Drive?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Shiori requests strictly restricted permissions (drive.file and drive.appdata), ensuring it can only view and manage files that Shiori itself created." }
       },
       {
         "@type": "Question",
-        "name": "Can Shiori read the rest of my Google Drive?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. It asks only for the drive.file and drive.appdata permissions, which limit an app to files it created itself. That is also why a book you copy into the Shiori Library folder by hand stays invisible to the app." }
+        "name": "Are books read in Incognito mode synced to the cloud?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Never. Incognito mode is fully isolated: books, reading positions, bookmarks, notes, and session history remain strictly local on your device." }
       },
       {
         "@type": "Question",
-        "name": "Will my reading position follow me to another device?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes, for books that are synced, with Auto-sync reading position on. The position is written when you leave the reader, and the most recently read device wins if two disagree." }
-      },
-      {
-        "@type": "Question",
-        "name": "Why do my two devices have different font sizes after a restore?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Because reader and TTS settings are kept per device on purpose - a phone and a tablet rarely want the same layout. To copy one setup onto another, open Synced devices and tap Restore here." }
-      },
-      {
-        "@type": "Question",
-        "name": "What happens to my Drive data when I sign out?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Nothing. Signing out only disconnects this device. Your backup stays in Drive, and signing back in - on this device or a new one - reconnects to it." }
-      },
-      {
-        "@type": "Question",
-        "name": "Are books I read in Incognito mode synced?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Never. Incognito books are excluded from every sync path: the file, the reading position, bookmarks and statistics all stay on the device." }
-      },
-      {
-        "@type": "Question",
-        "name": "Is using two devices safe?",
-        "acceptedAnswer": { "@type": "Answer", "text": "It works, and it is marked experimental in the app for a reason: everything that auto-syncs - notes, bookmarks, highlights, statistics - is merged by rules, and rules can surprise you. Keep the warning in mind, and use Repair Drive links if a book stops updating on one side." }
+        "name": "What happens to my Drive data if I sign out in Shiori?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Signing out merely disconnects the current device. All your files and backups remain safely stored in your Google Drive, ready to reconnect whenever you sign in again." }
       }
     ]
   }
@@ -128,57 +108,41 @@
       line-height: 1.75;
     }
 
-    /* Download card for the sample EPUB */
-    .download-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent-primary);
-      border-radius: 20px;
-      padding: 2rem;
-      margin: 2rem 0;
-      text-align: center;
-      box-shadow: var(--card-shadow);
-    }
-    .download-card .dl-icon {
-      font-size: 2.5rem;
-      display: block;
-      margin-bottom: 0.75rem;
-    }
-    .download-card .dl-title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-    .download-card .dl-meta {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-    }
-    .download-card .dl-file {
-      display: block;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      word-break: break-all;
-    }
-
-    /* Book-internals snippet */
-    .code-block {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
+    /* Comparison & Matrix Tables */
+    .data-table-wrap {
       overflow-x: auto;
       margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
       box-shadow: var(--card-shadow);
     }
-    .code-block pre {
-      margin: 0;
-      font-size: 0.92rem;
-      line-height: 1.9;
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
       color: var(--accent-primary);
-      white-space: pre;
     }
 
     .faq-item {
@@ -199,36 +163,6 @@
     .faq-a {
       color: var(--text-secondary);
       line-height: 1.75;
-    }
-
-    .stat-badge-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0 2rem;
-    }
-    .stat-badge-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      padding: 1.25rem;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: var(--card-shadow);
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .stat-badge-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent-primary);
-    }
-    .stat-badge-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .stat-badge-title {
-      font-weight: 700;
-      color: var(--text-primary);
-      font-size: 0.95rem;
     }
 
     .tutorial-step {
@@ -428,51 +362,6 @@
       }
     }
   </style>
-
-  <style>
-    /* Comparison tables — scroll on their own if the viewport is narrow. */
-    .data-table-wrap {
-      overflow-x: auto;
-      margin: 1.5rem 0 2rem;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      background: var(--bg-secondary);
-      box-shadow: var(--card-shadow);
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.98rem;
-    }
-    .data-table th,
-    .data-table td {
-      text-align: left;
-      padding: 0.85rem 1.1rem;
-      border-bottom: 1px solid var(--border-color);
-      vertical-align: top;
-    }
-    .data-table th {
-      font-family: var(--font-display);
-      color: var(--text-primary);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .data-table tr:last-child td {
-      border-bottom: none;
-    }
-    .data-table code {
-      color: var(--accent-primary);
-      white-space: nowrap;
-    }
-    .data-table td:first-child {
-      white-space: nowrap;
-    }
-    .data-table .muted {
-      color: var(--text-secondary);
-      font-style: italic;
-      white-space: nowrap;
-    }
-  </style>
 </head>
 <body>
 
@@ -502,11 +391,22 @@
   <main class="post-layout animate-fade-in" style="max-width: 960px;">
     <header class="post-header">
       <div class="post-meta">
-        <span>📅 August 15, 2026</span>
-        <span>🏷️ Sync &amp; Backup</span>
+        <span data-i18n="blog-p20-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p20-cat">🏷️ Sync &amp; Backup</span>
       </div>
 
-      <h1 class="post-title">Your Library, on Every Device<br><span class="text-gradient">Cloud Sync with Google Drive, End to End</span></h1>
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Your Library, on Every Device<br><span class="text-gradient">Cloud Sync with Google Drive, End to End</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">อ่านต่อเนื่องได้ทุกเครื่อง ทุกที่ทุกเวลา<br><span class="text-gradient">คู่มือ Cloud Sync ผ่าน Google Drive ฉบับสมบูรณ์</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">どの端末でも、いつもの読書を<br><span class="text-gradient">Google Drive クラウド同期 完全活用ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">随身书库，多端畅读<br><span class="text-gradient">Google Drive 云端同步全方位实战指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Sua Biblioteca em Qualquer Dispositivo<br><span class="text-gradient">Sincronização em Nuvem com Google Drive</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Tu Biblioteca en Cualquier Dispositivo<br><span class="text-gradient">Sincronización en la Nube con Google Drive</span></h1>
     </header>
 
     <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.45), rgba(11, 15, 25, 0.65)), url('02-cloud-sync-account-and-everything.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
@@ -515,293 +415,891 @@
 
     <!-- Article Content Body -->
     <article class="article-section">
-      <p>You highlight a paragraph on the train, rate a book before bed, and get halfway through chapter nine on your tablet. Then the phone dies, or a new one arrives, and every one of those small acts of reading is gone. <strong>Cloud Sync</strong> is Shiori's answer: your books, your place in them, your highlights, notes, ratings and reading statistics, all kept in <em>your own</em> Google Drive.</p>
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You highlight a memorable quote on the train, rate a book before bed, and read halfway through chapter nine on your tablet. Then a phone is replaced or upgraded, and every one of those precious reading moments vanishes. <strong>Cloud Sync</strong> in Shiori is designed to prevent that heartbreak: your books, your reading progress, your highlights, notes, ratings, and stats are kept safe inside <em>your own</em> Google Drive.</p>
+        <p>Not on our servers — Shiori operates completely serverless. This guide walks you through every part of it: signing in, what each toggle synchronizes, how book files differ from settings, and how multi-device synchronization keeps everything in perfect harmony.</p>
 
-      <p>Not on our server. Shiori has no server. This guide walks through every part of it — signing in, what each switch actually moves, how book files differ from everything else, what happens on a second device, and which rule wins when two devices disagree.</p>
+        <div class="quote-callout">
+          <strong>The quick summary:</strong> Sign in with Google, keep Auto Sync enabled, and tap <em>Sync to Cloud</em> on any book you want backed up.
+        </div>
 
-      <div class="quote-callout">
-        <strong>The one-sentence version:</strong> sign in with Google, leave Auto Sync on, and tap <em>Sync to Cloud</em> on the books you want stored. Everything else in this article is detail you can come back for.
+        <h2>1. Where Your Data Actually Goes</h2>
+        <p>Shiori requests only two scoped permissions: <code>drive.file</code> and <code>drive.appdata</code>. Neither can access your personal files outside what Shiori creates. Your data is stored cleanly across two locations:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Location</th><th>What Lives There</th><th>Visible in Google Drive?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Shiori Library</strong></td>
+                <td>Your book files (EPUB, KEPUB, CBZ, PDF, FB2)</td>
+                <td>✅ Yes — an ordinary folder you can browse and manage</td>
+              </tr>
+              <tr>
+                <td><strong>Hidden app folder</strong></td>
+                <td>Settings, bookmarks, highlights, notes, ratings, reading stats, AI chats, covers</td>
+                <td>❌ No — Drive's private per-app storage, kept secure</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Both count against your Google account's storage quota, and book files are the only part large enough to notice.</p>
+
+        <div class="quote-callout">
+          <strong>Worth knowing:</strong> only books <em>uploaded from the app</em> appear in Shiori's cloud list. If you drop an EPUB into the "Shiori Library" folder by hand from a PC, the app will not see it — <code>drive.file</code> deliberately limits access to files created through the app.
+        </div>
+
+        <h2>2. What You Will Need</h2>
+        <ul class="article-bullet-list">
+          <li><strong>A Google account</strong> — use the same account across all your reading devices.</li>
+          <li><strong>Free Google Drive space</strong> — enough storage for the books you choose to upload (settings &amp; notes take minimal space).</li>
+          <li><strong>An internet connection</strong> — Wi-Fi is recommended when uploading large libraries for the first time.</li>
+        </ul>
       </div>
 
-      <h2>Where Your Data Actually Goes</h2>
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>คุณอาจเคยไฮไลต์ประโยคประทับใจระหว่างเดินทางบนรถไฟ ให้คะแนนหนังสือเล่มโปรดก่อนเข้านอน หรืออ่านค้างไว้ถึงบทที่เก้าบนแท็บเล็ต แต่เมื่อถึงเวลาเปลี่ยนมือถือใหม่หรือเครื่องมีปัญหา ความทรงจำและสถิติการอ่านเหล่านั้นอาจสูญหายไปอย่างน่าเสียดาย ฟังก์ชัน <strong>Cloud Sync</strong> ใน Shiori ถูกออกแบบมาเพื่อดูแลสิ่งเหล่านี้: ทั้งไฟล์หนังสือ, ตำแหน่งหน้าที่อ่านค้างไว้, ไฮไลต์, บันทึกโน้ต, การให้คะแนน และสถิติการอ่าน ทั้งหมดจะถูกเก็บรักษาไว้อย่างปลอดภัยใน <em>Google Drive ส่วนตัวของคุณเอง</em></p>
+        <p>เราไม่มีเซิร์ฟเวอร์คนกลาง และไม่เก็บข้อมูลของคุณไว้ที่อื่น คู่มือนี้จะพาคุณไปดูทุกขั้นตอน ตั้งแต่วิธีล็อกอิน, การทำงานของสวิตช์ซิงก์อัตโนมัติแต่ละตัว, ไปจนถึงการเปิดอ่านต่อบนอุปกรณ์เครื่องที่สองได้อย่างราบรื่น</p>
 
-      <p>Shiori asks for exactly two Google Drive permissions — <code>drive.file</code> and <code>drive.appdata</code> — and neither one can read the rest of your Drive. Shiori sees the files it created, and nothing else. Those files land in two different places, and knowing which is which explains most of the app's behaviour.</p>
+        <div class="quote-callout">
+          <strong>สรุปสั้นๆ ให้เข้าใจทันที:</strong> เพียงล็อกอินด้วย Google เปิดสวิตช์ Auto Sync ทิ้งไว้ แล้วกดแตะ <em>Sync to Cloud</em> ที่หนังสือเล่มที่ต้องการ เท่านี้ข้อมูลทั้งหมดก็พร้อมเชื่อมต่อทุกที่แล้วครับ
+        </div>
 
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Location</th><th>What lives there</th><th>Can you see it in Drive?</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Shiori Library</strong></td>
-              <td>Your actual book files — EPUB, KEPUB, CBZ, PDF, FB2</td>
-              <td>Yes — an ordinary folder you can open, browse and back up yourself</td>
-            </tr>
-            <tr>
-              <td><strong>Hidden app folder</strong></td>
-              <td>Settings, bookmarks, highlights, notes, ratings, reading statistics, covers, AI chats, saved translations, imported fonts, your Thai TTS dictionary</td>
-              <td>No — Drive's private per-app storage, invisible in the Drive UI</td>
-            </tr>
-          </tbody>
-        </table>
+        <h2>1. ข้อมูลของคุณถูกจัดเก็บไว้ที่ไหนบ้าง?</h2>
+        <p>Shiori ขอสิทธิ์การเข้าถึง Google Drive เพียง 2 สิทธิ์ที่จำกัดความปลอดภัยสูงสุด คือ <code>drive.file</code> และ <code>drive.appdata</code> ซึ่งแอปจะมองเห็นเฉพาะไฟล์ที่แอปสร้างขึ้นเองเท่านั้น โดยข้อมูลจะแบ่งออกเป็น 2 ส่วน:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ตำแหน่งจัดเก็บ</th><th>สิ่งที่ถูกเก็บไว้</th><th>มองเห็นใน Google Drive ไหม?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>โฟลเดอร์ Shiori Library</strong></td>
+                <td>ไฟล์หนังสือที่คุณเลือกอัปโหลด (EPUB, KEPUB, CBZ, PDF, FB2)</td>
+                <td>✅ มองเห็น — เป็นโฟลเดอร์ปกติที่คุณเปิดดูหรือสำรองข้อมูลเองได้</td>
+              </tr>
+              <tr>
+                <td><strong>Hidden App Folder</strong></td>
+                <td>การตั้งค่า, ที่คั่นหน้า, ไฮไลต์, โน้ต, คะแนน, สถิติการอ่าน, ประวัติแชท AI, ภาพปก</td>
+                <td>❌ ซ่อนไว้ — พื้นที่จัดเก็บเฉพาะของแอปใน Drive ปลอดภัย ไม่รกสายตา</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>ข้อมูลทั้งสองส่วนจะใช้พื้นที่ของบัญชี Google Drive ของคุณ โดยไฟล์หนังสือจะเป็นส่วนเดียวที่ใช้พื้นที่อย่างมีนัยสำคัญ</p>
+
+        <div class="quote-callout">
+          <strong>ข้อควรรู้:</strong> เฉพาะหนังสือที่ <em>กดอัปโหลดผ่านแอป</em> เท่านั้นที่จะปรากฏในรายการคลาวด์ หากคุณนำไฟล์ EPUB ไปวางในโฟลเดอร์ "Shiori Library" บนคอมพิวเตอร์ด้วยตนเอง แอปจะไม่สามารถมองเห็นได้ เนื่องจากสิทธิ์ <code>drive.file</code> ออกแบบมาให้อ่านได้เฉพาะไฟล์ที่สร้างผ่านแอปเพื่อความปลอดภัยสูงสุด
+        </div>
+
+        <h2>2. สิ่งที่ต้องเตรียมก่อนเริ่มต้น</h2>
+        <ul class="article-bullet-list">
+          <li><strong>บัญชี Google</strong> — ใช้บัญชีเดียวกันในทุกอุปกรณ์ที่คุณต้องการให้อ่านต่อเนื่องกัน</li>
+          <li><strong>พื้นที่ว่างใน Google Drive</strong> — เพียงพอสำหรับขนาดไฟล์หนังสือที่ต้องการอัปโหลด (ข้อมูลโน้ตและการตั้งค่ามีขนาดเล็กมาก)</li>
+          <li><strong>การเชื่อมต่ออินเทอร์เน็ต</strong> — แนะนำให้ใช้ Wi-Fi สำหรับการอัปโหลดไฟล์หนังสือขนาดใหญ่ในครั้งแรก</li>
+        </ul>
       </div>
 
-      <p>Both count against your Google account's storage quota, and the book files are the only part big enough to notice. A shelf of EPUBs is usually a few hundred megabytes; a comic library in CBZ can be much more.</p>
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>通勤電車でお気に入りの一節に引いたハイライト、就寝前に付けた星評価、タブレットで読み進めた第9章の途中。端末の買い替えや故障によって、それらの大切な読書の軌跡が失われてしまうのはとても残念なことです。Shioriの **クラウド同期（Cloud Sync）** は、書籍ファイル、読書位置、ハイライト、メモ、評価、読書統計のすべてを、あなた *ご自身の* Google Drive に安全に保管します。</p>
+        <p>Shioriは完全サーバーレス設計であり、開発者側のサーバーにデータが渡ることは一切ありません。本ガイドでは初期設定から複数端末連携の仕組みまで分かりやすく解説します。</p>
 
-      <div class="quote-callout">
-        <strong>Worth knowing before you start:</strong> only books <em>uploaded from the app</em> appear in Shiori's cloud list. If you drop an EPUB into the "Shiori Library" folder by hand from a computer, the app will not see it — <code>drive.file</code> deliberately does not grant access to files the app did not create.
+        <div class="quote-callout">
+          <strong>ひとことで言うと：</strong> Googleアカウントでサインインし、自動同期をONにして、バックアップしたい本で *Sync to Cloud* をタップするだけです。
+        </div>
+
+        <h2>1. データはGoogle Driveのどこに保存される？</h2>
+        <p>Shioriが要求する権限は <code>drive.file</code> と <code>drive.appdata</code> の2つのみで、アプリ自身が作成したファイル以外には一切アクセスできません。データは以下の2箇所に整理して保存されます：</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>保存場所</th><th>保存されるデータ</th><th>Drive上で見えるか？</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Shiori Library フォルダ</strong></td>
+                <td>アップロードした電子書籍ファイル（EPUB, CBZ, PDF 等）</td>
+                <td>✅ 見える（通常のフォルダとして閲覧・管理可能）</td>
+              </tr>
+              <tr>
+                <td><strong>アプリ専用非表示領域</strong></td>
+                <td>設定、しおり、ハイライト、メモ、読書統計、AI対話ログ、表紙画像</td>
+                <td>❌ 見えない（Drive内の安全なアプリ専用領域に保管）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>どちらもGoogleアカウントのストレージ容量を使用しますが、容量を消費するのは実質的に書籍ファイルのみです。</p>
+
+        <div class="quote-callout">
+          <strong>事前に知っておくべきこと：</strong> アプリ上から *Sync to Cloud* でアップロードした本のみがクラウド一覧に表示されます。PC等から手動で「Shiori Library」フォルダに放り込んだEPUBは、安全設計（<code>drive.file</code> 権限）によりアプリ側からは認識されません。
+        </div>
+
+        <h2>2. 準備するもの</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Google アカウント</strong> — 同期したいすべての端末で同じアカウントを使用します。</li>
+          <li><strong>Google Drive の空き容量</strong> — 書籍ファイルの容量に応じた空き容量（設定やメモ類は極めて軽量です）。</li>
+          <li><strong>インターネット接続</strong> — 初回の大容量書籍アップロード時はWi-Fi環境を推奨します。</li>
+        </ul>
       </div>
 
-      <h2>What You Will Need</h2>
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在通勤路上随手划下的金句、睡前写下的书评心得、在平板上读至第九章的进度——若因更换手机或设备故障而全部丢失，无疑是爱书人的一大憾事。Shiori 的 **云端同步（Cloud Sync）** 功能正是为此而生：将您的书籍、阅读进度、高亮、笔记、评分及阅读统计，全部妥善保存在您 *专属的* Google Drive 云端硬盘中。</p>
+        <p>Shiori 采用纯正的无服务器架构，没有任何第三方中转。本文将为您完整解析登录配置、各项自动同步开关细节及多设备协同机制。</p>
 
-      <ul class="article-bullet-list">
-        <li><strong>A Google account</strong> — the same one on every device you want to keep in step.</li>
-        <li><strong>Free Drive space</strong> — enough for the books you choose to upload. Settings and highlights are tiny.</li>
-        <li><strong>A network connection</strong> — Wi-Fi for the first upload of a large library.</li>
-      </ul>
+        <div class="quote-callout">
+          <strong>一句话极速上手：</strong> 登录 Google 账号，保持 Auto Sync 开启，并在需要备份的图书上轻点 <em>Sync to Cloud</em> 即可。
+        </div>
+
+        <h2>1. 数据在 Google Drive 中具体存放何处？</h2>
+        <p>Shiori 仅申请 <code>drive.file</code> 与 <code>drive.appdata</code> 两项最小权限，无法读取您云端硬盘中的任何其他个人文件。数据清晰分为两处存储：</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>存储位置</th><th>包含的数据内容</th><th>Drive 界面是否可见？</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Shiori Library 文件夹</strong></td>
+                <td>您主动上传的图书文件（EPUB, KEPUB, CBZ, PDF, FB2）</td>
+                <td>✅ 可见（为标准文件夹，可自行管理与下载）</td>
+              </tr>
+              <tr>
+                <td><strong>应用专属隐藏存储区</strong></td>
+                <td>应用设置、书签、高亮、笔记、评分、阅读统计、AI 对话、封面</td>
+                <td>❌ 不可见（由 Google Drive 提供的私密应用空间保护）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>两部分数据均占用您的 Google 账号存储配额，其中真正占用空间的仅为图书本体文件。</p>
+
+        <div class="quote-callout">
+          <strong>温馨提示：</strong> 仅有通过应用内点击 *Sync to Cloud* 上传的书籍才会出现在云端列表中。若直接从电脑端向网盘中的“Shiori Library”文件夹手动拖入 EPUB，应用将无法识别（这是出于 <code>drive.file</code> 最小权限安全限制所致）。
+        </div>
+
+        <h2>2. 开始前所需准备</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Google 账号</strong> — 在所有需要同步的设备上登录同一账号。</li>
+          <li><strong>Google Drive 存储空间</strong> — 预留用于存放图书文件的空间（笔记与设置体积微乎其微）。</li>
+          <li><strong>网络连通性</strong> — 首次上传大型图书或漫画库时建议连接 Wi-Fi。</li>
+        </ul>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você destaca um trecho marcante durante a viagem, avalia um livro antes de dormir e avança até a metade do nono capítulo no tablet. Ao trocar de celular, perder todas essas memórias de leitura é frustrante. O **Cloud Sync** do Shiori mantém seus livros, progresso, destaques, notas, avaliações e estatísticas sempre seguros no *seu próprio* Google Drive.</p>
+        <p>Sem servidores de terceiros. Veja como configurar o login, os interruptores de sincronização e o uso em múltiplos aparelhos.</p>
+
+        <div class="quote-callout">
+          <strong>Resumo em uma frase:</strong> Faça login com sua conta Google, mantenha a Sincronização Automática ligada e toque em <em>Sync to Cloud</em> nos livros que deseja salvar.
+        </div>
+
+        <h2>1. Onde Seus Dados Ficam Guardados</h2>
+        <p>O Shiori solicita apenas as permissões <code>drive.file</code> e <code>drive.appdata</code>, garantindo privacidade total. Seus dados são organizados em duas áreas:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Local</th><th>Conteúdo</th><th>Visível no Google Drive?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pasta Shiori Library</strong></td>
+                <td>Seus arquivos de livros (EPUB, CBZ, PDF, etc.)</td>
+                <td>✅ Sim — pasta comum visível para você</td>
+              </tr>
+              <tr>
+                <td><strong>Pasta Oculta do App</strong></td>
+                <td>Configurações, destaques, notas, progresso, estatísticas</td>
+                <td>❌ Não — área privada segura do aplicativo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Ambos contam para a cota de armazenamento da sua conta Google, sendo os livros a única parte com tamanho expressivo.</p>
+
+        <div class="quote-callout">
+          <strong>Importante saber:</strong> apenas livros <em>enviados a partir do aplicativo</em> aparecem na lista da nuvem. Arquivos colocados manualmente pelo PC na pasta "Shiori Library" não serão lidos devido às proteções de segurança da permissão <code>drive.file</code>.
+        </div>
+
+        <h2>2. O Que Você Precisa</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Conta Google</strong> — a mesma em todos os aparelhos sincronizados.</li>
+          <li><strong>Espaço no Google Drive</strong> — suficiente para os livros enviados.</li>
+          <li><strong>Conexão com a Internet</strong> — Wi-Fi recomendado para o envio inicial de livros pesados.</li>
+        </ul>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Subrayas una cita memorable de camino al trabajo, valoras una obra antes de dormir y avanzas hasta la mitad del capítulo nueve en tu tablet. Cambiar de móvil no debería significar perder esos valiosos momentos. El **Cloud Sync** de Shiori conserva tus libros, progreso, notas, subrayados, valoraciones y estadísticas a salvo en *tu propio* Google Drive.</p>
+        <p>Sin servidores intermediarios. En esta guía te explicamos cómo iniciar sesión, qué sincroniza cada interruptor y cómo conectar un segundo dispositivo.</p>
+
+        <div class="quote-callout">
+          <strong>En pocas palabras:</strong> Inicia sesión con Google, mantén la Sincronización Automática activa y pulsa <em>Sync to Cloud</em> en los libros que desees respaldar.
+        </div>
+
+        <h2>1. Dónde se Almacenan Realmente tus Datos</h2>
+        <p>Shiori solo solicita los permisos <code>drive.file</code> y <code>drive.appdata</code>, garantizando tu privacidad. Los datos se distribuyen en dos ubicaciones:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Ubicación</th><th>Contenido</th><th>¿Visible en Google Drive?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Carpeta Shiori Library</strong></td>
+                <td>Archivos de libros (EPUB, CBZ, PDF, etc.)</td>
+                <td>✅ Sí: carpeta visible accesible por ti</td>
+              </tr>
+              <tr>
+                <td><strong>Carpeta Oculta de App</strong></td>
+                <td>Ajustes, subrayados, notas, progreso y estadísticas</td>
+                <td>❌ No: almacenamiento privado de la app en Drive</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Ambas partes computan en la cuota de tu cuenta de Google, siendo los libros lo único que ocupa espacio significativo.</p>
+
+        <div class="quote-callout">
+          <strong>Conviene saber:</strong> solo los libros <em>subidos desde la aplicación</em> aparecen en la lista de la nube. Si copias un EPUB a la carpeta "Shiori Library" a mano desde un PC, la app no lo verá debido al permiso restrictivo <code>drive.file</code>.
+        </div>
+
+        <h2>2. Qué Necesitas para Empezar</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Cuenta de Google</strong>: la misma en todos los dispositivos que quieras sincronizar.</li>
+          <li><strong>Espacio en Google Drive</strong>: suficiente para los libros que decidas subir.</li>
+          <li><strong>Conexión a Internet</strong>: se recomienda Wi-Fi para la subida inicial de bibliotecas voluminosas.</li>
+        </ul>
+      </div>
     </article>
 
-    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);">Step-by-Step Guide (7 Steps)</h2>
+    <!-- ==================== STEP-BY-STEP GUIDE (7 STEPS) ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (7 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่าและใช้งาน (7 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定と同期の手順（7つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文操作指引（7 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (7 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (7 Pasos)</h2>
 
     <!-- STEP 1 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">1</span>Sign In With Google</div>
-        <div class="step-desc">
-          <p>Open <strong>Settings → Cloud Sync (Google Drive)</strong>. Before you sign in, the page is a single card: one button, and a line telling you what it is for.</p>
-          <p>Tap <strong>Sign in with Google</strong> and pick your account. Shiori stores nothing about you beyond the account handle it needs to talk to Drive — there is no Shiori account, no password, and nothing to create.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Sign In With Google</div>
+          <div class="step-desc">
+            <p>Open <strong>Settings → Cloud Sync (Google Drive)</strong>. Tap <strong>Sign in with Google</strong> and choose your account. There is no Shiori account to register and no extra password to remember.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เข้าสู่ระบบด้วยบัญชี Google</div>
+          <div class="step-desc">
+            <p>เปิดเมนู <strong>Settings → Cloud Sync (Google Drive)</strong> แตะปุ่ม <strong>Sign in with Google</strong> แล้วเลือกบัญชี Google ของคุณ โดยไม่ต้องสมัครสมาชิกบัญชี Shiori เพิ่มเติมให้ยุ่งยาก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>Googleアカウントでサインイン</div>
+          <div class="step-desc">
+            <p><strong>設定 → Cloud Sync (Google Drive)</strong> を開きます。<strong>Sign in with Google</strong> をタップしてアカウントを選択するだけで完了です。独自の会員登録やパスワード設定は一切不要です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>一键登录 Google 账号</div>
+          <div class="step-desc">
+            <p>前往 <strong>设置 → Cloud Sync (Google Drive)</strong>，点击 <strong>Sign in with Google</strong> 并选择您的账号。无需额外注册任何 Shiori 专属账户。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Faça Login com o Google</div>
+          <div class="step-desc">
+            <p>Abra <strong>Configurações → Cloud Sync (Google Drive)</strong>, toque em <strong>Sign in with Google</strong> e selecione sua conta, sem cadastros adicionais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Inicia Sesión con Google</div>
+          <div class="step-desc">
+            <p>Abre <strong>Ajustes → Cloud Sync (Google Drive)</strong>, pulsa en <strong>Sign in with Google</strong> y elige tu cuenta sin necesidad de registros adicionales.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="01-cloud-sync-sign-in-google-drive.jpg" alt="The signed-out Cloud Sync page in Shiori for Android with the Sign in with Google button" class="img-preview" data-index="0" />
+        <img src="01-cloud-sync-sign-in-google-drive.jpg" alt="Sign in with Google card in Shiori Cloud Sync settings" class="img-preview" data-index="0" />
       </div>
     </section>
 
     <!-- STEP 2 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">2</span>Meet the Cloud Sync Page</div>
-        <div class="step-desc">
-          <p>Once signed in, the page grows into four parts, top to bottom:</p>
-          <ul class="article-bullet-list">
-            <li><strong>Your account</strong>, with a real <em>Sign out</em> button beside it.</li>
-            <li><strong>Synced devices</strong> — every device backing up to this account (step 7).</li>
-            <li><strong>Everything</strong> — the manual backup and restore of all your settings and Memory, plus a repair tool.</li>
-            <li><strong>Auto Sync</strong> — the switches that decide what moves on its own.</li>
-          </ul>
-          <p>The red line under <em>Synced devices</em> is not decoration. Multi-device sync is marked experimental, and the warning sits where the decision is made rather than two screens later.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Explore the Cloud Sync Hub</div>
+          <div class="step-desc">
+            <p>Once connected, the screen displays four organized sections: your <strong>Google Account</strong>, <strong>Synced devices</strong>, the <strong>Everything</strong> card (for manual backup/restore and Drive repair tools), and <strong>Auto Sync</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ทำความรู้จักกับศูนย์ควบคุม Cloud Sync</div>
+          <div class="step-desc">
+            <p>เมื่อเชื่อมต่อแล้ว หน้าจอจะแบ่งออกเป็น 4 ส่วนหลัก: ข้อมูล <strong>Account</strong>, รายการอุปกรณ์ที่เชื่อมต่อ <strong>Synced devices</strong>, การ์ด <strong>Everything</strong> (สำหรับสำรอง/กู้คืนข้อมูลด้วยตนเอง) และสวิตช์ <strong>Auto Sync</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>クラウド同期ハブの構成を確認</div>
+          <div class="step-desc">
+            <p>サインイン後は、<strong>Account</strong>（アカウント情報）、<strong>Synced devices</strong>（同期端末一覧）、<strong>Everything</strong>（手動バックアップ・修復ツール）、<strong>Auto Sync</strong>（自動同期設定）の4つのセクションが表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>探索云端同步中心</div>
+          <div class="step-desc">
+            <p>登录成功后，界面清晰呈现四大模块：<strong>Account</strong> 账号信息、<strong>Synced devices</strong> 设备列表、<strong>Everything</strong> 全局手动备份/恢复及修复工具，以及 <strong>Auto Sync</strong> 自动同步选项。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Conheça o Painel de Sincronização</div>
+          <div class="step-desc">
+            <p>A tela divide-se em 4 seções: sua <strong>Conta</strong>, <strong>Dispositivos Sincronizados</strong>, o cartão <strong>Everything</strong> (backup/restauração manual) e os interruptores do <strong>Auto Sync</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Conoce el Panel de Sincronización</div>
+          <div class="step-desc">
+            <p>La pantalla se organiza en 4 áreas: tu <strong>Cuenta</strong>, <strong>Dispositivos Sincronizados</strong>, la tarjeta <strong>Everything</strong> (copias y restauración manual) y las opciones de <strong>Auto Sync</strong>.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="02-cloud-sync-account-and-everything.jpg" alt="Shiori's Cloud Sync page showing the signed-in account, synced devices and the Everything backup card" class="img-preview" data-index="1" />
+        <img src="02-cloud-sync-account-and-everything.jpg" alt="The Cloud Sync settings screen in Shiori showing account, synced devices and Everything card" class="img-preview" data-index="1" />
       </div>
     </section>
 
     <!-- STEP 3 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">3</span>Back Up Everything, Once</div>
-        <div class="step-desc">
-          <p>Tap <strong>Backup setting</strong>. Nothing uploads yet — first you get an inventory of exactly what is about to travel, because a backup button with a one-line caption is a leap of faith.</p>
-          <p>The list covers <strong>reader settings</strong> (font, size, theme, line height, margins, page mode), <strong>read-aloud settings</strong> (engine, languages, voices, pitch and speed, highlight colours, Thai dictionary), <strong>Memory</strong> (highlights, notes, bookmarks, ratings and AI chats for every book), <strong>text tools</strong> (replacement rules, translation languages and engines, saved translations), <strong>covers and imported fonts</strong>, and your <strong>library server</strong> connections.</p>
-          <p>It is equally clear about what is <em>not</em> in there: book files, which sync per book from the bookshelf; reading statistics, which sync automatically on their own; and supporter status, which stays with Google Play.</p>
-          <p><strong>Restore settings</strong> opens the same dialog in reverse — worth reading, because a restore overwrites what is on this device.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Back Up Everything in One Tap</div>
+          <div class="step-desc">
+            <p>Tap <strong>Backup setting</strong>. Before anything uploads, Shiori shows an explicit inventory of what will be saved: reader settings, voice narration options, Memory items (highlights, notes, bookmarks, AI chats), text tools, custom covers, fonts, and library servers.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>สำรองข้อมูลทั้งหมดในแตะเดียว</div>
+          <div class="step-desc">
+            <p>แตะ <strong>Backup setting</strong> โดยแอปจะแสดงรายการข้อมูลทั้งหมดที่จะถูกสำรองอย่างโปร่งใส เช่น การตั้งค่าการอ่าน, เสียงอ่าน TTS, ไฮไลต์, โน้ต, ที่คั่นหน้า, ประวัติ AI, ฟอนต์ และการเชื่อมต่อเซิร์ฟเวอร์ห้องสมุด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>ワンタップで全データをバックアップ</div>
+          <div class="step-desc">
+            <p><strong>Backup setting</strong> をタップします。送信前に、リーダー設定、TTS設定、Memory（ハイライト、メモ、しおり、AI対話）、フォント、サーバー接続情報など、バックアップ対象の内訳が明瞭に表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>一键全局数据备份</div>
+          <div class="step-desc">
+            <p>点击 <strong>Backup setting</strong>。上传前系统会清晰列出备份清单：阅读排版、TTS 语音设置、Memory（高亮划线、笔记、书签、AI 对话）、字体及书库服务器连接配置等。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Faça Backup de Tudo com Um Toque</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Backup setting</strong> para visualizar a lista completa do que será salvo: ajustes de leitura, destaques, notas, marcadores, chats de IA, fontes e servidores.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Respalda Todo en un Solo Toque</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>Backup setting</strong> para ver el desglose detallado de lo que se va a guardar: maquetación, notas, subrayados, marcadores, IA, fuentes y servidores.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="04-backup-inventory-dialog.jpg" alt="Shiori's backup inventory dialog listing reader settings, read-aloud settings, Memory, text tools, covers and library servers" class="img-preview" data-index="2" />
+        <img src="04-backup-inventory-dialog.jpg" alt="The backup inventory dialog in Shiori showing exactly what is included in a settings backup" class="img-preview" data-index="2" />
       </div>
     </section>
 
     <!-- STEP 4 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">4</span>Set Auto Sync and Forget It</div>
-        <div class="step-desc">
-          <p>Manual backups are the safety net; Auto Sync is what you will actually live with. Each switch covers one topic, and switching one off never makes that data <em>unbackupable</em> — only un-automatic, since the manual backup above always includes everything.</p>
-          <p>The table below the screenshot explains each one.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Enable Auto Sync and Enjoy Seamless Reading</div>
+          <div class="step-desc">
+            <p>Keep the <strong>Auto Sync</strong> toggles enabled for bookmarks, highlights, reading positions, collections, and library servers. Whenever you leave the reader, your progress and thoughts are automatically updated in the cloud.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิดสวิตช์ Auto Sync เพื่อการอ่านที่ต่อเนื่อง</div>
+          <div class="step-desc">
+            <p>เปิดสวิตช์ <strong>Auto Sync</strong> สำหรับตำแหน่งการอ่าน, ไฮไลต์, โน้ต, คอลเลกชัน และเซิร์ฟเวอร์ห้องสมุด ทุกครั้งที่คุณปิดหน้าอ่านหนังสือ ข้อมูลล่าสุดจะถูกบันทึกขึ้นคลาวด์ให้อัตโนมัติในเบื้องหลัง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>自動同期（Auto Sync）を設定する</div>
+          <div class="step-desc">
+            <p>しおり、ハイライト、読書位置、コレクションなどの <strong>Auto Sync</strong> スイッチをONにしておきます。読書画面を閉じるたびに、進捗やメモがバックグラウンドで自動同期されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>开启 Auto Sync 享受无感同步</div>
+          <div class="step-desc">
+            <p>保持书签、高亮、阅读位置、收藏集及服务器的 <strong>Auto Sync</strong> 开关处于开启状态。每次退出阅读器，最新进度都会自动同步至云端。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ative o Auto Sync para Sincronização Fluida</div>
+          <div class="step-desc">
+            <p>Mantenha ativadas as opções de <strong>Auto Sync</strong> para progresso, notas e coleções. Ao fechar o leitor, seus dados são salvos na nuvem automaticamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Activa Auto Sync y Olvídate de Guardar</div>
+          <div class="step-desc">
+            <p>Deja activos los interruptores de <strong>Auto Sync</strong> para notas, progreso y colecciones. Cada vez que salgas del libro, todo se sincronizará automáticamente en segundo plano.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="05-auto-sync-toggles.jpg" alt="The Auto Sync section in Shiori with switches for covers, bookmarks, translations, reading position, collections, Want to Read, library servers and replacements" class="img-preview" data-index="3" />
+        <img src="05-auto-sync-toggles.jpg" alt="Shiori Auto Sync toggles for covers, bookmarks, reading position, collections and replacements" class="img-preview" data-index="3" />
       </div>
     </section>
-
-    <article class="article-section">
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Switch</th><th>What it keeps in step</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>Sync activity notification</strong></td><td>A quiet note whenever something syncs in the background. Turn it on for a week if you want to see the machinery work.</td></tr>
-            <tr><td><strong>Auto-sync book covers</strong></td><td>Cover images, so your reading history still looks like a bookshelf after a restore — even for books no longer on this device.</td></tr>
-            <tr><td><strong>Auto-sync bookmarks &amp; notes</strong></td><td>Highlights, notes, bookmarks, ratings and AI chats, as you edit them.</td></tr>
-            <tr><td><strong>Auto-sync translations</strong></td><td>Saved inline translations, shortly after they change.</td></tr>
-            <tr><td><strong>Auto-sync reading position</strong></td><td>Where you are in each synced book, written whenever you leave the reader.</td></tr>
-            <tr><td><strong>Auto-sync collections</strong></td><td>Your shelves and the books in them, on every device.</td></tr>
-            <tr><td><strong>Auto-sync Want to Read</strong></td><td>Your reading queue.</td></tr>
-            <tr><td><strong>Auto-sync library servers</strong></td><td>Saved OPDS, Calibre, Komga, Kavita, WebDAV, S3 and FTP connections — <em>including their sign-in details</em>.</td></tr>
-            <tr><td><strong>Auto-sync replacements</strong></td><td>Visual and TTS replacement rules, on every add, edit or delete.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p>Below the switches sit four buttons — <strong>Back up / Restore Visual</strong> and <strong>Back up / Restore TTS</strong>. They move <em>only</em> your replacement rules, separately from the full backup, which is what you want when carrying a carefully tuned pronunciation list to a new phone without touching anything else.</p>
-    </article>
 
     <!-- STEP 5 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">5</span>Send Book Files to the Cloud</div>
-        <div class="step-desc">
-          <p>Book files are deliberately <strong>not</strong> automatic. Shiori never quietly uploads a 600 MB comic archive over mobile data — you choose, per book.</p>
-          <p><strong>Long-press any book</strong> on the shelf and tap <strong>Sync to Cloud</strong>. The upload runs as a background service with a progress notification, so you can keep reading while it works, and it survives leaving the app.</p>
-          <p>Synced books wear a small cloud badge on their cover, and a <strong>Cloud Sync</strong> row appears on the bookshelf as a shortcut to everything you have stored.</p>
-          <p>Private books are exempt by design: anything opened in <strong>Incognito</strong> never syncs — not the file, not the position, not a highlight.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Upload Book Files to Cloud on Demand</div>
+          <div class="step-desc">
+            <p>To save mobile data, book files are uploaded only when you choose. Long-press any book on your bookshelf and tap <strong>Sync to Cloud</strong>. Synced books receive a cloud badge on their cover.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>อัปโหลดไฟล์หนังสือขึ้นคลาวด์ตามต้องการ</div>
+          <div class="step-desc">
+            <p>เพื่อประหยัดเน็ตมือถือ Shiori จะไม่อัปโหลดไฟล์หนังสือขนาดใหญ่เองโดยพลการ เพียงกดค้างที่ปกหนังสือเล่มที่ต้องการแล้วเลือก <strong>Sync to Cloud</strong> หนังสือที่ซิงก์แล้วจะมีป้ายไอคอนก้อนเมฆกำกับ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>書籍ファイルをクラウドへアップロード</div>
+          <div class="step-desc">
+            <p>データ通信量を節約するため、書籍ファイルは手動選択でアップロードします。本棚で書籍を長押しし、<strong>Sync to Cloud</strong> をタップするとクラウドへ転送され、表紙に雲マークが付与されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>按需将图书文件上传至云端</div>
+          <div class="step-desc">
+            <p>为节省流量，书籍文件仅在您主动选择时上传。在书架上长按目标图书并选择 <strong>Sync to Cloud</strong>，已同步的书籍封面将显示专属云朵徽标。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Envie Arquivos de Livros para a Nuvem</div>
+          <div class="step-desc">
+            <p>Para economizar dados móveis, o upload de arquivos é manual: pressione e segure qualquer livro na estante e selecione <strong>Sync to Cloud</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Sube Archivos de Libros a la Nube</div>
+          <div class="step-desc">
+            <p>Para evitar consumo innecesario de datos, los archivos se suben a petición: mantén pulsado cualquier libro en la estantería y elige <strong>Sync to Cloud</strong>.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="07-sync-book-to-cloud-menu.jpg" alt="The long-press menu on a book in Shiori for Android with the Sync to Cloud action" class="img-preview" data-index="4" />
+        <img src="07-sync-book-to-cloud-menu.jpg" alt="Long-pressing a book on Shiori bookshelf to select Sync to Cloud" class="img-preview" data-index="4" />
       </div>
     </section>
 
     <!-- STEP 6 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">6</span>Browse What Is in the Cloud</div>
-        <div class="step-desc">
-          <p>Tap the <strong>Cloud Sync</strong> row on your bookshelf to open the cloud list. Every stored book shows its chapter count, file size, how far you have read it, the date it was uploaded and its file name — plus an <em>On this device</em> badge when a local copy exists.</p>
-          <p>From here you can <strong>Read</strong> a book you already have, <strong>Download</strong> one you do not, or search the whole cloud library by title. Long-press gives you the rest: <strong>Remove from cloud</strong>, <strong>Remove from device</strong> (they are separate, and the app says so), and <strong>Select</strong> for multi-select clean-ups.</p>
-          <p>Downloading restores more than the file. Bookmarks, highlights and your reading position come down with it, so a book arrives on the new phone exactly where you left it on the old one.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Browse and Download from the Cloud List</div>
+          <div class="step-desc">
+            <p>Tap the <strong>Cloud Sync</strong> row on your bookshelf to browse all uploaded titles. You can download books directly to your current device with all highlights, notes, and reading positions restored instantly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>เปิดดูและดาวน์โหลดหนังสือจากคลังคลาวด์</div>
+          <div class="step-desc">
+            <p>แตะที่แถบ <strong>Cloud Sync</strong> บนชั้นหนังสือเพื่อดูรายชื่อหนังสือทั้งหมดที่อยู่บนคลาวด์ สามารถกดดาวน์โหลดลงเครื่องใหม่ได้ทันที พร้อมดึงตำแหน่งอ่าน ไฮไลต์ และโน้ตกลับมาอย่างครบถ้วน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>クラウド一覧から書籍をダウンロード</div>
+          <div class="step-desc">
+            <p>本棚の <strong>Cloud Sync</strong> 行をタップしてクラウド蔵書一覧を開きます。別の端末からでもワンタップでダウンロードでき、読書位置やハイライトも同時に復元されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>在云端列表中轻松浏览与下载</div>
+          <div class="step-desc">
+            <p>点击书架中的 <strong>Cloud Sync</strong> 栏目即可浏览所有已上传图书。在新设备上一键下载，阅读进度、高亮及所有笔记将同步还原到位。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Navegue e Baixe Livros da Nuvem</div>
+          <div class="step-desc">
+            <p>Toque na linha <strong>Cloud Sync</strong> na estante para ver sua coleção na nuvem e baixar qualquer título com notas e progresso restaurados.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Explora y Descarga Obras desde la Nube</div>
+          <div class="step-desc">
+            <p>Pulsa en la fila <strong>Cloud Sync</strong> de tu biblioteca para ver tus libros en la nube y descargar cualquier obra recuperando notas y progreso de inmediato.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="08-cloud-book-list-download.jpg" alt="Shiori's cloud book list on Android showing seven books with size, progress, upload date and Read or Download buttons" class="img-preview" data-index="5" />
+        <img src="08-cloud-book-list-download.jpg" alt="Browsing the Cloud Sync book list in Shiori with download and read actions" class="img-preview" data-index="5" />
       </div>
     </section>
 
     <!-- STEP 7 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">7</span>Add a Second Device</div>
-        <div class="step-desc">
-          <p>On the new phone or tablet, sign in to the same Google account. Content that syncs both ways — highlights, notes, ratings, reading position, statistics, shelves — arrives on its own. Then open <strong>Synced devices</strong>.</p>
-          <p>Every device that has ever backed up to this account is listed with its model, app version and last sync time. <strong>Settings are kept per device</strong>, on purpose: two devices auto-syncing into one shared settings file used to overwrite each other's preferences on every push, and a phone and a tablet rarely want the same font size anyway.</p>
-          <p>When you <em>do</em> want them identical, tap <strong>Restore here</strong> on the device whose setup you like and it is copied onto the one in your hand. The trash icon removes a device from the list, with an optional tick to delete its settings backup as well.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Add a Second Device &amp; Keep Reading</div>
+          <div class="step-desc">
+            <p>Sign in with the same Google account on your tablet or secondary phone. Open <strong>Synced devices</strong> to view all connected models and sync timestamps. Reader settings remain individual per device so phones and tablets retain their optimal font sizes.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>เชื่อมต่อเครื่องที่สอง อ่านต่อเนื่องได้ทันที</div>
+          <div class="step-desc">
+            <p>ล็อกอินด้วยบัญชี Google เดียวกันบนแท็บเล็ตหรือมือถือเครื่องที่สอง เปิดดูรายการใน <strong>Synced devices</strong> ได้ทันที โดยแอปจะแยกการตั้งค่าขนาดตัวอักษรของแต่ละเครื่องไว้ เพื่อให้เหมาะสมกับขนาดหน้าจอของมือถือและแท็บเล็ต</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>2台目の端末を追加してシームレスに読書</div>
+          <div class="step-desc">
+            <p>タブレット等の別端末で同じGoogleアカウントにサインインします。<strong>Synced devices</strong> で接続中端末一覧を確認可能。フォントサイズ等の表示設定は端末ごとに保持されるため快適です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>连接第二台设备，多端无缝切换</div>
+          <div class="step-desc">
+            <p>在平板或备用机上登录相同 Google 账号即可。<strong>Synced devices</strong> 清晰罗列所有设备。字号等阅读排版默认按设备独立记忆，完美适配不同屏幕尺寸。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Adicione um Segundo Aparelho Facilmente</div>
+          <div class="step-desc">
+            <p>Entre com a mesma conta Google no seu tablet. Em <strong>Synced devices</strong> você visualiza todos os aparelhos, mantendo tamanhos de fonte personalizados para cada tela.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Conecta un Segundo Dispositivo y Sigue Leyendo</div>
+          <div class="step-desc">
+            <p>Inicia sesión con la misma cuenta de Google en tu tablet. En <strong>Synced devices</strong> verás todos los equipos, conservando el tamaño de letra idóneo para cada pantalla.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
-        <img src="03-synced-devices-list.jpg" alt="The Synced devices dialog in Shiori listing three devices with last sync times and a Restore here action" class="img-preview" data-index="6" />
+        <img src="03-synced-devices-list.jpg" alt="Synced devices list in Shiori Cloud Sync showing connected device models and sync times" class="img-preview" data-index="6" />
       </div>
     </section>
 
+    <!-- ==================== CONFLICT RULES & SYNC MATRIX ==================== -->
     <article class="article-section">
-      <h2>Which Way Does Each Thing Travel?</h2>
+      <h2 class="lang-en">Conflict Resolution: How Multi-Device Sync Works</h2>
+      <h2 class="lang-th">กติกากระบวนการซิงก์: เมื่อข้อมูลสองเครื่องไม่ตรงกัน ระบบตัดสินอย่างไร?</h2>
+      <h2 class="lang-jp">同期ルール詳細：端末間で競合した際の優先順位</h2>
+      <h2 class="lang-cn">冲突解决规则：多设备协同如何智能合并数据</h2>
+      <h2 class="lang-pt">Resolução de Conflitos: Como Funciona a Sincronização</h2>
+      <h2 class="lang-es">Resolución de Conflictos: Cómo Opera la Sincronización</h2>
 
-      <p>"It syncs" is not one behaviour. Some things flow both ways continuously, some only go up until you ask for them back, and a couple never leave the device at all. This is the honest map.</p>
-
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Data</th><th>Up</th><th>Down</th><th>Who wins a conflict</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Reading position &amp; finished mark</td><td>Auto</td><td>Auto</td><td>The most recently read device</td></tr>
-            <tr><td>Bookmarks, highlights, notes</td><td>Auto</td><td>Auto</td><td>Everything is kept; deletions are remembered as deletions</td></tr>
-            <tr><td>Book ratings</td><td>Auto</td><td>Auto</td><td>Newest wins — unless both changed, and then Shiori asks you</td></tr>
-            <tr><td>Reading &amp; listening statistics</td><td>Auto</td><td>Auto</td><td>Merged — no session is ever dropped</td></tr>
-            <tr><td>AI chats</td><td>Auto</td><td>Auto</td><td>Newest edit wins; deletes propagate</td></tr>
-            <tr><td>Saved translations</td><td>Auto</td><td>Auto</td><td>Merged; a delete stays local</td></tr>
-            <tr><td>Book covers</td><td>Auto</td><td>Auto</td><td>Identical files are skipped</td></tr>
-            <tr><td>Collections &amp; Want to Read</td><td>Auto</td><td>Auto</td><td>Matched by shelf <em>name</em>, so two "Sci-Fi" shelves become one</td></tr>
-            <tr><td>Library servers</td><td>Auto</td><td>Auto</td><td>Merged per connection</td></tr>
-            <tr><td>Replacement rules</td><td>Auto</td><td>Review sheet</td><td>You approve incoming rules before they land</td></tr>
-            <tr><td>Reader &amp; TTS settings</td><td>Auto</td><td class="muted">Manual</td><td>Per device by design — use <em>Restore here</em></td></tr>
-            <tr><td>Imported fonts, Thai dictionary</td><td>Auto</td><td class="muted">Manual</td><td>Added, never deleted from Drive</td></tr>
-            <tr><td>Book files</td><td class="muted">Per book</td><td class="muted">Per book</td><td>You decide, from the shelf and the cloud list</td></tr>
-            <tr><td>Incognito books</td><td class="muted">Never</td><td class="muted">Never</td><td>—</td></tr>
-          </tbody>
-        </table>
+      <div class="lang-en">
+        <p>When you read on multiple devices, Shiori applies transparent rules to ensure no reading sessions or notes are lost:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Data Type</th><th>Upload</th><th>Download</th><th>Conflict Resolution</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Reading position &amp; finished mark</strong></td><td>Auto</td><td>Auto</td><td>Most recently read device wins</td></tr>
+              <tr><td><strong>Bookmarks, highlights, notes</strong></td><td>Auto</td><td>Auto</td><td>Merged; all unique notes are preserved</td></tr>
+              <tr><td><strong>Reading &amp; audio statistics</strong></td><td>Auto</td><td>Auto</td><td>Merged; no reading session is ever dropped</td></tr>
+              <tr><td><strong>Book ratings</strong></td><td>Auto</td><td>Auto</td><td>Newest rating wins (prompts if ambiguous)</td></tr>
+              <tr><td><strong>Collections &amp; Want to Read</strong></td><td>Auto</td><td>Auto</td><td>Matched by shelf name seamlessly</td></tr>
+              <tr><td><strong>Reader &amp; TTS settings</strong></td><td>Auto</td><td>Manual</td><td>Kept per device (use <em>Restore here</em> to copy)</td></tr>
+              <tr><td><strong>Incognito books</strong></td><td>Never</td><td>Never</td><td>Completely private, never uploaded</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h2>The Sync Now Button</h2>
-
-      <p>The cloud icon in the bookshelf's top bar is a full round trip, not just an upload: it pushes this device's settings, then pulls down statistics, per-book facts, shelves and reading queue from the others. It spins while it works and stays quiet when it finishes — the button you press in passing should not open a dialog every time.</p>
-
-      <div class="step-image-container" style="max-width: 420px; margin: 1.5rem auto 2.5rem;">
-        <img src="10-sync-now-button-bookshelf.jpg" alt="The Sync now cloud button in Shiori's bookshelf top bar, spinning while a sync runs" class="img-preview" data-index="7" />
+      <div class="lang-th">
+        <p>เมื่ออ่านหนังสือสลับไปมาระหว่างหลายอุปกรณ์ Shiori มีกติกากำกับที่ชัดเจนเพื่อให้มั่นใจว่าบันทึกและสถิติของคุณจะไม่สูญหาย:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>ประเภทข้อมูล</th><th>การอัปโหลด</th><th>การดาวน์โหลด</th><th>การจัดการเมื่อข้อมูลไม่ตรงกัน</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ตำแหน่งหน้าที่อ่าน &amp; สถานะอ่านจบ</strong></td><td>อัตโนมัติ</td><td>อัตโนมัติ</td><td>ยึดตามเครื่องที่เปิดอ่านล่าสุด</td></tr>
+              <tr><td><strong>ที่คั่นหน้า, ไฮไลต์, โน้ต</strong></td><td>อัตโนมัติ</td><td>อัตโนมัติ</td><td>รวมข้อมูลเข้าด้วยกัน ไม่ทำโน้ตใดสูญหาย</td></tr>
+              <tr><td><strong>สถิติเวลาการอ่านและการฟัง</strong></td><td>อัตโนมัติ</td><td>อัตโนมัติ</td><td>รวมเวลาสะสมเข้าด้วยกันครบทุกช่วง</td></tr>
+              <tr><td><strong>คะแนนดาวของหนังสือ</strong></td><td>อัตโนมัติ</td><td>อัตโนมัติ</td><td>ยึดตามคะแนนที่ให้ล่าสุด</td></tr>
+              <tr><td><strong>คอลเลกชัน &amp; รายการอยากอ่าน</strong></td><td>อัตโนมัติ</td><td>อัตโนมัติ</td><td>รวมหนังสือเข้าชั้นตามชื่อคอลเลกชัน</td></tr>
+              <tr><td><strong>การตั้งค่าหน้าอ่าน &amp; เสียง TTS</strong></td><td>อัตโนมัติ</td><td>กดเอง</td><td>แยกอิสระตามเครื่อง (ใช้ <em>Restore here</em> เพื่อคัดลอกข้ามเครื่อง)</td></tr>
+              <tr><td><strong>หนังสือในโหมด Incognito</strong></td><td>ไม่ส่ง</td><td>ไม่ดึง</td><td>เป็นส่วนตัว 100% ไม่ถูกอัปโหลดขึ้นคลาวด์</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h2>When Something Looks Wrong</h2>
-
-      <ul class="article-bullet-list">
-        <li><strong>"No settings found in Drive"</strong> — nothing has been backed up to this account yet. Run <em>Backup setting</em> on the device that has the setup you want first.</li>
-        <li><strong>A book syncs on one device but never updates on the other</strong> — their file names have drifted apart. <em>Everything → Repair Drive links → Check for problems</em> looks without changing anything and shows you every rename it would make before you agree to it.</li>
-        <li><strong>Books you added to the Drive folder by hand are missing</strong> — expected. Import them into the app and use <em>Sync to Cloud</em>, and they become visible to Shiori.</li>
-        <li><strong>You cancelled a sync</strong> — some items may already have moved. Running it again finishes the job; every operation is safe to repeat.</li>
-        <li><strong>Signing out</strong> — clears the account from this device only. Nothing in Drive is deleted, and signing back in picks up where you left off.</li>
-      </ul>
-
-      <div class="step-image-container" style="max-width: 420px; margin: 1.5rem auto 2.5rem;">
-        <img src="09-cloud-book-actions-menu.jpg" alt="Long-press menu on a cloud book in Shiori with Download, Remove from cloud and Select" class="img-preview" data-index="8" />
+      <div class="lang-jp">
+        <p>複数端末で読書する際、Shioriは以下の明確なルールに基づいて安全にデータをマージします：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>データ種別</th><th>アップロード</th><th>ダウンロード</th><th>競合時の判定基準</th></tr></thead>
+            <tbody>
+              <tr><td><strong>読書位置・読了マーク</strong></td><td>自動</td><td>自動</td><td>最も最近読書した端末が優先</td></tr>
+              <tr><td><strong>しおり、ハイライト、メモ</strong></td><td>自動</td><td>自動</td><td>統合（双方が保持され欠落しません）</td></tr>
+              <tr><td><strong>読書・音声統計ログ</strong></td><td>自動</td><td>自動</td><td>統合（すべての読書時間が合算）</td></tr>
+              <tr><td><strong>書籍の評価（星）</strong></td><td>自動</td><td>自動</td><td>最新の変更が優先</td></tr>
+              <tr><td><strong>コレクション・読みたい本</strong></td><td>自動</td><td>自動</td><td>同名の本棚として自然に結合</td></tr>
+              <tr><td><strong>リーダー表示・TTS設定</strong></td><td>自動</td><td>手動適用</td><td>端末ごとに保持（<em>Restore here</em> で複製可）</td></tr>
+              <tr><td><strong>シークレット本</strong></td><td>対象外</td><td>対象外</td><td>完全プライベート（一切アップロードされません）</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h2>A Note on Privacy</h2>
-
-      <p>There is no Shiori account, no Shiori server, and no analytics attached to any of this. Your books and highlights go from your phone to your Drive and back. We cannot read them, and neither can the app outside the files it created. Incognito books are excluded entirely, and if you ever want out, sign out and delete the "Shiori Library" folder — that plus the hidden app folder is all there ever was.</p>
-
-      <div class="step-image-container" style="max-width: 420px; margin: 1.5rem auto 2.5rem;">
-        <img src="06-bookshelf-cloud-sync-row.jpg" alt="The Shiori bookshelf on Android with the Cloud Sync row and cloud badges on synced book covers" class="img-preview" data-index="9" />
+      <div class="lang-cn">
+        <p>跨设备阅读时，Shiori 遵循以下清晰的规则智能合并数据，确保您的阅读记录万无一失：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>数据类型</th><th>上传方式</th><th>下载方式</th><th>冲突处理策略</th></tr></thead>
+            <tbody>
+              <tr><td><strong>阅读进度与已读标记</strong></td><td>自动</td><td>自动</td><td>以最新阅读的设备进度为准</td></tr>
+              <tr><td><strong>书签、高亮划线、笔记</strong></td><td>自动</td><td>自动</td><td>双向智能合并，完整保留所有记录</td></tr>
+              <tr><td><strong>阅读与听书时长统计</strong></td><td>自动</td><td>自动</td><td>合并累加，不会丢失任何一段阅读会话</td></tr>
+              <tr><td><strong>书籍评分</strong></td><td>自动</td><td>自动</td><td>以最新评分为准</td></tr>
+              <tr><td><strong>收藏集与想读书单</strong></td><td>自动</td><td>自动</td><td>按书架名称自动无缝归并</td></tr>
+              <tr><td><strong>阅读排版与 TTS 设置</strong></td><td>自动</td><td>手动应用</td><td>各设备独立记忆（可用 <em>Restore here</em> 复制）</td></tr>
+              <tr><td><strong>无痕模式书籍</strong></td><td>永不上传</td><td>永不下载</td><td>完全私密保护，绝不上云</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h2>Frequently Asked Questions</h2>
-
-      <div class="faq-item">
-        <div class="faq-q">Does Shiori upload all my books automatically?</div>
-        <div class="faq-a">No. Book files are uploaded one at a time, when you long-press a book and choose <strong>Sync to Cloud</strong>. Everything smaller — settings, highlights, notes, ratings, reading position and statistics — can sync automatically, and does by default.</div>
+      <div class="lang-pt">
+        <p>Ao ler em mais de um aparelho, o Shiori aplica regras inteligentes de mesclagem:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Tipo de Dado</th><th>Upload</th><th>Download</th><th>Resolução de Conflitos</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Progresso e Leitura Concluída</strong></td><td>Automático</td><td>Automático</td><td>Prevalece a leitura mais recente</td></tr>
+              <tr><td><strong>Marcadores, destaques e notas</strong></td><td>Automático</td><td>Automático</td><td>Mesclados; nenhum item é perdido</td></tr>
+              <tr><td><strong>Estatísticas de leitura e áudio</strong></td><td>Automático</td><td>Automático</td><td>Mescladas e somadas integralmente</td></tr>
+              <tr><td><strong>Avaliações de livros</strong></td><td>Automático</td><td>Automático</td><td>Prevalece a avaliação mais recente</td></tr>
+              <tr><td><strong>Coleções e Quero Ler</strong></td><td>Automático</td><td>Automático</td><td>Combinadas pelo nome da prateleira</td></tr>
+              <tr><td><strong>Ajustes visuais e de TTS</strong></td><td>Automático</td><td>Manual</td><td>Salvos por aparelho (use <em>Restore here</em>)</td></tr>
+              <tr><td><strong>Livros Anônimos (Incognito)</strong></td><td>Nunca</td><td>Nunca</td><td>Totalmente privados, nunca enviados</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="faq-item">
-        <div class="faq-q">Where are my files inside Google Drive?</div>
-        <div class="faq-a">Book files sit in a normal, visible folder called <strong>Shiori Library</strong>. Everything else lives in Drive's hidden per-app folder, which does not appear in the Drive interface. Both belong to your account and count towards its storage.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Can Shiori read the rest of my Google Drive?</div>
-        <div class="faq-a">No. It asks only for the <code>drive.file</code> and <code>drive.appdata</code> permissions, which limit an app to files it created itself. That is also why a book you copy into the Shiori Library folder by hand stays invisible to the app.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Will my reading position follow me to another device?</div>
-        <div class="faq-a">Yes, for books that are synced, with <em>Auto-sync reading position</em> on. The position is written when you leave the reader, and the most recently read device wins if two disagree.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Why do my two devices have different font sizes after a restore?</div>
-        <div class="faq-a">Because reader and TTS settings are kept per device on purpose — a phone and a tablet rarely want the same layout. To copy one setup onto another, open <strong>Synced devices</strong> and tap <strong>Restore here</strong>.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">What happens to my Drive data when I sign out?</div>
-        <div class="faq-a">Nothing. Signing out only disconnects this device. Your backup stays in Drive, and signing back in — on this device or a new one — reconnects to it.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Are books I read in Incognito mode synced?</div>
-        <div class="faq-a">Never. Incognito books are excluded from every sync path: the file, the reading position, bookmarks and statistics all stay on the device.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Is using two devices safe?</div>
-        <div class="faq-a">It works, and it is marked experimental in the app for a reason: everything that auto-syncs — notes, bookmarks, highlights, statistics — is merged by rules, and rules can surprise you. Keep the warning in mind, and use <em>Repair Drive links</em> if a book stops updating on one side.</div>
-      </div>
-
-      <div class="quote-callout">
-        Ready to try it? <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" target="_blank" rel="noopener">Get Shiori on Google Play</a>, then open <strong>Settings → Cloud Sync (Google Drive)</strong> and sign in. The first backup takes seconds.
+      <div class="lang-es">
+        <p>Al alternar entre varios dispositivos, Shiori aplica reglas claras para no perder ninguna nota ni sesión:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Tipo de Dato</th><th>Subida</th><th>Descarga</th><th>Criterio de Resolución</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Progreso y libro terminado</strong></td><td>Automático</td><td>Automático</td><td>Prevalece el dispositivo leído más recientemente</td></tr>
+              <tr><td><strong>Marcadores, notas y subrayados</strong></td><td>Automático</td><td>Automático</td><td>Se combinan sin perder ninguna anotación</td></tr>
+              <tr><td><strong>Estadísticas de lectura y audio</strong></td><td>Automático</td><td>Automático</td><td>Se suman todas las sesiones acumuladas</td></tr>
+              <tr><td><strong>Valoraciones con estrellas</strong></td><td>Automático</td><td>Automático</td><td>Prevalece la valoración más reciente</td></tr>
+              <tr><td><strong>Colecciones y lista Por Leer</strong></td><td>Automático</td><td>Automático</td><td>Se agrupan por nombre de estante</td></tr>
+              <tr><td><strong>Ajustes de lectura y voz TTS</strong></td><td>Automático</td><td>Manual</td><td>Independientes por equipo (usa <em>Restore here</em>)</td></tr>
+              <tr><td><strong>Libros en modo Incógnito</strong></td><td>Nunca</td><td>Nunca</td><td>Totalmente privados, jamás se suben a la nube</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </article>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Does Shiori upload all my books automatically?</div>
+        <div class="faq-a">No. Book files are uploaded individually only when you long-press a book and choose <strong>Sync to Cloud</strong>. Smaller metadata — reading progress, notes, bookmarks, highlights, and stats — sync automatically by default.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori จะอัปโหลดหนังสือทุกเล่มขึ้นคลาวด์ให้อัตโนมัติเลยหรือไม่?</div>
+        <div class="faq-a">ไม่ครับ เพื่อประหยัดพื้นที่และเน็ตมือถือ ไฟล์หนังสือจะอัปโหลดเมื่อคุณกดค้างแล้วเลือก <strong>Sync to Cloud</strong> เองเป็นรายเล่ม ส่วนข้อมูลขนาดเล็กอย่างตำแหน่งอ่าน โน้ต ไฮไลต์ และสถิติ จะซิงก์อัตโนมัติเป็นค่าเริ่มต้น</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">端末内のすべての本が自動的にアップロードされますか？</div>
+        <div class="faq-a">いいえ。データ通信量と容量を守るため、書籍ファイルは長押しして <strong>Sync to Cloud</strong> を選んだ本のみアップロードされます。読書位置、ハイライト、メモなどの軽量データのみが自動同期されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">Shiori 会自动上传我手机里的所有图书吗？</div>
+        <div class="faq-a">不会。为节省流量与网盘空间，图书文件仅在您长按并选择 <strong>Sync to Cloud</strong> 时按需上传；阅读进度、笔记、高亮与统计数据则默认自动轻量同步。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O Shiori envia todos os meus livros automaticamente?</div>
+        <div class="faq-a">Não. Os arquivos de livros são enviados individualmente quando você escolhe <strong>Sync to Cloud</strong>. Apenas o progresso, notas e estatísticas sincronizam de forma automática.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Sube Shiori todos mis libros automáticamente?</div>
+        <div class="faq-a">No. Los archivos de libros solo se suben cuando tú eliges <strong>Sync to Cloud</strong>. Los datos ligeros como progreso, notas y estadísticas sí se sincronizan automáticamente.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can Shiori access or read other files in my Google Drive?</div>
+        <div class="faq-a">No. Shiori requests strictly restricted permissions (<code>drive.file</code> and <code>drive.appdata</code>), ensuring it can only view and manage files that Shiori itself created.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori สามารถเข้าถึงหรืออ่านไฟล์อื่นใน Google Drive ของฉันได้ไหม?</div>
+        <div class="faq-a">ไม่ได้เลยครับ Shiori ขอสิทธิ์จำกัดเฉพาะ <code>drive.file</code> และ <code>drive.appdata</code> ทำให้ระบบเข้าถึงได้เฉพาะไฟล์ที่แอปสร้างขึ้นเองเท่านั้น ปลอดภัยต่อข้อมูลส่วนตัวอื่นๆ ใน Drive ของคุณ 100%</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">ShioriがGoogle Drive内の他の個人ファイルを閲覧できますか？</div>
+        <div class="faq-a">いいえ、一切閲覧できません。Shioriは <code>drive.file</code> および <code>drive.appdata</code> の最小限のスコープのみを利用するため、自身が作成したファイル以外へのアクセスは技術的に遮断されています。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">Shiori 能否访问或读取我 Google Drive 里的其他私人文件？</div>
+        <div class="faq-a">绝对不能。Shiori 仅申请了 <code>drive.file</code> 与 <code>drive.appdata</code> 最小权限范围，严格限定只能访问由本应用自身创建的文件，您的其他个人网盘文件完全隔离。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O Shiori pode ler outros arquivos do meu Google Drive?</div>
+        <div class="faq-a">Não. As permissões <code>drive.file</code> e <code>drive.appdata</code> restringem o acesso estritamente aos arquivos criados pelo próprio aplicativo.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puede Shiori acceder a otros archivos de mi Google Drive?</div>
+        <div class="faq-a">No. Los permisos <code>drive.file</code> y <code>drive.appdata</code> limitan el acceso exclusivamente a los archivos generados por la propia aplicación.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Are books read in Incognito mode synced to the cloud?</div>
+        <div class="faq-a">Never. Incognito mode is fully isolated: books, reading positions, bookmarks, notes, and session history remain strictly local on your device.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">หนังสือที่เปิดอ่านในโหมดไม่ระบุตัวตน (Incognito) จะถูกซิงก์ขึ้นคลาวด์ไหม?</div>
+        <div class="faq-a">ไม่ถูกซิงก์อย่างแน่นอนครับ โหมด Incognito ถูกแยกการทำงานอย่างเด็ดขาด ทั้งไฟล์หนังสือ ตำแหน่งอ่าน โน้ต และสถิติจะไม่มีวันถูกส่งขึ้น Google Drive</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">シークレット（Incognito）モードで読んだ本も同期されますか？</div>
+        <div class="faq-a">一切同期されません。シークレットモードで開いた書籍、読書位置、メモ、履歴は端末ローカル内に完全に隔離され、クラウドへ送信されることはありません。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在“无痕模式（Incognito）”下阅读的书籍会被同步吗？</div>
+        <div class="faq-a">绝对不会。无痕模式具有严格的本地隔离保护，其图书文件、阅读进度、笔记及历史均不会上传至云端。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Livros lidos no modo Anônimo (Incognito) são sincronizados?</div>
+        <div class="faq-a">Nunca. O modo anônimo é totalmente isolado no aparelho local e nunca é enviado para a nuvem.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Se sincronizan los libros leídos en modo Incógnito?</div>
+        <div class="faq-a">Nunca. El modo incógnito está totalmente aislado en el dispositivo y jamás sube datos a la nube.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What happens to my Drive data if I sign out in Shiori?</div>
+        <div class="faq-a">Signing out merely disconnects the current device. All your files and backups remain safely stored in your Google Drive, ready to reconnect whenever you sign in again.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้ากด Sign out ออกจากระบบ ข้อมูลบน Google Drive จะหายไหม?</div>
+        <div class="faq-a">ไม่หายครับ การ Sign out เป็นเพียงการตัดการเชื่อมต่อของอุปกรณ์เครื่องปัจจุบันเท่านั้น ข้อมูลสำรองและไฟล์หนังสือทั้งหมดยังคงอยู่ใน Google Drive อย่างปลอดภัย และพร้อมให้ดึงกลับมาเมื่อล็อกอินใหม่เสมอ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">サインアウトするとGoogle Drive内のバックアップは消えますか？</div>
+        <div class="faq-a">消えません。サインアウトは該当端末の連携を解除するだけであり、Drive内のデータは安全に保持されます。再サインインすればいつでも復元できます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在应用中退出登录（Sign out）会删除云端数据吗？</div>
+        <div class="faq-a">不会。退出登录仅断开当前设备的连接，云端硬盘中的所有备份与图书均安然无恙，随时重新登录即可再次访问。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que acontece com meus dados se eu sair da conta (Sign out)?</div>
+        <div class="faq-a">Nada é apagado. O logout apenas desconecta este aparelho. Seus dados continuam no Google Drive para quando fizer login novamente.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué ocurre con mis datos en Drive si cierro sesión (Sign out)?</div>
+        <div class="faq-a">No se borra nada. Cerrar sesión solo desconecta ese dispositivo. Tus datos permanecen en Google Drive para cuando vuelvas a identificarte.</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Your Library, Anywhere You Go</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, enable Google Drive Cloud Sync, and enjoy seamless reading across all your Android devices.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">พกพาคลังหนังสือไปกับคุณ ทุกที่ทุกเวลา</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ เปิดใช้งาน Cloud Sync ผ่าน Google Drive แล้วอ่านต่อได้อย่างสบายใจในทุกอุปกรณ์
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">いつでもどこでも、途切れない読書体験を</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、Google Drive クラウド同期を有効にして、快適なマルチデバイス読書を始めましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">私人书房，随身而行</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，开启 Google Drive 云端同步，让每台设备都无缝衔接您的阅读足迹。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Sua Biblioteca em Qualquer Lugar</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader, ative o Cloud Sync com o Google Drive e leia em qualquer aparelho Android com total sincronia.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Tu Biblioteca en Todas Partes</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader, activa Cloud Sync con Google Drive y continúa tu lectura en cualquier dispositivo Android.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
   </main>
 
   <!-- Lightbox Modal -->
