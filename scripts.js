@@ -260,6 +260,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-title": "Multi-Language Text-to-Speech: One Book, Every Voice",
       "blog-p21-desc": "Why one voice is never enough for a real book — how Shiori switches voice mid-sentence by script, and how priority settles 漢字 and Latin between languages.",
 
+      // Blog Post 22
+      "blog-p22-date": "📅 August 15, 2026",
+      "blog-p22-cat": "🏷️ Reading Experience",
+      "blog-p22-title": "Every Button on the Reader Screen: A Touch-by-Touch Guide",
+      "blog-p22-desc": "Nine numbered targets on the top bar, seven on the bottom, and the long-press menu most readers never find — with the screen each touch opens.",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 August 15, 2026",
+      "blog-p23-cat": "🏷️ Import & Transfer",
+      "blog-p23-title": "Book Drop: Send Books to Your Phone Over Wi-Fi",
+      "blog-p23-desc": "Drag EPUBs onto a page your phone serves on your own network — no cable, no cloud account, nothing to install on the computer.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -409,11 +421,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // Blog list
       "blog-tag": "บล็อกอย่างเป็นทางการ",
       "blog-title": "บล็อกและ <span>ข่าวสารอัปเดต</span>",
-      "blog-sub": "ติดตามบทความ ข้อมูลการใช้งาน เทคนิคการตั้งค่า และอัปเดตเวอร์ชันใหม่จากทีมพัฒนา",
+      "blog-sub": "ติดตามบทความ คู่มือการใช้งาน เทคนิคการตั้งค่า และอัปเดตเวอร์ชันใหม่จากทีมพัฒนา",
       "blog-p1-date": "📅 29 มิถุนายน 2026",
       "blog-p1-cat": "🏷️ ประกาศข่าว",
-      "blog-p1-title": "ขอแนะนำ Shiori EPUB Reader แอปพลิเคชันอ่านและฟังสำหรับคนไทย",
-      "blog-p1-desc": "เจาะลึกที่มาของ Shiori (栞) แอปอ่านไฟล์ EPUB บน Android ที่ถูกออกแบบเพื่อเพิ่มประสิทธิภาพการอ่าน และฟังก์ชันการออกเสียงสองภาษาที่เน้นความไหลลื่น...",
+      "blog-p1-title": "ขอแนะนำ Shiori EPUB Reader: ยกระดับประสบการณ์อ่านและฟังหนังสือบน Android",
+      "blog-p1-desc": "ทำความรู้จัก Shiori (栞) แอปอ่าน EPUB แบบ Offline-First บน Android ที่ออกแบบมาเพื่อคนรักการอ่านอย่างแท้จริง พร้อมระบบสลับเสียงอ่านสองภาษาเนียนกริบและกฎปรับแต่งคำดั่งใจ...",
       "blog-p1-btn": "อ่านต่อเนื้อหาฉบับเต็ม",
       "blog-p2-date": "📅 เร็ว ๆ นี้",
       "blog-p2-cat": "🏷️ เคล็ดลับน่ารู้",
@@ -425,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p3-date": "📅 17 กรกฎาคม 2026",
       "blog-p3-cat": "🏷️ แหล่งหนังสือ",
       "blog-p3-title": "5 แหล่งดาวน์โหลดหนังสือ EPUB ฟรีที่ดีที่สุด",
-      "blog-p3-desc": "กำลังหาหนังสืออ่านอยู่ใช่ไหม? นี่คือเว็บยอดนิยมที่คุณสามารถหาไฟล์ EPUB คุณภาพดี ฟรี และถูกกฎหมาย เพื่อนำมาเปิดอ่านใน Shiori",
+      "blog-p3-desc": "กำลังมองหาหนังสือเล่มใหม่อยู่ใช่ไหม? รวบรวมเว็บไซต์แจกไฟล์ EPUB คุณภาพเยี่ยม ฟรี และถูกลิขสิทธิ์ ให้นำมาเปิดอ่านใน Shiori ได้จุใจ",
       
       // Blog Post 4
       "blog-p4-date": "📅 17 กรกฎาคม 2026",
@@ -534,6 +546,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-cat": "🏷️ เสียงอ่าน (TTS)",
       "blog-p21-title": "Multi-Language TTS: อ่านออกเสียงหลายภาษา สลับเสียงอัตโนมัติกลางประโยค",
       "blog-p21-desc": "ไขความลับระบบอ่านออกเสียงหลายภาษาของ Shiori ที่สามารถสลับเสียงอ่านตามชุดตัวอักษรได้เนียนกริบกลางประโยค พร้อมระบบจัดลำดับความสำคัญของตัวอักษร 漢字 และ Latin",
+
+      // Blog Post 22
+      "blog-p22-date": "📅 15 สิงหาคม 2026",
+      "blog-p22-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p22-title": "คู่มือหน้าอ่านหนังสือ EPUB: ทุกปุ่ม ทุกฟังก์ชัน แตะแล้วเจออะไรบ้าง",
+      "blog-p22-desc": "พาเจาะลึก 9 ไอคอนบนแถบเครื่องมือด้านบน, 7 ปุ่มควบคุมการเล่นด้านล่าง และเมนูกดค้างบนข้อความ ที่จะช่วยให้คุณใช้งาน Shiori ได้อย่างคล่องมือที่สุด",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 15 สิงหาคม 2026",
+      "blog-p23-cat": "🏷️ นำเข้าและโอนไฟล์",
+      "blog-p23-title": "Book Drop: ส่งหนังสือเข้ามือถือผ่าน Wi-Fi ไม่ต้องใช้สายและคลาวด์",
+      "blog-p23-desc": "ลากไฟล์ EPUB วางบนหน้าเว็บที่มือถือของคุณเปิดให้เองในวง Wi-Fi เดียวกัน ไม่ต้องต่อสาย ไม่ต้องสมัครคลาวด์ และไม่ต้องติดตั้งอะไรบนคอมพิวเตอร์",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -810,6 +834,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-title": "多言語TTS：1冊の本でも言語ごとに音声を自動切り替え",
       "blog-p21-desc": "本文中の文字体系を検知し、文の途中でも自然に音声をスイッチ。漢字やアルファベットの優先順位設定から言語別の速度調整まで徹底解説。",
 
+      // Blog Post 22
+      "blog-p22-date": "📅 2026年8月15日",
+      "blog-p22-cat": "🏷️ 読書体験",
+      "blog-p22-title": "リーダー画面の全ボタン解説：タップで使える機能ガイド",
+      "blog-p22-desc": "上部バーの9つのアイコン、下部バーの7つの操作ボタン、長押しで現れる12の便利メニューを画面写真付きで分かりやすく解説。",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 2026年8月15日",
+      "blog-p23-cat": "🏷️ 取り込みと転送",
+      "blog-p23-title": "Book Drop：Wi-Fi経由でパソコンからスマホへ本を送る",
+      "blog-p23-desc": "スマホ自身が配信するページにEPUBをドラッグするだけ。ケーブルもクラウドアカウントも、パソコン側のインストールも不要です。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1084,6 +1120,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-cat": "🏷️ 语音朗读（TTS）",
       "blog-p21-title": "多语言 TTS：一本书，多重原声音色自如切换",
       "blog-p21-desc": "告别单发音引擎的生硬别扭——Shiori 依据文字脚本在句中智能切换发音人，并支持汉字与拉丁字母语言优先级及独立语速微调。",
+
+      // Blog Post 22
+      "blog-p22-date": "📅 2026年8月15日",
+      "blog-p22-cat": "🏷️ 阅读体验",
+      "blog-p22-title": "阅读界面全按键指南：指尖触控功能全图解",
+      "blog-p22-desc": "顶部栏 9 个核心触控点、底部栏 7 个朗读与导航按钮，以及长按文字唤出的 12 项快捷菜单，带您轻松探索每一项贴心功能。",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 2026年8月15日",
+      "blog-p23-cat": "🏷️ 导入与传输",
+      "blog-p23-title": "Book Drop：通过 Wi-Fi 把书直接拖进手机",
+      "blog-p23-desc": "把 EPUB 拖到手机自己提供的网页上即可完成传输——无需数据线、无需云账号，电脑端也不用安装任何东西。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1360,6 +1408,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-title": "TTS Multilíngue: Um Livro, Todas as Vozes",
       "blog-p21-desc": "Como o Shiori alterna a voz no meio da frase de acordo com o alfabeto e define prioridades para caracteres compartilhados e velocidades por idioma.",
 
+      // Blog Post 22
+      "blog-p22-date": "📅 15 de agosto de 2026",
+      "blog-p22-cat": "🏷️ Experiência de Leitura",
+      "blog-p22-title": "Todos os Botões da Tela de Leitura: Guia Toque a Toque",
+      "blog-p22-desc": "Nove ícones na barra superior, sete na barra inferior e o menu de toque longo com 12 ações — tudo explicado com imagens detalhadas.",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 15 de agosto de 2026",
+      "blog-p23-cat": "🏷️ Importação e Transferência",
+      "blog-p23-title": "Book Drop: Envie Livros para o Celular por Wi-Fi",
+      "blog-p23-desc": "Arraste EPUBs para uma página que o próprio celular hospeda na sua rede — sem cabo, sem conta na nuvem e sem instalar nada no computador.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1634,6 +1694,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p21-cat": "🏷️ Lectura en Voz Alta (TTS)",
       "blog-p21-title": "TTS Multilingüe: Un Solo Libro, Todas las Voces",
       "blog-p21-desc": "Cómo Shiori cambia de voz a mitad de frase según el tipo de escritura y gestiona prioridades para caracteres compartidos y velocidades por idioma.",
+
+      // Blog Post 22
+      "blog-p22-date": "📅 15 de agosto de 2026",
+      "blog-p22-cat": "🏷️ Experiencia de Lectura",
+      "blog-p22-title": "Todos los Botones de la Pantalla de Lectura: Guía Toque a Toque",
+      "blog-p22-desc": "Nueve iconos en la barra superior, siete en la inferior y el menú de pulsación prolongada con 12 funciones explicadas al detalle.",
+
+      // Blog Post 23
+      "blog-p23-date": "📅 15 de agosto de 2026",
+      "blog-p23-cat": "🏷️ Importación y Transferencia",
+      "blog-p23-title": "Book Drop: Envía Libros a tu Teléfono por Wi-Fi",
+      "blog-p23-desc": "Arrastra EPUBs a una página que tu propio teléfono sirve en tu red — sin cable, sin cuenta en la nube y sin instalar nada en el ordenador.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

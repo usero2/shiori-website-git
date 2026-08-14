@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Book Drop: Send Books to Your Android Phone Over Wi-Fi — No Cable, No Cloud — Shiori Blog</title>
+  <meta name="description" content="Transfer EPUB, PDF, CBZ and more from your computer to Android by dragging them onto a web page your phone hosts on your own Wi-Fi. No cable, no cloud account, nothing to install on the computer." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/book-drop-send-books-to-android-over-wifi/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Book Drop: Send Books to Your Android Phone Over Wi-Fi",
+    "description": "A complete guide to Book Drop in Shiori ePub Reader for Android - how to send EPUB, KEPUB, CBZ, PDF, FB2, TXT and Markdown files from any computer by dragging them onto a page your phone hosts on your own Wi-Fi, what each status chip means, how duplicates are detected, and what is actually running on the phone.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-15",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/book-drop-send-books-to-android-over-wifi/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does Book Drop need an internet connection?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. The phone and the computer talk directly over your Wi-Fi. Your router can be cut off from the internet entirely and the transfer still works, because nothing is being uploaded anywhere - the file goes straight from one device to the other." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can other people on my Wi-Fi read my library through it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. The page has exactly two jobs: serve itself, and accept an uploaded book. There is no way to list, open or download anything already on your phone. The worst someone with the address could do is send you a book you did not ask for, and only while you have the switch on." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install anything on my computer?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Nothing at all. Any browser on any operating system works, because the page comes from your phone. It also works from another phone or a tablet, which is a quick way to move a book between two devices." }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if I drop the same book twice?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The second copy is rejected with \"Already on the shelf\" and your library is untouched. Shiori matches on the file's name and exact byte size, so re-dropping a whole folder is safe." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my phone exposed to the internet while Book Drop is on?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. It binds a private LAN address - the sort that stops at your router - so there is nothing to reach from outside your network and nothing to port-forward. It runs only while the switch is on, it shows a permanent notification the whole time, it is never remembered between app launches, and Android stops it by itself after about six hours." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p23-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p23-cat">🏷️ Import &amp; Transfer</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Drop a Book Into a Browser and Watch It Land on Your Phone<br><span class="text-gradient">Book Drop, Explained</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ลากไฟล์ลงเบราว์เซอร์ แล้วดูหนังสือเข้าสู่มือถือทันใจ<br><span class="text-gradient">เจาะลึกระบบ Book Drop ส่งไฟล์ผ่าน Wi-Fi ง่ายที่สุด</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">ブラウザに本をドロップしてスマホへ即座に転送<br><span class="text-gradient">Wi-Fi経由の高速ファイル転送「Book Drop」完全ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">拖入浏览器，图书即刻直达手机<br><span class="text-gradient">Book Drop 局域网极速无线传书深度解析</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Arraste o Livro no Navegador e Veja Ele Chegar ao Celular<br><span class="text-gradient">Como Funciona o Book Drop via Wi-Fi</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Arrastra un Libro al Navegador y Recíbelo en tu Móvil<br><span class="text-gradient">Guía Completa de Book Drop por Wi-Fi</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.45), rgba(11, 15, 25, 0.65)), url('06-received-list-on-the-shelf.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📥</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Getting an EPUB from your computer onto your phone has been surprisingly tedious for over a decade: searching for cables, waiting for USB drivers, digging through file managers, or emailing files to yourself just to move a book three feet across a desk.</p>
+
+        <p><strong>Book Drop</strong> replaces all of that friction with one simple idea: your phone hosts a private, lightweight web page on your own Wi-Fi. You open that address in any desktop browser, drag your books into the drop zone, and they land directly on your bookshelf. No cables, no cloud logins, and no software to install on your computer.</p>
+
+        <div class="quote-callout">
+          <strong>In one sentence:</strong> Turn Book Drop on, open the local Wi-Fi address in your computer's browser, and drag book files onto the page — each title imports straight into your Shiori bookshelf.
+        </div>
+
+        <h2>What You Need</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Same Wi-Fi Network:</strong> Your phone and computer simply need to be connected to the same local Wi-Fi router.</li>
+          <li><strong>Any Web Browser:</strong> Works effortlessly on Windows, macOS, Linux, ChromeOS, or even another tablet or phone.</li>
+          <li><strong>No Internet Required:</strong> The file transfer happens directly across your local network without uploading a single byte to external servers.</li>
+        </ul>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>การส่งไฟล์หนังสือ EPUB จากคอมพิวเตอร์เข้าสู่มือถือ มักเป็นเรื่องน่าเบื่อมาตลอดหลายปี ไม่ว่าจะเป็นการหาสาย USB มาเสียบ, การรอต่อคอม, หรือการส่งอีเมลเข้าหาตัวเองเพียงเพื่อย้ายไฟล์ข้ามโต๊ะทำงานระยะไม่กี่ก้าว</p>
+
+        <p><strong>Book Drop</strong> ถูกสร้างขึ้นมาเพื่อแก้ปัญหานี้ให้หมดไปอย่างสิ้นเชิง: มือถือของคุณจะเปิดหน้าเว็บชั่วคราวขึ้นมาในวง Wi-Fi ที่บ้าน เพียงคุณเปิดเบราว์เซอร์บนคอมพิวเตอร์แล้วลากไฟล์หนังสือมาวาง หนังสือก็จะถูกนำเข้าสู่ชั้นหนังสือใน Shiori ทันที โดยไม่ต้องต่อสาย ไม่ต้องสมัครบัญชีคลาวด์ และไม่ต้องลงโปรแกรมใดๆ บนคอมพิวเตอร์</p>
+
+        <div class="quote-callout">
+          <strong>สรุปสั้นๆ ในหนึ่งประโยค:</strong> เปิดสวิตช์ Book Drop ในมือถือ นำที่อยู่เว็บไปเปิดบนคอมพิวเตอร์ แล้วลากไฟล์หนังสือวางลงในเบราว์เซอร์ หนังสือจะปรากฏบนชั้นหนังสือของคุณทันที
+        </div>
+
+        <h2>สิ่งที่คุณต้องเตรียม</h2>
+        <ul class="article-bullet-list">
+          <li><strong>เชื่อมต่อ Wi-Fi วงเดียวกัน:</strong> ให้มือถือและคอมพิวเตอร์ของคุณต่อ Wi-Fi เร้าเตอร์ตัวเดียวกัน</li>
+          <li><strong>เว็บเบราว์เซอร์ใดก็ได้:</strong> ใช้งานได้บน Windows, Mac, Linux, ChromeOS หรือแม้แต่แท็บเล็ตเครื่องอื่น</li>
+          <li><strong>ไม่ต้องใช้อินเทอร์เน็ต:</strong> การโอนไฟล์เกิดขึ้นผ่านเครือข่ายภายในบ้านโดยตรง จึงทำงานได้แม้เน็ตบ้านจะตัด</li>
+        </ul>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>PCからスマホへ電子書籍（EPUB）を転送する作業は、これまで意外と面倒でした。USBケーブルを探したり、クラウドに一度アップロードして再ダウンロードしたりと手間がかかります。</p>
+
+        <p><strong>Book Drop</strong> はその悩みをスマートに解決します。スマホが同一Wi-Fi内で軽量なWebページを立ち上げ、PCのブラウザから本をドラッグ＆ドロップするだけで、Shioriの本棚へ直接インポートされます。ケーブルもPC側ソフトも不要です。</p>
+
+        <div class="quote-callout">
+          <strong>ひとことで言うと：</strong> Book DropをONにし、表示されたURLをPCのブラウザで開いて本をドラッグするだけ。届いた本は即座にShioriの本棚に追加されます。
+        </div>
+
+        <h2>必要な環境</h2>
+        <ul class="article-bullet-list">
+          <li><strong>同一のWi-Fiネットワーク：</strong> スマホとPCが同じWi-Fiルーターに接続されていること。</li>
+          <li><strong>任意のWebブラウザ：</strong> Windows、Mac、Linux、ChromeOSなどブラウザがあれば何でもOK。</li>
+          <li><strong>インターネット接続不要：</strong> ローカルネットワーク内で直接転送されるため外部通信は発生しません。</li>
+        </ul>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>把电脑里的 EPUB 电子书传到手机上，长期以来都是一件繁琐的事：找数据线、开网盘中转，或是发邮件给自己，只为了把文件从桌子这边挪到那边。</p>
+
+        <p><strong>Book Drop</strong> 用极简理念彻底颠覆了这一切：手机在局域网内临时建立一个极轻量的网页，您只需在电脑浏览器打开该地址并拖入书籍，图书便会瞬间直达 Shiori 书架。无需数据线，无需网盘账号，电脑端更无需安装任何附加软件。</p>
+
+        <div class="quote-callout">
+          <strong>一句话概括：</strong> 开启 Book Drop，在电脑浏览器打开局域网网址并拖入图书，即可自动完成导入并陈列于 Shiori 书架。
+        </div>
+
+        <h2>前置准备条件</h2>
+        <ul class="article-bullet-list">
+          <li><strong>处于同一 Wi-Fi 网络：</strong> 手机与电脑连接至同一个无线路由器。</li>
+          <li><strong>任意现代浏览器：</strong> 兼容 Windows、macOS、Linux、ChromeOS 及其他平板或手机。</li>
+          <li><strong>无需连接外网：</strong> 纯局域网点对点高速传输，零外网流量消耗，断网也能传。</li>
+        </ul>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Transferir livros do computador para o celular nunca foi tão fácil. O <strong>Book Drop</strong> cria uma página local no seu Wi-Fi: basta abrir no navegador do PC e arrastar os arquivos para o Shiori.</p>
+
+        <div class="quote-callout">
+          <strong>Em resumo:</strong> Ative o Book Drop, abra o endereço no PC e arraste seus livros — eles entram direto na estante.
+        </div>
+
+        <h2>O Que Você Precisa</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Mesmo Wi-Fi:</strong> Celular e computador na mesma rede local.</li>
+          <li><strong>Qualquer Navegador:</strong> Funciona em Windows, Mac, Linux e outros dispositivos.</li>
+          <li><strong>Sem Internet:</strong> A transferência é 100% direta e segura na rede local.</li>
+        </ul>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Enviar libros de tu ordenador al móvil suele ser engorroso. Con <strong>Book Drop</strong>, tu móvil crea una página web local por Wi-Fi: ábrela en el navegador de tu PC y arrastra los libros directamente a Shiori.</p>
+
+        <div class="quote-callout">
+          <strong>En una frase:</strong> Activa Book Drop, abre la dirección en tu ordenador y arrastra tus libros a la estantería al instante.
+        </div>
+
+        <h2>Qué Necesitas</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Misma red Wi-Fi:</strong> Móvil y ordenador conectados al mismo router.</li>
+          <li><strong>Cualquier Navegador:</strong> Compatible con Windows, Mac, Linux y tablets.</li>
+          <li><strong>Sin Internet:</strong> Transferencia 100% local y segura en tu propia red.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP (6 STEPS) ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Sending Your First Book (6 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการส่งหนังสือเล่มแรก (6 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">本を転送する手順（6つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">首次传书操作指南（6 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Como Transferir Livros (6 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Cómo Transferir Tus Libros (6 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open Book Drop in Experimental Settings</div>
+          <div class="step-desc">
+            <p>On your phone, open <strong>Settings → Experimental</strong> and locate <strong>Book Drop</strong>. It stays off by default for privacy and security.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดเมนู Book Drop ใน Experimental</div>
+          <div class="step-desc">
+            <p>ในมือถือ ให้เปิดไปที่ <strong>Settings → Experimental</strong> แล้วมองหาหัวข้อ <strong>Book Drop</strong> โดยฟังก์ชันนี้จะปิดอยู่เสมอเพื่อความปลอดภัยและความเป็นส่วนตัว</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>Experimental設定からBook Dropを開く</div>
+          <div class="step-desc">
+            <p>スマホで <strong>設定 → Experimental</strong> を開き、<strong>Book Drop</strong> を見つけます。セキュリティ保護のため初期状態ではOFFになっています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>在 Experimental 实验性功能中找到 Book Drop</div>
+          <div class="step-desc">
+            <p>在手机上打开 <strong>设置 → Experimental</strong>，找到 <strong>Book Drop</strong> 开关。出于隐私与安全考量，该功能默认处于关闭状态。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Acesse Book Drop em Experimental</div>
+          <div class="step-desc">
+            <p>No celular, vá em <strong>Configurações → Experimental</strong> e localize o <strong>Book Drop</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Entra en Book Drop en Experimental</div>
+          <div class="step-desc">
+            <p>En tu móvil, entra en <strong>Ajustes → Experimental</strong> y busca la sección <strong>Book Drop</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-experimental-book-drop-toggle.jpg" alt="Shiori's Experimental settings showing Book Drop switch" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Turn It On and Copy the Address</div>
+          <div class="step-desc">
+            <p>Toggle the switch on. A card appears displaying your phone's local network URL (such as <code>http://192.168.1.34:17872</code>). Long-press to copy the address.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เปิดสวิตช์แล้วดูที่อยู่ IP ของมือถือ</div>
+          <div class="step-desc">
+            <p>แตะเปิดสวิตช์ การ์ดจะแสดงที่อยู่เว็บประจำเครื่องของคุณ (เช่น <code>http://192.168.1.34:17872</code>) คุณสามารถกดค้างเพื่อคัดลอกที่อยู่นี้ได้</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>スイッチをONにしてアドレスを確認</div>
+          <div class="step-desc">
+            <p>スイッチをONにすると <code>http://192.168.1.34:17872</code> のようなローカルURLカードが表示されます。長押しでコピーも可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>开启开关并获取局域网地址</div>
+          <div class="step-desc">
+            <p>轻触开启开关，下方会立即展示手机当前局域网地址（如 <code>http://192.168.1.34:17872</code>）。长按可快速复制地址。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Ative e Veja o Endereço IP</div>
+          <div class="step-desc">
+            <p>Ao ativar, o app exibe o endereço de rede local (ex: <code>http://192.168.1.34:17872</code>).</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Activa y Copia la Dirección IP</div>
+          <div class="step-desc">
+            <p>Al encenderlo, verás la dirección local asignada (ej: <code>http://192.168.1.34:17872</code>).</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-book-drop-address-on-phone.jpg" alt="Book Drop switched on in Shiori showing the phone's Wi-Fi address" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Open That Address in Your Computer's Browser</div>
+          <div class="step-desc">
+            <p>Type the address into Chrome, Edge, Safari, Firefox, or Brave. A sleek, dark transfer page hosted directly on your phone loads instantly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เปิดที่อยู่เว็บดังกล่าวบนเบราว์เซอร์ในคอมพิวเตอร์</div>
+          <div class="step-desc">
+            <p>พิมพ์ที่อยู่นี้ลงในเบราว์เซอร์ของคอมพิวเตอร์ หน้าเว็บธีมมืดดีไซน์สวยงามของ Shiori ที่รันจากมือถือจะโหลดขึ้นมาทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>PCのブラウザでそのアドレスを開く</div>
+          <div class="step-desc">
+            <p>PCのブラウザのアドレスバーに入力します。スマホ自身から配信される美しいダークテーマの転送ページが即座に開きます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>在电脑浏览器中输入并打开该地址</div>
+          <div class="step-desc">
+            <p>在电脑浏览器中输入该网址，由手机直接伺服的深色专属传书网页将瞬间秒速呈现。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Abra o Endereço no Navegador do PC</div>
+          <div class="step-desc">
+            <p>Digite o endereço no navegador do computador para abrir a página de envio.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Abre la Dirección en el Navegador del PC</div>
+          <div class="step-desc">
+            <p>Introduce la URL en el navegador de tu ordenador para acceder al panel de subida.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-book-drop-page-in-browser.jpg" alt="Shiori Book Drop page open in a desktop browser" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Drag and Drop Books Onto the Drop Zone</div>
+          <div class="step-desc">
+            <p>Drag one book or dozens of titles from your file explorer or Calibre directory. The drop zone glows upon hover, or you can simply click it to select files.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ลากไฟล์หนังสือมาวางในพื้นที่ Drop Zone</div>
+          <div class="step-desc">
+            <p>ลากไฟล์หนังสือทีละเล่มหรือทั้งโฟลเดอร์มาวาง พื้นที่จะเรืองแสงตอบรับ หรือจะคลิกที่กล่องเพื่อเลือกไฟล์ตามปกติก็ได้เช่นกัน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>ドロップゾーンに本をドラッグ＆ドロップ</div>
+          <div class="step-desc">
+            <p>デスクトップやフォルダから1冊でも数十冊でもまとめてドラッグ。枠線が光り、クリックでファイル選択ダイアログも開けます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>将图书文件拖入网页接收区域</div>
+          <div class="step-desc">
+            <p>支持单本或多本批量拖拽。拖入时接收区会有高亮反馈，亦可直接点击区域呼出文件选择窗口。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Arraste Seus Livros para a Página</div>
+          <div class="step-desc">
+            <p>Arraste um ou vários arquivos; a área destacará ao passar o mouse.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Arrastra los Libros a la Zona de Suelta</div>
+          <div class="step-desc">
+            <p>Arrastra uno o varios archivos a la vez; la zona se iluminará al soltarlos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-drop-zone-drag-hover.jpg" alt="Book Drop zone highlighted during file drag" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Monitor Real-Time Transfer Progress</div>
+          <div class="step-desc">
+            <p>Each file shows a live progress bar with format badges and byte counters while transferring directly across your local network.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>ดูแถบสถานะการส่งไฟล์แบบเรียลไทม์</div>
+          <div class="step-desc">
+            <p>แต่ละไฟล์จะมีแถบความคืบหน้า ป้ายประเภทไฟล์ และขนาดไฟล์แสดงให้เห็นชัดเจนขณะส่งข้อมูลผ่าน Wi-Fi</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>転送の進捗状況をリアルタイムで確認</div>
+          <div class="step-desc">
+            <p>フォーマットバッジやファイルサイズ、送信プログレスバーがファイルごとにリアルタイム表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>实时查看文件传输进度</div>
+          <div class="step-desc">
+            <p>每本图书均带有格式徽章、文件大小及实时进度条，局域网高速传输一目了然。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Acompanhe o Progresso em Tempo Real</div>
+          <div class="step-desc">
+            <p>Barras de progresso individuais mostram o envio em alta velocidade.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Sigue el Progreso de Subida en Vivo</div>
+          <div class="step-desc">
+            <p>Barras de progreso independientes muestran la velocidad de transferencia local.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-uploading-in-progress.jpg" alt="EPUB files uploading to a phone through Book Drop" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Instant Confirmation &amp; Parsed Metadata</div>
+          <div class="step-desc">
+            <p>Once imported, the second line switches from the raw filename to the actual book title parsed directly from the EPUB (e.g. <code>bram-stoker_dracula.epub</code> confirms as <strong>Dracula</strong>).</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>รับการยืนยันพร้อมชื่อหนังสือจริงที่อ่านได้จากไฟล์</div>
+          <div class="step-desc">
+            <p>เมื่อนำเข้าสำเร็จ ชื่อไฟล์จะเปลี่ยนเป็นชื่อหนังสือจริงที่แอปถอดรหัสออกมาได้ (เช่น <code>bram-stoker_dracula.epub</code> จะแสดงเป็น <strong>Dracula</strong>) ยืนยันว่าหนังสือพร้อมอ่านทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>インポート完了と正式タイトルの確認</div>
+          <div class="step-desc">
+            <p>インポート成功時、ファイル名からEPUB内部の正式な書籍タイトル（例: <code>bram-stoker_dracula.epub</code> → <strong>Dracula</strong>）へ自動表示更新されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>秒速解析书名与导入完成提示</div>
+          <div class="step-desc">
+            <p>导入成功后，原始文件名会自动转换为从 EPUB 内部解析出的真实书名（如 <code>bram-stoker_dracula.epub</code> 转化为 <strong>Dracula</strong>），确认图书完好可用。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Confirmação com Título Real do Livro</div>
+          <div class="step-desc">
+            <p>O app valida o arquivo e exibe o título oficial do livro na estante.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Confirmación con Título Real de la Obra</div>
+          <div class="step-desc">
+            <p>La app valida el libro y muestra su título oficial listo en la estantería.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-received-list-on-the-shelf.jpg" alt="Book Drop received list showing imported books" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- ==================== STATUS CHIPS & FORMATS ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">The Four Status Indicators</h2>
+      <h2 class="lang-th">ความหมายของ 4 สถานะการนำเข้า</h2>
+      <h2 class="lang-jp">4つのステータス表示</h2>
+      <h2 class="lang-cn">4 种状态标识解析</h2>
+      <h2 class="lang-pt">Os Quatro Indicadores de Status</h2>
+      <h2 class="lang-es">Los Cuatro Indicadores de Estado</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Status Chip</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>uploading…</strong></td><td>Transferring data or phone is actively parsing book chapters</td></tr>
+            <tr><td><strong>On the shelf ✓</strong></td><td>Successfully imported with cover artwork and metadata</td></tr>
+            <tr><td><strong>Already on the shelf</strong></td><td>Identical file (matched by filename and exact byte size) already exists — prevents duplicate clutter</td></tr>
+            <tr><td><strong>unsupported type</strong></td><td>File format is not supported (e.g. Word documents or raw images)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step-image-container" style="max-width: 750px; margin: 1.5rem auto 2.5rem;">
+        <img src="07-unsupported-file-rejected.jpg" alt="Book Drop rejecting an unsupported image file" class="img-preview" data-index="6" />
+      </div>
+
+      <h2 class="lang-en">Supported File Formats (Up to 1 GB per File)</h2>
+      <h2 class="lang-th">รูปแบบไฟล์ที่รองรับ (ขนาดสูงสุด 1 GB ต่อไฟล์)</h2>
+      <h2 class="lang-jp">対応フォーマット（1ファイル最大1GBまで）</h2>
+      <h2 class="lang-cn">支持的图书格式（单文件最大支持 1 GB）</h2>
+      <h2 class="lang-pt">Formatos Suportados (Até 1 GB por Arquivo)</h2>
+      <h2 class="lang-es">Formatos Compatibles (Hasta 1 GB por Archivo)</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Format</th><th>Details</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>EPUB / KEPUB</strong></td><td>Standard EPUB 2/3 and Kobo KEPUB ebooks</td></tr>
+            <tr><td><strong>CBZ</strong></td><td>Comics &amp; manga archives (first page appears instantly while background parser finishes)</td></tr>
+            <tr><td><strong>PDF</strong></td><td>Text-based PDFs with intelligent text reflow for smooth mobile reading</td></tr>
+            <tr><td><strong>FB2</strong></td><td>FictionBook <code>.fb2</code> and compressed <code>.fb2.zip</code></td></tr>
+            <tr><td><strong>TXT</strong></td><td>Plain text structured automatically with chapter navigation</td></tr>
+            <tr><td><strong>MD / Markdown</strong></td><td>Rendered into styled, readable ebooks</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <!-- ==================== SECURITY & NOTIFICATION ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">Privacy &amp; Security on Your Local Network</h2>
+      <h2 class="lang-th">ความปลอดภัยและความเป็นส่วนตัวในระบบเครือข่าย</h2>
+      <h2 class="lang-jp">セキュリティとプライバシーへの配慮</h2>
+      <h2 class="lang-cn">本地局域网安全与隐私保障机制</h2>
+      <h2 class="lang-pt">Segurança e Privacidade na Rede Local</h2>
+      <h2 class="lang-es">Seguridad y Privacidad en Red Local</h2>
+
+      <ul class="article-bullet-list">
+        <li><strong>Only Active When Switched On:</strong> The server closes the second you turn the toggle off or press Stop. It never stays running silently.</li>
+        <li><strong>Permanent Status Notification:</strong> Android displays an ongoing notification with the address, received count, and an instant <strong>Stop</strong> button.</li>
+        <li><strong>Private LAN Address Only:</strong> Accessible solely from your local Wi-Fi, completely unreachable from the public internet.</li>
+        <li><strong>Receive-Only Architecture:</strong> The web interface only accepts incoming uploads — it cannot browse, read, or export any existing books on your phone.</li>
+      </ul>
+    </article>
+
+    <div class="step-image-container" style="max-width: 420px; margin: 0 auto 2.5rem;">
+      <img src="08-book-drop-notification.jpg" alt="Ongoing Book Drop notification on Android with Stop action" class="img-preview" data-index="7" />
+    </div>
+
+    <!-- ==================== BOOKSHELF & READY TO READ ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">Straight to the Bookshelf, Ready to Read</h2>
+      <h2 class="lang-th">ส่งตรงเข้าชั้นหนังสือ พร้อมเปิดอ่านได้ทันที</h2>
+      <h2 class="lang-jp">本棚に直行、すぐに読書開始</h2>
+      <h2 class="lang-cn">直达书架，即点即读</h2>
+      <h2 class="lang-pt">Direto na Estante, Pronto para Ler</h2>
+      <h2 class="lang-es">Directo a la Estantería, Listo para Leer</h2>
+
+      <div class="lang-en">
+        <p>Books appear immediately on your bookshelf with high-resolution covers and full chapter indexation. Open them right away to enjoy text-to-speech, translation, custom themes, and notes.</p>
+      </div>
+      <div class="lang-th">
+        <p>หนังสือจะปรากฏบนชั้นหนังสือใน Shiori ทันทีพร้อมภาพปกและสารบัญครบถ้วน แตะเปิดอ่าน ฟังเสียงอ่าน แปลภาษา หรือไฮไลต์ข้อความได้ทันที</p>
+      </div>
+      <div class="lang-jp">
+        <p>インポートされた本はカバー画像付きで即座に本棚に並びます。タップしてすぐに音声読み上げやハイライト機能を使って読書を楽しめます。</p>
+      </div>
+      <div class="lang-cn">
+        <p>图书导入后即刻呈现于书架之上，封面与目录完备。轻点即可开启阅读，畅享语音朗读、即时翻译与多色高亮。</p>
+      </div>
+      <div class="lang-pt">
+        <p>Os livros aparecem na estante com capas e capítulos, prontos para ler com todas as ferramentas do Shiori.</p>
+      </div>
+      <div class="lang-es">
+        <p>Las obras aparecen de inmediato en tu estantería con portada e índice completo, listas para leer con todas las funciones.</p>
+      </div>
+    </article>
+
+    <div class="step-image-container">
+      <img src="10-dropped-books-on-the-bookshelf.jpg" alt="Books on Shiori bookshelf after Book Drop transfer" class="img-preview" data-index="8" />
+    </div>
+
+    <div class="step-image-container" style="max-width: 420px; margin: 1.5rem auto 2.5rem;">
+      <img src="09-received-count-in-settings.jpg" alt="Book Drop settings card showing received count" class="img-preview" data-index="9" />
+    </div>
+
+    <div class="step-image-container" style="max-width: 420px; margin: 0 auto 2.5rem;">
+      <img src="11-dropped-book-open-in-reader.jpg" alt="Book open in Shiori reader after Book Drop" class="img-preview" data-index="10" />
+    </div>
+
+    <!-- ==================== COMPARISON TABLE ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">When to Use Book Drop vs Other Transfer Methods</h2>
+      <h2 class="lang-th">เปรียบเทียบ: ควรเลือกใช้วิธีส่งหนังสือแบบไหนดีที่สุด?</h2>
+      <h2 class="lang-jp">転送方法の比較と使い分け</h2>
+      <h2 class="lang-cn">四种传书方式场景对比与选型建议</h2>
+      <h2 class="lang-pt">Comparativo de Métodos de Transferência</h2>
+      <h2 class="lang-es">Comparativa de Métodos de Transferencia</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Method</th><th>Best For</th><th>Requirements</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Book Drop</strong></td>
+              <td>Sending files from PC to phone in seconds with zero setup</td>
+              <td>Same Wi-Fi, modern web browser</td>
+            </tr>
+            <tr>
+              <td><strong>Calibre Companion</strong></td>
+              <td>Syncing from a Calibre library with custom tags and series</td>
+              <td>Calibre running on PC</td>
+            </tr>
+            <tr>
+              <td><strong>Library Servers</strong></td>
+              <td>Browsing large collections on self-hosted or cloud servers</td>
+              <td>OPDS, Komga, Kavita, WebDAV, or S3</td>
+            </tr>
+            <tr>
+              <td><strong>Cloud Sync</strong></td>
+              <td>Keeping 2 devices synchronized with notes and reading progress</td>
+              <td>Google Account, internet connection</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Does Book Drop require an active internet connection?</div>
+        <div class="faq-a">No. The transfer occurs entirely within your local Wi-Fi network. Even if your internet connection is down, transfers will work smoothly.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Book Drop ต้องใช้อินเทอร์เน็ตหรือไม่?</div>
+        <div class="faq-a">ไม่ต้องครับ การส่งไฟล์เป็นการส่งตรงระหว่างคอมพิวเตอร์กับมือถือผ่าน Wi-Fi ในบ้าน แม้เน็ตบ้านจะหลุดก็ยังส่งไฟล์ได้ตามปกติ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">インターネット接続は必須ですか？</div>
+        <div class="faq-a">いいえ、不要です。同一Wi-Fiルーター内のローカル通信のみで完結するため、外のインターネットが不通でも問題なく転送できます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">使用 Book Drop 是否需要连接外网？</div>
+        <div class="faq-a">不需要。传输纯粹在局域网 Wi-Fi 内部点对点完成，即使外网断开也完全不影响无线传书。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O Book Drop precisa de conexão com a internet?</div>
+        <div class="faq-a">Não. A transferência ocorre 100% dentro da sua rede Wi-Fi local.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Requiere Book Drop conexión a internet activa?</div>
+        <div class="faq-a">No. La transferencia se realiza íntegramente a través de tu red Wi-Fi local sin consumir datos de internet.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can other people on my Wi-Fi access or download my library?</div>
+        <div class="faq-a">No. The web server is strictly receive-only. There is no API or interface to list, read, or download files stored on your phone.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">คนอื่นที่ต่อ Wi-Fi เดียวกันจะเข้ามาดูหนังสือในเครื่องเราได้ไหม?</div>
+        <div class="faq-a">ไม่ได้เด็ดขาดครับ หน้าเว็บถูกออกแบบมาให้ทำหน้าที่ "รับไฟล์เข้า" เพียงอย่างเดียว ไม่มีหน้าดูรายชื่อหนังสือหรือดาวน์โหลดไฟล์ออกจากเครื่องคุณได้</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">同じWi-Fiにいる他人に本棚を覗かれたりしませんか？</div>
+        <div class="faq-a">安全です。サーバーは「本の受信」専用に設計されており、スマホ内の書籍一覧を表示したりダウンロードする機能は一切存在しません。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">局域网内的其他人是否能浏览或下载我手机里的书？</div>
+        <div class="faq-a">绝无可能。服务仅开放单向上传通道，没有任何列出、读取或下载手机图书的接口。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Outras pessoas na rede podem ver meus livros?</div>
+        <div class="faq-a">Não. A página serve exclusivamente para receber arquivos, sem acesso aos seus livros.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Pueden otras personas de la red ver o descargar mis libros?</div>
+        <div class="faq-a">No. La página funciona exclusivamente en modo recepción y no permite listar ni descargar nada de tu móvil.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Do I need to install any program on my PC?</div>
+        <div class="faq-a">No. Any modern browser on Windows, Mac, Linux, or ChromeOS is all you need.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ต้องลงโปรแกรมอะไรบนคอมพิวเตอร์ไหม?</div>
+        <div class="faq-a">ไม่ต้องลงโปรแกรมใดๆ เลยครับ แค่เปิดเบราว์เซอร์อย่าง Chrome, Edge, Safari หรือ Firefox แล้วใส่ที่อยู่เว็บก็พร้อมใช้งาน</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">PC側に専用ソフトのインストールは必要ですか？</div>
+        <div class="faq-a">一切不要です。Windows、Mac、Linuxなどの標準ブラウザさえあればそのまま使えます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">电脑端是否需要安装客户端或驱动？</div>
+        <div class="faq-a">无需安装任何软件，只要有 Chrome、Edge、Safari 或 Firefox 等任意浏览器即可使用。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Preciso instalar algum programa no computador?</div>
+        <div class="faq-a">Não. Basta usar qualquer navegador web moderno.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Tengo que instalar algún programa en el ordenador?</div>
+        <div class="faq-a">No. Solo necesitas un navegador web moderno como Chrome, Edge, Safari o Firefox.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What happens if I accidentally drop the same book twice?</div>
+        <div class="faq-a">Shiori recognizes matching filenames and byte sizes, marking the second file as "Already on the shelf" without duplicating your books.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้าเผลอลากหนังสือเล่มเดิมซ้ำจะเป็นอย่างไร?</div>
+        <div class="faq-a">Shiori จะตรวจสอบชื่อไฟล์และขนาดไฟล์ หากพบว่ามีอยู่แล้วจะแจ้งว่า "Already on the shelf" โดยไม่บันทึกไฟล์ซ้ำซ้อนให้เปลืองพื้นที่ครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">同じ本を重複してドロップした場合はどうなりますか？</div>
+        <div class="faq-a">ファイル名とサイズから同一性を自動判定し、「Already on the shelf」と表示して重複登録を防ぎます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">如果不小心重复拖入了同一本书会怎样？</div>
+        <div class="faq-a">系统会根据文件名与文件字节精准去重，提示“Already on the shelf”，杜绝书架重复冗余。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que acontece se eu enviar o mesmo livro duas vezes?</div>
+        <div class="faq-a">O Shiori identifica a duplicata e ignora o arquivo sem duplicar na estante.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué ocurre si suelto el mismo libro dos veces por error?</div>
+        <div class="faq-a">Shiori detecta el duplicado por nombre y tamaño exacto, evitando duplicar archivos en tu estantería.</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">The Easiest Way to Transfer Books</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Get Shiori on Google Play, turn on Book Drop, and drag your next favorite book right onto your phone.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">วิธีส่งหนังสือเข้ามือถือที่สะดวกและรวดเร็วที่สุด</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori บน Google Play เปิดใช้งาน Book Drop แล้วลากหนังสือเล่มโปรดเข้าสู่มือถือได้ในพริบตา
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">最も手軽で快適なワイヤレス本転送</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、Book Dropで次の一冊をスマートに転送しましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">体验前所未有的极简无线传书</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即在 Google Play 下载 Shiori，开启 Book Drop，告别数据线，轻松拖入下一本好书。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">A Forma Mais Simples de Transferir Livros</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play, ative o Book Drop e envie seus livros favoritos sem complicação.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">La Forma Más Sencilla de Pasar Libros a tu Móvil</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play, activa Book Drop y transfiere tus libros favoritos sin cables.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

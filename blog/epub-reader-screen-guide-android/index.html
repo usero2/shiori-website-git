@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>EPUB Reader Screen Guide for Android: Every Button, Where to Touch and What Opens — Shiori Blog</title>
+  <meta name="description" content="A touch-by-touch guide to Shiori's EPUB reader screen on Android: all nine top-bar targets, the two bottom rows, the long-press selection menu, highlighting in two touches and immersive full-screen reading." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/epub-reader-screen-guide-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Every Button on Shiori's EPUB Reader Screen: A Touch-by-Touch Guide",
+    "description": "A control-by-control walkthrough of the EPUB reader screen in Shiori for Android - the nine top-bar touch targets and the panel each one opens, both bottom rows including playback and immersive mode, the twelve-action long-press selection menu, highlighting with colours and notes, and in-book search.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-15",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/epub-reader-screen-guide-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why does tapping the middle of the page do nothing?",
+        "acceptedAnswer": { "@type": "Answer", "text": "By design. Toolbars that appear and disappear on every stray tap are a constant irritation while reading, so Shiori keeps them still. Use the immersive button to get rid of them, and the system back button to bring them back." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I turn pages instead of scrolling?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Open the reading mode panel from the top bar and choose Page turn. The setting is remembered per book, so it does not follow you into your other books." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get back to the sentence being read aloud?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Touch the centre-arrows button on the bottom bar. It scrolls back to the spoken sentence and keeps it centred from then on, so you can browse ahead freely and return with one touch." }
+      },
+      {
+        "@type": "Question",
+        "name": "Where did my bottom row of playback buttons go?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It can be hidden: long-press any word and touch TTS bar to bring it back. Play and the centring button remain in the first row even while it is hidden." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do highlights change the EPUB file?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. They are stored by the app, alongside your bookmarks and notes, so re-importing or re-downloading the book keeps them and Cloud Sync can carry them to another device." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p22-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p22-cat">🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Every Button on the Reader Screen<br><span class="text-gradient">A Touch-by-Touch Guide to Reading EPUBs</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ทุกปุ่มบนหน้าอ่านหนังสือ EPUB<br><span class="text-gradient">คู่มือเจาะลึกทุกจุดสัมผัสและการควบคุมใน Shiori</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">リーダー画面の全ボタン解説<br><span class="text-gradient">EPUB読書がもっと快適になるタッチ操作ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">阅读界面按键全景图解<br><span class="text-gradient">EPUB 触控手势与功能面板实战指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Todos os Botões da Tela de Leitura<br><span class="text-gradient">Guia Toque a Toque do Leitor de EPUB</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Todos los Botones de la Pantalla de Lectura<br><span class="text-gradient">Guía Toque a Toque del Lector de EPUB</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.45), rgba(11, 15, 25, 0.65)), url('01-reader-top-bar-touch-map.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📖</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>The reader screen is where you spend your most precious reading moments, and almost all of it is intentionally pure and clutter-free — just the page. The controls are always within reach, but they stay quietly out of your way. This guide walks you through every single touch target, explains what it does, and shows the exact panel it opens.</p>
+
+        <div class="quote-callout">
+          <strong>One thing to know first:</strong> Tapping the center of the page does <em>nothing</em> in Shiori. That is entirely by design — an accidental tap while reading should never cause toolbars to flicker. The toolbars remain stable until you tuck them away with the immersive full-screen button.
+        </div>
+
+        <h2>The Top Bar — 9 Touch Targets</h2>
+        <p>The top area consists of the book title with the back navigation arrow, accompanied by eight dedicated function icons. Tapping any icon slides open its dedicated panel, and tapping it again cleanly dismisses it.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>หน้าอ่านหนังสือคือพื้นที่ที่เราใช้เวลาด้วยมากที่สุด Shiori จึงออกแบบให้หน้าจอนี้เรียบง่าย สะอาดตา และเน้นเนื้อหาหนังสือเป็นหลัก โดยซ่อนความสามารถอันทรงพลังไว้หลังไอคอนที่เข้าถึงได้ง่าย คู่มือนี้จะพาคุณไปรู้จักกับทุกปุ่ม ทุกจุดสัมผัส พร้อมภาพประกอบว่าแต่ละปุ่มเปิดใช้งานฟังก์ชันอะไรบ้าง</p>
+
+        <div class="quote-callout">
+          <strong>ข้อควรรู้ก่อนเริ่มต้น:</strong> การแตะบริเวณกึ่งกลางหน้าจอใน Shiori จะ <em>ไม่มีอะไรเกิดขึ้น</em> ซึ่งเราตั้งใจออกแบบไว้แบบนี้ เพื่อไม่ให้แถบเครื่องมือกะพริบขึ้นลงกวนสายตาเวลาเผลอแตะโดน แถบเครื่องมือจะนิ่งสงบจนกว่าคุณจะกดซ่อนด้วยปุ่มโหมดอ่านเต็มจอ (Immersive Mode)
+        </div>
+
+        <h2>แถบเครื่องมือด้านบน — 9 จุดสัมผัสสำคัญ</h2>
+        <p>ประกอบด้วยชื่อหนังสือพร้อมปุ่มย้อนกลับ และแถวไอคอนลัด 8 รายการ เมื่อแตะที่ไอคอนใด หน้าต่างตั้งค่าของไอคอนนั้นจะเลื่อนเปิดขึ้นมาอย่างนุ่มนวล และแตะซ้ำอีกครั้งเพื่อปิด</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>リーダー画面は読書に最も没頭する大切な場所です。Shioriは余計な要素を排し、美しい紙面そのものを存分に味わえるよう設計されています。必要な操作パネルはすべて指先に揃っています。本ガイドでは上部バー、下部バー、長押しメニューの全機能を画面写真付きで丁寧に解説します。</p>
+
+        <div class="quote-callout">
+          <strong>最初に知っておくべきこと：</strong> 画面中央をタップしてもツールバーは <em>点滅・反応しません</em>。読書中の誤タップでバーがチラつくストレスを防ぐための親切設計です。全画面に集中したいときは「没入モード（Immersive）」ボタンをご活用ください。
+        </div>
+
+        <h2>上部バー — 9つのタッチターゲット</h2>
+        <p>書籍タイトル（戻るボタン兼用）と、8つの機能アイコンが配置されています。アイコンをタップすると各機能パネルがスライド表示され、もう一度タップするとスマートに閉じます。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>阅读界面是读者停留最久的核心空间。Shiori 刻意保持界面的纯粹与静谧，让书页本身成为唯一的主角。各项强大功能隐于简雅图标之后。本指南将逐一图解每个触控按键的具体作用与对应展开面板。</p>
+
+        <div class="quote-callout">
+          <strong>开始前的重要细节：</strong> 在 Shiori 中轻点屏幕中央 <em>不会有任何弹窗闪烁</em>。这是为了彻底杜绝误触导致工具栏频繁跳出的打扰。若希望完全隐藏上下栏，请使用沉浸式全屏按钮。
+        </div>
+
+        <h2>顶部操作栏 — 9 大核心触控点</h2>
+        <p>包含带返回箭头的书籍标题，以及 8 个专属功能快捷图标。点击任一图标即可呼出对应功能面板，再次点击即可快速收起。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>A tela de leitura foi feita para ser limpa e focada no texto. Os controles estão sempre à mão, mas não atrapalham sua concentração. Confira este guia visual de cada botão e menu do leitor.</p>
+
+        <div class="quote-callout">
+          <strong>Importante saber:</strong> Tocar no meio da página <em>não abre nem fecha barras</em>. Essa escolha de design evita que as ferramentas fiquem piscando por toques acidentais. Use o botão imersivo para ocultá-las.
+        </div>
+
+        <h2>Barra Superior — 9 Pontos de Toque</h2>
+        <p>Composta pelo título do livro e 8 ícones de ferramentas com painéis deslizantes dedicados.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>La pantalla de lectura de Shiori está diseñada para ofrecer la máxima inmersión en el texto, con controles siempre accesibles pero sin estorbos. Esta guía repasa cada icono y función disponible.</p>
+
+        <div class="quote-callout">
+          <strong>Dato importante:</strong> Tocar el centro de la pantalla <em>no hace nada</em> intencionadamente. Así se evita que las barras parpadeen con toques involuntarios. Usa el modo inmersivo para ocultarlas por completo.
+        </div>
+
+        <h2>Barra Superior: 9 Puntos de Contacto</h2>
+        <p>Formada por el título del libro y 8 iconos de herramientas que abren paneles deslizables.</p>
+      </div>
+    </article>
+
+    <div class="step-image-container" style="max-width: 460px; margin: 0 auto 2rem;">
+      <img src="01-reader-top-bar-touch-map.jpg" alt="Shiori's EPUB reader top bar on Android with nine numbered touch targets" class="img-preview" data-index="0" />
+    </div>
+
+    <!-- TOP BAR TABLE -->
+    <article class="article-section">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Icon / Target</th><th>What Appears / Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>Book Title</td><td>Book info dialog: cover, chapters, file size, highlights/notes counts, reading/listening stats, ratings</td></tr>
+            <tr><td><strong>2</strong></td><td>Magnifier 🔍</td><td>Full-text search across the entire book</td></tr>
+            <tr><td><strong>3</strong></td><td>Ribbon 🔖</td><td>List of all bookmarks, highlights, and notes in this book</td></tr>
+            <tr><td><strong>4</strong></td><td>Sparkles ✨</td><td>Ask AI about the currently open chapter</td></tr>
+            <tr><td><strong>5</strong></td><td>Language 文A</td><td>Translation panel: source/target languages, engine, whole-book background translation</td></tr>
+            <tr><td><strong>6</strong></td><td>Speaking Head 🗣️</td><td>Read-aloud settings: voices, speed, and pitch per language</td></tr>
+            <tr><td><strong>7</strong></td><td>Font тT</td><td>Display settings: font size, line spacing, themes, custom fonts, margins, style overrides</td></tr>
+            <tr><td><strong>8</strong></td><td>Mode Icon ⇄ / ↕</td><td>Reading mode: Vertical scroll, Horizontal scroll, Page turn (LTR/RTL)</td></tr>
+            <tr><td><strong>9</strong></td><td>Headphones 🎧</td><td>Full-screen audio player without interrupting playback</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <!-- 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Touch the Title → Book Info Dialog</div>
+          <div class="step-desc">
+            <p>Tapping the book title opens a comprehensive info card: cover artwork, author, chapter count, file size, Memory counts (highlights, notes, translations, AI chats), reading and listening duration, and star ratings.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>แตะที่ชื่อหนังสือ → หน้าต่างข้อมูลหนังสือ (Book Info)</div>
+          <div class="step-desc">
+            <p>การแตะที่ชื่อหนังสือด้านบนจะเปิดการ์ดข้อมูล: แสดงภาพปก, ผู้แต่ง, จำนวนบท, ขนาดไฟล์, จำนวนไฮไลต์/โน้ต/การแปล, เวลาสะสมที่อ่านและฟัง พร้อมส่วนให้คะแนนดาว</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>タイトルをタップ → 書籍情報ダイアログ</div>
+          <div class="step-desc">
+            <p>書籍タイトルをタップすると詳細カードが開きます。表紙、著者、章数、容量、Memory項目数（ハイライト・メモ・翻訳等）、累計読書・聴取時間、評価を確認できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>点击书名 → 展开书籍详细信息</div>
+          <div class="step-desc">
+            <p>点击书名即可打开信息卡片：展示封面、作者、章节数、文件大小、Memory 记录统计（高亮、笔记、翻译等）、累计阅读/听书时长及星级评分。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Toque no Título → Informações do Livro</div>
+          <div class="step-desc">
+            <p>Abre o cartão com capa, autor, contagem de capítulos, notas, destaques, tempo de leitura e avaliação por estrelas.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Toca el Título → Información del Libro</div>
+          <div class="step-desc">
+            <p>Muestra la ficha con portada, autor, número de capítulos, notas, subrayados, tiempo de lectura y valoración.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-book-info-dialog.jpg" alt="The book info dialog in Shiori showing chapters, memory counts, reading time and rating" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Touch the Magnifier → Full-Book Search</div>
+          <div class="step-desc">
+            <p>Type any keyword to search across the entire book, not just the visible chapter. Results display preview snippets with bold terms, exact chapter names, and percentages. Tap any result to jump straight to that passage.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>แตะไอคอนแว่นขยาย → ค้นหาคำทั่วทั้งเล่ม</div>
+          <div class="step-desc">
+            <p>พิมพ์คำที่ต้องการค้นหา ระบบจะค้นหาจากทั้งเล่มพร้อมแสดงข้อความตัวอย่างไฮไลต์ตัวหนา ระบุชื่อบทและตำแหน่ง แตะที่ผลลัพธ์เพื่อกระโดดไปยังหน้านั้นได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>虫眼鏡アイコン → 全文検索</div>
+          <div class="step-desc">
+            <p>表示中の章だけでなく書籍全体を横断検索します。ヒット箇所が太字スニペットと章名付きで一覧表示され、タップで瞬時に該当箇所へジャンプできます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>点击放大镜 → 全书全文搜索</div>
+          <div class="step-desc">
+            <p>检索范围覆盖整本图书。搜索结果展示加粗匹配词句摘要、所在章节与百分比位置，点击任一条目即可秒速跳转。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Toque na Lupa → Busca no Livro Inteiro</div>
+          <div class="step-desc">
+            <p>Pesquisa termos em todos os capítulos com trechos destacados e salto instantâneo ao resultado.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Toca la Lupa → Búsqueda en Todo el Libro</div>
+          <div class="step-desc">
+            <p>Busca términos en toda la obra con fragmentos destacados y salto inmediato a la página correspondiente.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-in-book-search-results.jpg" alt="In-book search results in Shiori with 29 matches, each snippet labelled with chapter and position" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Touch the Ribbon → Bookmarks &amp; Notes Hub</div>
+          <div class="step-desc">
+            <p>A unified hub listing every bookmark, color highlight, and note created in this book. Tap an entry to navigate back to it, or use the trash icons to delete individual items.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>แตะไอคอนริบบิ้น → หน้ารวมที่คั่นหน้า ไฮไลต์ และโน้ต</div>
+          <div class="step-desc">
+            <p>รวมทุกจุดที่คุณทำเครื่องหมายไว้ในเล่ม ทั้งที่คั่นหน้า ไฮไลต์หลากสี และข้อความโน้ต แตะเพื่อเปิดอ่านตำแหน่งนั้น หรือกดลบรายการที่ไม่ต้องการได้สะดวก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>しおりアイコン → しおり・ハイライト・メモ一覧</div>
+          <div class="step-desc">
+            <p>この書籍内で付けたすべてのしおり、カラーハイライト、メモが一箇所に集約されます。タップで該当位置へ戻り、削除も簡単に行えます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>点击书签丝带 → 汇总书签、高亮与笔记</div>
+          <div class="step-desc">
+            <p>集中查看本书所有书签、彩色划线及随笔批注，点击任意条目即可快速定位回对应书页。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Toque na Fita → Marcadores e Notas</div>
+          <div class="step-desc">
+            <p>Lista todos os marcadores, trechos coloridos e notas criadas neste livro.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Toca la Cinta → Marcadores y Notas</div>
+          <div class="step-desc">
+            <p>Reúne todos los marcadores, notas y subrayados de color creados en la obra.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-bookmarks-and-notes-list.jpg" alt="The bookmarks and notes list in Shiori's reader with one highlight" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Touch the Sparkles → Ask AI About Chapter</div>
+          <div class="step-desc">
+            <p>Engage with on-device AI focused specifically on the chapter you are reading — ask for summaries, character motivations, or plot recaps without spoiling future chapters.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>แตะไอคอนประกายดาว → ถาม AI เฉพาะบทที่กำลังอ่าน</div>
+          <div class="step-desc">
+            <p>สนทนากับ AI บนอุปกรณ์โดยระบบจะจำกัดขอบเขตความรู้เฉพาะบทที่กำลังเปิดอยู่ ช่วยสรุปใจความหรืออธิบายเนื้อเรื่องได้โดยไม่สปอยล์เนื้อหาบทถัดไป</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>キラキラアイコン → チャプター限定 AI チャット</div>
+          <div class="step-desc">
+            <p>現在読んでいる章の内容に限定してAIに質問できます。以降の章のネタバレを心配することなく、登場人物の整理や要約を依頼できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>点击星芒图标 → 当前章节专属 AI 问答</div>
+          <div class="step-desc">
+            <p>在端侧 AI 助手中针对当前章节提问，获取情节概要或人物关系解析，完全杜绝后续章节剧透。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Toque nas Estrelas → Pergunte à IA sobre o Capítulo</div>
+          <div class="step-desc">
+            <p>Tire dúvidas e peça resumos do capítulo atual sem spoilers das páginas seguintes.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Toca las Estrellas → Consulta a la IA sobre el Capítulo</div>
+          <div class="step-desc">
+            <p>Pregunta dudas y obtén resúmenes del capítulo en curso sin riesgo de spoilers futuros.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-ask-ai-about-chapter.jpg" alt="The Ask AI panel in Shiori scoped to the current chapter with suggested questions" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Touch 文A → Translation Panel</div>
+          <div class="step-desc">
+            <p>Configure source and target languages, choose translation engines, or trigger <strong>Translate whole book</strong> to batch-translate chapters seamlessly in the background.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>แตะไอคอน 文A → แผงเครื่องมือแปลภาษา</div>
+          <div class="step-desc">
+            <p>เลือกภาษาต้นทางและปลายทาง เลือกเอ็นจินแปลภาษา หรือสั่ง <strong>Translate whole book</strong> เพื่อแปลหนังสือทั้งเล่มในเบื้องหลังอย่างต่อเนื่อง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>「文A」アイコン → 翻訳パネル</div>
+          <div class="step-desc">
+            <p>翻訳元・翻訳先言語やエンジンを設定可能。<strong>Translate whole book</strong> をタップすれば、バックグラウンドで書籍全体を一括翻訳できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>点击“文A” → 翻译管理面板</div>
+          <div class="step-desc">
+            <p>灵活挑选源语言与目标语言、切换翻译引擎，或开启 <strong>Translate whole book</strong> 后台批量翻译整本图书。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Toque em 文A → Painel de Tradução</div>
+          <div class="step-desc">
+            <p>Escolha idiomas, motores de tradução ou traduza o livro inteiro em segundo plano.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Toca en 文A → Panel de Traducción</div>
+          <div class="step-desc">
+            <p>Configura idiomas, motores de traducción o traduce el libro completo en segundo plano.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-translate-panel.jpg" alt="Shiori's translation panel with from and to language chips, engine choice and translate whole book" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Touch the Speaking Head → Read-Aloud (TTS) Settings</div>
+          <div class="step-desc">
+            <p>Manage all enabled voice languages with individual pitch and speed sliders, skip URLs during narration, and enable floating playback controls.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>แตะไอคอนรูปคนพูด → ตั้งค่าเสียงอ่าน (TTS)</div>
+          <div class="step-desc">
+            <p>ปรับแต่งความเร็วและระดับเสียงของแต่ละภาษาอย่างอิสระ ตั้งค่าให้ข้ามการอ่านลิงก์ URL และเปิดแถบควบคุมเสียงแบบลอยตัวได้ที่นี่</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>発話アイコン → 音声読み上げ（TTS）設定</div>
+          <div class="step-desc">
+            <p>有効な言語ごとに速度・音程をカスタマイズ。URL読み飛ばし設定や、他アプリ上でも操作できるフローティングコントローラーを有効化できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>点击发话图标 → 朗读（TTS）详细设置</div>
+          <div class="step-desc">
+            <p>独立配置各语种的语速与音调，开启智能跳过 URL 网址，并可启用浮动快捷控制条。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Toque no Ícone de Voz → Ajustes de TTS</div>
+          <div class="step-desc">
+            <p>Controle velocidade e tom de cada idioma, pule links e ative controles flutuantes.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Toca el Icono de Voz → Ajustes de TTS</div>
+          <div class="step-desc">
+            <p>Ajusta velocidad y tono por idioma, omite enlaces web y activa controles flotantes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="08-read-aloud-panel.jpg" alt="The read-aloud panel in Shiori's reader listing each enabled language with pitch and speed" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Touch тT → Display &amp; Typography Settings</div>
+          <div class="step-desc">
+            <p>The most frequently used panel: customize font size, line height, reading themes (Light, Dark, Sepia, Gray, E-Ink), custom fonts per script, page margins, and publisher CSS overrides.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>แตะไอคอน тT → ตั้งค่าการแสดงผลและฟอนต์ (Display)</div>
+          <div class="step-desc">
+            <p>แผงควบคุมที่ใช้บ่อยที่สุด: ปรับขนาดอักษร, ระยะห่างบรรทัด, ธีมสี (สว่าง, มืด, ซีเปีย, เทา, E-Ink), เลือกฟอนต์แยกตามภาษา, ระยะขอบจอ และสวิตช์ปิดสไตล์ต้นฉบับ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>「тT」アイコン → 表示・フォント設定</div>
+          <div class="step-desc">
+            <p>最もよく使うパネルです。文字サイズ、行間、テーマ（Light, Dark, Sepia, Gray, E-Ink）、言語別フォント指定、余白、出版元CSSの上書き設定などを調整できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>点击“тT” → 排版与显示外观设置</div>
+          <div class="step-desc">
+            <p>最常用的面板：调节字号、行距、主题（浅色、深色、羊皮纸、灰色、E-Ink 墨水屏）、按语种指定字体、页边距及排版样式覆写开关。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Toque em тT → Ajustes de Exibição e Fontes</div>
+          <div class="step-desc">
+            <p>Ajuste tamanho da fonte, entrelinha, temas (Claro, Escuro, Sépia, E-Ink), fontes personalizadas e margens.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Toca en тT → Ajustes de Pantalla y Fuentes</div>
+          <div class="step-desc">
+            <p>Configura tamaño de letra, interlineado, temas (Claro, Oscuro, Sepia, E-Ink), fuentes y márgenes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="09-display-settings-panel.jpg" alt="Shiori's display settings panel with font size, line height, themes, reader fonts and style switches" class="img-preview" data-index="7" />
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">8</span>Touch the Mode Icon → Reading Modes</div>
+          <div class="step-desc">
+            <p>Switch between <strong>Auto</strong>, <strong>Vertical scroll</strong>, <strong>Horizontal scroll</strong> (for Japanese tategaki or emakimono scrolls), and <strong>Page turn</strong> with LTR/RTL reading direction controls.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">8</span>แตะไอคอนโหมดการอ่าน → สลับโหมดเลื่อนหน้าและทิศทาง</div>
+          <div class="step-desc">
+            <p>เลือกโหมดการอ่านได้ทั้ง <strong>Auto</strong>, <strong>Vertical scroll</strong> (เลื่อนแนวตั้ง), <strong>Horizontal scroll</strong> (เลื่อนแนวนอนสำหรับวรรณกรรมแนวตั้งและภาพม้วนญี่ปุ่น) และ <strong>Page turn</strong> (พลิกหน้า)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">8</span>モードアイコン → 読書モードの切り替え</div>
+          <div class="step-desc">
+            <p><strong>Auto</strong>、<strong>Vertical scroll</strong>（縦スクロール）、<strong>Horizontal scroll</strong>（絵巻物や縦書き小説向け横スクロール）、<strong>Page turn</strong>（ページめくり）を自由に選択可能。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">8</span>点击模式图标 → 切换阅读翻页模式</div>
+          <div class="step-desc">
+            <p>在 <strong>Auto</strong> 自适应、<strong>Vertical scroll</strong> 垂直连续滚动、<strong>Horizontal scroll</strong> 水平横卷轴（适配日文纵书或绘卷）与 <strong>Page turn</strong> 仿真翻页间轻松切换。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">8</span>Toque no Ícone de Modo → Modos de Leitura</div>
+          <div class="step-desc">
+            <p>Alterne entre Rolagem Vertical, Rolagem Horizontal e Virada de Página.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">8</span>Toca el Modo de Lectura → Formas de Navegar</div>
+          <div class="step-desc">
+            <p>Alterna entre desplazamiento vertical, desplazamiento horizontal y paso de página tradicional.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="10-reading-mode-panel.jpg" alt="The reading mode panel in Shiori with Auto, Vertical scroll and Horizontal scroll chips" class="img-preview" data-index="8" />
+      </div>
+    </section>
+
+    <!-- ==================== BOTTOM BAR ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">The Bottom Bar — Where Playback Lives</h2>
+      <h2 class="lang-th">แถบควบคุมด้านล่าง — ศูนย์กลางการเล่นเสียงอ่านและการนำทาง</h2>
+      <h2 class="lang-jp">下部バー — 再生コントロールとクイック操作</h2>
+      <h2 class="lang-cn">底部操作栏 — 播放控制与沉浸阅读中枢</h2>
+      <h2 class="lang-pt">Barra Inferior — Controle de Reprodução</h2>
+      <h2 class="lang-es">Barra Inferior — Control de Reproducción</h2>
+
+      <div class="lang-en">
+        <p>The bottom of the screen hosts two functional rows. The upper navigation row displays chapter progress, while the optional lower row provides dedicated playback and immersive reading controls.</p>
+      </div>
+      <div class="lang-th">
+        <p>ด้านล่างของหน้าจอประกอบด้วย 2 แถว: แถวบนแสดงเปอร์เซ็นต์และชื่อบท ส่วนแถวล่างเป็นปุ่มควบคุมเสียงอ่าน TTS และปุ่มเปิดโหมดเต็มจอ</p>
+      </div>
+      <div class="lang-jp">
+        <p>下部バーは2段構成です。上段には章の進捗とパーセンテージ、下段にはTTS読み上げボタンや全画面没入ボタンが並びます。</p>
+      </div>
+      <div class="lang-cn">
+        <p>底部控制栏包含两层：上层展示进度与章节序号，下层则提供语音播放、段落居中跟随与全屏沉浸控制。</p>
+      </div>
+      <div class="lang-pt">
+        <p>A barra inferior reúne navegação por capítulos, controles de áudio e modo tela cheia.</p>
+      </div>
+      <div class="lang-es">
+        <p>La barra inferior agrupa la navegación entre capítulos, controles de audio y pantalla completa.</p>
+      </div>
+    </article>
+
+    <div class="step-image-container" style="max-width: 460px; margin: 0 auto 2rem;">
+      <img src="02-reader-bottom-bar-touch-map.jpg" alt="Shiori's reader bottom bar with seven numbered touch targets across two rows" class="img-preview" data-index="9" />
+    </div>
+
+    <!-- BOTTOM BAR TABLE -->
+    <article class="article-section">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Button</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>|◀</td><td>Previous chapter (or previous paragraph during TTS playback)</td></tr>
+            <tr><td><strong>2</strong></td><td>▶|</td><td>Next chapter (or next paragraph during TTS playback)</td></tr>
+            <tr><td><strong>3</strong></td><td>▶ / ⏸</td><td>Start / Pause read-aloud (<strong>Long-press to stop</strong> session)</td></tr>
+            <tr><td><strong>4</strong></td><td>■</td><td>Stop read-aloud outright</td></tr>
+            <tr><td><strong>5</strong></td><td>Center Arrows 🎯</td><td>Keep spoken sentence centered on screen / return to voice location</td></tr>
+            <tr><td><strong>6</strong></td><td>Circular Arrows 🔤</td><td>Quick access to Text Replacement rules</td></tr>
+            <tr><td><strong>7</strong></td><td>Corners ⛶</td><td>Enter Immersive Full-Screen Mode</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <!-- ==================== SELECTION MENU ==================== -->
+    <article class="article-section">
+      <h2 class="lang-en">Long-Press Text: The 12-Action Selection Menu</h2>
+      <h2 class="lang-th">กดค้างบนข้อความ: เมนูคำสั่งลัด 12 รายการ</h2>
+      <h2 class="lang-jp">テキスト長押し：12の便利機能が揃う選択メニュー</h2>
+      <h2 class="lang-cn">长按文字：唤醒 12 项高频快捷操作菜单</h2>
+      <h2 class="lang-pt">Toque Longo: Menu de 12 Ações</h2>
+      <h2 class="lang-es">Pulsación Prolongada: Menú de 12 Acciones</h2>
+
+      <div class="lang-en">
+        <p>Press and hold any word to open the floating contextual action menu:</p>
+      </div>
+      <div class="lang-th">
+        <p>เพียงกดค้างที่คำใดคำหนึ่งบนหน้ากระดาษ เมนูคำสั่งลัด 12 รายการจะปรากฏขึ้นข้างข้อความที่เลือก:</p>
+      </div>
+      <div class="lang-jp">
+        <p>本文中の単語を長押しすると、12種類の多彩なアクションメニューが表示されます：</p>
+      </div>
+      <div class="lang-cn">
+        <p>长按页面中任意字词，即可在划选区域旁弹出包含 12 种操作的快捷指令面板：</p>
+      </div>
+      <div class="lang-pt">
+        <p>Pressione qualquer palavra para abrir o menu contextual completo:</p>
+      </div>
+      <div class="lang-es">
+        <p>Mantén pulsada cualquier palabra para abrir el menú contextual con todas sus herramientas:</p>
+      </div>
+    </article>
+
+    <div class="step-image-container" style="max-width: 460px; margin: 0 auto 2rem;">
+      <img src="11-text-selection-menu.jpg" alt="The text selection menu in Shiori's EPUB reader with twelve actions" class="img-preview" data-index="10" />
+    </div>
+
+    <!-- SELECTION MENU TABLE -->
+    <article class="article-section">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Action</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Read</strong></td><td>Starts read-aloud directly from the selected sentence</td></tr>
+            <tr><td><strong>Replace</strong></td><td>Creates a text replacement rule from the selected phrase</td></tr>
+            <tr><td><strong>Bookmark</strong></td><td>Bookmarks the paragraph instantly</td></tr>
+            <tr><td><strong>Highlight</strong></td><td>Opens the 8-color highlight palette</td></tr>
+            <tr><td><strong>Share / Copy</strong></td><td>Shares to other apps or copies text to the clipboard</td></tr>
+            <tr><td><strong>Translate</strong></td><td>Translates the selection or whole paragraph inline</td></tr>
+            <tr><td><strong>Aloud</strong></td><td>Speaks just the selected snippet once</td></tr>
+            <tr><td><strong>TTS Preview</strong></td><td>Previews spoken pronunciation with replacement rules applied</td></tr>
+            <tr><td><strong>Main tabs / TTS bar</strong></td><td>Toggle visibility of the bottom navigation and playback rows</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="lang-en">Highlighting &amp; Adding Notes in Two Touches</h2>
+      <h2 class="lang-th">การไฮไลต์และจดโน้ตใน 2 สเต็ปง่ายๆ</h2>
+      <h2 class="lang-jp">2タップで完了するハイライト＆メモ追加</h2>
+      <h2 class="lang-cn">两步极速高亮划线与添加批注</h2>
+      <h2 class="lang-pt">Destaques e Notas em Dois Toques</h2>
+      <h2 class="lang-es">Subrayados y Notas en Dos Toques</h2>
+    </article>
+
+    <!-- HIGHLIGHT 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title">Choose from 8 Vibrant Colors</div>
+          <div class="step-desc">
+            <p>Select your favorite palette color (Yellow, Green, Blue, Pink, Orange, Purple, Teal, Red). The highlight is applied instantly, with an optional <strong>Add note</strong> prompt.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title">เลือกสีไฮไลต์ได้ถึง 8 เฉดสี</div>
+          <div class="step-desc">
+            <p>แตะเลือกสีที่ชอบ ไฮไลต์จะติดลงบนหน้ากระดาษทันที พร้อมปุ่ม <strong>Add note</strong> หากคุณต้องการพิมพ์บันทึกความคิดเห็นเพิ่มเติม</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title">8色の鮮やかなカラーパレット</div>
+          <div class="step-desc">
+            <p>8色から好みの色をタップするだけで瞬時にハイライト。<strong>Add note</strong> ボタンでメモも手軽に書き添えられます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title">8 款高辨识度专属高亮色彩</div>
+          <div class="step-desc">
+            <p>轻点心仪颜色即可瞬间完成划线，随后弹出 <strong>Add note</strong> 提示，方便随手记录灵感。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title">Escolha Entre 8 Cores Vivas</div>
+          <div class="step-desc">
+            <p>Toque na cor desejada e adicione notas facilmente com o botão <strong>Add note</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title">Elige Entre 8 Colores Distintivos</div>
+          <div class="step-desc">
+            <p>Pulsa el color deseado y añade anotaciones al instante con el botón <strong>Add note</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="12-highlight-colour-swatches.jpg" alt="Eight highlight colour swatches in Shiori's selection menu" class="img-preview" data-index="11" />
+      </div>
+    </section>
+
+    <!-- HIGHLIGHT 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title">Non-Destructive Storage</div>
+          <div class="step-desc">
+            <p>Highlights and notes live in Shiori's dedicated database and never modify your original EPUB files. Tapping any highlight later reopens its note.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title">ปลอดภัย ไม่ดัดแปลงไฟล์ต้นฉบับ</div>
+          <div class="step-desc">
+            <p>ไฮไลต์และโน้ตจะถูกจัดเก็บในฐานข้อมูลของแอป โดยไม่แตะต้องไฟล์ EPUB แตะที่ไฮไลต์บนหน้าหนังสือเมื่อไหร่ก็เปิดดูโน้ตได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title">元ファイルを傷つけない安全設計</div>
+          <div class="step-desc">
+            <p>ハイライトやメモはアプリ内データとして安全に保存され、EPUBファイル本体を書き換えることはありません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title">安全存储，绝不修改图书源文件</div>
+          <div class="step-desc">
+            <p>高亮与笔记独立保存在应用数据库中，不破坏原始 EPUB 结构，随时轻按划线即可重温批注。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title">Armazenamento Seguro</div>
+          <div class="step-desc">
+            <p>Os destaques são guardados no app sem modificar os arquivos originais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title">Almacenamiento Seguro</div>
+          <div class="step-desc">
+            <p>Los subrayados se guardan en la app sin alterar los archivos EPUB originales.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="13-highlight-applied-add-note.jpg" alt="A yellow highlight applied in Shiori's reader with an Add note prompt" class="img-preview" data-index="12" />
+      </div>
+    </section>
+
+    <!-- IMMERSIVE -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title">Immersive Full-Screen Mode</div>
+          <div class="step-desc">
+            <p>Touch the corners icon on the bottom bar to hide all toolbars and status bars. You are left with pure book text and a compact floating audio pill. Return by pressing your device's <strong>system back button</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title">โหมดอ่านเต็มจอแบบดื่มด่ำ (Immersive Mode)</div>
+          <div class="step-desc">
+            <p>แตะไอคอนสี่มุมที่แถบด้านล่าง แถบเครื่องมือและแถบสถานะทั้งหมดจะซ่อนตัวไป เหลือเพียงหน้าหนังสือล้วนๆ หากฟังเสียงอ่านอยู่จะมีแถบลอยเล็กๆ ให้ควบคุม ออกจากโหมดนี้ได้ง่ายๆ ด้วย <strong>ปุ่มย้อนกลับ (Back) ของมือถือ</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title">没入感あふれる全画面読書（Immersive Mode）</div>
+          <div class="step-desc">
+            <p>下部バーの四隅アイコンをタップすると全ツールバーが消え、紙面だけに集中できます。再生中は最小限のフローティング小窓が表示。復帰は端末の <strong>戻るボタン</strong> を押すだけです。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title">全屏沉浸式纯粹阅读体验</div>
+          <div class="step-desc">
+            <p>轻触底部全屏图标，所有状态栏与工具栏瞬间隐藏，唯余书香字句。轻按手机的 <strong>系统返回键</strong> 即可随时唤回操作面板。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title">Modo Imersivo de Tela Cheia</div>
+          <div class="step-desc">
+            <p>Oculte todas as barras tocando no ícone dos cantos e volte usando o botão Voltar do sistema.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title">Modo Inmersivo a Pantalla Completa</div>
+          <div class="step-desc">
+            <p>Oculta todas las barras pulsando el icono de esquinas y regresa cuando quieras con el botón Atrás del sistema.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="14-immersive-full-screen-reading.jpg" alt="Shiori's EPUB reader in immersive full-screen mode with only a small floating playback strip" class="img-preview" data-index="13" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why does tapping the middle of the page do nothing?</div>
+        <div class="faq-a">This is an intentional design choice. Toolbars appearing on accidental taps interrupt reading immersion. Use the immersive button to hide toolbars, and the system back button to restore them.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมการแตะกลางหน้าจอถึงไม่มีแถบเครื่องมือเด้งขึ้นมา?</div>
+        <div class="faq-a">เป็นความตั้งใจในการออกแบบครับ เพื่อป้องกันไม่ให้แถบเครื่องมือกะพริบขึ้นลงเวลาเผลอแตะโดน หากต้องการซ่อนแถบเครื่องมือ ให้กดปุ่มโหมดเต็มจอ และกดปุ่มย้อนกลับของมือถือเพื่อเรียกแถบเครื่องมือกลับมา</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">画面中央をタップしてもバーが表示されないのはなぜ？</div>
+        <div class="faq-a">読書中の集中を妨げないための設計です。誤タップによる画面のチラつきを防ぎます。バーを非表示にするには「没入モード」を使い、復帰には「戻る」ボタンを押します。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么点击屏幕中央没有任何响应？</div>
+        <div class="faq-a">这是我们精心打造的防误触机制，避免翻页或持握时工具栏频繁闪烁打断思绪。点击底部沉浸图标即可全屏，按返回键即可恢复。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que tocar no meio da tela não faz nada?</div>
+        <div class="faq-a">Para evitar que as barras fiquem piscando com toques acidentais. Use o botão imersivo para esconder e o botão voltar para restaurar.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué tocar el centro de la pantalla no muestra nada?</div>
+        <div class="faq-a">Es una decisión de diseño para evitar que las barras parpadeen por toques accidentales. Usa el botón de inmersión para ocultarlas y el botón Atrás para recuperarlas.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How do I switch from scrolling to page turning?</div>
+        <div class="faq-a">Open the reading mode panel (Icon 8 on the top bar) and select <strong>Page turn</strong>. Your choice is remembered individually for each book.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">วิธีเปลี่ยนจากการเลื่อนหน้าจอ (Scroll) เป็นการพลิกหน้า (Page Turn)?</div>
+        <div class="faq-a">แตะไอคอนโหมดการอ่าน (ไอคอนที่ 8 บนแถบด้านบน) แล้วเลือก <strong>Page turn</strong> โดยระบบจะจำการตั้งค่านี้แยกเป็นรายเล่ม</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">スクロールからページめくりに変更するには？</div>
+        <div class="faq-a">上部バーの読書モードアイコン（8番）を開き、<strong>Page turn</strong> を選択します。設定は書籍ごとに個別に記憶されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">如何从连续滚动切换为仿真翻页？</div>
+        <div class="faq-a">点击顶部栏第 8 个“阅读模式”图标，选择 <strong>Page turn</strong> 即可。每本书均会独立记忆该设定。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como mudar da rolagem para virar páginas?</div>
+        <div class="faq-a">Abra o painel de modo de leitura (ícone 8) e escolha <strong>Page turn</strong>.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo cambio del desplazamiento al paso de página tradicional?</div>
+        <div class="faq-a">Abre el panel de modo de lectura (icono 8) y selecciona <strong>Page turn</strong>.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How do I return to the sentence currently being read aloud?</div>
+        <div class="faq-a">Tap the <strong>Center Arrows 🎯</strong> button on the bottom bar. It instantly scrolls back and keeps the currently spoken sentence centered.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้าเลื่อนหน้าจอไปไกล จะกลับมาตรงประโยคที่เสียงกำลังอ่านอยู่ได้อย่างไร?</div>
+        <div class="faq-a">แตะปุ่ม <strong>ลูกศรจัดกึ่งกลาง 🎯</strong> บนแถบควบคุมด้านล่าง หน้าจอจะเลื่อนกลับมายังประโยคที่กำลังอ่านออกเสียงอยู่ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">朗読中の現在位置へ一瞬で戻るには？</div>
+        <div class="faq-a">下部バーの <strong>中央揃え矢印 🎯</strong> ボタンをタップしてください。画面が即座にスクロールし、発話中の文を画面中央に捉えます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">滑动浏览其他段落后，如何快速回到正在朗读的句子？</div>
+        <div class="faq-a">只需轻点底部栏中的 <strong>居中跟随靶心 🎯</strong> 按钮，画面即刻平滑回滚至正在发声的文字位置。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como voltar para a frase que está sendo lida em voz alta?</div>
+        <div class="faq-a">Toque no botão de <strong>setas centrais 🎯</strong> na barra inferior para recentralizar o áudio.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo regreso a la frase que se está leyendo en voz alta?</div>
+        <div class="faq-a">Pulsa el botón de <strong>diana / flechas centradas 🎯</strong> en la barra inferior para volver de inmediato a la locución.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Do my highlights and bookmarks modify the EPUB file?</div>
+        <div class="faq-a">No. All annotations are safely managed by Shiori's internal store and sync seamlessly via Google Drive Cloud Sync without touching the original EPUB file.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ไฮไลต์และที่คั่นหน้าจะไปแก้ไขไฟล์ EPUB หรือไม่?</div>
+        <div class="faq-a">ไม่เลยครับ บันทึกทั้งหมดจะเก็บไว้ในแอปและซิงก์ผ่าน Cloud Sync อย่างปลอดภัย โดยไฟล์หนังสือ EPUB ในเครื่องจะไม่ถูกดัดแปลงใดๆ ทั้งสิ้น</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">ハイライトやしおりによってEPUBファイルは変更されますか？</div>
+        <div class="faq-a">いいえ、一切変更されません。すべての注釈はアプリ内で安全に管理され、Cloud Sync で他端末にもそのまま引き継がれます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">划线高亮与书签会改动我的 EPUB 文件吗？</div>
+        <div class="faq-a">完全不会。所有批注均保存在应用本地数据库中并通过 Google Drive 云端同步，绝不改动图书源文件。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Os destaques e marcadores alteram o arquivo EPUB?</div>
+        <div class="faq-a">Não. Todas as marcações são armazenadas no app e sincronizadas com o Google Drive sem mexer no arquivo original.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Modifican los subrayados y marcadores el archivo EPUB?</div>
+        <div class="faq-a">No. Todas las anotaciones se gestionan de forma segura en la base de datos de la app y se sincronizan en la nube sin tocar el archivo original.</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Experience Pure Reading Control</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, open any book, and enjoy thoughtful controls designed by and for passionate readers.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">สัมผัสประสบการณ์การอ่านที่ออกแบบมาเพื่อคุณ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ แล้วเพลิดเพลินกับการควบคุมที่ลื่นไหล ใส่ใจทุกรายละเอียดของนักอ่าน
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">読書家のための洗練された操作性を体感</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、細部までこだわり抜かれた快適な読書体験をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">感受为纯粹阅读量身定制的精妙操控</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，打开任意图书，体验每一个懂读者的贴心功能设计。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Controle Total da Sua Leitura</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader e aproveite controles pensados para quem ama ler de verdade.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Control Total para Tu Lectura</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader y disfruta de una interfaz diseñada al milímetro para amantes de la lectura.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
