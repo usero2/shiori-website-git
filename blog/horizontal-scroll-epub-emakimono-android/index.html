@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Horizontal Scrolling EPUBs on Android — Read a Japanese Picture Scroll — Shiori Blog</title>
+  <meta name="description" content="Download the free horizontally-scrollable-emakimono.epub sample and read a twelfth-century Japanese picture scroll on Android. How Shiori's Horizontal scroll reading mode handles emakimono and 縦書き vertical text." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/horizontal-scroll-epub-emakimono-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Horizontal Scrolling EPUBs on Android: Read a Japanese Picture Scroll",
+    "description": "A step-by-step guide to reading horizontally scrollable EPUB 3 books — Japanese emakimono picture scrolls and vertical-writing (縦書き) text — in Shiori EPUB Reader for Android, using the free horizontally-scrollable-emakimono.epub sample.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/horizontal-scroll-epub-emakimono-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an emakimono?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Japanese painted handscroll: a long horizontal roll of paper or silk on which a story unfolds continuously as it is unrolled from right to left. Shigisan Engi, the twelfth-century scroll in the sample EPUB, is one of the classic examples."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes an EPUB scroll horizontally?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Three declarations inside the book: rendition:flow set to scrolled-doc, a spine with page-progression-direction=\"rtl\", and CSS writing-mode: vertical-rl. Together they turn the publication into one continuous document that lays out sideways."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does my horizontally scrollable EPUB look like a stack of separate images?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It is being displayed in vertical-scroll mode. Open the reading-mode panel in the reader's top bar and choose Horizontal scroll, or Auto to follow whatever the book itself declares."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does horizontal scroll work with vertical Japanese novels?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Horizontal scroll is the 縦書き (tategaki) mode: text stacks into vertical columns and the columns pan sideways. Set Direction to RTL for the Japanese convention, or LTR for a left-to-right scroll."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the reading mode remembered per book?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Each book keeps its own reading mode and direction, so a vertical-writing novel stays horizontal while ordinary books keep scrolling down. A book you have never configured starts from whichever mode you chose last."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Download card for the sample EPUB */
+    .download-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-primary);
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+    }
+    .download-card .dl-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .download-card .dl-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .download-card .dl-meta {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .download-card .dl-file {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
+    /* Book-internals snippet */
+    .code-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .code-block pre {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.9;
+      color: var(--accent-primary);
+      white-space: pre;
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 15, 2026</span>
+        <span>🏷️ Reading Experience</span>
+      </div>
+
+      <h1 class="post-title">Books That Move Sideways<br><span class="text-gradient">Horizontal Scrolling EPUBs and Japanese Picture Scrolls</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.35), rgba(11, 15, 25, 0.55)), url('08-emakimono-horizontal-scroll-hero.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🖌️</span>
+    </div>
+
+    <!-- Article Content Body (English) -->
+    <article class="article-section">
+      <p>Not every book is meant to move downward. A Japanese <strong>emakimono</strong> (絵巻物) — a painted handscroll — unrolls sideways, and so does a 縦書き novel, whose columns march from the right edge of the page toward the left. EPUB 3 can describe both, and Shiori's <strong>Horizontal scroll</strong> reading mode plays them back the way they were drawn.</p>
+      <p>The best way to understand it is to try it, so here is a free sample you can download right now.</p>
+
+      <div class="download-card">
+        <span class="dl-icon">📜</span>
+        <div class="dl-title">horizontally-scrollable-emakimono.epub</div>
+        <div class="dl-meta">A free EPUB 3 sample · about 5 MB · opens in any EPUB reader</div>
+        <a href="https://github.com/IDPF/epub3-samples/releases/download/20230704/horizontally-scrollable-emakimono.epub" class="btn btn-primary" target="_blank" rel="noopener">
+          <span>⬇ Download the sample EPUB</span>
+        </a>
+        <span class="dl-file">github.com/IDPF/epub3-samples · release 20230704</span>
+      </div>
+
+      <h2>What You Are About to Read</h2>
+      <p>The sample comes from the <strong>EPUB 3 samples project</strong>, the official collection of test books for the EPUB standard. The book is <em>Shigisan Engi</em> (信貴山縁起), "The Legend of Mount Shigi" — a twelfth-century picture scroll attributed to Toba Sōjō Kakuyū and one of the most famous narrative paintings in Japan.</p>
+      <p>This volume is 山崎長者の巻, <em>the Flying Granary</em>: a monk sends his begging bowl across the sky, and it carries a rich man's entire storehouse away with it. Twenty-five stitched photographs of the original scroll become one continuous painting several screens wide. The sample's own colophon page notes that its text is available under a Creative Commons Attribution–ShareAlike licence.</p>
+
+      <div class="stat-badge-grid">
+        <div class="stat-badge-card">
+          <span class="stat-badge-icon">📜</span>
+          <div class="stat-badge-title">Picture scrolls</div>
+        </div>
+        <div class="stat-badge-card">
+          <span class="stat-badge-icon">🈁</span>
+          <div class="stat-badge-title">縦書き vertical text</div>
+        </div>
+        <div class="stat-badge-card">
+          <span class="stat-badge-icon">↔️</span>
+          <div class="stat-badge-title">RTL or LTR</div>
+        </div>
+        <div class="stat-badge-card">
+          <span class="stat-badge-icon">🔖</span>
+          <div class="stat-badge-title">Remembered per book</div>
+        </div>
+      </div>
+
+      <h2>What Makes an EPUB Scroll Sideways?</h2>
+      <p>Three declarations inside the book do the work — worth knowing if you ever build one yourself:</p>
+
+      <div class="code-block">
+<pre>&lt;meta property="rendition:flow"&gt;scrolled-doc&lt;/meta&gt;
+&lt;spine page-progression-direction="rtl"&gt;
+html { writing-mode: vertical-rl; }</pre>
+      </div>
+
+      <ul class="article-bullet-list">
+        <li><strong>scrolled-doc</strong> — the content is one continuous scroll rather than a stack of pages.</li>
+        <li><strong>page-progression-direction="rtl"</strong> — the reading direction runs right to left, as a handscroll does.</li>
+        <li><strong>writing-mode: vertical-rl</strong> — text stacks into vertical columns, and the document lays itself out horizontally.</li>
+      </ul>
+
+      <h2>Seven Steps From Download to Unrolled Scroll</h2>
+      <p>Everything below was captured on a phone, in the order you will do it.</p>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);">Step-by-Step Guide (7 Steps)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">1</span>Download and Import the Sample</div>
+        <div class="step-desc">
+          <p>Tap the download link above, then bring the file into Shiori with the <strong>+</strong> button on the bookshelf and <strong>Pick an EPUB file</strong>. It arrives as an ordinary book — cover, title (信貴山縁起), author, two chapters, 5 MB.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-emakimono-sample-on-bookshelf.jpg" alt="The horizontally-scrollable-emakimono.epub sample imported onto the Shiori bookshelf on Android" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">2</span>Open It</div>
+        <div class="step-desc">
+          <p>With <strong>Reading mode</strong> on <strong>Auto</strong> — the default — Shiori reads what the book declares and lays the scroll out sideways on its own.</p>
+          <p>If it instead appears as a stack of separate panels running down the screen, like the screenshot here, then this particular book was set to another mode earlier. The next two steps put it right.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-scroll-book-opened-stacked-vertically.jpg" alt="A horizontally scrollable EPUB shown incorrectly as a vertical stack of separate panels" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">3</span>Open the Reading Mode Panel</div>
+        <div class="step-desc">
+          <p>Tap the reading-mode icon in the reader's top bar. The icon always shows the mode the current book is in — <strong>↕</strong> for vertical scroll, <strong>⇄</strong> for horizontal, a sparkle for Auto — so you can tell at a glance what you are looking at.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-reading-mode-panel-chips.jpg" alt="Shiori's Reading mode panel with Auto, Vertical scroll and Horizontal scroll chips" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">4</span>Choose Horizontal Scroll</div>
+        <div class="step-desc">
+          <p>Four chips: <strong>Auto</strong>, <strong>Vertical scroll</strong>, <strong>Horizontal scroll</strong> and <strong>Page turn</strong>. The hint above them says it plainly — <em>how this book moves. Auto follows what the book declares.</em> Pick Horizontal scroll and the page rebuilds instantly, the artwork now filling the screen's full height.</p>
+          <p>A <strong>Direction</strong> row appears underneath: <strong>Auto</strong>, <strong>LTR</strong> or <strong>RTL</strong>. RTL is the Japanese convention and what a handscroll or a manga wants. Below it, <strong>Stand other language font upright</strong> decides whether Latin and Thai letters lie on their side inside a vertical column or stand up and stack.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-horizontal-scroll-and-direction.jpg" alt="Horizontal scroll selected in Shiori, with the Direction row offering Auto, LTR and RTL" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">5</span>Start at the Right-Hand End</div>
+        <div class="step-desc">
+          <p>A right-to-left scroll begins where a real handscroll does — at its right edge, with the title cartouche and the collector's seals. The progress readout shows 0.00%, and the whole height of the painting fits the screen.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-start-of-the-picture-scroll.jpg" alt="The beginning of the Shigisan Engi picture scroll, showing the title cartouche at the right edge" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">6</span>Swipe to Unroll It</div>
+        <div class="step-desc">
+          <p>Drag sideways and the painting travels past continuously — a fleeing crowd, a temple roof, then hills and pines drawn in a single unbroken sweep. There are no page seams to interrupt a composition that was never meant to have any, and the percentage climbs as you go, so you always know how much scroll is left.</p>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-panning-through-the-emaki.jpg" alt="Panning sideways through the emakimono in Shiori, showing a continuous painted landscape" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="step-title"><span class="step-number">7</span>The Same Mode Carries Vertical Text</div>
+        <div class="step-desc">
+          <p>Keep going into the second chapter and the artwork gives way to Japanese prose — set in vertical columns that run right to left, panning in exactly the same way. That is the whole point of the mode: 縦書き text and painted scrolls move alike, so one setting serves both.</p>
+          <div class="quote-callout">
+            <strong>💡 Pro Tip</strong><br />
+            The reading mode is remembered <strong>per book</strong>. Set a tategaki novel to Horizontal scroll and it stays that way, while your English paperbacks keep scrolling down as usual. A book you have never touched starts from whichever mode you chose last, so setting up a second manga takes no work at all.
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-vertical-japanese-text-columns.jpg" alt="Japanese vertical writing in columns panning sideways in Shiori's horizontal scroll mode" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);">Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">What is an emakimono?</div>
+      <div class="faq-a">A Japanese painted handscroll: a long horizontal roll of paper or silk on which a story unfolds continuously as you unroll it from right to left. <em>Shigisan Engi</em> is one of the classic examples, and the sample above is a digital edition of it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why does my scroll book look like a stack of separate images?</div>
+      <div class="faq-a">It is being rendered in vertical-scroll mode. Open the reading-mode panel in the top bar and pick <strong>Horizontal scroll</strong> — or <strong>Auto</strong>, which follows whatever the book itself declares.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does this work with vertical Japanese novels too?</div>
+      <div class="faq-a">Yes. Horizontal scroll is the 縦書き mode: text stacks into vertical columns and the columns run sideways. Set <strong>Direction</strong> to <strong>RTL</strong> for Japanese. See also our guide to <a href="/read-japanese-books">reading Japanese books on Android</a>.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I read a left-to-right scroll?</div>
+      <div class="faq-a">Yes — set <strong>Direction</strong> to <strong>LTR</strong> and the scroll runs the other way, which suits a picture scroll drawn to be read from left to right.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Where can I find more EPUB 3 samples?</div>
+      <div class="faq-a">The <a href="https://github.com/IDPF/epub3-samples" target="_blank" rel="noopener">EPUB 3 samples project</a> on GitHub publishes a whole set of test books — fixed layout, vertical writing, media overlays and more — all free to download and open in Shiori.</div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">See Your Books the Way They Were Drawn</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;">
+        Download Shiori EPUB Reader, grab the emakimono sample, and unroll a twelfth-century masterpiece with your thumb.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

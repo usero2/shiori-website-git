@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>How to Connect an OPDS Catalog to Your Android E-Reader — Shiori Blog</title>
+  <meta name="description" content="Add an OPDS catalog to Shiori for Android in a few taps. Find the OPDS URL for Calibre, Calibre-Web, Komga, Kavita or Project Gutenberg, test the connection, then browse and download EPUBs straight to your bookshelf." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/connect-opds-catalog-android-ereader/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Connect an OPDS Catalog to Your Android E-Reader",
+    "description": "A step-by-step guide to connecting an OPDS catalog (Calibre, Calibre-Web, Komga, Kavita, Project Gutenberg and other self-hosted or public catalogs) to Shiori EPUB Reader for Android, then browsing and downloading books.",
+    "author": {
+      "@type": "Organization",
+      "name": "Endofday"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Shiori ePub Reader"
+    },
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/connect-opds-catalog-android-ereader/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is OPDS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "OPDS (Open Publication Distribution System) is an open standard for publishing an ebook catalog as a feed — think RSS for books. A server publishes titles, authors, covers, descriptions and download links, and any OPDS-capable reading app can browse and download from it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which servers can I connect over OPDS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Calibre's content server, Calibre-Web, Komga, Kavita and most other self-hosted catalogs, plus public catalogs such as Project Gutenberg. Shiori supports both OPDS 1.x and OPDS 2.0."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I have to upload my books anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Shiori connects directly to your server over your own network or internet connection. Nothing is routed through a third-party sync service."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which file formats can I download from an OPDS catalog?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "EPUB, PDF, FB2 and CBZ/CBR comics — whichever of these your catalog offers for a given title."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Shiori support password-protected OPDS catalogs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Enter the username and password in the optional sign-in fields when you add the server, and Shiori authenticates on every request. Public catalogs need no credentials at all."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* OPDS address reference table */
+    .url-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .url-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .url-table th,
+    .url-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+    .url-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    .url-table tr:last-child td {
+      border-bottom: none;
+    }
+    .url-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .url-table code {
+      color: var(--accent-primary);
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span data-i18n="blog-p17-date">📅 August 14, 2026</span>
+        <span data-i18n="blog-p17-cat">🏷️ Library Servers</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">One URL, Your Whole Library<br><span class="text-gradient">How to Connect an OPDS Catalog to Your Android E-Reader</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">รวมทุกคลังหนังสือไว้ในลิงก์เดียว<br><span class="text-gradient">วิธีเชื่อมต่อ OPDS Catalog เข้ากับ Shiori บน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">URLひとつで、すべての蔵書へ<br><span class="text-gradient">AndroidでOPDSカタログを接続して本棚を連携する方法</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">一个地址，连接海量藏书<br><span class="text-gradient">如何将 OPDS 书库目录连接至 Android 阅读器</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Uma Só URL, Toda a Sua Biblioteca<br><span class="text-gradient">Como Conectar um Catálogo OPDS ao Seu Leitor Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Una Sola URL, Toda Tu Biblioteca<br><span class="text-gradient">Cómo Conectar un Catálogo OPDS a tu Lector Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('08-opds-catalog-book-list.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📡</span>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Your personal ebook collection probably already speaks OPDS — it just needs an app that listens. Whether you manage your library with <strong>Calibre</strong>, run <strong>Calibre-Web</strong> on a home server, organize digital comics in <strong>Komga</strong>, curate light novels in <strong>Kavita</strong>, or browse classic literature on <strong>Project Gutenberg</strong>, all of them can share their books through a simple <strong>OPDS feed</strong>. With Shiori, you can paste that single address and watch it turn into a clean, beautifully organized bookshelf right on your Android device — no cloud accounts, no sync subscriptions, and no uploading your private collection to third-party servers.</p>
+
+        <h2>What Is OPDS, Exactly?</h2>
+        <p><strong>OPDS</strong> stands for <em>Open Publication Distribution System</em>. Think of it as RSS for ebooks: instead of publishing news articles, a server publishes a catalog of books — titles, authors, covers, descriptions, categories and download links — in a standard format that any reading app can understand.</p>
+        <p>That open standard is what makes it so powerful. The server does not need custom plugins for Shiori, and Shiori works seamlessly with any server that publishes OPDS. Shiori natively supports both <strong>OPDS 1.x</strong> (the Atom-based XML format) and <strong>OPDS 2.0</strong> (the modern JSON-based format), giving you instant access to virtually any catalog.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre &amp; Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga &amp; Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Public Catalogs</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">Private Direct Connection</div>
+          </div>
+        </div>
+
+        <h2>What You Will Need</h2>
+        <ul class="article-bullet-list">
+          <li><strong>The catalog URL</strong> — the address of the OPDS feed itself, rather than your server's home page (see the handy table below).</li>
+          <li><strong>A username and password</strong> — only if your catalog is private. Public catalogs require no login credentials at all.</li>
+          <li><strong>Network access</strong> — ensure your phone and server are on the same Wi-Fi network for home servers, or use a public domain/IP if connecting remotely.</li>
+        </ul>
+
+        <h2>Where to Find Your OPDS URL</h2>
+        <p>Here are the standard feed addresses for popular self-hosted servers. Simply replace <code>192.168.1.10</code> with your server's actual IP address or domain name.</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>Server</th><th>Typical OPDS address</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre (content server)</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga (OPDS 2.0)</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg (public)</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Shiori includes built-in <strong>Quick fill</strong> buttons for these exact services. Simply enter your host or IP address, tap <em>Calibre</em>, <em>Calibre-Web</em>, <em>Komga</em>, <em>Komga v2</em>, or <em>Kavita</em>, and Shiori fills in the standard port and path automatically.</p>
+
+        <div class="quote-callout">
+          <strong>Kavita is the one slight exception.</strong><br />
+          Its API key is embedded directly inside the URL. In Kavita, navigate to <strong>Account → OPDS URL</strong>, paste your personal API key right after <code>/api/opds/</code>, and leave the username and password fields blank in Shiori.
+        </div>
+
+        <h2>Connect Your Catalog in Seven Simple Steps</h2>
+        <p>Follow along below as we connect a catalog and download our first book to the bookshelf.</p>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>คลังหนังสือ E-Book ส่วนตัวของคุณอาจรองรับระบบ OPDS อยู่แล้วโดยที่คุณอาจไม่ทันสังเกต—เพียงแค่มีแอปอ่านที่เชื่อมต่อกับมันได้ ไม่ว่าคุณจะจัดการหนังสือผ่านโปรแกรม <strong>Calibre</strong>, เปิดเซิร์ฟเวอร์ <strong>Calibre-Web</strong> ไว้ที่บ้าน, สะสมการ์ตูนเรื่องโปรดบน <strong>Komga</strong>, จัดระเบียบไลท์โนเวลใน <strong>Kavita</strong> หรือชอบอ่านวรรณกรรมคลาสสิกฟรีจาก <strong>Project Gutenberg</strong> บริการเหล่านี้ล้วนส่งต่อรายชื่อหนังสือผ่าน <strong>OPDS Feed</strong> ได้ทั้งสิ้น ในแอป Shiori เพียงแค่วางลิงก์ URL เดียว คลังหนังสือทั้งหมดของคุณจะกลายเป็นชั้นหนังสือเสมือนจริงที่เปิดดูง่าย ดาวน์โหลดได้ในพริบตา โดยไม่ต้องสมัครบัญชีเพิ่ม ไม่ต้องจ่ายค่าบริการคลาวด์รายเดือน และไม่ต้องอัปโหลดไฟล์หนังสือส่วนตัวของคุณไปให้เซิร์ฟเวอร์ของใคร</p>
+
+        <h2>OPDS คืออะไร ทำไมถึงสะดวกและเป็นที่นิยม?</h2>
+        <p><strong>OPDS</strong> ย่อมาจาก <em>Open Publication Distribution System</em> หรือเปรียบเหมือน "RSS Feed สำหรับหนังสือ" นั่นเองครับ แทนที่จะส่งฟีดข่าว เซิร์ฟเวอร์จะส่งรายการหนังสือ—ทั้งชื่อเรื่อง, ผู้แต่ง, ภาพปก, คำโปรย, หมวดหมู่ และลิงก์ดาวน์โหลด—ในรูปแบบมาตรฐานสากลที่แอปอ่านหนังสือสามารถเข้าใจได้ทันที</p>
+        <p>ความยอดเยี่ยมของมาตรฐานเปิดนี้คือ เซิร์ฟเวอร์ไม่ต้องเขียนปลั๊กอินเฉพาะสำหรับ Shiori และ Shiori ก็สามารถเชื่อมต่อได้กับทุกเซิร์ฟเวอร์ที่รองรับ OPDS โดยรองรับทั้ง <strong>OPDS 1.x</strong> (รูปแบบ XML/Atom ที่ใช้กันแพร่หลาย) และ <strong>OPDS 2.0</strong> (รูปแบบ JSON รุ่นใหม่) คุณจึงเชื่อมต่อคลังหนังสือได้แทบทุกแห่งทั่วโลก</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre &amp; Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga &amp; Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">คลังสาธารณะฟรีทั่วโลก</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">เชื่อมต่อตรง ปลอดภัยสูง</div>
+          </div>
+        </div>
+
+        <h2>สิ่งที่ต้องเตรียมก่อนเริ่มต้น</h2>
+        <ul class="article-bullet-list">
+          <li><strong>ที่อยู่ Catalog URL</strong> — ที่อยู่สำหรับ OPDS Feed โดยเฉพาะ (ไม่ใช่หน้าแรกของเว็บเซิร์ฟเวอร์ ดูได้จากตารางด้านล่างครับ)</li>
+          <li><strong>ชื่อผู้ใช้และรหัสผ่าน</strong> — เฉพาะเซิร์ฟเวอร์ส่วนตัวที่ตั้งค่ารหัสผ่านไว้ (หากเป็นคลังสาธารณะไม่ต้องกรอก)</li>
+          <li><strong>การเชื่อมต่อเครือข่าย</strong> — หากรันเซิร์ฟเวอร์ไว้ที่บ้าน ให้โทรศัพท์มือถือเชื่อมต่อ Wi-Fi วงเดียวกันกับคอมพิวเตอร์ หรือใช้ Public IP / โดเมนหากเข้าจากนอกบ้าน</li>
+        </ul>
+
+        <h2>ตารางที่อยู่ OPDS URL ยอดนิยม</h2>
+        <p>ด้านล่างนี้คือรูปแบบ URL มาตรฐานของเซิร์ฟเวอร์ที่นิยมใช้งานกัน (เปลี่ยน <code>192.168.1.10</code> เป็น IP จริงของคอมพิวเตอร์ของคุณครับ)</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>เซิร์ฟเวอร์</th><th>รูปแบบที่อยู่ OPDS</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre (Content Server ในตัว)</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga (OPDS 2.0)</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg (คลังฟรีสาธารณะ)</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Shiori มีปุ่ม <strong>Quick fill (เติมด่วน)</strong> เตรียมไว้ให้พร้อมใช้งาน เพียงพิมพ์ IP หรือ Host ของคุณ แล้วแตะเลือก <em>Calibre</em>, <em>Calibre-Web</em>, <em>Komga</em>, <em>Komga v2</em> หรือ <em>Kavita</em> ระบบจะเติมพอร์ตและพาร์ทที่ถูกต้องให้โดยอัตโนมัติ</p>
+
+        <div class="quote-callout">
+          <strong>ข้อสังเกตสำหรับ Kavita:</strong><br />
+          Kavita จะใช้ API Key แนบไปใน URL โดยตรง ให้เปิด Kavita → <strong>Account → OPDS URL</strong> คัดลอก Key มาใส่ต่อท้าย <code>/api/opds/</code> แล้วปล่อยช่อง Username และ Password ใน Shiori ให้ว่างไว้ได้เลยครับ
+        </div>
+
+        <h2>วิธีเชื่อมต่อใน 7 ขั้นตอนง่ายๆ</h2>
+        <p>มาดูขั้นตอนการเพิ่มเซิร์ฟเวอร์ การเปิดดูหมวดหมู่ และการดาวน์โหลดหนังสือเข้าสู่ชั้นหนังสือของคุณกันครับ</p>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>あなたが大切に育ててきた電子書籍コレクションは、すでにOPDSに対応しているかもしれません。必要なのは、そのフィードを受け取れる読書アプリだけです。**Calibre**、**Calibre-Web**、コミック管理の **Komga**、ライトノベル対応の **Kavita**、そして膨大なパブリックドメイン作品を誇る **Project Gutenberg** まで、すべてが **OPDSフィード** を通じて蔵書を配信できます。Shioriなら、URLをひとつ登録するだけで、スマートフォン上に美しく整理されたオンライン本棚が広がります。外部クラウドサービスへのアップロードも、同期アカウントの作成も一切不要です。</p>
+
+        <h2>OPDSとは？ その魅力と仕組み</h2>
+        <p><strong>OPDS</strong>（Open Publication Distribution System）は、いわば「電子書籍のためのRSS」です。ニュース記事の代わりに、書籍のタイトル、著者名、表紙画像、解説文、カテゴリ、ダウンロードリンクなどの情報を標準規格で配信します。</p>
+        <p>オープン規格だからこそ、サーバーごとに特別なプラグインを用意する必要がありません。Shioriは広く普及している **OPDS 1.x**（XML/Atomベース）と最新の **OPDS 2.0**（JSONベース）の双方をネイティブサポートしており、世界中のあらゆるカタログとスムーズに接続できます。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre &amp; Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga &amp; Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">世界中の公開カタログ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">安全な直接通信</div>
+          </div>
+        </div>
+
+        <h2>接続に必要な準備</h2>
+        <ul class="article-bullet-list">
+          <li><strong>OPDSカタログURL</strong> — トップページではなく、OPDSフィード専用のアドレス（下記の表をご参照ください）。</li>
+          <li><strong>ユーザー名とパスワード</strong> — プライベートサーバーの場合のみ必要です（公開カタログは不要）。</li>
+          <li><strong>ネットワーク接続</strong> — 自宅サーバーの場合はスマホと同じWi-Fi環境に接続してください。</li>
+        </ul>
+
+        <h2>主なサーバーのOPDS URL一覧</h2>
+        <p>代表的なサーバーのURL形式です（<code>192.168.1.10</code> をサーバーの実IPアドレスに置き換えてください）。</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>サーバー</th><th>一般的なOPDSアドレス</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre（内蔵コンテンツサーバー）</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga（OPDS 2.0）</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg（公開ライブラリ）</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Shioriには便利な **Quick fill（クイック入力）** ボタンが搭載されています。ホスト名やIPを入力してサーバー名をタップするだけで、ポート番号とパスが自動入力されます。</p>
+
+        <div class="quote-callout">
+          <strong>Kavitaに関する補足:</strong><br />
+          KavitaはAPIキーをURLに含める仕様です。Kavitaの <strong>Account → OPDS URL</strong> からキーを取得して <code>/api/opds/</code> の後ろに貼り付け、ユーザー名・パスワード欄は空欄のままにしてください。
+        </div>
+
+        <h2>7つのステップで簡単接続</h2>
+        <p>サーバーの登録から書籍のダウンロードまでの流れを分かりやすく解説します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>您的私人电子书库或许早已支持 OPDS 协议——您只需要一款能够与之对话的阅读应用。无论您是通过 **Calibre** 管理图书、在家庭服务器上运行 **Calibre-Web**、使用 **Komga** 整理漫画、借助 **Kavita** 搭建轻小说书库，还是畅读 **Project Gutenberg** 的公共领域名著，它们都能通过 **OPDS 订阅源** 共享藏书。在 Shiori 中，只需填入一个地址，整座云端书库便会化作清晰易读的书架，即点即下——无需注册额外账号，无需第三方中转，数据私密安全。</p>
+
+        <h2>什么是 OPDS？为什么它如此强大？</h2>
+        <p><strong>OPDS</strong>（Open Publication Distribution System，开放出版物分发系统）好比“电子书专属的 RSS 订阅”。服务器以统一开放的标准格式输出书名、作者、封面、简介、分类及下载链接，任何支持该协议的阅读器均可无缝读取。</p>
+        <p>这一开放标准赋予了用户极大的自由度。服务器无需为 Shiori 单独开发插件，Shiori 也原生支持 **OPDS 1.x**（基于 Atom/XML）与 **OPDS 2.0**（基于现代 JSON 格式），轻松连接全球各类书库。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre 与 Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga 与 Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">全球公共书库</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">私密端到端直连</div>
+          </div>
+        </div>
+
+        <h2>连接前需准备的信息</h2>
+        <ul class="article-bullet-list">
+          <li><strong>OPDS 目录地址（URL）</strong> — 即订阅源本身的专用路径，而非网页首页（可参考下表）。</li>
+          <li><strong>用户名与密码</strong> — 仅私有书库需要填写认证信息，公开书库直接留空。</li>
+          <li><strong>网络连通性</strong> — 本地局域网自建服务请确保手机连接同一 Wi-Fi，外网访问需使用公网 IP 或域名。</li>
+        </ul>
+
+        <h2>常见服务器 OPDS 地址速查表</h2>
+        <p>以下为各大主流书库的默认 OPDS 路径（请将 <code>192.168.1.10</code> 替换为您实际的服务器地址）：</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>书库服务器</th><th>常见 OPDS 地址</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre（内置内容服务器）</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga（OPDS 2.0）</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg（公共免费书库）</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Shiori 内置了贴心的 **Quick fill（快速填充）** 标签。输入主机名或 IP 后，点击对应的服务名称，即可自动补全端口与路径。</p>
+
+        <div class="quote-callout">
+          <strong>关于 Kavita 的特别提示：</strong><br />
+          Kavita 将 API Key 直接嵌在 URL 中。请在 Kavita 中打开 <strong>Account → OPDS URL</strong>，复制密钥粘贴至 <code>/api/opds/</code> 之后，在 Shiori 中无需填写用户名与密码。
+        </div>
+
+        <h2>图文实操：只需 7 步连接云端书库</h2>
+        <p>跟随以下详细指引，轻松添加书库并下载您的第一本电子书。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Sua coleção pessoal de e-books provavelmente já é compatível com OPDS — você só precisa de um leitor que saiba se comunicar com ela. Seja você usuário do <strong>Calibre</strong>, <strong>Calibre-Web</strong> em um servidor caseiro, <strong>Komga</strong> para quadrinhos, <strong>Kavita</strong> para novelas ou fã dos clássicos gratuitos do <strong>Project Gutenberg</strong>, todos eles disponibilizam um <strong>feed OPDS</strong>. No Shiori, basta colar esse endereço para transformar seu catálogo em uma estante visual no celular — sem intermediários e com total privacidade.</p>
+
+        <h2>O Que É OPDS e Por Que Ele É Tão Útil?</h2>
+        <p><strong>OPDS</strong> (Open Publication Distribution System) funciona como um "feed RSS para livros". O servidor publica uma lista completa com capas, autores, sinopses, categorias e links de download em um formato padronizado.</p>
+        <p>Por ser um padrão aberto, o Shiori conecta-se a qualquer catálogo sem necessidade de configurações complexas, com suporte nativo a <strong>OPDS 1.x</strong> (baseado em XML/Atom) e <strong>OPDS 2.0</strong> (baseado em JSON moderno).</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre e Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga e Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Catálogos Públicos</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">Conexão Direta Segura</div>
+          </div>
+        </div>
+
+        <h2>O Que Você Precisa para Começar</h2>
+        <ul class="article-bullet-list">
+          <li><strong>A URL do catálogo OPDS</strong> — o endereço exato do feed (consulte a tabela abaixo).</li>
+          <li><strong>Usuário e senha</strong> — apenas para servidores privados que exigem autenticação.</li>
+          <li><strong>Acesso à rede</strong> — certifique-se de que o celular e o servidor estão na mesma rede local Wi-Fi.</li>
+        </ul>
+
+        <h2>Onde Encontrar a URL do Seu Servidor OPDS</h2>
+        <p>Confira os endereços padrão para os servidores mais populares (substitua <code>192.168.1.10</code> pelo IP real do seu computador):</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>Servidor</th><th>Endereço OPDS Padrão</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre (Servidor de Conteúdo)</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga (OPDS 2.0)</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg (Público)</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>O Shiori conta com botões de <strong>Preenchimento Rápido</strong>: digite seu host ou IP e selecione o serviço para completar a porta e o caminho automaticamente.</p>
+
+        <div class="quote-callout">
+          <strong>Dica para usuários do Kavita:</strong><br />
+          O Kavita inclui a chave de API na própria URL. Acesse <strong>Account → OPDS URL</strong> no Kavita, copie a chave após <code>/api/opds/</code> e deixe os campos de login em branco no Shiori.
+        </div>
+
+        <h2>Conecte Seu Catálogo em 7 Passos Simples</h2>
+        <p>Veja abaixo como configurar o servidor e baixar seus livros favoritos para leitura off-line.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Es muy probable que tu biblioteca de libros electrónicos ya sea compatible con OPDS: solo necesitas una aplicación que sepa conectarse a ella. Ya sea que organices tus libros en <strong>Calibre</strong>, uses <strong>Calibre-Web</strong> en tu red local, gestiones cómics en <strong>Komga</strong>, disfrutes novelas en <strong>Kavita</strong> o leas clásicos en <strong>Project Gutenberg</strong>, todos ellos cuentan con un <strong>feed OPDS</strong>. En Shiori, basta con introducir esa dirección para disfrutar de un catálogo visual y descargable directamente en tu móvil, sin intermediarios ni suscripciones.</p>
+
+        <h2>¿Qué Es OPDS y Por Qué Resulta Tan Práctico?</h2>
+        <p><strong>OPDS</strong> (Open Publication Distribution System) es el equivalente a un "feed RSS para libros electrónicos". El servidor publica un catálogo estructurado con títulos, autores, portadas, sinopsis, categorías y enlaces de descarga bajo un formato universal.</p>
+        <p>Al tratarse de un estándar abierto, Shiori se comunica de forma nativa con cualquier servidor sin necesidad de complementos especiales, siendo compatible con <strong>OPDS 1.x</strong> (XML/Atom) y <strong>OPDS 2.0</strong> (JSON).</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Calibre y Calibre-Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗂️</span>
+            <div class="stat-badge-title">Komga y Kavita</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Catálogos Públicos</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔒</span>
+            <div class="stat-badge-title">Conexión Directa y Privada</div>
+          </div>
+        </div>
+
+        <h2>Qué Necesitas para Empezar</h2>
+        <ul class="article-bullet-list">
+          <li><strong>La URL del catálogo OPDS</strong> — la ruta exacta del feed (consulta la tabla a continuación).</li>
+          <li><strong>Usuario y contraseña</strong> — únicamente si tu catálogo es privado.</li>
+          <li><strong>Acceso a la red</strong> — asegúrate de que tu móvil y tu servidor están en la misma red Wi-Fi en caso de servidores domésticos.</li>
+        </ul>
+
+        <h2>Dónde Encontrar la URL de tu Servidor OPDS</h2>
+        <p>A continuación encontrarás los formatos de dirección habituales (sustituye <code>192.168.1.10</code> por la IP de tu equipo):</p>
+
+        <div class="url-table-wrap">
+          <table class="url-table">
+            <thead>
+              <tr><th>Servidor</th><th>Dirección OPDS Típica</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Calibre (Servidor de Contenido)</td><td><code>http://192.168.1.10:8080/opds</code></td></tr>
+              <tr><td>Calibre-Web</td><td><code>http://192.168.1.10:8083/opds</code></td></tr>
+              <tr><td>Komga</td><td><code>http://192.168.1.10:25600/opds/v1.2/catalog</code></td></tr>
+              <tr><td>Komga (OPDS 2.0)</td><td><code>http://192.168.1.10:25600/opds/v2/catalog</code></td></tr>
+              <tr><td>Kavita</td><td><code>http://192.168.1.10:5000/api/opds/YOUR_API_KEY</code></td></tr>
+              <tr><td>Project Gutenberg (Público)</td><td><code>https://www.gutenberg.org/ebooks.opds/</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Shiori incluye botones de <strong>Autocompletado Rápido</strong>: escribe la IP o el host y selecciona tu servidor para rellenar el puerto y la ruta de forma instantánea.</p>
+
+        <div class="quote-callout">
+          <strong>Detalle importante sobre Kavita:</strong><br />
+          Kavita integra la clave API directamente en la URL. Ve a <strong>Account → OPDS URL</strong> en Kavita, copia tu clave tras <code>/api/opds/</code> y deja los campos de usuario y contraseña vacíos en Shiori.
+        </div>
+
+        <h2>Conecta tu Catálogo en 7 Sencillos Pasos</h2>
+        <p>Sigue esta guía paso a paso para añadir tu servidor y descargar tus libros para leerlos sin conexión.</p>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (7 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการเชื่อมต่ออย่างละเอียด (7 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">接続手順ガイド（7つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文连接指南（7 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (7 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (7 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open Collections → Library Server</div>
+          <div class="step-desc">
+            <p>Go to the <strong>Collections</strong> tab and scroll down to the <strong>Library Server</strong> section. Tap <strong>+</strong> to add a new catalog. Servers you have already added are listed here with their addresses masked, so a screenshot never leaks your private URL.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ไปที่แท็บ Collections → Library Server</div>
+          <div class="step-desc">
+            <p>เปิดแท็บ <strong>Collections (คอลเลกชัน)</strong> แล้วเลื่อนลงมาที่หัวข้อ <strong>Library Server</strong> แตะปุ่ม <strong>+</strong> เพื่อเพิ่มแคตตาล็อกใหม่ (เซิร์ฟเวอร์เดิมที่เคยเพิ่มไว้จะแสดงที่นี่พร้อมปิดบังข้อมูลสำคัญเพื่อความปลอดภัย)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>「コレクション」→「ライブラリサーバー」を開く</div>
+          <div class="step-desc">
+            <p><strong>Collections（コレクション）</strong> タブを開き、<strong>Library Server（ライブラリサーバー）</strong> セクションまでスクロールします。<strong>+</strong> ボタンをタップして新規カタログを追加します（登録済みサーバーのURLはマスク表示されます）。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>进入“藏书” → “书库服务器”</div>
+          <div class="step-desc">
+            <p>打开 <strong>Collections（藏书）</strong> 页面，滚动至 <strong>Library Server（书库服务器）</strong> 分组，点击 <strong>+</strong> 号添加新书库。（已添加的服务器会在此列出，并妥善隐藏私有地址。）</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra Coleções → Servidor de Biblioteca</div>
+          <div class="step-desc">
+            <p>Acesse a aba <strong>Collections (Coleções)</strong> e localize a seção <strong>Library Server</strong>. Toque no <strong>+</strong> para adicionar um novo catálogo. Seus servidores existentes são listados aqui com URLs protegidas.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre Colecciones → Servidor de Biblioteca</div>
+          <div class="step-desc">
+            <p>Ve a la pestaña <strong>Collections (Colecciones)</strong> y dirígete a la sección <strong>Library Server</strong>. Pulsa el botón <strong>+</strong> para añadir un nuevo catálogo (las direcciones privadas aparecen enmascaradas por seguridad).</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-library-server-add-opds.jpg" alt="The Library Server section in Shiori's Collections tab, with the add button for a new OPDS catalog" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Name It and Paste the Catalog URL</div>
+          <div class="step-desc">
+            <p>Type a friendly name, then paste your OPDS address into the <strong>Catalog URL</strong> field. Not sure of the exact path? Type just the host or IP and tap a <strong>Quick fill</strong> chip — <em>Calibre</em>, <em>Calibre-Web</em>, <em>Komga</em>, <em>Komga v2</em>, or <em>Kavita</em> — and Shiori completes the rest.</p>
+            <p>If your catalog is private, fill in <strong>Sign-in (optional)</strong> with your username and password. For a public catalog, leave both fields empty.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ตั้งชื่อและวางที่อยู่ Catalog URL</div>
+          <div class="step-desc">
+            <p>ตั้งชื่อเซิร์ฟเวอร์ตามที่คุณเข้าใจ จากนั้นวางที่อยู่ OPDS ลงในช่อง <strong>Catalog URL</strong> หากไม่แน่ใจพาร์ท ให้พิมพ์เฉพาะ IP แล้วแตะปุ่ม <strong>Quick fill</strong> (เช่น <em>Calibre</em>, <em>Komga</em> ฯลฯ) เพื่อเติมพาร์ทให้อัตโนมัติ</p>
+            <p>หากเป็นเซิร์ฟเวอร์ส่วนตัว ให้กรอก Username และ Password ในส่วน <strong>Sign-in (optional)</strong> หากเป็นคลังสาธารณะ ปล่อยว่างไว้ได้เลยครับ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>名前をつけてCatalog URLを貼り付け</div>
+          <div class="step-desc">
+            <p>わかりやすいサーバー名を入力し、<strong>Catalog URL</strong> 欄にOPDSアドレスを入力します。パスが不明な場合は、ホスト名を入力して <strong>Quick fill</strong> チップをタップすると自動補完されます。</p>
+            <p>認証が必要な場合は <strong>Sign-in (optional)</strong> 欄にユーザー名とパスワードを入力します。公開サーバーの場合は空欄で構いません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>命名书库并粘贴 Catalog URL</div>
+          <div class="step-desc">
+            <p>输入自定义名称，在 <strong>Catalog URL</strong> 处填入 OPDS 地址。若不确定具体路径，只需输入 IP，然后点击 <strong>Quick fill</strong> 快捷标签即可自动补全。</p>
+            <p>若是私有书库，请在 <strong>Sign-in (optional)</strong> 处填写账号密码；若为公开书库则保持留空。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Dê um Nome e Cole a URL do Catálogo</div>
+          <div class="step-desc">
+            <p>Digite um nome de identificação e cole o endereço OPDS no campo <strong>Catalog URL</strong>. Se preferir, digite apenas o IP e use as opções de <strong>Quick fill</strong> para preencher o caminho automaticamente.</p>
+            <p>Para catálogos protegidos, preencha o <strong>Sign-in (optional)</strong> com seu usuário e senha. Para catálogos públicos, deixe em branco.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Asigna un Nombre y Pega la URL del Catálogo</div>
+          <div class="step-desc">
+            <p>Escribe un nombre reconocible y pega la dirección OPDS en el campo <strong>Catalog URL</strong>. Si tienes dudas con la ruta, escribe el host y pulsa en los botones de <strong>Quick fill</strong> para completarla.</p>
+            <p>Si tu catálogo requiere credenciales, rellena el apartado <strong>Sign-in (optional)</strong> con usuario y contraseña. Si es público, déjalo vacío.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-enter-opds-catalog-url.jpg" alt="Entering an OPDS catalog URL in Shiori's Add Library Server form, with quick fill chips for Calibre, Komga and Kavita" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Tap Test Connection, Then Save</div>
+          <div class="step-desc">
+            <p>Shiori fetches the feed and reports what it found. For a working catalog, you will see <strong>“Connected — OPDS catalog.”</strong> That confirms the address is reachable, your credentials are valid, and the response is an authentic catalog. Now tap <strong>Save</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>แตะ Test Connection แล้วกด Save</div>
+          <div class="step-desc">
+            <p>Shiori จะทดสอบดึงข้อมูลฟีดและแสดงสถานะ เมื่อเชื่อมต่อถูกต้องจะขึ้นข้อความ <strong>“Connected — OPDS catalog”</strong> ซึ่งยืนยันว่าที่อยู่ถูกต้องและรหัสผ่านผ่านการอนุมัติเรียบร้อย ให้แตะ <strong>Save</strong> เพื่อบันทึก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>Test Connection をタップして Save</div>
+          <div class="step-desc">
+            <p>Shioriがフィードを取得し、接続状態を確認します。正常に疎通すると <strong>“Connected — OPDS catalog”</strong> と表示されます。確認できたら <strong>Save</strong> をタップして保存します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>点击 Test Connection 测试连接并保存</div>
+          <div class="step-desc">
+            <p>Shiori 会即刻拉取订阅源。若配置正确，界面将提示 <strong>“Connected — OPDS catalog”</strong>，确认地址与认证无误后，点击 <strong>Save</strong> 保存。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Toque em Test Connection e Depois em Save</div>
+          <div class="step-desc">
+            <p>O Shiori testa o feed e confirma o status. Quando tudo estiver correto, você verá <strong>“Connected — OPDS catalog.”</strong> Basta tocar em <strong>Save</strong> para salvar.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Pulsa Test Connection y Luego Save</div>
+          <div class="step-desc">
+            <p>Shiori comprobará la conexión al feed. Si todo es correcto, verás el mensaje <strong>“Connected — OPDS catalog.”</strong> Pulsa en <strong>Save</strong> para guardar los cambios.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-test-connection-opds-catalog.jpg" alt="Shiori confirming a working OPDS feed with the message Connected — OPDS catalog" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Need Help with Addresses? Check “Supported servers”</div>
+          <div class="step-desc">
+            <p>The same screen carries a built-in reference for every server type Shiori supports: OPDS 1.x / 2.0, Komga, Kavita, WebDAV, FTP/FTPS, S3 buckets, DSpace repositories, and the Everything HTTP server — each with ready-to-copy URL examples.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ดูตัวอย่างพาร์ทได้ใน “Supported servers”</div>
+          <div class="step-desc">
+            <p>ในหน้านี้มีคู่มือในตัวสรุปตัวอย่าง URL ของเซิร์ฟเวอร์ทุกประเภทที่ Shiori รองรับ ไม่ว่าจะเป็น OPDS 1.x / 2.0, Komga, Kavita, WebDAV, FTP, S3 Bucket, DSpace หรือ Everything HTTP Server ช่วยให้หมดปัญหาเรื่องจำพอร์ตจำพาร์ทไม่ได้</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>URLに迷ったら「Supported servers」を確認</div>
+          <div class="step-desc">
+            <p>設定画面下部には、OPDS 1.x/2.0、Komga、Kavita、WebDAV、FTP、S3バケット、DSpaceなど、対応するすべてのプロトコルのURLサンプルが分かりやすく掲載されています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>随时查阅“Supported servers”内置指南</div>
+          <div class="step-desc">
+            <p>界面内置了支持服务器类型的完整示例，涵盖 OPDS 1.x / 2.0、Komga、Kavita、WebDAV、FTP、S3 存储桶与 DSpace 等，助您快速参照端口与路径格式。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Consulte a Lista de “Supported servers”</div>
+          <div class="step-desc">
+            <p>A própria tela inclui uma lista de referência com exemplos de URLs para todos os tipos de servidores compatíveis: OPDS 1.x/2.0, Komga, Kavita, WebDAV, FTP, S3 e DSpace.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Consulta la Guía “Supported servers”</div>
+          <div class="step-desc">
+            <p>La pantalla incluye una práctica referencia con ejemplos de URL para todos los servidores compatibles: OPDS 1.x/2.0, Komga, Kavita, WebDAV, FTP, buckets S3 y DSpace.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-supported-opds-servers.jpg" alt="Shiori's supported servers reference listing OPDS, Komga, Kavita, WebDAV, FTP, S3 and DSpace example URLs" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Open the Server and Browse Your Catalog</div>
+          <div class="step-desc">
+            <p>Tap your saved server and the catalog opens exactly as its owner organized it — by popularity, series, bookshelves, or languages. Breadcrumbs across the top show where you are, and a single tap takes you back to any level.</p>
+            <p>A sorting menu beside the search bar lets you reorder any feed by title, date, or file size.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เปิดเซิร์ฟเวอร์และเลือกดูหมวดหมู่หนังสือ</div>
+          <div class="step-desc">
+            <p>เมื่อแตะเปิดเซิร์ฟเวอร์ คุณจะเห็นโครงสร้างหมวดหมู่ตามที่เซิร์ฟเวอร์จัดไว้ เช่น แยกตามความนิยม, ตามซีรีส์, ตามชั้นหนังสือ หรือตามภาษา มีแถบ Breadcrumbs ด้านบนบอกตำแหน่ง และมีเมนูเรียงลำดับตามชื่อหรือขนาดไฟล์ได้อย่างอิสระ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>サーバーを開いてカタログを快適に探索</div>
+          <div class="step-desc">
+            <p>登録したサーバーをタップすると、人気順、シリーズ別、本棚別など、サーバー側で整理されたカテゴリ構造がそのまま展開されます。上部のパンくずリストでいつでも上の階層へ戻れます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>进入服务器，畅游分类书海</div>
+          <div class="step-desc">
+            <p>点击进入已保存的书库，即可按热门度、系列丛书、书单分类等清晰目录进行浏览。顶部配有直观的面包屑导航，随时可一键返回上一层。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Abra o Servidor e Explore o Catálogo</div>
+          <div class="step-desc">
+            <p>Toque no servidor cadastrado para navegar pelas categorias originais — por popularidade, séries ou estantes. A navegação estruturada no topo permite voltar a qualquer nível facilmente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Abre el Servidor y Explora el Catálogo</div>
+          <div class="step-desc">
+            <p>Pulsa en el servidor guardado para ver las secciones organizadas: por popularidad, series o estanterías. La barra de navegación superior te permite volver a cualquier nivel con un solo toque.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-browse-opds-catalog-feed.jpg" alt="Browsing an OPDS catalog in Shiori, showing the feed's own sections as folders" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Tap a Book for Details, Then Download</div>
+          <div class="step-desc">
+            <p>Every book displays its cover, format badge, and file size. Expand any entry to read full descriptions and subject tags provided by the catalog.</p>
+            <p>Two action buttons sit on the right: <strong>Read now</strong> (the book icon) streams the file and opens it instantly, while <strong>Download</strong> quietly saves it to your bookshelf. Titles you already possess are marked <strong>“Already on your bookshelf”</strong> so you never download duplicates. Supports EPUB, PDF, FB2, and CBZ/CBR comics.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>แตะดูรายละเอียดและดาวน์โหลดหนังสือ</div>
+          <div class="step-desc">
+            <p>หนังสือแต่ละเล่มจะแสดงภาพปก, ชนิดไฟล์ และขนาดไฟล์อย่างชัดเจน สามารถกดขยายเพื่ออ่านเรื่องย่อและแท็กหมวดหมู่ได้อย่างครบถ้วน</p>
+            <p>มี 2 ปุ่มให้เลือกใช้: <strong>Read now</strong> (ไอคอนหนังสือ) สำหรับเปิดอ่านทันที และ <strong>Download</strong> สำหรับบันทึกเข้าชั้นหนังสือในเครื่อง เล่มที่เคยโหลดไว้แล้วจะแสดงป้าย <strong>“Already on your bookshelf”</strong> เพื่อป้องกันการโหลดซ้ำ รองรับทั้ง EPUB, PDF, FB2 และการ์ตูน CBZ/CBR</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>詳細情報を確認してワンタップダウンロード</div>
+          <div class="step-desc">
+            <p>各書籍の表紙、フォーマット、ファイルサイズが表示され、展開すると詳細なあらすじやタグを確認できます。</p>
+            <p><strong>Read now</strong>（本アイコン）で即座に開いて読書を開始できるほか、<strong>Download</strong> で端末の本棚へ保存できます。保存済みの本には <strong>“Already on your bookshelf”</strong> と明記されるため重複の心配もありません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>查看书籍详情，一键下载到本地</div>
+          <div class="step-desc">
+            <p>每本书均显示封面、格式标签与文件体积，展开可阅读完整的书籍简介与标签信息。</p>
+            <p>右侧提供双重操作：点击 <strong>Read now</strong>（书本图标）可即刻在线流式阅读，点击 <strong>Download</strong> 则可静默下载保存至书架。已下载的书籍贴心标注 <strong>“Already on your bookshelf”</strong>，杜绝重复下载。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Veja os Detalhes e Baixe o Livro</div>
+          <div class="step-desc">
+            <p>Cada livro exibe capa, formato e tamanho. Expanda o item para ler a sinopse completa e as tags do catálogo.</p>
+            <p>Use <strong>Read now</strong> para abrir e ler imediatamente ou <strong>Download</strong> para guardar na sua estante. Títulos já baixados exibem <strong>“Already on your bookshelf”</strong> para evitar downloads repetidos.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Consulta los Detalles y Descarga la Obra</div>
+          <div class="step-desc">
+            <p>Cada entrada muestra portada, formato y tamaño de archivo. Puedes desplegarla para leer la sinopsis completa y las etiquetas del catálogo.</p>
+            <p>Dispones de dos botones: <strong>Read now</strong> para abrir el libro de inmediato y <strong>Download</strong> para guardarlo en tu estantería. Las obras ya descargadas indican <strong>“Already on your bookshelf”</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-opds-book-details-download.jpg" alt="An expanded OPDS catalog entry in Shiori showing the book description, subject tags and the download button" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Enjoy Your Book Offline Anytime</div>
+          <div class="step-desc">
+            <p>The downloaded book arrives safely on your personal bookshelf as a local file — fully equipped for offline reading, text-to-speech voice narration, highlights, and notes. Its card includes a subtle badge showing its source server, and the card menu's <strong>“Where from”</strong> action takes you directly back to that catalog whenever you're ready for the next volume.</p>
+            <div class="quote-callout">
+              <strong>💡 Pro Tip</strong><br />
+              Self-hosting at home? Always use your computer's local LAN IP (e.g. <code>192.168.1.10</code>) rather than <code>localhost</code>, since Shiori runs on your mobile device. And ensure you include the <code>/opds</code> endpoint path.
+            </div>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>อ่านได้ลื่นไหลแบบออฟไลน์ พร้อมฟีเจอร์ครบครัน</div>
+          <div class="step-desc">
+            <p>หนังสือที่ดาวน์โหลดจะถูกจัดเก็บไว้บนชั้นหนังสือในเครื่องของคุณ พร้อมให้อ่านแบบออฟไลน์ได้ทุกที่ ใช้เสียงอ่าน TTS ไฮไลต์ และจดโน้ตได้ครบถ้วน บนการ์ดหนังสือจะมีป้ายระบุแหล่งที่มา และมีเมนู <strong>“Where from”</strong> ที่ช่วยพาคุณกลับไปยังแคตตาล็อกเดิมเพื่อดาวน์โหลดเล่มถัดไปได้อย่างสะดวกสบาย</p>
+            <div class="quote-callout">
+              <strong>💡 เคล็ดลับนักอ่าน</strong><br />
+              หากรันเซิร์ฟเวอร์เองที่บ้าน ให้ใช้ IP วงแลน (เช่น <code>192.168.1.10</code>) แทนการใช้ <code>localhost</code> เพราะแอปทำงานบนมือถือของคุณ และอย่าลืมระบุพาร์ท <code>/opds</code> ต่อท้ายเสมอครับ
+            </div>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>いつでもどこでもオフライン読書を満喫</div>
+          <div class="step-desc">
+            <p>ダウンロードされた本は端末のローカル本棚に保存され、オフライン環境でも音声読み上げ、ハイライト、メモ機能などを存分に活用できます。書籍カードの <strong>“Where from”</strong> メニューから、続きの巻をダウンロードするために元のカタログへワンタップで戻ることも可能です。</p>
+            <div class="quote-callout">
+              <strong>💡 お役立ちメモ</strong><br />
+              自宅サーバーを運用する際は、<code>localhost</code> ではなくLAN内のIPアドレス（例：<code>192.168.1.10</code>）を指定し、末尾に <code>/opds</code> を含めることをお忘れなく。
+            </div>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>随时随地享受沉浸式离线阅读</div>
+          <div class="step-desc">
+            <p>下载的书籍会安放于本地书架，离线状态下同样支持语音朗读（TTS）、高亮划线与笔记功能。书籍卡片附带来源标记，点击菜单中的 <strong>“Where from”</strong> 还可快速回到原书库下载后续卷册。</p>
+            <div class="quote-callout">
+              <strong>💡 实用小贴士</strong><br />
+              在家庭局域网自建服务时，请务必使用电脑的局域网 IP（如 <code>192.168.1.10</code>）而非 <code>localhost</code>，并确保路径以 <code>/opds</code> 结尾。
+            </div>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Aproveite Sua Leitura Off-line a Qualquer Hora</div>
+          <div class="step-desc">
+            <p>O livro baixado fica salvo na sua estante local, pronto para leitura off-line, conversão de texto em voz (TTS), destaques e anotações. O menu <strong>“Where from”</strong> no cartão do livro permite retornar direto ao catálogo quando quiser baixar o próximo volume.</p>
+            <div class="quote-callout">
+              <strong>💡 Dica Útil</strong><br />
+              Hospedando em casa? Use o IP da rede local (ex: <code>192.168.1.10</code>) em vez de <code>localhost</code> e certifique-se de apontar para o caminho <code>/opds</code>.
+            </div>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Disfruta de tu Lectura Sin Conexión</div>
+          <div class="step-desc">
+            <p>El libro descargado se almacena en tu estantería local, listo para lectura off-line, narración por voz (TTS), notas y subrayados. La opción <strong>“Where from”</strong> en la tarjeta del libro te permite volver al catálogo original para conseguir el siguiente tomo.</p>
+            <div class="quote-callout">
+              <strong>💡 Consejo Práctico</strong><br />
+              Si tienes tu propio servidor en casa, usa la IP local (ej. <code>192.168.1.10</code>) en lugar de <code>localhost</code> y apunta siempre a la ruta <code>/opds</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-downloaded-book-on-bookshelf.jpg" alt="A book downloaded from an OPDS catalog sitting on the Shiori bookshelf on Android" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Does OPDS cost anything to use?</div>
+        <div class="faq-a">No. OPDS is an open, royalty-free standard, and Shiori's library-server features are completely free. Numerous excellent catalogs — including Project Gutenberg — are public and free to browse.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การใช้งาน OPDS มีค่าใช้จ่ายหรือไม่?</div>
+        <div class="faq-a">ไม่มีค่าใช้จ่ายใดๆ ครับ OPDS เป็นมาตรฐานเปิดสากล และฟังก์ชันเชื่อมต่อเซิร์ฟเวอร์ใน Shiori ให้บริการฟรีทั้งหมด นอกจากนี้ยังมีคลังหนังสือสาธารณะชั้นยอดอย่าง Project Gutenberg ให้เปิดอ่านได้ฟรีอีกด้วย</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">OPDSの利用に料金はかかりますか？</div>
+        <div class="faq-a">一切かかりません。OPDSはオープンな国際標準規格であり、Shioriのライブラリサーバー機能も完全無料でご利用いただけます。Project Gutenbergをはじめとする数多くの公開カタログも無料で利用可能です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">使用 OPDS 是否需要付费？</div>
+        <div class="faq-a">完全免费。OPDS 是一项开放的技术标准，Shiori 的书库服务器功能亦完全免费开放。互联网上还有众多优质的免费公开书库（如 Project Gutenberg）供您自由浏览。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O OPDS tem algum custo de uso?</div>
+        <div class="faq-a">Não. O OPDS é um padrão aberto e gratuito, e os recursos de servidor de biblioteca do Shiori são totalmente gratuitos. Muitos catálogos excelentes, como o Project Gutenberg, são públicos e livres.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿OPDS tiene algún coste?</div>
+        <div class="faq-a">No. Es un estándar abierto y gratuito, y las funciones de servidor de biblioteca en Shiori son totalmente libres. Existen magníficos catálogos públicos como Project Gutenberg accesibles sin coste alguno.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Do I have to upload my books to any third-party cloud?</div>
+        <div class="faq-a">No. Shiori communicates directly with your own server over your local network or internet connection. None of your books or metadata pass through external sync servers.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ต้องอัปโหลดหนังสือไปยังคลาวด์ของบุคคลที่สามหรือไม่?</div>
+        <div class="faq-a">ไม่ต้องเลยครับ Shiori เชื่อมต่อกับเซิร์ฟเวอร์ของคุณโดยตรงแบบเครื่องต่อเครื่อง ข้อมูลและไฟล์หนังสือทั้งหมดจะอยู่ในการดูแลของคุณ 100% ไม่ผ่านเซิร์ฟเวอร์คนกลาง</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">本を外部のクラウドサービスにアップロードする必要がありますか？</div>
+        <div class="faq-a">いいえ、不要です。Shioriはお使いのスマートフォンから直接サーバーと通信するため、サードパーティの同期サーバーを経由することはありません。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">我需要把图书上传到第三方云端吗？</div>
+        <div class="faq-a">不需要。Shiori 直接在手机与您的个人服务器之间建立点对点通信，没有任何文件或阅读数据会经由第三方服务器中转。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Preciso enviar meus livros para alguma nuvem de terceiros?</div>
+        <div class="faq-a">Não. O Shiori comunica-se diretamente com o seu servidor. Nada passa por serviços intermediários de sincronização.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Debo subir mis libros a algún servicio en la nube externo?</div>
+        <div class="faq-a">No. Shiori se comunica directamente con tu servidor. Ningún archivo ni metadato pasa por plataformas de terceros.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Which file formats can I download from an OPDS catalog?</div>
+        <div class="faq-a">You can download EPUB, PDF, FB2, and CBZ/CBR comic files — whichever supported formats your catalog provides for a given title.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถดาวน์โหลดไฟล์หนังสือรูปแบบใดได้บ้าง?</div>
+        <div class="faq-a">รองรับทั้งไฟล์ EPUB, PDF, FB2 และไฟล์การ์ตูน CBZ/CBR ตามแต่ที่แคตตาล็อกต้นทางของคุณจัดเตรียมไว้ครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">OPDSカタログからダウンロードできるファイル形式は？</div>
+        <div class="faq-a">EPUB、PDF、FB2、およびCBZ/CBR形式のコミックに対応しています（カタログ側で提供されているフォーマットに準じます）。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">可以从 OPDS 目录中下载哪些格式的图书？</div>
+        <div class="faq-a">全面支持 EPUB、PDF、FB2 以及 CBZ/CBR 漫画格式——取决于您的书库源为该书提供了何种格式。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Quais formatos de arquivo posso baixar do catálogo OPDS?</div>
+        <div class="faq-a">Você pode baixar arquivos EPUB, PDF, FB2 e quadrinhos CBZ/CBR — conforme disponibilizado pelo seu catálogo.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué formatos de archivo puedo descargar desde un catálogo OPDS?</div>
+        <div class="faq-a">Puedes descargar libros en EPUB, PDF, FB2 y cómics en CBZ/CBR, según los formatos que ofrezca tu catálogo para cada título.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I add more than one catalog at the same time?</div>
+        <div class="faq-a">Yes! You can add as many catalogs as you like. They all appear neatly in your Library Server list, and you can reorder them to keep your favorite servers right at the top.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถเพิ่มหลายๆ เซิร์ฟเวอร์พร้อมกันได้หรือไม่?</div>
+        <div class="faq-a">ได้แน่นอนครับ! คุณสามารถเพิ่มแคตตาล็อกได้ไม่จำกัดจำนวน ทุกเซิร์ฟเวอร์จะจัดแสดงในหน้ารายการ และสามารถจัดเรียงลำดับเซิร์ฟเวอร์โปรดให้อยู่บนสุดได้ตามต้องการ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">複数のカタログを同時に登録できますか？</div>
+        <div class="faq-a">はい、何件でも自由に追加できます。ライブラリサーバー一覧に整理されて表示され、並び順もお好みに応じて変更可能です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">我可以同时添加多个书库目录吗？</div>
+        <div class="faq-a">当然可以！您可以添加任意数量的书库。所有服务器都会整齐显示在列表中，并且支持自由拖拽排序。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso adicionar vários catálogos ao mesmo tempo?</div>
+        <div class="faq-a">Sim! Adicione quantos catálogos desejar. Todos ficam reunidos na lista de Servidores de Biblioteca e podem ser reordenados.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puedo añadir más de un catálogo a la vez?</div>
+        <div class="faq-a">¡Sí! Puedes añadir todos los catálogos que quieras. Aparecerán ordenados en tu lista de servidores de biblioteca y podrás reorganizarlos a tu gusto.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 5 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What if my library server does not use OPDS?</div>
+        <div class="faq-a">Shiori also connects to Komga and Kavita through their native REST APIs, as well as WebDAV cloud drives, FTP/FTPS servers, S3-compatible object storage (AWS, MinIO, R2), DSpace repositories, and Everything HTTP server. Check out our guides on <a href="/blog/s3-bucket-library-server-android-epub/">connecting an S3 bucket</a> and <a href="/blog/how-to-setup-kavita-rest-api/">setting up the Kavita REST API</a>.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้าเซิร์ฟเวอร์ของฉันไม่ได้ใช้ OPDS ยังเชื่อมต่อได้ไหม?</div>
+        <div class="faq-a">ได้ครับ Shiori ยังรองรับการเชื่อมต่อกับ Komga และ Kavita ผ่าน REST API โดยตรง, พื้นที่คลาวด์ WebDAV, เซิร์ฟเวอร์ FTP/FTPS, Cloud Object Storage แบบ S3 (AWS, MinIO, R2), DSpace และ Everything HTTP Server สามารถดูคู่มือเพิ่มเติมได้ที่ <a href="/blog/s3-bucket-library-server-android-epub/">วิธีเชื่อมต่อ S3 Bucket</a> และ <a href="/blog/how-to-setup-kavita-rest-api/">การตั้งค่า Kavita REST API</a> ครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">サーバーがOPDSに対応していない場合は？</div>
+        <div class="faq-a">ShioriはKomgaやKavitaのネイティブREST APIをはじめ、WebDAV、FTP/FTPS、S3互換ストレージ（AWS、MinIO、R2）、DSpace、Everything HTTP Serverにも対応しています。詳しくは <a href="/blog/s3-bucket-library-server-android-epub/">S3バケット接続ガイド</a> や <a href="/blog/how-to-setup-kavita-rest-api/">Kavita REST API設定ガイド</a> をご覧ください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">如果我的书库不使用 OPDS 协议怎么办？</div>
+        <div class="faq-a">Shiori 还支持通过原生 REST API 直连 Komga 和 Kavita，并全面支持 WebDAV 云盘、FTP/FTPS 服务器、S3 兼容对象存储（AWS、MinIO、R2）、DSpace 及 Everything HTTP 服务。欢迎查阅我们的 <a href="/blog/s3-bucket-library-server-android-epub/">S3 存储桶连接指南</a> 与 <a href="/blog/how-to-setup-kavita-rest-api/">Kavita REST API 配置指南</a>。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">E se meu servidor de livros não usar OPDS?</div>
+        <div class="faq-a">O Shiori também se conecta nativamente às APIs do Komga e Kavita, além de suportar WebDAV, FTP/FTPS, buckets S3 (AWS, MinIO, R2), DSpace e Everything HTTP Server. Veja nossos guias sobre <a href="/blog/s3-bucket-library-server-android-epub/">adicionar um bucket S3</a> e <a href="/blog/how-to-setup-kavita-rest-api/">configurar a API do Kavita</a>.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué ocurre si mi servidor no utiliza OPDS?</div>
+        <div class="faq-a">Shiori también se conecta directamente mediante las APIs nativas de Komga y Kavita, además de admitir WebDAV, FTP/FTPS, almacenamiento S3 (AWS, MinIO, R2), DSpace y Everything HTTP Server. Echa un vistazo a nuestras guías sobre <a href="/blog/s3-bucket-library-server-android-epub/">añadir un bucket S3</a> y <a href="/blog/how-to-setup-kavita-rest-api/">configurar la API REST de Kavita</a>.</div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Every Catalog You Own, in One App</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, paste your OPDS URL, and read your whole library — self-hosted or public — from anywhere.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">รวมทุกคลังหนังสือของคุณ ไว้ในแอปเดียว</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ วางลิงก์ OPDS แล้วพกพาคลังหนังสือโปรดของคุณไปอ่านได้ทุกที่ทุกเวลา
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">すべての蔵書を、ひとつのアプリに集約</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、OPDS URLを登録して、いつでもどこでも快適な読書をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">聚合所有书库，尽在这一款阅读器中</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，填入 OPDS 链接，随时随地畅读您的所有云端与本地藏书。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Todos os Seus Catálogos em um Único App</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader, cole sua URL OPDS e leia toda a sua coleção em qualquer lugar.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Todos tus Catálogos en una Sola Aplicación</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader, introduce tu URL OPDS y disfruta de toda tu biblioteca donde quieras.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

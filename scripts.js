@@ -230,6 +230,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-title": "Organize Your Ebooks with Collections",
       "blog-p16-desc": "Create, rename, recolor and reorder shelves, add or remove books, and filter your whole library by reading status — a complete guide to Collections.",
 
+      // Blog Post 17
+      "blog-p17-date": "📅 August 14, 2026",
+      "blog-p17-cat": "🏷️ Library Servers",
+      "blog-p17-title": "How to Connect an OPDS Catalog to Your Android E-Reader",
+      "blog-p17-desc": "Find the OPDS URL for Calibre, Calibre-Web, Komga, Kavita or a public catalog, test the connection, then browse and download EPUBs straight to your bookshelf.",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 August 15, 2026",
+      "blog-p18-cat": "🏷️ Reading Experience",
+      "blog-p18-title": "Horizontal Scrolling EPUBs: Read a Japanese Picture Scroll",
+      "blog-p18-desc": "Download the free emakimono sample and unroll a twelfth-century handscroll sideways — plus how Horizontal scroll mode handles 縦書き vertical text.",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 August 15, 2026",
+      "blog-p19-cat": "🏷️ Reading Experience",
+      "blog-p19-title": "Text Replacement &amp; Regex: Rewrite What You Read and Hear",
+      "blog-p19-desc": "Every flow of visual and TTS replacement rules — plus a cookbook of 16 regex patterns, per-voice-language groups and the safety checks that stop a bad pattern.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -474,6 +492,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-cat": "🏷️ จัดการคลังหนังสือ",
       "blog-p16-title": "จัดระเบียบชั้นหนังสือด้วย Collections: สร้างชั้น ย้อมสี และกรองสถานะ",
       "blog-p16-desc": "จัดหมวดหมู่หนังสือเล่มโปรดตามใจชอบ สร้างคอลเลกชัน แยกสีสัน จัดเรียงชั้น วางหนังสือได้หลายหมวด และกรองตามสถานะการอ่านได้ในแตะเดียว",
+
+      // Blog Post 17
+      "blog-p17-date": "📅 14 สิงหาคม 2026",
+      "blog-p17-cat": "🏷️ เซิร์ฟเวอร์ห้องสมุด",
+      "blog-p17-title": "วิธีเชื่อมต่อ OPDS Catalog เข้ากับแอปอ่านหนังสือบน Android",
+      "blog-p17-desc": "รวมทุกคลังหนังสือไว้ในที่เดียว ทั้ง Calibre, Calibre-Web, Komga, Kavita หรือ Project Gutenberg เพียงใส่ลิงก์ OPDS ก็เปิดดูและดาวน์โหลดหนังสือเข้าชั้นได้ทันที",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 15 สิงหาคม 2026",
+      "blog-p18-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p18-title": "อ่าน EPUB แบบเลื่อนแนวนอน ด้วยภาพม้วนญี่ปุ่น (Emakimono)",
+      "blog-p18-desc": "ดาวน์โหลดไฟล์ตัวอย่างฟรี แล้วลองเลื่อนชมภาพม้วนอายุกว่า 900 ปีแบบต่อเนื่องไม่มีรอยต่อ พร้อมวิธีใช้โหมดเลื่อนแนวนอนกับหนังสือญี่ปุ่นแนวตั้ง (縦書き)",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 15 สิงหาคม 2026",
+      "blog-p19-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p19-title": "Text Replacement + Regex: แก้คำที่เห็นและคำที่ฟังได้ดั่งใจ",
+      "blog-p19-desc": "สอนครบทุกขั้นตอนของกฎแทนที่ข้อความทั้งแบบ Visual และ TTS พร้อมสูตร Regex 16 แบบ กลุ่มกฎแยกตามภาษาเสียง และระบบตรวจจับกฎที่ใช้ไม่ได้",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -720,6 +756,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-title": "コレクション機能で電子書籍を美しく整理する方法",
       "blog-p16-desc": "自由にカラーを設定できるコレクション作成、複数棚への登録、並べ替え、そして読書ステータスによる絞り込みまで。本棚を思い通りに整える完全ガイド。",
 
+      // Blog Post 17
+      "blog-p17-date": "📅 2026年8月14日",
+      "blog-p17-cat": "🏷️ ライブラリサーバー",
+      "blog-p17-title": "AndroidでOPDSカタログを接続して本棚を連携する方法",
+      "blog-p17-desc": "Calibre、Calibre-Web、Komga、Kavita、Project GutenbergなどのOPDSフィードを登録し、お気に入りの本棚から直接EPUBを閲覧・ダウンロードできます。",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 2026年8月15日",
+      "blog-p18-cat": "🏷️ 読書体験",
+      "blog-p18-title": "横スクロールEPUB：絵巻物を指でひらく",
+      "blog-p18-desc": "無料サンプル『信貴山縁起』をダウンロードして、横スクロールモードで絵巻をそのまま鑑賞。縦書きテキストにも同じ設定がそのまま使えます。",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 2026年8月15日",
+      "blog-p19-cat": "🏷️ 読書体験",
+      "blog-p19-title": "テキスト置換と正規表現：見える文字と読み上げを思い通りに",
+      "blog-p19-desc": "表示用とTTS専用の置換ルールを全手順で解説。すぐ使える正規表現16パターン、音声言語ごとのグループ分け、危険なパターンを止める安全機能まで。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -964,6 +1018,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-cat": "🏷️ 书架整理",
       "blog-p16-title": "使用“收藏集”整理电子书：创建、色彩标记与状态筛选",
       "blog-p16-desc": "随心创建个性化书架并指定专属色彩，一书多归类、自由调整排序，更有一键按阅读状态筛选书库的便捷体验。",
+
+      // Blog Post 17
+      "blog-p17-date": "📅 2026年8月14日",
+      "blog-p17-cat": "🏷️ 书库服务器",
+      "blog-p17-title": "如何将 OPDS 书库目录连接至 Android 阅读器",
+      "blog-p17-desc": "无缝对接 Calibre、Calibre-Web、Komga、Kavita 及各大公共书库的 OPDS 订阅源，轻松浏览目录并直接下载图书至本地书架。",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 2026年8月15日",
+      "blog-p18-cat": "🏷️ 阅读体验",
+      "blog-p18-title": "横向滚动 EPUB：用手指展开日本绘卷",
+      "blog-p18-desc": "下载免费的绘卷样书，以连续横向滚动的方式欣赏十二世纪画卷；同一模式也完美适用于日文竖排文字。",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 2026年8月15日",
+      "blog-p19-cat": "🏷️ 阅读体验",
+      "blog-p19-title": "文本替换与正则：让所见与所听都如你所愿",
+      "blog-p19-desc": "完整讲解视觉替换与朗读替换的每一步操作，附赠 16 条实用正则表达式、按语音语言分组，以及拦截错误正则的安全机制。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1210,6 +1282,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-title": "Organize Seus E-books com Coleções: Crie, Filtre e Gerencie",
       "blog-p16-desc": "Crie prateleiras personalizadas com cores exclusivas, adicione livros a múltiplas coleções, reordene estantes e filtre por status de leitura com total facilidade.",
 
+      // Blog Post 17
+      "blog-p17-date": "📅 14 de agosto de 2026",
+      "blog-p17-cat": "🏷️ Servidores de Biblioteca",
+      "blog-p17-title": "Como Conectar um Catálogo OPDS ao Seu Leitor Android",
+      "blog-p17-desc": "Conecte feeds OPDS do Calibre, Calibre-Web, Komga, Kavita ou Project Gutenberg para navegar e baixar livros EPUB diretamente na sua estante.",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 15 de agosto de 2026",
+      "blog-p18-cat": "🏷️ Experiência de Leitura",
+      "blog-p18-title": "EPUBs com Rolagem Horizontal: Leia um Rolo Ilustrado Japonês",
+      "blog-p18-desc": "Baixe o exemplo gratuito de emakimono e desenrole na horizontal um rolo do século XII — e veja como o modo lida com o texto vertical japonês.",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 15 de agosto de 2026",
+      "blog-p19-cat": "🏷️ Experiência de Leitura",
+      "blog-p19-title": "Substituição de Texto e Regex: Reescreva o que Você Lê e Ouve",
+      "blog-p19-desc": "Todos os fluxos das regras visuais e de TTS, além de um livro de receitas com 16 padrões regex, grupos por idioma de voz e as verificações que bloqueiam um padrão ruim.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1454,6 +1544,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p16-cat": "🏷️ Organización de la Biblioteca",
       "blog-p16-title": "Organiza tus Libros Electrónicos con Colecciones (Crear, Filtrar y Gestionar)",
       "blog-p16-desc": "Crea estanterías personalizadas con colores, añade libros a varias colecciones, reordena y filtra toda tu biblioteca por estado de lectura en un solo toque.",
+
+      // Blog Post 17
+      "blog-p17-date": "📅 14 de agosto de 2026",
+      "blog-p17-cat": "🏷️ Servidores de Biblioteca",
+      "blog-p17-title": "Cómo Conectar un Catálogo OPDS a tu Lector Android",
+      "blog-p17-desc": "Añade fuentes OPDS de Calibre, Calibre-Web, Komga, Kavita o Project Gutenberg para explorar y descargar libros EPUB directamente en tu estantería.",
+
+      // Blog Post 18
+      "blog-p18-date": "📅 15 de agosto de 2026",
+      "blog-p18-cat": "🏷️ Experiencia de Lectura",
+      "blog-p18-title": "EPUB con Desplazamiento Horizontal: Lee un Rollo Ilustrado Japonés",
+      "blog-p18-desc": "Descarga el ejemplo gratuito de emakimono y despliega en horizontal un rollo del siglo XII, además de cómo el modo gestiona el texto vertical japonés.",
+
+      // Blog Post 19
+      "blog-p19-date": "📅 15 de agosto de 2026",
+      "blog-p19-cat": "🏷️ Experiencia de Lectura",
+      "blog-p19-title": "Reemplazo de Texto y Regex: Reescribe lo que Lees y Escuchas",
+      "blog-p19-desc": "Todos los flujos de las reglas visuales y de TTS, más un recetario de 16 patrones regex, grupos por idioma de voz y las comprobaciones que detienen un patrón defectuoso.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",
