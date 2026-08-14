@@ -103,10 +103,12 @@
       margin-bottom: 1.35rem;
     }
 
-    .article-bullet-list {
-      list-style: none;
+    .article-bullet-list, .article-number-list {
       padding-left: 0;
       margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list {
+      list-style: none;
     }
     .article-bullet-list li {
       position: relative;
@@ -121,15 +123,13 @@
       color: var(--accent-primary);
       font-weight: bold;
     }
-
     .article-number-list {
-      padding-left: 1.25rem;
-      margin: 1.25rem 0 1.75rem;
+      list-style: decimal;
+      padding-left: 1.5rem;
     }
     .article-number-list li {
       margin-bottom: 0.85rem;
       line-height: 1.7;
-      padding-left: 0.35rem;
     }
 
     .quote-callout {
@@ -143,7 +143,7 @@
       line-height: 1.75;
     }
 
-    /* Comparison + regex cookbook tables — scroll on their own if the viewport is narrow. */
+    /* Comparison Table & Cookbook Table */
     .data-table-wrap {
       overflow-x: auto;
       margin: 1.5rem 0 2rem;
@@ -160,31 +160,28 @@
     .data-table th,
     .data-table td {
       text-align: left;
-      padding: 0.85rem 1.1rem;
+      padding: 0.9rem 1.15rem;
       border-bottom: 1px solid var(--border-color);
-      vertical-align: top;
     }
     .data-table th {
       font-family: var(--font-display);
       color: var(--text-primary);
       font-weight: 700;
-      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.02);
     }
     .data-table tr:last-child td {
       border-bottom: none;
     }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
     .data-table code {
       color: var(--accent-primary);
-      white-space: nowrap;
-    }
-    .data-table td:first-child,
-    .data-table td:nth-child(2) {
-      white-space: nowrap;
     }
     .data-table .muted {
       color: var(--text-secondary);
       font-style: italic;
-      white-space: nowrap;
     }
 
     .faq-item {
@@ -463,80 +460,414 @@
   <main class="post-layout animate-fade-in" style="max-width: 960px;">
     <header class="post-header">
       <div class="post-meta">
-        <span>📅 August 15, 2026</span>
-        <span>🏷️ Reading Experience</span>
+        <span data-i18n="blog-p19-date">📅 August 15, 2026</span>
+        <span data-i18n="blog-p19-cat">🏷️ Reading Experience</span>
       </div>
 
-      <h1 class="post-title">Rewrite What You Read<br><span class="text-gradient">Text Replacement and Regex, End to End</span></h1>
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Rewrite What You Read<br><span class="text-gradient">Text Replacement and Regex, End to End</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ปรับแต่งทุกคำที่อ่านและฟังได้ดั่งใจ<br><span class="text-gradient">คู่มือระบบ Text Replacement &amp; Regex ฉบับสมบูรณ์</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">読む文字も聴く音声も、思いのままに<br><span class="text-gradient">テキスト置換と正規表現（Regex）完全活用ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">重塑所见与所听的每一行字句<br><span class="text-gradient">文本替换与正则表达式（Regex）全方位实战指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Reescreva o que Você Lê e Ouve<br><span class="text-gradient">Guia Completo de Substituição de Texto e Regex no Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Reescribe lo que Lees y Escuchas<br><span class="text-gradient">Guía Completa de Reemplazo de Texto y Regex en Shiori</span></h1>
     </header>
 
     <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.45), rgba(11, 15, 25, 0.65)), url('02-visual-rule-list.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
       <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🔤</span>
     </div>
 
-    <!-- Article Content Body (English) -->
+    <!-- Article Content Body -->
     <article class="article-section">
-      <p>Every ebook has something you would change. A translator's spelling you dislike, a name your text-to-speech voice mangles, footnote markers that interrupt the narration, three exclamation marks where one would do. Shiori's <strong>Text Replacement</strong> fixes all of it — across every book, without editing a single file.</p>
-      <p>There are two lists, and the difference between them is the whole idea.</p>
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Every ebook has something you would change. A translator's spelling you dislike, a name your text-to-speech voice mangles, footnote markers that interrupt the narration, or three exclamation marks where one would do. Shiori's <strong>Text Replacement</strong> fixes all of it — across every book, without editing a single file.</p>
+        <p>There are two lists, and the difference between them is the whole idea.</p>
 
-      <h2>Visual vs TTS: The One Thing to Understand</h2>
+        <h2>Visual vs TTS: The One Thing to Understand</h2>
 
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th></th><th>Visual</th><th>TTS</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Changes the page you see</td><td>✅ Yes</td><td>❌ No</td></tr>
-            <tr><td>Changes what the voice reads</td><td>✅ Yes</td><td>✅ Yes</td></tr>
-            <tr><td>Typical use</td><td>spelling, clutter, renaming</td><td>pronunciation, abbreviations</td></tr>
-          </tbody>
-        </table>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th></th><th>Visual</th><th>TTS</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Changes the page you see</td><td>✅ Yes</td><td>❌ No</td></tr>
+              <tr><td>Changes what the voice reads</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+              <tr><td>Typical use</td><td>spelling, clutter, renaming</td><td>pronunciation, abbreviations</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>In the app's own words: a <strong>Visual</strong> rule <em>"replaces text in reader view and before TTS reads,"</em> while a <strong>TTS</strong> rule <em>"replaces text only when sent to TTS — not shown in reader."</em></p>
+        <p>So: if you want to <em>see</em> the change, use Visual. If you only want to <em>hear</em> it, use TTS. A pronunciation hack like <code>Rodya → Rod-ya</code> belongs on the TTS list, where it will never disfigure the page.</p>
+        <p>Neither list ever touches your EPUB file. Rules are applied on the fly, every time a chapter renders or a paragraph is spoken — so deleting a rule restores the original wording instantly.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Visual Rules</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">TTS-only Rules</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">Regex with Safety Net</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Per Voice Language</div>
+          </div>
+        </div>
+
+        <h2>Anatomy of a Rule</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find (from)</strong> — the text to look for. With <em>Use Regex</em> on, this field is relabelled <strong>Pattern (regex)</strong>.</li>
+          <li><strong>Replace with (to)</strong> — what to put in its place. Leave it <strong>empty to delete</strong> the match.</li>
+          <li><strong>Use Regex</strong> — plain text or pattern. The <strong>?</strong> beside it opens a built-in cheat sheet.</li>
+          <li><strong>Order</strong> — rules run in this order, each one working on the result of the last.</li>
+          <li><strong>On/off switch</strong> — on every row, so you can park a rule without deleting it.</li>
+          <li><strong>▶ buttons</strong> — hear either field spoken aloud, in the preview voice shown underneath.</li>
+        </ul>
+
+        <h2>Twelve Steps to Text Perfection</h2>
+        <p>Follow along with every step from basic text replacement to language-specific voice rules.</p>
       </div>
 
-      <p>In the app's own words: a <strong>Visual</strong> rule <em>"replaces text in reader view and before TTS reads,"</em> while a <strong>TTS</strong> rule <em>"replaces text only when sent to TTS — not shown in reader."</em></p>
-      <p>So: if you want to <em>see</em> the change, use Visual. If you only want to <em>hear</em> it, use TTS. A pronunciation hack like <code>Rodya → Rod-ya</code> belongs on the TTS list, where it will never disfigure the page.</p>
-      <p>Neither list ever touches your EPUB file. Rules are applied on the fly, every time a chapter renders or a paragraph is spoken — so deleting a rule restores the original wording instantly.</p>
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>ในระหว่างอ่านหนังสือ E-Book บ่อยครั้งเราอาจเจอคำที่อยากปรับเปลี่ยน เช่น คำสะกดเก่าที่ไม่คุ้นตา, ชื่อตัวละครภาษาต่างประเทศที่ระบบอ่านออกเสียง (TTS) ออกเสียงเพี้ยน, ตัวเลขเชิงอรรถอย่าง <code>[12]</code> ที่มาขัดจังหวะการฟัง หรือเครื่องหมายตกใจซ้ำๆ หลายตัว ระบบ <strong>Text Replacement (แทนที่ข้อความ)</strong> ใน Shiori ถูกออกแบบมาเพื่อแก้ไขสิ่งเหล่านี้ได้อย่างเบ็ดเสร็จในทุกเล่ม โดยไม่ต้องแก้ไขไฟล์ต้นฉบับเลยแม้แต่น้อย</p>
+        <p>หัวใจสำคัญของระบบนี้คือการแยกรายการออกเป็น 2 หมวดหมู่อย่างชาญฉลาด</p>
 
-      <div class="stat-badge-grid">
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">👁️</span>
-          <div class="stat-badge-title">Visual rules</div>
+        <h2>Visual vs TTS: ความแตกต่างที่เข้าใจง่าย</h2>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>คุณสมบัติ</th><th>Visual (เปลี่ยนการแสดงผล)</th><th>TTS (เปลี่ยนเสียงอ่าน)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>เปลี่ยนตัวหนังสือบนหน้าจอที่มองเห็น</td><td>✅ เปลี่ยน</td><td>❌ ไม่เปลี่ยน (หน้าจอคงเดิม)</td></tr>
+              <tr><td>เปลี่ยนคำที่ระบบเสียงสังเคราะห์อ่าน</td><td>✅ เปลี่ยน</td><td>✅ เปลี่ยน</td></tr>
+              <tr><td>ตัวอย่างการใช้งาน</td><td>แก้คำผิด, ลบสัญลักษณ์รกตา, เปลี่ยนชื่อตัวละคร</td><td>ปรับคำอ่านให้ออกเสียงถูกต้อง, ขยายตัวย่อ</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">🔊</span>
-          <div class="stat-badge-title">TTS-only rules</div>
+
+        <p>สรุปง่ายๆ คือ: หากคุณต้องการ <em>เห็น</em> คำที่เปลี่ยนไปบนหน้าจอ ให้ใช้หมวด **Visual** แต่หากคุณต้องการให้ <em>ออกเสียง</em> ต่างไปโดยที่หน้าตายังคงตัวสะกดเดิมที่สวยงามไว้ ให้ใช้หมวด **TTS** เช่น การแก้เสียงอ่านชื่อ <code>Rodya → Rod-ya</code> ซึ่งเหมาะมากกับรายการ TTS เพราะจะไม่ไปเปลี่ยนตัวหนังสือบนหน้ากระดาษ</p>
+        <p>กฎทุกข้อทำงานแบบไดนามิกในขณะแสดงผลและขณะอ่านออกเสียงเท่านั้น โดยไม่มีการแก้ไขไฟล์ EPUB ในเครื่อง เมื่อลบกฎออก ข้อความต้นฉบับจะกลับมาสมบูรณ์ทันที</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Visual กฎแสดงผล</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">TTS กฎเสียงอ่าน</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">Regex พร้อมระบบความปลอดภัย</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">แยกตามภาษาเสียงอ่าน</div>
+          </div>
         </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">⚙️</span>
-          <div class="stat-badge-title">Regex with a safety net</div>
-        </div>
-        <div class="stat-badge-card">
-          <span class="stat-badge-icon">🌐</span>
-          <div class="stat-badge-title">Per voice language</div>
-        </div>
+
+        <h2>ส่วนประกอบของกฎการแทนที่</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find (from)</strong> — คำที่ต้องการค้นหา (หากเปิด <em>Use Regex</em> จะเปลี่ยนชื่อเป็น <strong>Pattern</strong>)</li>
+          <li><strong>Replace with (to)</strong> — คำที่ต้องการนำมาแทนที่ (<strong>เว้นว่างไว้เพื่อลบคำนั้นทิ้ง</strong>)</li>
+          <li><strong>Use Regex</strong> — เลือกว่าเป็นข้อความธรรมดาหรือสูตร Regex (ปุ่ม <strong>?</strong> ด้านข้างจะเปิดคู่มือสูตรลัด)</li>
+          <li><strong>Order (ลำดับ)</strong> — ลำดับการทำงานของกฎ โดยกฎข้อถัดไปจะทำงานต่อจากผลลัพธ์ของข้อก่อนหน้า</li>
+          <li><strong>สวิตช์เปิด/ปิด</strong> — สำหรับพักการใช้งานกฎชั่วคราวโดยไม่ต้องลบทิ้ง</li>
+          <li><strong>ปุ่ม ▶ ฟังเสียง</strong> — กดฟังเสียงอ่านของคำทั้งสองช่องได้ทันที</li>
+        </ul>
+
+        <h2>12 ขั้นตอนการใช้งานอย่างละเอียด</h2>
+        <p>มาดูวิธีสร้างกฎ การใช้ Regex การปรับเสียงอ่านเฉพาะภาษา และการจัดการกฎอย่างมืออาชีพกันครับ</p>
       </div>
 
-      <h2>Anatomy of a Rule</h2>
-      <ul class="article-bullet-list">
-        <li><strong>Find (from)</strong> — the text to look for. With <em>Use Regex</em> on, this field is relabelled <strong>Pattern (regex)</strong>.</li>
-        <li><strong>Replace with (to)</strong> — what to put in its place. Leave it <strong>empty to delete</strong> the match.</li>
-        <li><strong>Use Regex</strong> — plain text or pattern. The <strong>?</strong> beside it opens a built-in cheat sheet.</li>
-        <li><strong>Order</strong> — rules run in this order, each one working on the result of the last.</li>
-        <li><strong>On/off switch</strong> — on every row, so you can park a rule without deleting it.</li>
-        <li><strong>▶ buttons</strong> — hear either field spoken aloud, in the preview voice shown underneath.</li>
-      </ul>
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>電子書籍を読んでいると、「この表記を変えたい」「音声読み上げ（TTS）がこの人名を正しく読んでくれない」「脚注番号 <code>[12]</code> が読み上げを邪魔する」といった場面に出会うことがあります。Shioriの **テキスト置換（Text Replacement）** 機能を使えば、元ファイルを一切加工することなく、すべての書籍に対して文字の表示や読み上げをスマートにカスタマイズできます。</p>
+        <p>この機能の要となるのが、「Visual（表示）」と「TTS（読み上げ）」の明確な使い分けです。</p>
+
+        <h2>Visual と TTS：知っておくべき違い</h2>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>項目</th><th>Visual（表示置換）</th><th>TTS（読み上げ置換）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>画面上の表示が変わるか</td><td>✅ 変わる</td><td>❌ 変わらない（原典のまま）</td></tr>
+              <tr><td>音声読み上げが変わるか</td><td>✅ 変わる</td><td>✅ 変わる</td></tr>
+              <tr><td>主な用途</td><td>誤字修正、不要記号の除去、表記統一</td><td>発音の調整、略語の展開</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>画面で <em>見て確かめたい</em> 場合は Visual ルール、紙面の美しさを保ったまま <em>耳で聴く発音だけ</em> を直したい場合は TTS ルールを選択します。例えば人名の読み仮名調整などは、TTSリストに登録することで画面の見た目を損なわずに自然な読み上げを実現できます。</p>
+        <p>置換ルールは描画時や音声生成時にリアルタイムで適用されるため、元のEPUBファイルが書き換わることはありません。ルールを削除すれば即座に元の文章へ戻ります。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Visual 表示ルール</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">TTS 読み上げルール</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">安全ガード付きRegex</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">音声言語別の分離</div>
+          </div>
+        </div>
+
+        <h2>置換ルールの構成要素</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find（検索）</strong> — 置換対象の文字列（Regex有効時は <strong>Pattern</strong> と表示）。</li>
+          <li><strong>Replace with（置換後）</strong> — 置き換える文字列（<strong>空欄にすると対象文字列を削除</strong>）。</li>
+          <li><strong>Use Regex</strong> — 正規表現を使用するかどうか（横の <strong>?</strong> で早見表を表示）。</li>
+          <li><strong>Order（順序）</strong> — ルールの実行順序（上の結果を受けて次のルールが処理）。</li>
+          <li><strong>ON/OFFスイッチ</strong> — ルールを削除せずに一時無効化。</li>
+          <li><strong>▶ 試聴ボタン</strong> — プレビュー音声で発音をその場で確認。</li>
+        </ul>
+
+        <h2>12のステップでマスターする設定手順</h2>
+        <p>基本的な文字置換から正規表現の活用、言語別TTS設定までを順を追って解説します。</p>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在阅读电子书时，我们总会遇到想要微调的地方：译名不合心意、语音朗读（TTS）对某个生僻人名频频读错、正文中的脚注标记 <code>[12]</code> 打断朗读节奏，或是连续过多的感叹号。Shiori 的 **文本替换（Text Replacement）** 功能让您能够全局、无损地重塑阅读与听书体验，而无需直接修改任何电子书文件。</p>
+        <p>该功能的核心在于对“视觉展示”与“听书朗读”的精准分工。</p>
+
+        <h2>Visual 与 TTS：核心区别一览</h2>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>功能对比</th><th>Visual（视觉替换）</th><th>TTS（朗读替换）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>是否改变屏幕显示文字</td><td>✅ 改变</td><td>❌ 不改变（保持原版排版）</td></tr>
+              <tr><td>是否改变语音朗读发音</td><td>✅ 改变</td><td>✅ 改变</td></tr>
+              <tr><td>典型应用场景</td><td>纠正错别字、消除杂乱符号、自定义人名</td><td>校正多音字与专有名词发音、展开缩写</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>若希望在屏幕上 <em>看见</em> 更改效果，请使用 Visual；若希望保持版面原汁原味，仅在 <em>听书</em> 时读出正确发音，请使用 TTS（例如 <code>Rodya → Rod-ya</code>）。</p>
+        <p>所有规则均在页面渲染或文字送入语音引擎时动态执行，绝不改动 EPUB 源文件，随时删除规则即可瞬间复原。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Visual 视觉规则</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">TTS 专属规则</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">带安全防护的正则</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">按语音语言分组</div>
+          </div>
+        </div>
+
+        <h2>单条规则的组成要素</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find (from)</strong> — 查找目标（勾选正则后显示为 <strong>Pattern</strong>）。</li>
+          <li><strong>Replace with (to)</strong> — 替换为的内容（<strong>留空即为删除匹配内容</strong>）。</li>
+          <li><strong>Use Regex</strong> — 切换普通文本或正则表达式（点击旁边的 <strong>?</strong> 可打开内置速查表）。</li>
+          <li><strong>Order（执行顺序）</strong> — 规则自上而下按序级联执行。</li>
+          <li><strong>启停开关</strong> — 每行均有独立开关，随时停用而无需删除。</li>
+          <li><strong>▶ 试听按钮</strong> — 随时试听两栏文字的发音效果。</li>
+        </ul>
+
+        <h2>图文实操：12 步玩转文本替换</h2>
+        <p>跟随以下详细指引，全面掌握从基础替换到高级正则与多语言朗读控制。</p>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Em qualquer e-book sempre há algo que gostaríamos de ajustar: um erro de grafia, um nome que a voz do Text-to-Speech (TTS) pronuncia de forma estranha, notas de rodapé como <code>[12]</code> que interrompem a leitura em voz alta, ou pontuações exageradas. O recurso de **Substituição de Texto (Text Replacement)** do Shiori resolve tudo isso de forma global e instantânea, sem alterar seus arquivos EPUB originais.</p>
+        <p>O segredo do sistema está na divisão intuitiva entre regras Visuais e de TTS.</p>
+
+        <h2>Visual vs TTS: Entenda a Diferença</h2>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Recurso</th><th>Visual</th><th>TTS</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Muda o texto na tela</td><td>✅ Sim</td><td>❌ Não (tela original)</td></tr>
+              <tr><td>Muda o áudio falado pelo TTS</td><td>✅ Sim</td><td>✅ Sim</td></tr>
+              <tr><td>Uso recomendado</td><td>Corrigir erros, limpar símbolos, renomear</td><td>Ajustar pronúncia, expandir siglas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Se você quer <em>ver</em> a mudança na página, use regras Visuais. Se deseja apenas corrigir a <em>pronúncia</em> do sintetizador sem desfigurar a estética do livro, use regras de TTS.</p>
+        <p>Nenhuma regra modifica seu arquivo no disco. Tudo é processado em tempo real, e remover uma regra restaura o texto original na hora.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Regras Visuais</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">Regras de TTS</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">Regex com Proteção</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Por Idioma de Voz</div>
+          </div>
+        </div>
+
+        <h2>Estrutura de Uma Regra</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find (Localizar)</strong> — texto a buscar (vira <strong>Pattern</strong> com regex ativado).</li>
+          <li><strong>Replace with (Substituir por)</strong> — texto substituto (<strong>deixe vazio para excluir</strong>).</li>
+          <li><strong>Use Regex</strong> — texto simples ou expressão regular (o botão <strong>?</strong> abre o guia rápido).</li>
+          <li><strong>Order (Ordem)</strong> — sequência de execução das regras.</li>
+          <li><strong>Interruptor Liga/Desliga</strong> — desative uma regra sem precisar apagá-la.</li>
+          <li><strong>Botões ▶</strong> — ouça a pronúncia prévia de cada campo.</li>
+        </ul>
+
+        <h2>Guia Passo a Passo em 12 Etapas</h2>
+        <p>Aprenda a configurar regras simples, regex avançado e gestão por idioma de voz.</p>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>En casi cualquier libro electrónico hay detalles que desearías corregir: una errata molesta, un nombre que la voz de lectura (TTS) pronuncia con dificultad, marcas de notas al pie como <code>[12]</code> que interrumpen la narración o signos de exclamación excesivos. La función de **Reemplazo de Texto (Text Replacement)** de Shiori te permite solucionarlo de forma global y sin modificar tus archivos originales.</p>
+        <p>La clave de este sistema reside en la separación entre reglas visuales y reglas de voz.</p>
+
+        <h2>Visual vs TTS: La Diferencia Fundamental</h2>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Característica</th><th>Visual</th><th>TTS</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Cambia el texto visible en pantalla</td><td>✅ Sí</td><td>❌ No (pantalla intacta)</td></tr>
+              <tr><td>Cambia lo que lee la voz en audio</td><td>✅ Sí</td><td>✅ Sí</td></tr>
+              <tr><td>Uso habitual</td><td>Corregir erratas, limpiar símbolos, renombrar</td><td>Ajustar pronunciación, expandir siglas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Si quieres <em>ver</em> el cambio en la página, utiliza reglas Visuales. Si solo quieres <em>escuchar</em> la corrección fonética sin alterar la maquetación original, utiliza reglas de TTS.</p>
+        <p>Ninguna regla altera el archivo EPUB en tu dispositivo. Todo se ejecuta dinámicamente al renderizar o reproducir audio.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Reglas Visuales</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔊</span>
+            <div class="stat-badge-title">Reglas para TTS</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚙️</span>
+            <div class="stat-badge-title">Regex con Seguridad</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Por Idioma de Voz</div>
+          </div>
+        </div>
+
+        <h2>Estructura de una Regla</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Find (Buscar)</strong> — texto a localizar (pasa a ser <strong>Pattern</strong> con regex activo).</li>
+          <li><strong>Replace with (Reemplazar con)</strong> — texto de reemplazo (<strong>déjalo vacío para borrar</strong>).</li>
+          <li><strong>Use Regex</strong> — activa expresiones regulares (el botón <strong>?</strong> muestra la guía rápida).</li>
+          <li><strong>Order (Orden)</strong> — secuencia en la que se aplican las reglas sucesivamente.</li>
+          <li><strong>Interruptor On/Off</strong> — pausa una regla sin necesidad de eliminarla.</li>
+          <li><strong>Botones ▶</strong> — escucha la pronunciación de prueba al instante.</li>
+        </ul>
+
+        <h2>Guía Paso a Paso en 12 Etapas</h2>
+        <p>Descubre cómo crear reglas sencillas, aplicar patrones regex y gestionar filtros por idioma.</p>
+      </div>
     </article>
 
-    <!-- ==================== STEP-BY-STEP ==================== -->
-    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);">Step-by-Step Guide (12 Steps)</h2>
+    <!-- ==================== STEP-BY-STEP (12 STEPS) ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (12 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการใช้งานอย่างละเอียด (12 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定手順ガイド（12のステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文操作指南（12 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (12 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (12 Pasos)</h2>
 
     <!-- STEP 1 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">1</span>Open Settings → Visual &amp; TTS Replacement</div>
-        <div class="step-desc">
-          <p>The entry sits in Settings, described as <em>"Rewrite text shown in the reader or spoken by TTS."</em> One screen holds both lists as swipeable tabs.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open Settings → Visual &amp; TTS Replacement</div>
+          <div class="step-desc">
+            <p>Find the option in Settings under <em>"Rewrite text shown in the reader or spoken by TTS."</em> A single clean screen hosts both Visual and TTS lists as swipeable tabs.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ไปที่ Settings → Visual &amp; TTS Replacement</div>
+          <div class="step-desc">
+            <p>เปิดเมนูตั้งค่าแล้วเลือกหัวข้อ <strong>Visual &amp; TTS Replacement</strong> หน้าจอนี้จะรวมทั้งแท็บ Visual และ TTS ไว้ในที่เดียว สามารถปัดสลับแท็บได้สะดวก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>設定 →「Visual &amp; TTS Replacement」を開く</div>
+          <div class="step-desc">
+            <p>設定画面から <strong>Visual &amp; TTS Replacement</strong> を選択します。1つの画面でVisualとTTSの2つのタブをスワイプで切り替えられます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>打开设置 → Visual &amp; TTS Replacement</div>
+          <div class="step-desc">
+            <p>在应用“设置”中点击 <strong>Visual &amp; TTS Replacement</strong>。界面包含 Visual 与 TTS 两个可左右滑动的独立标签页。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra Configurações → Substituição Visual e TTS</div>
+          <div class="step-desc">
+            <p>Acesse as Configurações e toque em <strong>Visual &amp; TTS Replacement</strong>. A tela reúne as abas Visual e TTS com navegação por deslize.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre Ajustes → Reemplazo Visual y TTS</div>
+          <div class="step-desc">
+            <p>Entra en Ajustes y pulsa en <strong>Visual &amp; TTS Replacement</strong>. Una pantalla unificada aloja ambas listas en pestañas deslizables.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -547,10 +878,42 @@
     <!-- STEP 2 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">2</span>Meet the List</div>
-        <div class="step-desc">
-          <p>Each tab opens with its master switch, an item count, and the rules themselves. Every row shows its order number, an on/off switch, the find → replace pair, an <strong>Rx</strong> tag if it is a regex, and edit and delete icons.</p>
-          <p>The magnifier in the top bar filters a long list; the two arrows beside it export and import.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Explore the Rule List</div>
+          <div class="step-desc">
+            <p>Each tab features a master switch, total rule count, and active rules showing order numbers, on/off toggles, target/replacement pairs, an <strong>Rx</strong> tag for regex rules, and edit/delete actions.</p>
+            <p>The search icon filters long lists, while the arrow icons let you export and import rules effortlessly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ทำความรู้จักกับหน้ารวมกฎ</div>
+          <div class="step-desc">
+            <p>แต่ละแท็บจะแสดงสวิตช์หลักด้านบน, จำนวนกฎทั้งหมด และรายการกฎแต่ละข้อพร้อมลำดับ, สวิตช์เปิด/ปิด, คู่คำที่เปลี่ยน, ป้าย <strong>Rx</strong> สำหรับข้อที่เป็น Regex รวมถึงปุ่มค้นหาและปุ่มนำเข้า/ส่งออก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>ルール一覧画面の確認</div>
+          <div class="step-desc">
+            <p>各タブにはマスター安全スイッチ、登録件数、実行順序番号、ON/OFFトグル、正規表現を示す <strong>Rx</strong> バッジ、編集・削除ボタンが並びます。上部アイコンから検索やインポート/エクスポートも可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>熟悉规则管理列表</div>
+          <div class="step-desc">
+            <p>每个标签页顶部配有总开关与计数，列表清晰展示序号、启停开关、替换对、代表正则的 <strong>Rx</strong> 标签以及编辑/删除入口。顶部还支持快速搜索与导入导出。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Conheça a Lista de Regras</div>
+          <div class="step-desc">
+            <p>Cada aba traz interruptor mestre, contagem e as regras ativas com números de ordem, tag <strong>Rx</strong> para regex, pesquisa e botões de importar/exportar.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Explora la Lista de Reglas</div>
+          <div class="step-desc">
+            <p>Cada pestaña cuenta con un interruptor maestro, contador de reglas, números de orden, etiqueta <strong>Rx</strong> para regex y herramientas de búsqueda e importación/exportación.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -561,9 +924,41 @@
     <!-- STEP 3 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">3</span>Add a Plain-Text Rule</div>
-        <div class="step-desc">
-          <p>Tap <strong>+</strong>, type what to find and what to replace it with, then <strong>Save</strong>. Plain rules are literal and case-sensitive, and they replace <em>every</em> occurrence in every book.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Add a Plain-Text Rule</div>
+          <div class="step-desc">
+            <p>Tap <strong>+</strong>, enter the text to find and what to replace it with, then tap <strong>Save</strong>. Plain rules are literal and case-sensitive, replacing every matching instance across your books.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>สร้างกฎข้อความธรรมดา</div>
+          <div class="step-desc">
+            <p>แตะปุ่ม <strong>+</strong> พิมพ์คำที่ต้องการหาและคำที่ต้องการใส่แทน แล้วแตะ <strong>Save</strong> กฎข้อความธรรมดาจะค้นหาตรงตามตัวอักษรและตัวพิมพ์เล็ก-ใหญ่</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>プレーンテキスト置換ルールの追加</div>
+          <div class="step-desc">
+            <p><strong>+</strong> をタップし、検索文字列と置換文字列を入力して <strong>Save</strong> を押します。プレーンルールは完全一致（大文字小文字を区別）で処理されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>添加普通文本替换规则</div>
+          <div class="step-desc">
+            <p>点击 <strong>+</strong> 号，填入查找词与替换词后点击 <strong>Save</strong>。普通文本规则严格区分大小写，自动替换书库中的所有精确匹配项。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Adicione Uma Regra de Texto Simples</div>
+          <div class="step-desc">
+            <p>Toque em <strong>+</strong>, digite os termos de busca e substituição e clique em <strong>Save</strong>. A substituição simples diferencia maiúsculas de minúsculas.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Añade una Regla de Texto Plano</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>+</strong>, introduce el texto a buscar y el reemplazo, y pulsa <strong>Save</strong>. Las reglas simples son literales y distinguen mayúsculas y minúsculas.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -574,10 +969,41 @@
     <!-- STEP 4 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">4</span>Turn On Use Regex</div>
-        <div class="step-desc">
-          <p>Tick <strong>Use Regex</strong> and the first field becomes <strong>Pattern (regex)</strong> — a small label change that tells you the text is now being read as a pattern.</p>
-          <p>Here <code>Mr\.</code> means "the letters M, r, and a real dot": the backslash stops <code>.</code> from meaning <em>any character</em>, which would also have matched <em>Mrs</em>.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Turn On Use Regex</div>
+          <div class="step-desc">
+            <p>Tick <strong>Use Regex</strong> and the first field changes to <strong>Pattern (regex)</strong>. Now you can use powerful pattern matching — for example, <code>Mr\.</code> specifically matches "Mr." with an escaped literal period.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิดใช้งานโหมด Use Regex</div>
+          <div class="step-desc">
+            <p>ติ๊กเลือก <strong>Use Regex</strong> ช่องแรกจะเปลี่ยนเป็น <strong>Pattern (regex)</strong> ช่วยให้คุณใช้สูตรค้นหาขั้นสูงได้ เช่น <code>Mr\.</code> เพื่อจับคู่คำว่า Mr. ที่มีจุดตามหลังโดยเฉพาะ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>「Use Regex」を有効にする</div>
+          <div class="step-desc">
+            <p><strong>Use Regex</strong> にチェックを入れると、入力欄が <strong>Pattern (regex)</strong> に変化し、<code>Mr\.</code>（本物のピリオドを指定）など強力なパターンマッチングが可能になります。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>开启“Use Regex”正则表达式</div>
+          <div class="step-desc">
+            <p>勾选 <strong>Use Regex</strong>，首栏将转为 <strong>Pattern (regex)</strong>。例如输入 <code>Mr\.</code> 可以精准匹配带英文句号的 Mr. 而不误伤其他词汇。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ative o Use Regex</div>
+          <div class="step-desc">
+            <p>Marque <strong>Use Regex</strong> para que o campo se transforme em <strong>Pattern (regex)</strong>, permitindo buscas dinâmicas com caracteres de escape como <code>Mr\.</code>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Activa la Casilla Use Regex</div>
+          <div class="step-desc">
+            <p>Marca <strong>Use Regex</strong> y el campo se renombrará a <strong>Pattern (regex)</strong>, permitiéndote usar comodines y patrones avanzados como <code>Mr\.</code>.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -588,9 +1014,41 @@
     <!-- STEP 5 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">5</span>Open the Cheat Sheet</div>
-        <div class="step-desc">
-          <p>The <strong>?</strong> next to the checkbox opens <em>How to use Regex</em>: a symbol summary and six worked examples you can copy straight into the fields. It is the fastest way to remember what <code>{3,}</code> or <code>[0-9]+</code> does while you are mid-rule.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Open the Built-in Cheat Sheet</div>
+          <div class="step-desc">
+            <p>The <strong>?</strong> icon beside the checkbox opens <em>How to use Regex</em>: a clear symbol summary and six worked examples you can copy directly into your rule.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เปิดดูคู่มือสูตรลัด (Cheat Sheet) ในตัว</div>
+          <div class="step-desc">
+            <p>แตะเครื่องหมาย <strong>?</strong> ข้างกล่องเช็กบ็อกซ์เพื่อเปิดหน้าต่างสรุปความหมายของสัญลักษณ์ พร้อมตัวอย่างสูตรสำเร็จ 6 รูปแบบที่คัดลอกไปใช้ได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>内蔵チートシート（早見表）を開く</div>
+          <div class="step-desc">
+            <p>チェックボックス横の <strong>?</strong> をタップすると、主要な正規表現記号の意味と、そのままコピーして使える6つの実践例がポップアップ表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>随时查阅内置正则速查表</div>
+          <div class="step-desc">
+            <p>点击复选框旁的 <strong>?</strong> 号即可打开速查指南，包含基础符号解析与 6 条可直接复制套用的实战示例。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Consulte o Guia Rápido Integrado</div>
+          <div class="step-desc">
+            <p>Toque no <strong>?</strong> ao lado da caixa para ver o resumo dos símbolos de regex e 6 exemplos prontos para copiar.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Abre la Guía Rápida Integrada</div>
+          <div class="step-desc">
+            <p>Pulsa en el icono <strong>?</strong> junto a la casilla para consultar la chuleta de símbolos y 6 ejemplos prácticos listos para usar.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -601,10 +1059,41 @@
     <!-- STEP 6 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">6</span>Let the Safety Check Catch Your Mistakes</div>
-        <div class="step-desc">
-          <p>Shiori analyses the pattern as you type. Write <code>$1</code> when your pattern has no groups and you get <strong>"This rule can't work — $1 points at a group this pattern doesn't have, so the rule would be skipped every time,"</strong> with <strong>Save greyed out</strong> until you fix it.</p>
-          <p>Patterns that are merely slow get a warning instead of a block — you stay in charge, but you are told.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Automatic Safety Checks Protect You</div>
+          <div class="step-desc">
+            <p>Shiori validates your pattern live as you type. If you reference a missing group (e.g. <code>$1</code> without capture parentheses), Shiori explains the issue and grays out <strong>Save</strong> to prevent app freezes.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>ระบบตรวจจับข้อผิดพลาดอัตโนมัติ</div>
+          <div class="step-desc">
+            <p>Shiori จะตรวจสอบความถูกต้องของสูตรแบบเรียลไทม์ หากใส่สูตรผิด เช่น อ้างอิง <code>$1</code> โดยไม่มีวงเล็บจับกลุ่ม ระบบจะแจ้งเตือนและล็อกปุ่ม <strong>Save</strong> ไว้ เพื่อป้องกันแอปค้าง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>リアルタイム安全チェック機能</div>
+          <div class="step-desc">
+            <p>入力中に入力パターンを即座に検証します。存在しないキャプチャグループ（<code>$1</code> など）を指定した場合、警告を表示して <strong>Save</strong> を無効化し、フリーズを未然に防ぎます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>智能安全检查机制</div>
+          <div class="step-desc">
+            <p>Shiori 会在输入时实时校验。若引用了不存在的捕获组（如未加括号却写了 <code>$1</code>），应用会明确提示并禁用 <strong>Save</strong> 按钮，确保运行万无一失。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Verificação de Segurança em Tempo Real</div>
+          <div class="step-desc">
+            <p>O Shiori analisa seu padrão enquanto você digita. Erros de sintaxe ou grupos inexistentes (ex: <code>$1</code>) desativam o botão <strong>Save</strong> para evitar travamentos.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Validación de Seguridad en Tiempo Real</div>
+          <div class="step-desc">
+            <p>Shiori analiza el patrón mientras escribes. Si detecta un error de sintaxis o un grupo inexistente (como <code>$1</code>), desactiva el botón <strong>Save</strong> para evitar bloqueos.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -615,9 +1104,41 @@
     <!-- STEP 7 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">7</span>See It in the Reader</div>
-        <div class="step-desc">
-          <p>Open any book and the visual rules are already applied. Ours turns every "Raskolnikov" into "Rodya" throughout <em>Crime and Punishment</em> — hundreds of occurrences, and not one byte of the file changed.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Live Application in Reader View</div>
+          <div class="step-desc">
+            <p>Open any book and your visual rules are applied dynamically. In our demo, every occurrence of "Raskolnikov" is smoothly rendered as "Rodya" across hundreds of pages without modifying the EPUB file.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>เห็นผลลัพธ์ทันทีในหน้าอ่านหนังสือ</div>
+          <div class="step-desc">
+            <p>เมื่อเปิดหนังสือ กฎ Visual จะถูกนำมาปรับใช้ทันที เช่น ในตัวอย่างนี้ชื่อ "Raskolnikov" ในนิยายจะถูกแปลงเป็น "Rodya" ตลอดทั้งเล่มอย่างแนบเนียน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>リーダー画面で即座に反映</div>
+          <div class="step-desc">
+            <p>本を開くとVisualルールが瞬時に適用されます。サンプルでは『罪と罰』内の「Raskolnikov」がすべて「Rodya」へと美しく置き換わります。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>阅读界面即时呈现效果</div>
+          <div class="step-desc">
+            <p>进入正文，视觉替换规则自动生效。示例中《罪与罚》全书中数百处“Raskolnikov”瞬间替换为“Rodya”，版面清爽自然。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Aplicação Instantânea no Leitor</div>
+          <div class="step-desc">
+            <p>Ao abrir o livro, as regras visuais entram em ação. Todas as ocorrências de "Raskolnikov" passam a ser exibidas como "Rodya" sem alterar o arquivo.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Resultado Inmediato en el Lector</div>
+          <div class="step-desc">
+            <p>Al abrir el libro, las reglas visuales se aplican al instante. En nuestro ejemplo, todas las apariciones de "Raskolnikov" se muestran como "Rodya".</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -628,9 +1149,41 @@
     <!-- STEP 8 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">8</span>Search Sees the Rewritten Text Too</div>
-        <div class="step-desc">
-          <p>Search inside the book and the results come back in the replaced wording — because the text you search is the text you read. Rules and search never disagree with each other.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">8</span>In-Book Search Respects Replaced Text</div>
+          <div class="step-desc">
+            <p>Searching inside the book matches the newly replaced wording because search processes the exact text you read, keeping everything harmonized.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">8</span>ระบบค้นหาในเล่มเข้าใจข้อความที่ถูกแทนที่</div>
+          <div class="step-desc">
+            <p>เมื่อใช้ช่องค้นหาคำในหนังสือ ผลลัพธ์จะค้นหาจากข้อความที่ผ่านการแทนที่แล้ว ทำให้คำที่คุณมองเห็นกับคำที่ค้นหาตรงกัน 100%</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">8</span>書籍内検索も置換後のテキストと完全連動</div>
+          <div class="step-desc">
+            <p>本文検索も置換後の文字列を対象に処理されるため、目に見えるテキストと検索結果に食い違いが生じません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">8</span>书内搜索无缝同步替换内容</div>
+          <div class="step-desc">
+            <p>书内全文搜索与替换后的文字完全同步，所搜即所见，确保检索体验统一连贯。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">8</span>A Busca no Livro Reconhece as Substituições</div>
+          <div class="step-desc">
+            <p>A pesquisa interna funciona sobre o texto já modificado, garantindo coerência total entre o que você vê e o que busca.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">8</span>La Búsqueda Interna Reconoce el Nuevo Texto</div>
+          <div class="step-desc">
+            <p>El buscador del libro procesa el texto ya transformado, asegurando una coincidencia total entre lo que lees y lo que buscas.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -641,9 +1194,41 @@
     <!-- STEP 9 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">9</span>Create a Rule Straight From the Page</div>
-        <div class="step-desc">
-          <p>You do not have to go back to Settings. Select a word while reading and the selection menu offers <strong>Replace</strong> — alongside Read, Bookmark, Highlight, Translate, Aloud and <strong>TTS preview</strong>.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">9</span>Create Rules Directly From Selected Text</div>
+          <div class="step-desc">
+            <p>No need to jump into Settings: simply highlight any word on the page and tap <strong>Replace</strong> in the contextual action bar.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">9</span>สร้างกฎได้ทันทีจากการคลุมดำข้อความ</div>
+          <div class="step-desc">
+            <p>ไม่ต้องเสียเวลาสลับไปหน้าตั้งค่า เพียงใช้นิ้วคลุมดำข้อความที่ต้องการในหน้าอ่านหนังสือ แล้วเลือกเมนู <strong>Replace</strong> ได้โดยตรง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">9</span>本文の選択メニューから直接ルール作成</div>
+          <div class="step-desc">
+            <p>設定画面に戻る必要はありません。読書中に単語を選択し、ポップアップメニューから <strong>Replace</strong> を選ぶだけです。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">9</span>选中文字即可一键新建规则</div>
+          <div class="step-desc">
+            <p>阅读中无需离开当前页面：长按划选文字，在弹出的快捷菜单中直接点击 <strong>Replace</strong> 即可快速创建。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">9</span>Crie Regras Direto do Texto Selecionado</div>
+          <div class="step-desc">
+            <p>Sem precisar ir às Configurações: selecione qualquer palavra na página e toque em <strong>Replace</strong> no menu de seleção.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">9</span>Crea Reglas Directamente al Seleccionar Texto</div>
+          <div class="step-desc">
+            <p>Sin necesidad de entrar en Ajustes: selecciona cualquier palabra del texto y toca en <strong>Replace</strong> en el menú contextual.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -654,10 +1239,41 @@
     <!-- STEP 10 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">10</span>Give TTS Its Own Rule — and Its Own Language</div>
-        <div class="step-desc">
-          <p>The dialog opens with <strong>Find</strong> already filled in from your selection, plus a <strong>Visual / TTS</strong> radio pair to decide which list it joins.</p>
-          <p>Choose <strong>TTS</strong> and a <strong>Voice language</strong> row appears: <strong>Global</strong>, or one specific voice language. A language-scoped rule only fires on passages spoken in that voice, so a Thai pronunciation fix never interferes with the English narrator.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">10</span>Configure Language-Scoped TTS Rules</div>
+          <div class="step-desc">
+            <p>Choose <strong>TTS</strong> in the dialog and select a <strong>Voice language</strong> (Global or a specific language). Language-scoped rules only fire when text is spoken in that voice, preventing cross-language pronunciation conflicts.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">10</span>ตั้งค่ากฎ TTS เฉพาะภาษาเสียงอ่าน</div>
+          <div class="step-desc">
+            <p>เลือกหมวด <strong>TTS</strong> แล้วกำหนด <strong>Voice language</strong> ว่าจะให้มีผลทั่วโลก (Global) หรือเฉพาะภาษาเสียงอ่านใดภาษาหนึ่ง ช่วยป้องกันไม่ให้กฎภาษาไทยไปกระทบเสียงอ่านภาษาอังกฤษ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">10</span>音声言語別のTTSルール設定</div>
+          <div class="step-desc">
+            <p>ダイアログで <strong>TTS</strong> を選び、<strong>Voice language</strong>（全言語または特定言語）を指定します。言語を限定することで、他言語の朗読に影響を与えません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">10</span>配置特定发音语言的 TTS 规则</div>
+          <div class="step-desc">
+            <p>在弹窗中选择 <strong>TTS</strong>，并在 <strong>Voice language</strong> 处指定适用语言，避免不同语言的发音规则相互干扰。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">10</span>Configure Regras de TTS por Idioma de Voz</div>
+          <div class="step-desc">
+            <p>Selecione <strong>TTS</strong> e defina o <strong>Voice language</strong> (Global ou idioma específico), evitando conflitos entre vozes de idiomas diferentes.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">10</span>Configura Reglas de TTS por Idioma de Voz</div>
+          <div class="step-desc">
+            <p>Elige <strong>TTS</strong> y selecciona el <strong>Voice language</strong> (Global o un idioma concreto), evitando interferencias entre distintas voces.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -668,10 +1284,41 @@
     <!-- STEP 11 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">11</span>Preview What the Voice Will Say</div>
-        <div class="step-desc">
-          <p>Select text and tap <strong>TTS preview</strong>. Shiori shows the original above and the spoken version below — here <code>Rodya → Rod-ya</code> — with an <strong>Aloud</strong> button so you can hear the result before committing to it.</p>
-          <p>This is the fastest way to debug a rule: real text from a real book, every rule applied, in one dialog.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">11</span>Preview the Spoken Output</div>
+          <div class="step-desc">
+            <p>Highlight a paragraph and tap <strong>TTS preview</strong>. Shiori displays original text above and the transformed spoken text below, complete with an <strong>Aloud</strong> audio button to test the pronunciation live.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">11</span>ทดลองฟังเสียงอ่านล่วงหน้าด้วย TTS Preview</div>
+          <div class="step-desc">
+            <p>คลุมดำข้อความแล้วเลือก <strong>TTS preview</strong> หน้าต่างจะแสดงข้อความเดิมคู่กับข้อความที่จะส่งให้ระบบออกเสียง พร้อมปุ่ม <strong>Aloud</strong> ให้กดฟังเสียงจริงก่อนบันทึก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">11</span>TTSプレビューで実際の発音を確認</div>
+          <div class="step-desc">
+            <p>テキストを選択して <strong>TTS preview</strong> をタップすると、元の文章と置換後の文章が比較表示され、<strong>Aloud</strong> ボタンで実際の発音を試聴できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">11</span>使用 TTS Preview 预览朗读效果</div>
+          <div class="step-desc">
+            <p>划选段落并点击 <strong>TTS preview</strong>，系统会上下对比展示原始文本与替换结果，并附带 <strong>Aloud</strong> 试听按钮供您校准发音。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">11</span>Ouça a Prévia com o TTS Preview</div>
+          <div class="step-desc">
+            <p>Selecione um texto e toque em <strong>TTS preview</strong> para comparar o texto original com a versão falada e use o botão <strong>Aloud</strong> para ouvir.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">11</span>Prueba el Resultado con TTS Preview</div>
+          <div class="step-desc">
+            <p>Selecciona un fragmento y pulsa en <strong>TTS preview</strong> para comparar el original con el texto procesado y escuchar la prueba con el botón <strong>Aloud</strong>.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -682,9 +1329,41 @@
     <!-- STEP 12 -->
     <section class="tutorial-step">
       <div class="step-text">
-        <div class="step-title"><span class="step-number">12</span>Manage the TTS List by Language</div>
-        <div class="step-desc">
-          <p>The TTS tab carries filter chips with live counts — <strong>Global</strong> plus each enabled voice language — and groups the list under headers that each have their own switch. Tap a chip to include or exclude that group; the choice is remembered between sessions.</p>
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">12</span>Manage Rules Grouped by Language</div>
+          <div class="step-desc">
+            <p>The TTS tab organizes rules under collapsible language headers with dedicated group switches and live filter chips, giving you complete clarity over your voice rules.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">12</span>จัดการกฎ TTS แยกหมวดหมู่ตามภาษา</div>
+          <div class="step-desc">
+            <p>ในแท็บ TTS กฎจะถูกจัดกลุ่มตามภาษาอย่างเป็นระเบียบ พร้อมกล่องฟิลเตอร์และสวิตช์เปิด/ปิดแยกตามหมวดหมู่ภาษา ช่วยให้ดูแลกฎจำนวนมากได้อย่างง่ายดาย</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">12</span>言語別グループで整理・管理</div>
+          <div class="step-desc">
+            <p>TTSタブでは言語ごとに折りたたみ可能なヘッダーと個別スイッチで整理され、上部の言語チップで簡単に絞り込み表示が可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">12</span>按语言分组高效管理 TTS 规则</div>
+          <div class="step-desc">
+            <p>TTS 标签页按发音语言自动折叠分组，每组均配有独立开关与顶部筛选标签，管理海量规则井井有条。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">12</span>Gerencie Regras Agrupadas por Idioma</div>
+          <div class="step-desc">
+            <p>A aba TTS agrupa regras por idioma com cabeçalhos recolhíveis e filtros rápidos, mantendo sua lista sempre organizada.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">12</span>Gestiona las Reglas Agrupadas por Idioma</div>
+          <div class="step-desc">
+            <p>La pestaña TTS organiza las reglas por idioma en secciones desplegables con filtros rápidos e interruptores independientes.</p>
+          </div>
         </div>
       </div>
       <div class="step-image-container">
@@ -692,118 +1371,394 @@
       </div>
     </section>
 
-    <!-- REGEX COOKBOOK -->
+    <!-- ==================== REGEX COOKBOOK ==================== -->
     <article class="article-section">
-      <h2>A Regex Cookbook</h2>
-      <p>The six examples built into the app:</p>
+      <h2 class="lang-en">A Regex Cookbook: 16 Ready-to-Use Recipes</h2>
+      <h2 class="lang-th">สูตรสำเร็จ Regex: 16 รูปแบบพร้อมคัดลอกไปใช้งาน</h2>
+      <h2 class="lang-jp">正規表現レシピ集：そのまま使える16の実践パターン</h2>
+      <h2 class="lang-cn">正则表达式实战菜谱：16 条即拷即用实用范例</h2>
+      <h2 class="lang-pt">Receitas Prontas de Regex: 16 Padrões Úteis</h2>
+      <h2 class="lang-es">Recetario de Regex: 16 Patrones Listos para Usar</h2>
 
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Pattern</th><th>Replace with</th><th>What it does</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> makes the previous letter optional — matches <em>color</em> and <em>colour</em></td></tr>
-            <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> repeats the group three or more times — shortens laughter of any length</td></tr>
-            <tr><td><code>[0-9]+</code></td><td><span class="muted">(empty)</span></td><td>any run of digits; an empty replacement deletes the match</td></tr>
-            <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>collapses <code>!!!</code> or <code>?!?</code> into a single <code>!</code></td></tr>
-            <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> before <code>.</code> matches a real dot, not "any character"</td></tr>
-            <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td><code>( )</code> captures; <code>$1</code> and <code>$2</code> reuse the captures — this swaps two words</td></tr>
-          </tbody>
-        </table>
+      <!-- English Table 1 -->
+      <div class="lang-en">
+        <p>The 6 examples built into Shiori's cheat sheet:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> makes the preceding letter optional (matches <em>color</em> and <em>colour</em>)</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> matches 3 or more repetitions (shortens long laughter)</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(empty)</span></td><td>matches any sequence of digits (empty replacement deletes them)</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>collapses multiple punctuation marks like <code>!!!</code> into a single <code>!</code></td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> matches a literal dot rather than any character</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td><code>( )</code> captures groups; <code>$1</code> and <code>$2</code> swap the two words</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Ten more practical recipes to steal:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(empty)</span></td><td>removes footnote markers like <code>[12]</code></td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(one space)</span></td><td>collapses excessive spaces into one</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>expands abbreviations for natural TTS speech</td></tr>
+              <tr><td><code>St\.</code></td><td><code>Saint</code></td><td>expands titles (matches <em>St.</em>)</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>turns em dashes into commas for natural TTS pauses</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>converts three dots into a proper ellipsis</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>splits merged words from poor OCR scans</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(empty)</span></td><td>trims leading paragraph spaces</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>improves TTS pronunciation of ordinal numbers</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>chapter</code></td><td><code>\b</code> anchors to word boundaries (won't match <em>mulch</em>)</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <p>Ten more worth stealing:</p>
+      <!-- Thai Table -->
+      <div class="lang-th">
+        <p>ตัวอย่างสูตรลัด 6 รูปแบบที่มีอยู่ในแอป:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern (สูตรค้นหา)</th><th>Replace with (คำแทนที่)</th><th>ผลลัพธ์การทำงาน</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> ทำให้ตัวอักษรข้างหน้ามีหรือไม่มีก็ได้ (จับคู่ทั้ง <em>color</em> และ <em>colour</em>)</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> จับคู่คำซ้ำตั้งแต่ 3 ครั้งขึ้นไป (ย่อเสียงหัวเราะยาวๆ ให้สั้นลง)</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(เว้นว่าง)</span></td><td>จับคู่ตัวเลขทุกจำนวน (เว้นว่างไว้เพื่อลบตัวเลขทิ้ง)</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>ยุบเครื่องหมายตกใจหรือคำถามซ้ำๆ เช่น <code>!!!</code> ให้เหลือเพียง <code>!</code> ตัวเดียว</td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> ระบุให้จับคู่จุดจริง ไม่ใช่เครื่องหมายแทนตัวอักษรใดๆ</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td><code>( )</code> จับกลุ่มคำ; <code>$1</code> และ <code>$2</code> นำมาสลับตำแหน่งคำกัน</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr><th>Pattern</th><th>Replace with</th><th>What it does</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(empty)</span></td><td>removes footnote markers like <code>[12]</code></td></tr>
-            <tr><td><code>\s{2,}</code></td><td><span class="muted">(one space)</span></td><td>collapses runs of whitespace</td></tr>
-            <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>an abbreviation the voice would otherwise spell out</td></tr>
-            <tr><td><code>St\.</code></td><td><code>Saint</code></td><td>same idea — but careful, it also matches <em>St.</em> for street</td></tr>
-            <tr><td><code>—</code></td><td><code>, </code></td><td>turns an em dash into a comma so TTS pauses naturally</td></tr>
-            <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>three dots become a proper ellipsis</td></tr>
-            <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>splits runTogether words from bad OCR</td></tr>
-            <tr><td><code>^\s+</code></td><td><span class="muted">(empty)</span></td><td>trims leading whitespace</td></tr>
-            <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>stops a voice reading "14th" as one blob</td></tr>
-            <tr><td><code>\bch\.</code></td><td><code>chapter</code></td><td><code>\b</code> anchors to a word start, so it won't hit <em>mulch.</em></td></tr>
-          </tbody>
-        </table>
+        <p>อีก 10 สูตรยอดนิยมที่นำไปใช้ได้ทันที:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>ผลลัพธ์การทำงาน</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(เว้นว่าง)</span></td><td>ลบหมายเลขเชิงอรรถในวงเล็บ เช่น <code>[12]</code></td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(เว้นวรรค 1 เคาะ)</span></td><td>ยุบช่องว่างที่เว้นวรรคซ้ำซ้อนให้เหลือเคาะเดียว</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>ขยายคำย่อให้เสียงอ่าน TTS พูดเต็มคำอย่างถูกต้อง</td></tr>
+              <tr><td><code>St\.</code></td><td><code>Saint</code></td><td>ขยายคำย่อตำแหน่งหรือชื่อนักบุญ</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>เปลี่ยนขีดยาว Em Dash เป็นจุลภาคเพื่อให้ TTS เว้นจังหวะหายใจอย่างเป็นธรรมชาติ</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>แปลงจุดไข่ปลา 3 จุดให้เป็นสัญลักษณ์จุดละแบบมาตรฐาน</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>แยกคำภาษาอังกฤษที่ติดกันจากไฟล์สแกน OCR</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(เว้นว่าง)</span></td><td>ลบช่องว่างส่วนเกินที่อยู่ต้นย่อหน้า</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>ช่วยให้เสียงอ่านลำดับที่ (เช่น 14th) อ่านได้ถูกต้องชัดเจนขึ้น</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>chapter</code></td><td><code>\b</code> ระบุขอบเขตคำขึ้นต้น เพื่อไม่ให้ไปโดนคำอื่น</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h3>Three Rules About the Rules</h3>
-      <p><strong>Two engines, one syntax to stay inside.</strong> Visual rules are applied by the browser engine inside the page; TTS rules are applied by the app before the words reach the voice. Everything in the tables above works on both sides. Exotic extras — inline flags such as <code>(?i)</code>, for instance — may work on one side only, so keep patterns to the common core and use the TTS preview to check.</p>
-      <p><strong>Quotes are normalised.</strong> Curly apostrophes, backticks and full-width quotes are all treated as a plain <code>'</code> before matching, so you can type an ordinary apostrophe and still match typographic text.</p>
-      <p><strong>Order matters.</strong> Rules run from the top down, each on the output of the one before it. If one rule feeds another, give the first a lower Order number.</p>
+      <!-- Japanese Table -->
+      <div class="lang-jp">
+        <p>アプリ内チートシートに収録されている6つの基本例：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern（検索パターン）</th><th>Replace with（置換文字列）</th><th>動作と解説</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> で直前の文字を省略可能に（<em>color</em> と <em>colour</em> 両方に一致）</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> で3回以上の繰り返しを短縮（長すぎる笑い声を整理）</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(空欄)</span></td><td>連続する数字を検出（空欄指定で数字を一括削除）</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td><code>!!!</code> などの連続した感嘆符を1つの <code>!</code> に集約</td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> でピリオドそのものを正確にエスケープ指定</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td><code>( )</code> でグループをキャプチャし、<code>$1</code> と <code>$2</code> で前後を入れ替え</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-      <h2>The Safety Net</h2>
-      <p>A regex is powerful enough to hang an app, so Shiori guards it at four levels:</p>
-      <ol class="article-number-list">
-        <li><strong>While you type</strong> — errors (invalid syntax, a bad group reference, a stray <code>$</code>) block Save; warnings (a pattern matching empty text, or one measured as slow) let you save but stay visible.</li>
-        <li><strong>In the list</strong> — a badge marks any rule with an issue, including ones that arrived by import or cloud sync.</li>
-        <li><strong>At runtime</strong> — a rule judged unsafe is skipped rather than run, on the page and on the TTS side alike.</li>
-        <li><strong>After a crash</strong> — if the app ever goes down inside a replacement, both master switches are turned off on the next launch and a banner explains why. Your rules are never deleted.</li>
-      </ol>
-      <div class="quote-callout">
-        <strong>💡 The master switch is your own version of that.</strong><br />
-        Each tab's switch reads: <em>"Safe mode: switch off to bypass every rule temporarily — each rule's own on/off state is kept."</em> Perfect for checking whether a rule is behind something odd on the page.
+        <p>さらに便利な10の実践レシピ：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>動作と解説</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(空欄)</span></td><td><code>[12]</code> などの脚注番号記号をまとめて削除</td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(半角スペース1つ)</span></td><td>余分な連続空白を1つのスペースに統合</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>TTSがアルファベット読みしてしまう略語を展開</td></tr>
+              <tr><td><code>St\.</code></td><td><code>Saint</code></td><td>聖人や称号の略語を展開</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>ダッシュを読点やカンマに変えてTTSに自然な間を作らせる</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>3つのピリオドを正式な三点リーダー記号に変換</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>OCR読み取りミスで連結した英単語を適切に分離</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(空欄)</span></td><td>行頭の余分な空白を除去</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>序数（14th等）のTTS発音の乱れを防止</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>chapter</code></td><td><code>\b</code> で単語の先頭に限定し誤置換を防止</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <h2>Moving Rules Around</h2>
-      <ul class="article-bullet-list">
-        <li><strong>Export</strong> writes the current tab's rules to a JSON file — enabled states and language groups included.</li>
-        <li><strong>Import</strong> reads that JSON back, and still accepts the older tab-separated format.</li>
-        <li><strong>Cloud sync</strong> carries rules between your own devices with a review banner — <em>"From your other devices: 7 new, 0 deleted"</em> — so nothing is added behind your back.</li>
-      </ul>
+      <!-- Chinese Table -->
+      <div class="lang-cn">
+        <p>内置速查表中的 6 条经典正则范例：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern（匹配模式）</th><th>Replace with（替换内容）</th><th>效果与说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> 使前一字符变为可选（同时匹配 <em>color</em> 与 <em>colour</em>）</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> 匹配重复 3 次以上的笑声并予以精简</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(留空)</span></td><td>匹配任意连续数字（留空即可批量删除）</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>将 <code>!!!</code> 等重复标点合并为一个 <code>!</code></td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> 精准转义匹配真实的英文句号</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td><code>( )</code> 捕获词组，利用 <code>$1</code> 与 <code>$2</code> 调换词语顺序</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>10 条极具价值的实战拓展规则：</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>效果与说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(留空)</span></td><td>清除正文中形如 <code>[12]</code> 的脚注上标</td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(单个空格)</span></td><td>将连续的多余空格合并为标准单空格</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>展开英文缩写，使语音朗读更自然</td></tr>
+              <tr><td><code>St\.</code></td><td><code>Saint</code></td><td>展开头衔缩写</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>将破折号转为逗号，引导 TTS 生成自然停顿</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>将三连点替换为规范的省略号</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>修复 OCR 扫描导致的英文粘连单词</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(留空)</span></td><td>去除段落首行的多余空格</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>修正序数词朗读节奏</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>chapter</code></td><td><code>\b</code> 单词边界匹配，避免误伤其他词汇</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Portuguese Table -->
+      <div class="lang-pt">
+        <p>Os 6 exemplos integrados ao guia rápido:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>O que faz</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> torna a letra anterior opcional</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> encurta risadas longas repetidas</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(vazio)</span></td><td>localiza números (substituição vazia exclui)</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>unifica pontuações repetidas como <code>!!!</code></td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> escapa o ponto literal</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td>inverte a posição de duas palavras capturadas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Mais 10 receitas práticas:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>O que faz</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(vazio)</span></td><td>remove marcas de notas como <code>[12]</code></td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(um espaço)</span></td><td>remove espaços duplicados</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doutor</code></td><td>expande abreviações para o TTS</td></tr>
+              <tr><td><code>St\.</code></td><td><code>Santo</code></td><td>expande títulos</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>converte travessões em pausas de vírgula para o TTS</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>substitui três pontos por reticências tipográficas</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>corrige palavras coladas por erro de OCR</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(vazio)</span></td><td>remove espaços no início do parágrafo</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>melhora a pronúncia de numerais ordinais</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>capítulo</code></td><td><code>\b</code> limita ao início da palavra</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Spanish Table -->
+      <div class="lang-es">
+        <p>Los 6 ejemplos integrados en la chuleta de Shiori:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>Qué hace</th></tr></thead>
+            <tbody>
+              <tr><td><code>colou?r</code></td><td><code>color</code></td><td><code>?</code> hace que la letra anterior sea opcional</td></tr>
+              <tr><td><code>(ha){3,}</code></td><td><code>haha</code></td><td><code>{3,}</code> acorta risas repetitivas</td></tr>
+              <tr><td><code>[0-9]+</code></td><td><span class="muted">(vacío)</span></td><td>encuentra números (reemplazo vacío los borra)</td></tr>
+              <tr><td><code>[!?]{2,}</code></td><td><code>!</code></td><td>reduce signos repetidos como <code>!!!</code> a uno solo</td></tr>
+              <tr><td><code>Mr\.</code></td><td><code>Mister</code></td><td><code>\</code> escapa el punto literal</td></tr>
+              <tr><td><code>(\w+) (\w+)</code></td><td><code>$2 $1</code></td><td>intercambia el orden de dos palabras</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>10 recetas útiles adicionales:</p>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Replace with</th><th>Qué hace</th></tr></thead>
+            <tbody>
+              <tr><td><code>\[[0-9]+\]</code></td><td><span class="muted">(vacío)</span></td><td>elimina notas al pie como <code>[12]</code></td></tr>
+              <tr><td><code>\s{2,}</code></td><td><span class="muted">(un espacio)</span></td><td>reduce espacios excesivos a uno solo</td></tr>
+              <tr><td><code>Dr\.</code></td><td><code>Doctor</code></td><td>despliega abreviaturas para la narración</td></tr>
+              <tr><td><code>St\.</code></td><td><code>San</code></td><td>despliega títulos</td></tr>
+              <tr><td><code>—</code></td><td><code>, </code></td><td>convierte rayas en comas para generar pausas naturales</td></tr>
+              <tr><td><code>\.\.\.</code></td><td><code>…</code></td><td>convierte tres puntos en puntos suspensivos tipográficos</td></tr>
+              <tr><td><code>([a-z])([A-Z])</code></td><td><code>$1 $2</code></td><td>separa palabras unidas por fallos de OCR</td></tr>
+              <tr><td><code>^\s+</code></td><td><span class="muted">(vacío)</span></td><td>elimina espacios al inicio de párrafo</td></tr>
+              <tr><td><code>(\d+)th</code></td><td><code>$1 th</code></td><td>optimiza la lectura de ordinales</td></tr>
+              <tr><td><code>\bch\.</code></td><td><code>capítulo</code></td><td><code>\b</code> fija el inicio de palabra para evitar falsos positivos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </article>
 
-    <!-- FAQ -->
-    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);">Frequently Asked Questions</h2>
+    <!-- ==================== FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes (FAQ)</h2>
 
+    <!-- FAQ 1 -->
     <div class="faq-item">
-      <div class="faq-q">Does a replacement change my EPUB file?</div>
-      <div class="faq-a">No. Rules are applied as the page renders or as text is sent to the voice. The file on disk is untouched, and deleting a rule restores the original wording instantly.</div>
+      <div class="lang-en">
+        <div class="faq-q">Does a text replacement rule modify my actual EPUB file?</div>
+        <div class="faq-a">No. Rules are applied dynamically in memory when a chapter renders or when text is sent to the TTS voice. The actual file on your device remains completely untouched, and deleting a rule restores the original text immediately.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การแทนที่ข้อความจะไปแก้ไขไฟล์ EPUB ต้นฉบับหรือไม่?</div>
+        <div class="faq-a">ไม่เลยครับ กฎทั้งหมดจะทำงานในหน่วยความจำชั่วคราวขณะแสดงผลหน้าหนังสือหรือขณะสังเคราะห์เสียงอ่านเท่านั้น ไฟล์หนังสือจริงในเครื่องจะไม่ถูกแก้ไขใดๆ และเมื่อลบกฎออก ข้อความเดิมจะกลับคืนมาทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">置換ルールによってEPUBファイル本体は変更されますか？</div>
+        <div class="faq-a">いいえ、一切変更されません。ルールは画面描画や音声出力の瞬間にメモリ上で適用されます。端末内のファイルは常に保護されており、ルールを削除すれば一瞬で元の表記に戻ります。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">文本替换规则会修改 EPUB 源文件吗？</div>
+        <div class="faq-a">完全不会。所有规则仅在内存渲染与语音合成时实时生效，手机中保存的图书源文件始终保持原样，删除规则即可即刻恢复原文。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A regra de substituição altera o arquivo EPUB real?</div>
+        <div class="faq-a">Não. As regras operam em tempo real durante a exibição ou leitura em voz alta. O arquivo no disco permanece intacto.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Modifica el reemplazo el archivo EPUB original?</div>
+        <div class="faq-a">No. Las reglas se ejecutan en memoria durante la lectura o reproducción de voz. El archivo permanece inalterado.</div>
+      </div>
     </div>
 
+    <!-- FAQ 2 -->
     <div class="faq-item">
-      <div class="faq-q">Can a rule apply to only one book?</div>
-      <div class="faq-a">Rules are global across your library. Use the row switch to park one you only need occasionally, or the master switch to bypass a whole list.</div>
+      <div class="lang-en">
+        <div class="faq-q">Can a replacement rule apply to only one specific book?</div>
+        <div class="faq-a">Rules are designed to be global across your entire library for maximum convenience. You can use the row toggle switch to easily disable a rule when reading books that don't need it.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถตั้งกฎให้มีผลเฉพาะหนังสือบางเล่มได้ไหม?</div>
+        <div class="faq-a">ระบบออกแบบให้กฎมีผลทั่วทั้งคลังหนังสือเพื่อความสะดวกรวดเร็วครับ หากมีกฎเฉพาะสำหรับบางเล่ม คุณสามารถแตะสวิตช์เปิด/ปิดหน้าแถวกฎเพื่อพักการใช้งานเมื่ออ่านเล่มอื่นได้ง่ายๆ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">特定の1冊だけにルールを適用できますか？</div>
+        <div class="faq-a">ルールはライブラリ全体で共有される仕様です。不要な本を読む際は、ルール行のスイッチで一時的にOFFにしておくのが便利です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">规则可以仅对某一本书生效吗？</div>
+        <div class="faq-a">规则采用全局生效机制以提升管理效率。若某条规则仅适用于特定书籍，可通过该行开关随时停用或启用。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso aplicar uma regra apenas a um livro específico?</div>
+        <div class="faq-a">As regras são globais na biblioteca. Use o interruptor da linha para desativar temporariamente quando ler outras obras.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puedo aplicar una regla solo a un libro concreto?</div>
+        <div class="faq-a">Las reglas son globales en tu biblioteca. Puedes usar el interruptor de fila para pausar una regla cuando leas otros títulos.</div>
+      </div>
     </div>
 
+    <!-- FAQ 3 -->
     <div class="faq-item">
-      <div class="faq-q">Are rules case-sensitive?</div>
-      <div class="faq-a">Yes, both plain and regex. Match the case you actually want, or use a character class such as <code>[Tt]he</code> to cover both.</div>
+      <div class="lang-en">
+        <div class="faq-q">Are replacement rules case-sensitive?</div>
+        <div class="faq-a">Yes, both plain text and regex rules are case-sensitive. Enter the exact casing you want, or use regex character classes such as <code>[Tt]he</code> to match both capitalized and lowercase variations.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">กฎการแทนที่คำนึงถึงตัวพิมพ์เล็ก-ใหญ่หรือไม่?</div>
+        <div class="faq-a">คำนึงถึงครับ (Case-sensitive) ทั้งข้อความธรรมดาและ Regex หากต้องการให้จับคู่ทั้งตัวเล็กและตัวใหญ่ สามารถใช้สูตรอย่าง <code>[Tt]he</code> ได้ครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">大文字と小文字は区別されますか？</div>
+        <div class="faq-a">はい、プレーン・正規表現ともに大文字小文字を区別します。両方に一致させたい場合は <code>[Tt]he</code> のように文字クラスをご活用ください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">规则是否区分英文字母大小写？</div>
+        <div class="faq-a">是的，普通规则与正则规则均区分大小写。如需同时匹配首字母大写与小写，可使用 <code>[Tt]he</code> 等字符集写法。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">As regras diferenciam maiúsculas de minúsculas?</div>
+        <div class="faq-a">Sim. Para cobrir ambas as formas, use classes de caracteres como <code>[Tt]he</code>.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Se distinguen mayúsculas y minúsculas?</div>
+        <div class="faq-a">Sí. Para incluir ambas variantes, puedes recurrir a patrones como <code>[Tt]he</code>.</div>
+      </div>
     </div>
 
+    <!-- FAQ 4 -->
     <div class="faq-item">
-      <div class="faq-q">Why is my regex not matching?</div>
-      <div class="faq-a">Check three things: the <em>Use Regex</em> box is actually ticked; special characters such as <code>.</code> <code>?</code> <code>+</code> <code>(</code> <code>[</code> are escaped with <code>\</code> when you mean them literally; and no later rule is undoing the first one.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">How do I delete text instead of replacing it?</div>
-      <div class="faq-a">Leave <strong>Replace with</strong> empty and every match is removed — the standard trick for stripping footnote markers.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">What is the difference between the ▶ buttons and TTS preview?</div>
-      <div class="faq-a">The ▶ buttons speak a single field so you can hear how a replacement sounds on its own. <strong>TTS preview</strong> takes real text from the book and shows the finished spoken result with every rule applied.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">Can I use this for text-to-speech in other languages?</div>
-      <div class="faq-a">Yes — that is what the voice-language groups are for. See also our guides to <a href="/read-japanese-books">reading Japanese books</a> and the <a href="/blog/how-to-translate-to-multiple-language/">multi-language translation features</a>.</div>
+      <div class="lang-en">
+        <div class="faq-q">How do I delete unwanted text instead of replacing it?</div>
+        <div class="faq-a">Simply leave the <strong>Replace with</strong> field completely empty. Every match of your find pattern will be cleanly removed — ideal for stripping footnote markers like <code>[12]</code>.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้าต้องการลบคำที่ไม่ต้องการทิ้งโดยไม่แทนที่ด้วยอะไรเลย ต้องทำอย่างไร?</div>
+        <div class="faq-a">เพียงปล่อยช่อง <strong>Replace with</strong> ให้ว่างไว้ครับ ข้อความที่ตรงกับเงื่อนไขจะถูกลบทิ้งทั้งหมด ซึ่งเป็นวิธีที่นิยมมากในการลบหมายเลขเชิงอรรถอย่าง <code>[12]</code></div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">置換ではなく、不要な文字列を削除したい場合は？</div>
+        <div class="faq-a"><strong>Replace with</strong> 欄を完全に空欄にしてください。一致した文字列がきれいさっぱり削除されます（<code>[12]</code> のような脚注番号の削除に最適です）。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">如何直接删除不需要的文字而非替换？</div>
+        <div class="faq-a">只需将 <strong>Replace with</strong> 栏完全留空即可。所有匹配项将被彻底移除，非常适合消除 <code>[12]</code> 这类脚注标记。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como excluir texto indesejado em vez de substituir?</div>
+        <div class="faq-a">Basta deixar o campo <strong>Replace with</strong> totalmente vazio. O texto correspondente será removido da leitura.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo elimino texto no deseado en lugar de reemplazarlo?</div>
+        <div class="faq-a">Deja el campo <strong>Replace with</strong> completamente en blanco. Toda coincidencia será eliminada del texto.</div>
+      </div>
     </div>
 
     <!-- Call to Action -->
     <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
-      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Your Books, in Your Words</h2>
-      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;">
-        Download Shiori EPUB Reader, open Settings → Visual &amp; TTS Replacement, and fix the one thing that has always bothered you.
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Your Books, in Your Words</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader, open Settings → Visual &amp; TTS Replacement, and tailor every line to your personal reading taste.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">อ่านและฟังหนังสือ ในแบบที่เป็นคุณ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader วันนี้ เปิดเมนู Visual &amp; TTS Replacement แล้วปรับแต่งประสบการณ์การอ่านและฟังให้สมบูรณ์แบบที่สุด
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">本の世界を、もっとあなたらしく</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Shiori EPUB リーダーをダウンロードし、テキスト置換機能を活用して、ストレスフリーな読書と朗読の世界を手に入れましょう。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">让每一本书都更契合您的心意</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即下载 Shiori EPUB 阅读器，开启 Visual &amp; TTS 文本替换，随心定制专属的视觉与听书体验。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Seus Livros, do Seu Jeito</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader, acesse a Substituição de Texto e personalize cada palavra lida e ouvida.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Tus Libros, a Tu Medida</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader, accede al Reemplazo de Texto y adapta cada palabra leída y escuchada a tu gusto.
       </p>
 
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
