@@ -1,0 +1,24 @@
+# Files/folders that must NOT be uploaded as Cloudflare Workers static assets.
+# Uses .gitignore syntax. The important line is ".git" — its pack file is 40+ MiB,
+# which is over the 25 MiB per-asset limit and was failing the deploy.
+
+.git
+.github
+.gitignore
+.gitattributes
+.assetsignore
+.wrangler
+node_modules
+
+# wrangler config is not a website asset
+wrangler.jsonc
+wrangler.toml
+wrangler.json
+
+# local dev helpers, not part of the site
+server.py
+start_server.bat
+
+# misc
+.DS_Store
+Thumbs.db
