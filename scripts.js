@@ -272,6 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-title": "Book Drop: Send Books to Your Phone Over Wi-Fi",
       "blog-p23-desc": "Drag EPUBs onto a page your phone serves on your own network — no cable, no cloud account, nothing to install on the computer.",
 
+      // Blog Post 24
+      "blog-p24-date": "📅 August 19, 2026",
+      "blog-p24-cat": "🏷️ Library Servers",
+      "blog-p24-title": "How to Connect Komga to Shiori on Android (Covers + Progress Sync)",
+      "blog-p24-desc": "Connect your self-hosted Komga server to Shiori on Android using the native REST API to get cover art, full book metadata and reading-progress sync instead of a bare file list.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -558,6 +564,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-cat": "🏷️ นำเข้าและโอนไฟล์",
       "blog-p23-title": "Book Drop: ส่งหนังสือเข้ามือถือผ่าน Wi-Fi ไม่ต้องใช้สายและคลาวด์",
       "blog-p23-desc": "ลากไฟล์ EPUB วางบนหน้าเว็บที่มือถือของคุณเปิดให้เองในวง Wi-Fi เดียวกัน ไม่ต้องต่อสาย ไม่ต้องสมัครคลาวด์ และไม่ต้องติดตั้งอะไรบนคอมพิวเตอร์",
+
+      // Blog Post 24
+      "blog-p24-date": "📅 19 สิงหาคม 2026",
+      "blog-p24-cat": "🏷️ เซิร์ฟเวอร์ห้องสมุด",
+      "blog-p24-title": "วิธีเชื่อมต่อ Komga เข้ากับ Shiori บน Android (พร้อมภาพปกและการซิงค์ความคืบหน้า)",
+      "blog-p24-desc": "เชื่อมต่อเซิร์ฟเวอร์ Komga เข้ากับ Shiori บน Android ด้วย REST API หลักโดยตรง รับภาพปกความละเอียดสูง รายละเอียดหนังสือครบถ้วน และซิงค์ตำแหน่งอ่านกลับเซิร์ฟเวอร์",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -846,6 +858,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-title": "Book Drop：Wi-Fi経由でパソコンからスマホへ本を送る",
       "blog-p23-desc": "スマホ自身が配信するページにEPUBをドラッグするだけ。ケーブルもクラウドアカウントも、パソコン側のインストールも不要です。",
 
+      // Blog Post 24
+      "blog-p24-date": "📅 2026年8月19日",
+      "blog-p24-cat": "🏷️ サーバー接続",
+      "blog-p24-title": "AndroidでKomgaをShioriに接続する方法（表紙・読書進捗の同期対応）",
+      "blog-p24-desc": "ネイティブ REST API を使って自作のKomgaサーバーをShioriに接続。表紙画像、詳細な作品情報、読書進捗の双方向同期を完全サポート。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1132,6 +1150,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-cat": "🏷️ 导入与传输",
       "blog-p23-title": "Book Drop：通过 Wi-Fi 把书直接拖进手机",
       "blog-p23-desc": "把 EPUB 拖到手机自己提供的网页上即可完成传输——无需数据线、无需云账号，电脑端也不用安装任何东西。",
+
+      // Blog Post 24
+      "blog-p24-date": "📅 2026年8月19日",
+      "blog-p24-cat": "🏷️ 书库服务器",
+      "blog-p24-title": "如何在 Android 上将 Komga 连接至 Shiori（支持封面与进度同步）",
+      "blog-p24-desc": "使用原生 REST API 将自建 Komga 漫画与图书服务器连接至 Android 端 Shiori，享受高清封面、完整元数据与双向阅读进度同步。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1420,6 +1444,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-title": "Book Drop: Envie Livros para o Celular por Wi-Fi",
       "blog-p23-desc": "Arraste EPUBs para uma página que o próprio celular hospeda na sua rede — sem cabo, sem conta na nuvem e sem instalar nada no computador.",
 
+      // Blog Post 24
+      "blog-p24-date": "📅 19 de agosto de 2026",
+      "blog-p24-cat": "🏷️ Servidor de Biblioteca",
+      "blog-p24-title": "Como Conectar o Komga ao Shiori no Android (Capas + Sincronização)",
+      "blog-p24-desc": "Conecte seu servidor Komga ao Shiori no Android usando a REST API nativa para obter capas, metadados completos e sincronização de leitura.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1706,6 +1736,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p23-cat": "🏷️ Importación y Transferencia",
       "blog-p23-title": "Book Drop: Envía Libros a tu Teléfono por Wi-Fi",
       "blog-p23-desc": "Arrastra EPUBs a una página que tu propio teléfono sirve en tu red — sin cable, sin cuenta en la nube y sin instalar nada en el ordenador.",
+
+      // Blog Post 24
+      "blog-p24-date": "📅 19 de agosto de 2026",
+      "blog-p24-cat": "🏷️ Servidores de Biblioteca",
+      "blog-p24-title": "Cómo Conectar Komga a Shiori en Android (Portadas + Progreso)",
+      "blog-p24-desc": "Conecta tu servidor Komga a Shiori en Android mediante la REST API nativa para disfrutar de portadas, metadatos completos y sincronización de lectura.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>How to Connect Komga to Shiori on Android (Covers + Progress Sync) — Shiori Blog</title>
+  <meta name="description" content="Connect your self-hosted Komga server to Shiori on Android using the native REST API, so you get cover art, full book metadata and reading-progress sync instead of a bare file list." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/connect-komga-to-shiori-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Connect Komga to Shiori on Android (with Covers and Progress Sync)",
+    "description": "Connect your self-hosted Komga server to Shiori on Android using the native REST API, so you get cover art, full book metadata and reading-progress sync instead of a bare file list.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-19",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/connect-komga-to-shiori-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why should I use Komga API instead of OPDS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "OPDS is a generic catalog feed for listing and downloading files. Komga's native REST API allows Shiori to fetch high-resolution cover art, comprehensive book metadata, series organization, and bi-directional reading progress sync."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I read my Komga books offline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Tap the cloud icon next to any book to download it directly to your Shiori bookshelf for full offline reading with TTS and highlighting."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why shouldn't I use localhost as my server URL?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "localhost points to the phone itself. You must use the local network IP address of the computer or NAS hosting Komga (e.g. 192.168.1.33)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I connect to Komga from outside my home network?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, by connecting back to your home network via VPN (such as WireGuard or Tailscale) or setting up a secure reverse proxy with HTTPS domain."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Code blocks */
+    .post-code-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+    }
+    .post-code-block code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.95rem;
+      color: var(--accent-primary);
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 19, 2026</span>
+        <span>🏷️ Library Servers</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Connect Komga to Shiori on Android<br><span class="text-gradient">Covers, Metadata &amp; Reading Progress Sync</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีเชื่อมต่อ Komga เข้ากับ Shiori บน Android<br><span class="text-gradient">พร้อมภาพปก รายละเอียดหนังสือ และการซิงค์ความคืบหน้าการอ่าน</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">AndroidでKomgaをShioriに接続する方法<br><span class="text-gradient">表紙・メタデータ・読書進捗の完全同期ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何在 Android 上将 Komga 连接至 Shiori<br><span class="text-gradient">支持封面、完整元数据与阅读进度同步</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Como Conectar o Komga ao Shiori no Android<br><span class="text-gradient">Com Capas, Metadados e Sincronização de Progresso</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Cómo Conectar Komga a Shiori en Android<br><span class="text-gradient">Con Portadas, Metadatos y Sincronización de Progreso</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('07-books-with-covers-and-authors.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📚</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>If you run <strong>Komga</strong> at home, your whole library already lives on your own server — but reading it on your phone usually means either a browser tab or an app that shows you a bare list of filenames with no covers.</p>
+        <p>Shiori connects to Komga directly. Done the right way, you get your covers, your authors, your series structure, and your reading position synced back to the server. This guide shows the exact steps, and — more importantly — which of Shiori's three Komga options you should actually pick.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">Native REST API</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">Full Book Details</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">Progress Sync</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">Offline Reading</div>
+          </div>
+        </div>
+
+        <h2>Komga, OPDS, or Komga API? Pick the right one first</h2>
+        <p>When you add a server, Shiori offers several quick-fill options, and three of them mention Komga. They are not equivalent:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Option</th><th>Protocol</th><th>Features</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>Browsing &amp; downloading only</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>Browsing &amp; downloading only</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>Native REST API</td><td>Covers, full book details &amp; reading-progress sync</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>OPDS is a generic catalog standard, so it works with almost any server — Calibre, Calibre-Web, Standard Ebooks, Project Gutenberg. That generality is also its limit: it carries just enough information to list and download a file.</p>
+        <p>Komga's own API knows about series, metadata and read progress, so Shiori can show you a real library instead of a file list, and tell Komga where you stopped reading.</p>
+        <p><strong>Use "Komga API" unless you have a specific reason not to.</strong></p>
+
+        <h2>What you need</h2>
+        <ul class="article-bullet-list">
+          <li>Komga running and reachable on your network</li>
+          <li>Your Komga <strong>username and password</strong> (or an API key, if you prefer)</li>
+          <li>Your server's <strong>LAN address</strong> — not <code>localhost</code></li>
+          <li>Shiori installed on your Android device</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>Why not <code>localhost</code>?</strong><br />
+          <code>localhost</code> means <em>this device</em>. Typed into your phone, it points at the phone, not at your server. You need the address your server has on your network — something like <code>192.168.1.33</code>.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>หากคุณรัน <strong>Komga</strong> ไว้ที่บ้าน คลังหนังสือทั้งหมดของคุณจะอยู่บนเซิร์ฟเวอร์ส่วนตัวอยู่แล้ว — แต่การอ่านบนโทรศัพท์มักจะต้องเปิดผ่านเว็บเบราว์เซอร์หรือแอปที่แสดงเพียงรายชื่อไฟล์เปล่าๆ โดยไม่มีภาพปก</p>
+        <p>Shiori สามารถเชื่อมต่อกับ Komga ได้โดยตรง หากตั้งค่าอย่างถูกต้อง คุณจะได้ทั้งภาพปก รายชื่อผู้แต่ง โครงสร้างซีรีส์ และตำแหน่งการอ่านที่ซิงค์กลับไปยังเซิร์ฟเวอร์ คู่มือนี้จะแนะนำขั้นตอนอย่างละเอียด และที่สำคัญที่สุดคือ ควรเลือกตัวเลือก Komga ตัวไหนจากทั้งหมด 3 ตัวเลือกใน Shiori</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">REST API หลักโดยตรง</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">ภาพปกและเมทาดาตาครบ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">ซิงค์ความคืบหน้าการอ่าน</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">ดาวน์โหลดอ่านออฟไลน์</div>
+          </div>
+        </div>
+
+        <h2>Komga, OPDS หรือ Komga API? เลือกตัวเลือกที่ถูกต้องก่อนเป็นอันดับแรก</h2>
+        <p>เมื่อคุณเพิ่มเซิร์ฟเวอร์ Shiori จะมีตัวเลือกเติมข้อมูลด่วนให้เลือกหลายแบบ ซึ่งในนั้นมี 3 ตัวเลือกที่พูดถึง Komga แต่ละตัวเลือกไม่ได้เหมือนกัน:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ตัวเลือก</th><th>โปรโตคอล</th><th>ความสามารถ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>สำหรับเรียกดูและดาวน์โหลดเท่านั้น</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>สำหรับเรียกดูและดาวน์โหลดเท่านั้น</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>REST API หลัก</td><td>ภาพปก, ข้อมูลหนังสือครบถ้วน และซิงค์ความคืบหน้าการอ่าน</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>OPDS เป็นมาตรฐานแคตตาล็อกทั่วไป จึงใช้งานได้กับเซิร์ฟเวอร์เกือบทุกประเภท ไม่ว่าจะเป็น Calibre, Calibre-Web, Standard Ebooks หรือ Project Gutenberg แต่ความครอบคลุมทั่วไปนี้ก็คือข้อจำกัดเช่นกัน เพราะมันส่งข้อมูลเพียงพอสำหรับการแสดงรายการและดาวน์โหลดไฟล์เท่านั้น</p>
+        <p>API ของ Komga โดยเฉพาะนั้นเข้าใจเรื่องซีรีส์ ข้อมูลเมทาดาตา และความคืบหน้าการอ่าน Shiori จึงสามารถแสดงคลังหนังสือจริงๆ แทนที่จะเป็นแค่รายการไฟล์ และยังแจ้ง Komga ได้ว่าคุณอ่านค้างไว้ที่ตรงไหน</p>
+        <p><strong>แนะนำให้เลือก "Komga API" เว้นแต่คุณจะมีเหตุผลเฉพาะเจาะจงในการเลือกตัวเลือกอื่น</strong></p>
+
+        <h2>สิ่งที่คุณต้องเตรียม</h2>
+        <ul class="article-bullet-list">
+          <li>Komga ที่กำลังทำงานและสามารถเข้าถึงได้บนเครือข่ายของคุณ</li>
+          <li><strong>ชื่อผู้ใช้และรหัสผ่าน</strong> Komga ของคุณ (หรือ API key หากคุณสะดวกใช้มากกว่า)</li>
+          <li><strong>ที่อยู่ LAN</strong> ของเซิร์ฟเวอร์ — ไม่ใช่ <code>localhost</code></li>
+          <li>แอป Shiori ที่ติดตั้งอยู่บนอุปกรณ์ Android ของคุณ</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>ทำไมถึงไม่ใช้ <code>localhost</code>?</strong><br />
+          <code>localhost</code> หมายถึง <em>อุปกรณ์เครื่องนี้</em> หากพิมพ์ลงในโทรศัพท์ จะเป็นการชี้กลับมาที่ตัวโทรศัพท์เอง ไม่ใช่เซิร์ฟเวอร์ของคุณ คุณต้องใช้ที่อยู่ IP ที่เซิร์ฟเวอร์ได้รับในเครือข่ายของคุณ เช่น <code>192.168.1.33</code>
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>自宅で <strong>Komga</strong> を運用していれば、ライブラリ全体がすでに自分のサーバー上に構築されているはずです。しかし、スマートフォンで読むとなると、ブラウザのタブを開くか、表紙も表示されない単純なファイル名のリストを表示するアプリを使うことになりがちです。</p>
+        <p>ShioriはKomgaに直接接続できます。正しく設定すれば、表紙、著者名、シリーズ構造、そして読書の進捗状況までサーバーと同期できます。この記事では、具体的な手順と、Shioriで提供されている3つのKomgaオプションのうちどれを選ぶべきかについて詳しく解説します。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">ネイティブ REST API</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">表紙・詳細メタデータ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">読書進捗の自動同期</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">オフライン読書対応</div>
+          </div>
+        </div>
+
+        <h2>Komga、OPDS、それとも Komga API？ まずは正しい接続方法を選ぼう</h2>
+        <p>サーバーを追加する際、Shioriはいくつかの自動入力オプション（クイックフィル）を提供しており、そのうち3つにKomgaの名前が含まれています。これらは機能が異なります：</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>選択肢</th><th>通信プロトコル</th><th>対応機能</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>閲覧とダウンロードのみ</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>閲覧とダウンロードのみ</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>ネイティブ REST API</td><td>表紙、詳細な本情報、読書進捗の同期</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>OPDSは汎用的なカタログ規格であるため、Calibre、Calibre-Web、Standard Ebooks、Project Gutenbergなど、ほぼすべてのサーバーで動作します。しかし、その汎用性の高さゆえに限界もあり、ファイルをリスト表示してダウンロードするための最小限の情報しか保持できません。</p>
+        <p>一方、Komga独自のAPIはシリーズ、メタデータ、読書進捗を識別できるため、Shioriはファイル一覧ではなく本物のライブラリを表示でき、どこまで読んだかをKomgaに伝えることができます。</p>
+        <p><strong>特別な理由がない限り、「Komga API」を使用してください。</strong></p>
+
+        <h2>必要なもの</h2>
+        <ul class="article-bullet-list">
+          <li>ネットワーク上で稼働しており、アクセス可能なKomgaサーバー</li>
+          <li>Komgaの<strong>ユーザー名とパスワード</strong>（またはAPIキー）</li>
+          <li>サーバーの<strong>LANアドレス</strong>（<code>localhost</code> ではないもの）</li>
+          <li>Androidデバイスにインストールされた Shiori</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>なぜ <code>localhost</code> ではダメなのか？</strong><br />
+          <code>localhost</code> は「このデバイス自身」を意味します。スマホでこれを入力すると、サーバーではなくスマホ自身を指してしまいます。ネットワーク上でのサーバーのアドレス（例: <code>192.168.1.33</code>）を入力する必要があります。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>如果你在家运行 <strong>Komga</strong>，你的整个书库就已经托管在自己的服务器上了——但在手机上阅读通常意味着要使用浏览器标签页，或者使用只能显示无封面文件名列表的软件。</p>
+        <p>Shiori 可以直接连接至 Komga。采用正确的设置方式，你可以获得封面、作者信息、系列结构，并将阅读进度实时同步回服务器。本指南将展示具体的设置步骤，更重要的是——告诉你应该在 Shiori 提供的三种 Komga 选项中选择哪一个。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">原生 REST API</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">封面与完整元数据</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">双向阅读进度同步</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">离线畅读支持</div>
+          </div>
+        </div>
+
+        <h2>Komga、OPDS 还是 Komga API？首先选择正确的选项</h2>
+        <p>添加服务器时，Shiori 会提供几个快捷填充选项，其中有三个涉及 Komga。它们并不相同：</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>选项</th><th>协议类型</th><th>支持功能</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>仅支持浏览与下载</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>仅支持浏览与下载</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>原生 REST API</td><td>封面、完整图书详情与阅读进度同步</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>OPDS 是一种通用的目录标准，因此它几乎兼容所有服务器——Calibre、Calibre-Web、Standard Ebooks、Project Gutenberg 等。但通用性也是它的局限所在：它包含的信息仅够列出和下载文件。</p>
+        <p>而 Komga 的原生 API 了解系列、元数据和阅读进度，因此 Shiori 可以为你展示一个真正的书库，而不是单纯的文件列表，并能将你的阅读进度反馈给 Komga。</p>
+        <p><strong>除非你有特定原因，否则请始终使用 "Komga API"。</strong></p>
+
+        <h2>准备工作</h2>
+        <ul class="article-bullet-list">
+          <li>Komga 正在运行且可以在你的网络中访问</li>
+          <li>你的 Komga <strong>用户名和密码</strong>（或者你更倾向使用的 API 密钥）</li>
+          <li>服务器的<strong>局域网地址（LAN 地址）</strong>——而不是 <code>localhost</code></li>
+          <li>在 Android 设备上安装好 Shiori</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>为什么不能使用 <code>localhost</code>？</strong><br />
+          <code>localhost</code> 代表“本机”。如果在手机上输入它，它指向的是手机本身，而不是你的服务器。你需要的是服务器在局域网中的 IP 地址——例如 <code>192.168.1.33</code>。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Se você executa o <strong>Komga</strong> em casa, toda a sua biblioteca já fica no seu próprio servidor — mas lê-la no seu celular geralmente significa usar uma aba do navegador ou um aplicativo que mostra apenas uma lista simples de nomes de arquivos sem capas.</p>
+        <p>O Shiori se conecta ao Komga diretamente. Feito da maneira certa, você obtém suas capas, seus autores, a estrutura das suas séries e sua posição de leitura sincronizada de volta ao servidor. Este guia mostra os passos exatos e — mais importante — qual das três opções do Komga no Shiori você realmente deve escolher.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">REST API Nativa</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">Capas e Metadados</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">Progresso Sincronizado</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">Leitura Off-line</div>
+          </div>
+        </div>
+
+        <h2>Komga, OPDS ou Komga API? Escolha a opção certa primeiro</h2>
+        <p>Quando você adiciona um servidor, o Shiori oferece várias opções de preenchimento rápido, e três delas mencionam o Komga. Elas não são equivalentes:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Opção</th><th>Protocolo</th><th>Recursos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>Apenas navegação e download</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>Apenas navegação e download</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>REST API Nativa</td><td>Capas, detalhes completos do livro e sincronização do progresso</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>O OPDS é um padrão de catálogo genérico, por isso funciona com quase qualquer servidor — Calibre, Calibre-Web, Standard Ebooks, Project Gutenberg. Essa generalidade também é o seu limite: ele carrega apenas informações suficientes para listar e baixar um arquivo.</p>
+        <p>A própria API do Komga conhece séries, metadados e progresso de leitura, permitindo que o Shiori mostre uma biblioteca de verdade em vez de uma lista de arquivos, e informe ao Komga onde você parou de ler.</p>
+        <p><strong>Use "Komga API" a menos que você tenha um motivo específico para não usar.</strong></p>
+
+        <h2>O que você precisa</h2>
+        <ul class="article-bullet-list">
+          <li>O Komga em execução e acessível na sua rede</li>
+          <li>Seu <strong>nome de usuário e senha</strong> do Komga (ou uma chave de API, se preferir)</li>
+          <li>O <strong>endereço de rede local (LAN)</strong> do seu servidor — não <code>localhost</code></li>
+          <li>O Shiori instalado no seu dispositivo Android</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>Por que não <code>localhost</code>?</strong><br />
+          <code>localhost</code> significa <em>este dispositivo</em>. Digitado no seu celular, ele aponta para o próprio celular, não para o seu servidor. Você precisa do endereço que seu servidor possui na sua rede — algo como <code>192.168.1.33</code>.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Si tienes <strong>Komga</strong> en casa, toda tu biblioteca ya vive en tu propio servidor; sin embargo, leerla en el teléfono suele significar abrir una pestaña del navegador o usar una aplicación que solo muestra una lista básica de nombres de archivo sin portadas.</p>
+        <p>Shiori se conecta directamente a Komga. Si lo configuras de la forma correcta, obtendrás tus portadas, autores, la estructura de las series y la sincronización de tu posición de lectura con el servidor. Esta guía muestra los pasos exactos y, lo que es más importante, cuál de las tres opciones de Komga que ofrece Shiori deberías elegir.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚀</span>
+            <div class="stat-badge-title">REST API Nativa</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📖</span>
+            <div class="stat-badge-title">Portadas y Metadatos</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔄</span>
+            <div class="stat-badge-title">Progreso Sincronizado</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">💾</span>
+            <div class="stat-badge-title">Lectura Sin Conexión</div>
+          </div>
+        </div>
+
+        <h2>¿Komga, OPDS o Komga API? Elige primero la opción correcta</h2>
+        <p>Al añadir un servidor, Shiori ofrece varias opciones de autocompletado, y tres de ellas mencionan a Komga. No son equivalentes:</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Opción</th><th>Protocolo</th><th>Características</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Komga</strong></td><td>OPDS v1</td><td>Solo navegación y descargas</td></tr>
+              <tr><td><strong>Komga v2</strong></td><td>OPDS v2</td><td>Solo navegación y descargas</td></tr>
+              <tr><td><strong>Komga API</strong> ⭐</td><td>REST API Nativa</td><td>Portadas, detalles completos de libros y sincronización de lectura</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>OPDS es un estándar genérico de catálogos, por lo que funciona con casi cualquier servidor: Calibre, Calibre-Web, Standard Ebooks o Project Gutenberg. Esa universalidad es también su límite: solo transporta la información justa para listar y descargar un archivo.</p>
+        <p>La propia API de Komga gestiona series, metadatos y progreso de lectura, permitiendo que Shiori te muestre una biblioteca real en lugar de una lista de archivos y le comunique a Komga dónde dejaste de leer.</p>
+        <p><strong>Utiliza «Komga API» a menos que tengas un motivo concreto para no hacerlo.</strong></p>
+
+        <h2>Lo que necesitas</h2>
+        <ul class="article-bullet-list">
+          <li>Komga en funcionamiento y accesible en tu red</li>
+          <li>Tu <strong>nombre de usuario y contraseña</strong> de Komga (o una clave API, si lo prefieres)</li>
+          <li>La <strong>dirección LAN</strong> de tu servidor (no <code>localhost</code>)</li>
+          <li>Shiori instalado en tu dispositivo Android</li>
+        </ul>
+
+        <div class="quote-callout">
+          <strong>¿Por qué no <code>localhost</code>?</strong><br />
+          <code>localhost</code> significa <em>este dispositivo</em>. Si lo escribes en tu teléfono, apuntará al propio teléfono, no a tu servidor. Necesitas la dirección que tiene tu servidor en tu red local, como por ejemplo <code>192.168.1.33</code>.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (7 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการเชื่อมต่ออย่างละเอียด (7 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">接続手順ガイド（7つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文连接指南（7 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (7 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (7 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open the Library Server List</div>
+          <div class="step-desc">
+            <p>In Shiori, tap <strong>Collections</strong> in the bottom navigation bar. Scroll to the <strong>Library Server</strong> section and tap the <strong>+</strong> button on its right.</p>
+            <p>This is the same place every online library lives — OPDS catalogs, Kavita, S3 buckets, WebDAV shares — so once Komga is added it sits alongside the rest of your sources.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดรายการ Library Server</div>
+          <div class="step-desc">
+            <p>ในแอป Shiori ให้แตะที่แถบ <strong>Collections</strong> ที่เมนูด้านล่าง สกรอลล์ลงมาที่ส่วน <strong>Library Server</strong> แล้วแตะปุ่ม <strong>+</strong> ทางด้านขวา</p>
+            <p>นี่คือศูนย์รวมของคลังหนังสือออนไลน์ทุกประเภท ไม่ว่าจะเป็นแคตตาล็อก OPDS, Kavita, S3 buckets หรือ WebDAV ดังนั้นเมื่อเพิ่ม Komga แล้ว Komga จะไปปรากฏอยู่เคียงข้างกับแหล่งข้อมูลอื่นๆ ของคุณ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>Library Server リストを開く</div>
+          <div class="step-desc">
+            <p>Shioriで、下部ナビゲーションバーの <strong>Collections</strong>（コレクション）をタップします。<strong>Library Server</strong>（ライブラリサーバー）セクションまでスクロールし、その右側にある <strong>+</strong> ボタンをタップします。</p>
+            <p>ここはOPDSカタログ、Kavita、S3バケット、WebDAVシェアなど、あらゆるオンラインライブラリを追加する場所です。一度追加すれば、Komgaも他の情報源と並んで表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>打开 Library Server 列表</div>
+          <div class="step-desc">
+            <p>在 Shiori 中，轻触底部导航栏的 <strong>Collections</strong>（收藏）。滚动到 <strong>Library Server</strong>（图书服务器）区域，然后轻触其右侧的 <strong>+</strong> 按钮。</p>
+            <p>所有在线书库都位于此处——无论是 OPDS 目录、Kavita、S3 存储桶还是 WebDAV 共享——因此添加 Komga 后，它会与其他来源并列显示。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra a Lista Library Server</div>
+          <div class="step-desc">
+            <p>No Shiori, toque em <strong>Collections</strong> (Coleções) na barra de navegação inferior. Role até a seção <strong>Library Server</strong> (Servidor de biblioteca) e toque no botão <strong>+</strong> à sua direita.</p>
+            <p>Este é o mesmo lugar onde ficam todas as bibliotecas online — catálogos OPDS, Kavita, buckets S3, compartilhamentos WebDAV — portanto, assim que o Komga for adicionado, ele ficará ao lado de suas outras fontes.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre la Lista Library Server</div>
+          <div class="step-desc">
+            <p>En Shiori, toca en <strong>Collections</strong> (Colecciones) en la barra de navegación inferior. Desplázate hasta la sección <strong>Library Server</strong> (Servidor de biblioteca) y toca el botón <strong>+</strong> a la derecha.</p>
+            <p>Este es el lugar donde residen todas las bibliotecas en línea: catálogos OPDS, Kavita, buckets S3, recursos compartidos WebDAV... Así que, una vez añadido, Komga se ubicará junto al resto de tus fuentes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-collections-library-server.jpg" alt="The Collections tab in Shiori, showing the Library Server section with its add button" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Meet the Add Library Server Screen</div>
+          <div class="step-desc">
+            <p>The <strong>Add Library Server</strong> screen has a name field, a catalog URL, a row of quick-fill chips, and an optional sign-in.</p>
+            <p>Scroll down and Shiori documents each supported server type inline, including the exact URL shape it expects. It is worth reading once — it is the same information this article is built on.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ทำความรู้จักหน้า Add Library Server</div>
+          <div class="step-desc">
+            <p>หน้า <strong>Add Library Server</strong> จะมีช่องใส่ชื่อ, URL แคตตาล็อก, แถบปุ่มเติมข้อมูลด่วน (quick-fill chips) และส่วนเข้าสู่ระบบแบบไม่บังคับ</p>
+            <p>เมื่อสกรอลล์ลงมา Shiori จะแสดงคำอธิบายประเภทเซิร์ฟเวอร์ที่รองรับแต่ละแบบ รวมถึงรูปแบบ URL ที่ถูกต้อง ควรอ่านทำความเข้าใจสักครั้ง ซึ่งเป็นข้อมูลเดียวกับที่ใช้อธิบายในบทความนี้</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>Add Library Server 画面の確認</div>
+          <div class="step-desc">
+            <p><strong>Add Library Server</strong> 画面には、名前フィールド、カタログURL、自動入力チップの行、およびオプションのサインイン項目があります。</p>
+            <p>下にスクロールすると、Shioriがサポートする各サーバータイプと期待される正確なURL形式が記載されています。一度目を通しておくと良いでしょう。この記事もその情報に基づいています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>了解 Add Library Server 界面</div>
+          <div class="step-desc">
+            <p><strong>Add Library Server</strong>（添加图书服务器）界面包含名称输入框、目录 URL、一行快捷填充标签（quick-fill chips）以及可选的登录信息输入框。</p>
+            <p>向下滚动，Shiori 在页面内详细说明了每种支持的服务器类型及其所需的具体 URL 格式。这值得阅读一遍——本文也是基于这些信息编写的。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Conheça a Tela Add Library Server</div>
+          <div class="step-desc">
+            <p>A tela <strong>Add Library Server</strong> (Adicionar servidor de biblioteca) tem um campo de nome, uma URL do catálogo, uma fileira de chips de preenchimento rápido e um logon opcional.</p>
+            <p>Role para baixo e o Shiori documenta cada tipo de servidor suportado diretamente na tela, incluindo o formato exato da URL esperada. Vale a pena ler uma vez — são as mesmas informações nas quais este artigo foi baseado.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Conoce la Pantalla Add Library Server</div>
+          <div class="step-desc">
+            <p>La pantalla <strong>Add Library Server</strong> (Añadir servidor de biblioteca) tiene un campo de nombre, una URL de catálogo, una fila de botones de autocompletado y una sección opcional de inicio de sesión.</p>
+            <p>Si te desplazas hacia abajo, verás que Shiori documenta de forma integrada cada tipo de servidor compatible, incluyendo el formato exacto de URL que requiere. Vale la pena leerlo: es la misma información en la que se basa este artículo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-add-library-server-form.jpg" alt="The Add Library Server screen showing the quick-fill chips and the supported servers help text" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Enter Server Address &amp; Tap "Komga API"</div>
+          <div class="step-desc">
+            <p>The order matters here. The hint above the chips says <em>"type the host, then tap your server"</em>:</p>
+            <p>1. Type just your server's address into the <strong>Catalog URL</strong> field — for example <code>192.168.1.33</code><br>
+            2. Then tap the <strong>Komga API</strong> chip</p>
+            <p>Shiori wraps what you typed into the full URL Komga expects: <code>http://192.168.1.33:25600/api/v1</code></p>
+            <p><code>25600</code> is Komga's default port. If you changed it, correct the port number. Now fill in <strong>Sign-in</strong>: your Komga username and password (or paste an API key). Give the server a name at the top.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ใส่ที่อยู่เซิร์ฟเวอร์ แล้วแตะ "Komga API"</div>
+          <div class="step-desc">
+            <p>ลำดับขั้นตอนตรงนี้มีความสำคัญ ข้อความแนะนำเหนือปุ่มชิประบุว่า <em>"type the host, then tap your server"</em> (พิมพ์โฮสต์ จากนั้นแตะเลือกเซิร์ฟเวอร์ของคุณ):</p>
+            <p>1. พิมพ์เฉพาะที่อยู่เซิร์ฟเวอร์ของคุณลงในช่อง <strong>Catalog URL</strong> — ตัวอย่างเช่น <code>192.168.1.33</code><br>
+            2. จากนั้นแตะที่ปุ่ม <strong>Komga API</strong></p>
+            <p>Shiori จะแปลงเป็น URL เต็มให้ทันที: <code>http://192.168.1.33:25600/api/v1</code></p>
+            <p><code>25600</code> คือพอร์ตเริ่มต้นของ Komga หากเปลี่ยนพอร์ตให้แก้ไขตัวเลขให้ตรง จากนั้นกรอก <strong>Sign-in</strong> (ชื่อผู้ใช้และรหัสผ่าน หรือ API key) แล้วตั้งชื่อเซิร์ฟเวอร์ด้านบน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>サーバーアドレスを入力し、「Komga API」をタップ</div>
+          <div class="step-desc">
+            <p>ここでは手順の順序が重要です。チップの上のヒントには <em>"type the host, then tap your server"</em>（ホストを入力してからサーバーをタップ）と書かれています：</p>
+            <p>1. <strong>Catalog URL</strong> フィールドにサーバーのアドレスだけを入力します（例: <code>192.168.1.33</code>）<br>
+            2. 次に <strong>Komga API</strong> チップをタップします</p>
+            <p>Shioriが完全なURL形式に変換します: <code>http://192.168.1.33:25600/api/v1</code></p>
+            <p>ポートを変更している場合は修正し、<strong>Sign-in</strong> 項目にユーザー名とパスワード（またはAPIキー）を入力し、わかりやすい名前をつけます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>输入服务器地址，然后轻触 "Komga API"</div>
+          <div class="step-desc">
+            <p>这里的操作顺序很重要。标签上方的提示写着 <em>"type the host, then tap your server"</em>（先输入主机地址，再点击你的服务器类型）：</p>
+            <p>1. 仅在 <strong>Catalog URL</strong> 输入框中输入服务器地址——例如 <code>192.168.1.33</code><br>
+            2. 然后轻触 <strong>Komga API</strong> 快捷标签</p>
+            <p>Shiori 会自动补全为完整 URL：<code>http://192.168.1.33:25600/api/v1</code></p>
+            <p>填写 <strong>Sign-in</strong> 登录账号和密码（或 API 密钥），并在顶部为服务器起一个便于识别的名称。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Digite o Endereço e Toque em "Komga API"</div>
+          <div class="step-desc">
+            <p>A ordem importa aqui. A dica acima dos chips diz <em>"digite o host e depois toque no seu servidor"</em>:</p>
+            <p>1. Digite apenas o endereço do servidor no campo <strong>Catalog URL</strong> — por exemplo, <code>192.168.1.33</code><br>
+            2. Em seguida, toque no chip <strong>Komga API</strong></p>
+            <p>O Shiori converte na URL completa: <code>http://192.168.1.33:25600/api/v1</code></p>
+            <p>Preencha o <strong>Sign-in</strong> com usuário e senha (ou chave API) e dê um nome reconhecível ao servidor.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Introduce la Dirección y Toca «Komga API»</div>
+          <div class="step-desc">
+            <p>El orden de los pasos es importante. La indicación dice <em>«type the host, then tap your server»</em>:</p>
+            <p>1. Escribe solo la dirección en <strong>Catalog URL</strong>; por ejemplo, <code>192.168.1.33</code><br>
+            2. Toca el botón <strong>Komga API</strong></p>
+            <p>Shiori completará la URL: <code>http://192.168.1.33:25600/api/v1</code></p>
+            <p>Completa el <strong>Sign-in</strong> con usuario y contraseña (o clave API) y asigna un nombre al servidor.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-komga-api-url-and-signin.jpg" alt="The completed form with the Komga API URL and sign-in filled in" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Test Connection Before Saving</div>
+          <div class="step-desc">
+            <p>Tap <strong>Test connection</strong>. This tells you whether the address, port and credentials are all correct <em>before</em> you commit them.</p>
+            <p>You want to see: <code>Connected — Komga (REST API)</code></p>
+            <p>That message confirms Shiori reached the server and detected the <strong>native REST API</strong>. If it fails, check whether your IP is correct, the phone is on the same Wi-Fi, and credentials are valid. Then tap <strong>Save</strong> in the top-right corner.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ทดสอบการเชื่อมต่อก่อนบันทึก</div>
+          <div class="step-desc">
+            <p>แตะที่ <strong>Test connection</strong> (ทดสอบการเชื่อมต่อ) นี่คือขั้นตอนที่ไม่ควรข้าม เพื่อตรวจสอบความถูกต้องก่อนกดบันทึก</p>
+            <p>ข้อความที่คุณควรเห็นคือ: <code>Connected — Komga (REST API)</code></p>
+            <p>ข้อความนี้ยืนยันว่า Shiori เชื่อมต่อถึงเซิร์ฟเวอร์และตรวจพบ <strong>REST API หลัก</strong> เรียบร้อยแล้ว หากทดสอบผ่าน ให้แตะ <strong>Save</strong> (บันทึก) ที่มุมขวาบน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>保存前に接続をテストする</div>
+          <div class="step-desc">
+            <p><strong>Test connection</strong>（接続テスト）をタップします。保存する前にアドレス、ポート、認証情報が正しいかを確認できます。</p>
+            <p>成功表示: <code>Connected — Komga (REST API)</code></p>
+            <p>このメッセージは<strong>ネイティブ REST API</strong>が検出されたことを示します。確認できたら右上隅の <strong>Save</strong>（保存）をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>保存前测试连接</div>
+          <div class="step-desc">
+            <p>轻触 <strong>Test connection</strong>（测试连接）。这可以在保存设置<em>之前</em>验证地址、端口和凭据是否全部正确。</p>
+            <p>成功提示：<code>Connected — Komga (REST API)</code></p>
+            <p>这确认了 Shiori 已检测到<strong>原生 REST API</strong>。确认无误后，轻触右上角的 <strong>Save</strong>（保存）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Teste a Conexão Antes de Salvar</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Test connection</strong> (Testar conexão). Ele informa se tudo está correto antes de salvar.</p>
+            <p>Você deve ver: <code>Connected — Komga (REST API)</code></p>
+            <p>Essa mensagem confirma que o Shiori detectou a <strong>REST API nativa</strong>. Em seguida, toque em <strong>Save</strong> (Salvar) no canto superior direito.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Prueba la Conexión Antes de Guardar</div>
+          <div class="step-desc">
+            <p>Toca en <strong>Test connection</strong> (Probar conexión) para validar la conexión antes de guardar.</p>
+            <p>Deberías ver: <code>Connected — Komga (REST API)</code></p>
+            <p>Esto confirma la detección de la <strong>REST API nativa</strong>. Luego, toca en <strong>Save</strong> (Guardar) en la esquina superior derecha.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-test-connection-connected.jpg" alt="Test connection reporting: Connected — Komga (REST API)" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Your Server Appears in the List</div>
+          <div class="step-desc">
+            <p>Komga now sits in your <strong>Library Server</strong> list with a padlock, showing that credentials are stored for it.</p>
+            <p>Notice that Shiori masks the server address in this list. That is deliberate — it keeps your internal network layout off the screen when you hand someone your phone or share a screenshot.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เซิร์ฟเวอร์จะปรากฏในรายการ</div>
+          <div class="step-desc">
+            <p>ตอนนี้ Komga จะเข้ามาอยู่ในรายการ <strong>Library Server</strong> พร้อมไอคอนแม่กุญแจ ซึ่งแสดงว่ามีการบันทึกข้อมูลประจำตัวไว้เรียบร้อยแล้ว</p>
+            <p>Shiori ซ่อนที่อยู่เซิร์ฟเวอร์ในรายการนี้ไว้ เพื่อความปลอดภัยและไม่ให้โครงสร้างเครือข่ายภายในของคุณรั่วไหลเมื่อแชร์ภาพหน้าจอ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>リストにサーバーが表示される</div>
+          <div class="step-desc">
+            <p>Komgaが <strong>Library Server</strong> リストに追加され、認証情報が保存されていることを示す南京錠のアイコンが表示されます。</p>
+            <p>Shioriがこのリストでサーバーアドレスをマスクしているのは、スクリーンショットの共有時などに内部ネットワークの構成を保護するための仕様です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>服务器已显示在列表中</div>
+          <div class="step-desc">
+            <p>现在，Komga 已显示在你的 <strong>Library Server</strong> 列表中，旁边带有挂锁图标，表示已为其存储登录凭据。</p>
+            <p>Shiori 在此列表中打码隐藏了服务器地址，以防在分享屏幕截图时泄露内网网络布局。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Seu Servidor Aparece na Lista</div>
+          <div class="step-desc">
+            <p>O Komga agora aparece na sua lista <strong>Library Server</strong> com um cadeado, mostrando que as credenciais estão salvas para ele.</p>
+            <p>O Shiori oculta o endereço do servidor nesta lista para proteger a estrutura da sua rede interna ao compartilhar capturas de tela.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Tu Servidor Aparece en la Lista</div>
+          <div class="step-desc">
+            <p>Komga aparecerá ahora en tu lista de <strong>Library Server</strong> con el icono de un candado, lo que indica que tiene credenciales guardadas.</p>
+            <p>Shiori enmascara la dirección del servidor para proteger la estructura de tu red privada al compartir capturas de pantalla.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-komga-in-library-server-list.jpg" alt="The saved Komga server in the Library Server list with its URL masked" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Browse Your Library</div>
+          <div class="step-desc">
+            <p>Tap the server to open it. You get your Komga libraries, a search box that queries the catalog itself, and a sort control.</p>
+            <p>Breadcrumbs across the top track where you are, so you can jump back several levels in one tap instead of pressing Back repeatedly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>เรียกดูคลังหนังสือของคุณ</div>
+          <div class="step-desc">
+            <p>แตะที่เซิร์ฟเวอร์เพื่อเปิดใช้งาน คุณจะพบกับคลังหนังสือ Komga ช่องค้นหาที่ส่งคำค้นหาไปยังแคตตาล็อกโดยตรง และตัวเลือกการจัดเรียง</p>
+            <p>แถบนำทาง (Breadcrumbs) ด้านบนจะแสดงตำแหน่งปัจจุบันของคุณ ช่วยให้คุณย้อนกลับไปหลายระดับได้ในแตะเดียวโดยไม่ต้องกดปุ่มย้อนกลับซ้ำๆ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>ライブラリを閲覧する</div>
+          <div class="step-desc">
+            <p>サーバーをタップして開きます。Komgaのライブラリ、カタログ自体を検索する検索ボックス、および並び替え機能が表示されます。</p>
+            <p>上部に表示されるパンくずリスト（ブレッドクラム）で現在地を確認でき、戻るボタンを何度も押すことなく1タップで数階層前に戻ることができます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>浏览你的书库</div>
+          <div class="step-desc">
+            <p>轻触该服务器即可将其打开。你将看到 Komga 中的图书库、可以直接查询目录的搜索框以及排序选项。</p>
+            <p>顶部的面包屑导航会记录你当前所在的位置，只需轻触一下即可返回上层几级目录。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Navegue Pela Sua Biblioteca</div>
+          <div class="step-desc">
+            <p>Toque no servidor para abri-lo. Você verá suas bibliotecas do Komga, uma caixa de busca que pesquisa diretamente no catálogo e um controle de ordenação.</p>
+            <p>A navegação estruturada (breadcrumbs) no topo mostra onde você está, permitindo voltar vários níveis com um único toque.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Explora Tu Biblioteca</div>
+          <div class="step-desc">
+            <p>Toca el servidor para abrirlo. Verás tus bibliotecas de Komga, un cuadro de búsqueda que consulta directamente el catálogo y controles de ordenación.</p>
+            <p>La barra de navegación superior muestra tu ubicación mediante rutas de navegación (breadcrumbs), permitiéndote retroceder varios niveles con un solo toque.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-browse-komga-catalog.jpg" alt="Browsing the Komga catalog, showing the library and the catalog search box" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Covers, Authors &amp; One-Tap Reading</div>
+          <div class="step-desc">
+            <p>Open a library and you can see what the native API buys you:</p>
+            <p>Every book arrives with its <strong>cover art</strong>, <strong>title</strong>, <strong>author</strong>, <strong>format</strong> and <strong>file size</strong>. Each row has two actions: <strong>Read</strong> (the book icon) to stream instantly, and <strong>Download</strong> (the cloud icon) to keep an offline copy.</p>
+            <p>Because you connected through the REST API, your reading position travels back to Komga. Stop halfway through a chapter on your phone, and Komga knows — so the next device you pick up starts in the right place.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>ภาพปก ผู้แต่ง และการกดอ่านในแตะเดียว</div>
+          <div class="step-desc">
+            <p>เมื่อเปิดเข้ามาในคลังหนังสือ คุณจะเห็นประโยชน์ของการใช้ REST API หลัก:</p>
+            <p>หนังสือทุกเล่มจะแสดง <strong>ภาพปก</strong>, <strong>ชื่อเรื่อง</strong>, <strong>ผู้แต่ง</strong>, <strong>ฟอร์แมต</strong> และ <strong>ขนาดไฟล์</strong> โดยมี 2 ปุ่มการทำงาน: <strong>Read</strong> (อ่านทันที) และ <strong>Download</strong> (ดาวน์โหลดเก็บไว้อ่านออฟไลน์)</p>
+            <p>ตำแหน่งการอ่านของคุณจะถูกส่งกลับไปยัง Komga อัตโนมัติ ทำให้เมื่อคุณเปลี่ยนไปใช้อุปกรณ์เครื่องอื่น ก็สามารถอ่านต่อจากจุดเดิมได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>表紙、著者情報、ワンタップでの読書</div>
+          <div class="step-desc">
+            <p>ライブラリを開くと、ネイティブAPIを使用するメリットがよく分かります：</p>
+            <p>すべての作品について、Komgaのメタデータから直接取得された<strong>表紙画像</strong>、<strong>タイトル</strong>、<strong>著者名</strong>、<strong>フォーマット</strong>、<strong>ファイルサイズ</strong>が表示されます。<strong>Read</strong>（読書開始）と<strong>Download</strong>（端末へ保存）の2つの操作に対応しています。</p>
+            <p>REST API経由で接続しているため読書位置がKomgaに同期され、別の端末で開いたときも続きからシームレスに読書を再開できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>封面、作者信息与一键阅读</div>
+          <div class="step-desc">
+            <p>打开图书库即可体验原生 API 带来的完整体验：</p>
+            <p>每本书都会显示<strong>封面</strong>、<strong>书名</strong>、<strong>作者</strong>、<strong>格式</strong>和<strong>文件大小</strong>。每行提供两个操作：<strong>Read</strong>（在线即读）与 <strong>Download</strong>（离线下载保存）。</p>
+            <p>阅读进度会实时同步回 Komga，换到另一台设备也能无缝接续上次阅读的位置。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Capas, Autores e Leitura com Um Toque</div>
+          <div class="step-desc">
+            <p>Abra uma biblioteca e veja as vantagens que a API nativa oferece:</p>
+            <p>Cada livro é exibido com sua <strong>capa</strong>, <strong>título</strong>, <strong>autor</strong>, <strong>formato</strong> e <strong>tamanho de arquivo</strong>. Use <strong>Read</strong> para começar a ler ou <strong>Download</strong> para guardar uma cópia off-line.</p>
+            <p>Sua posição de leitura é enviada de volta ao Komga, permitindo retomar de onde parou em qualquer outro dispositivo.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Portadas, Autores y Lectura con Un Toque</div>
+          <div class="step-desc">
+            <p>Abre una biblioteca y verás las ventajas de usar la API nativa:</p>
+            <p>Cada libro se muestra con su <strong>portada</strong>, <strong>título</strong>, <strong>autor</strong>, <strong>formato</strong> y <strong>tamaño de archivo</strong>. Incluye dos acciones: <strong>Read</strong> para leer de inmediato y <strong>Download</strong> para guardar una copia sin conexión.</p>
+            <p>Tu posición de lectura se sincroniza con Komga, permitiéndote continuar en el punto exacto desde cualquier dispositivo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-books-with-covers-and-authors.jpg" alt="The book list showing cover art, titles, authors, format and size" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- ==================== TIPS & FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Pro Tips &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">เคล็ดลับและคำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">お役立ちヒント＆よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">实用技巧与常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Dicas Úteis e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Consejos Prácticos y Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I read my downloaded Komga books completely offline?</div>
+        <div class="faq-a">Yes. Tap the cloud icon before a flight or commute with poor signal; the book lands directly on your normal Shiori bookshelf, complete with TTS narration, custom fonts, highlights and notes.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">หนังสือที่ดาวน์โหลดจาก Komga สามารถอ่านแบบออฟไลน์ได้หรือไม่?</div>
+        <div class="faq-a">อ่านได้ 100% ครับ เพียงแตะไอคอนรูปก้อนเมฆเพื่อดาวน์โหลดก่อนออกเดินทาง หนังสือจะถูกบันทึกลงในชั้นหนังสือหลักของ Shiori พร้อมให้ใช้งานทั้งเสียงอ่านสังเคราะห์ TTS ไฮไลต์ และการจดโน้ตได้โดยไม่ต้องต่อเน็ต</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">ダウンロードした本は完全オフラインで読めますか？</div>
+        <div class="faq-a">はい。飛行機に乗る前などにクラウドアイコンをタップしてダウンロードしておけば、通常の本棚に保存され、オフラインでもTTS音声読み上げやハイライト、メモを存分に活用できます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">下载的 Komga 图书支持完全离线阅读吗？</div>
+        <div class="faq-a">完全支持。在出行或无网络环境下，只需提前点击云端下载图标，图书就会保存到 Shiori 常规书架中，离线同样支持语音朗读（TTS）与高亮笔记。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso ler os livros baixados do Komga totalmente off-line?</div>
+        <div class="faq-a">Sim. Toque no ícone de nuvem antes de viajar; o livro vai direto para a sua estante do Shiori com suporte total a TTS, destaques e anotações sem internet.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puedo leer los libros descargados de Komga sin conexión?</div>
+        <div class="faq-a">Sí. Pulsa el icono de la nube antes de viajar; el libro se guardará en tu estantería habitual de Shiori con soporte completo para voz (TTS), subrayados y notas sin conexión.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How does search work inside Komga catalogs?</div>
+        <div class="faq-a">The search box queries Komga directly on the server, not just the visible items on screen. This lets you quickly locate any title across thousands of books in seconds.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การค้นหาหนังสือในแคตตาล็อก Komga ทำงานอย่างไร?</div>
+        <div class="faq-a">ช่องค้นหาจะส่งคำค้นหาไปสืบค้นบนเซิร์ฟเวอร์ Komga โดยตรง ไม่ได้ค้นหาแค่รายการที่แสดงอยู่บนหน้าจอ ทำให้ค้นหาหนังสือเล่มที่ต้องการจากคลังขนาดใหญ่ที่มีหนังสือหลายพันเล่มได้อย่างรวดเร็ว</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">Komgaカタログ内での検索機能はどのように動作しますか？</div>
+        <div class="faq-a">検索ボックスは画面上の表示項目だけでなく、Komgaサーバー全体を直接検索します。膨大な蔵書の中から目的の作品を瞬時に見つけることができます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在 Komga 书库中的搜索功能是如何运作的？</div>
+        <div class="faq-a">搜索框会直接向 Komga 服务器发起检索，而不仅限于当前屏幕加载的内容，即便藏书成千上万也能秒级定位。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como funciona a busca dentro do catálogo do Komga?</div>
+        <div class="faq-a">A caixa de busca consulta diretamente o servidor Komga, não apenas os itens visíveis na tela, facilitando encontrar títulos em bibliotecas com milhares de volumes.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo funciona la búsqueda en el catálogo de Komga?</div>
+        <div class="faq-a">El cuadro de búsqueda consulta directamente al servidor Komga, no solo los elementos visibles, lo que permite localizar cualquier título en segundos entre miles de libros.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How can I access Komga when reading away from home?</div>
+        <div class="faq-a">A LAN address (like <code>192.168.1.33</code>) works within your home Wi-Fi. For remote access outside home, connect through a VPN back to your network (e.g. WireGuard, Tailscale) or configure a secure reverse proxy with HTTPS.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ต้องการเชื่อมต่อ Komga เมื่ออยู่นอกบ้านต้องทำอย่างไร?</div>
+        <div class="faq-a">ที่อยู่ LAN (เช่น <code>192.168.1.33</code>) จะใช้งานได้เฉพาะในเครือข่าย Wi-Fi บ้าน หากต้องการอ่านนอกบ้าน แนะนำให้ต่อ VPN กลับมาที่บ้าน (เช่น WireGuard หรือ Tailscale) หรือตั้งค่า Reverse Proxy ร่วมกับ HTTPS ครับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">外出先からKomgaにアクセスして読むには？</div>
+        <div class="faq-a">LANアドレス（例: <code>192.168.1.33</code>）は自宅Wi-Fi内専用です。外出先からアクセスする場合は、VPN（WireGuardやTailscale等）で自宅NWに接続するか、HTTPS付きのリバースプロキシを経由して接続してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在外出时如何访问家中的 Komga 书库？</div>
+        <div class="faq-a">局域网 IP（如 <code>192.168.1.33</code>）仅在连接家庭 Wi-Fi 时有效。在外阅读建议配置 VPN（如 WireGuard、Tailscale）连接回家中局域网，或配置带 HTTPS 的反向代理。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como acessar o Komga quando estiver fora de casa?</div>
+        <div class="faq-a">O endereço LAN funciona apenas no Wi-Fi doméstico. Para acesso externo, utilize uma VPN para sua rede (como WireGuard ou Tailscale) ou configure um proxy reverso seguro com HTTPS.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo puedo acceder a Komga fuera de casa?</div>
+        <div class="faq-a">La dirección LAN solo funciona dentro de tu Wi-Fi. Para acceder desde el exterior, usa una VPN hacia tu red doméstica (como WireGuard o Tailscale) o un proxy inverso con HTTPS.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/how-to-setup-kavita-rest-api/">How to Sync Shiori with Kavita (OPDS &amp; REST API)</a></li>
+        <li><a href="/blog/connect-opds-catalog-android-ereader/">One URL, Your Whole Library: How to Connect an OPDS Catalog to Your Android E-Reader</a></li>
+        <li><a href="/blog/s3-bucket-library-server-android-epub/">Read Your Cloud Bookshelf: Add an S3 Bucket as a Library Server</a></li>
+        <li><a href="/blog/book-drop-send-books-to-android-over-wifi/">Book Drop: Send Books to Your Phone Over Wi-Fi (No Cable, No Cloud)</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+      <p>Built with ❤️ for Readers</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">&times;</div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate thumbnail strip
+      images.forEach((img, index) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb' + (index === 0 ? ' active' : '');
+        thumb.addEventListener('click', () => showImage(index));
+        lightboxThumbs.appendChild(thumb);
+
+        img.addEventListener('click', () => {
+          openLightbox(index);
+        });
+      });
+
+      function openLightbox(index) {
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        showImage(index);
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showImage(index) {
+        currentIndex = index;
+        const target = images[currentIndex];
+        lightboxImg.src = target.src;
+        lightboxCaption.textContent = target.alt;
+
+        const thumbs = lightboxThumbs.querySelectorAll('.lightbox-thumb');
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+          if (i === currentIndex) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
+      function nextImage() {
+        showImage((currentIndex + 1) % images.length);
+      }
+
+      function prevImage() {
+        showImage((currentIndex - 1 + images.length) % images.length);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+      });
+
+      // Mouse wheel navigation with debounce
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 280) return;
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          nextImage();
+          lastScrollTime = now;
+        } else if (e.deltaY < 0 || e.deltaX < 0) {
+          prevImage();
+          lastScrollTime = now;
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
