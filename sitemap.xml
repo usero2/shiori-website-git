@@ -103,6 +103,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://shioriepubreader.com/blog/connect-komga-to-shiori-android/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shioriepubreader.com/blog/fix-broken-epub-styling-android/</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shioriepubreader.com/blog/read-footnotes-without-losing-your-place-android/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://shioriepubreader.com/blog/introducing-shiori</loc>
     <lastmod>2026-07-02</lastmod>
     <changefreq>monthly</changefreq>

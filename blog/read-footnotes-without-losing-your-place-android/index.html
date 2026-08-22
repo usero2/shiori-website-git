@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Read Footnotes and In-Book Links Without Losing Your Place on Android — Shiori Blog</title>
+  <meta name="description" content="Stop losing your place when tapping footnotes in academic and annotated EPUBs. Shiori previews footnote text in a bottom pop-up card and asks before opening external links." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/read-footnotes-without-losing-your-place-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Read Footnotes and In-Book Links Without Losing Your Place on Android",
+    "description": "Stop losing your place when tapping footnotes in academic and annotated EPUBs. Shiori previews footnote text in a bottom pop-up card and asks before opening external links.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-23",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/read-footnotes-without-losing-your-place-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does Shiori prevent losing your reading place when opening footnotes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "When you tap a footnote or in-book link, Shiori opens a non-intrusive preview pop-up card containing the footnote text without jumping away from your current paragraph. You can close it with Cancel to remain on the same line."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the in-place preview work for cross-chapter references too?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Any internal link within the EPUB (such as 'see Chapter 7' or index terms) triggers the same preview card, allowing you to check references without losing your scroll place."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if a footnote is too long to fit in the preview?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can tap the Navigate button inside the preview card to jump directly to the footnote's complete text inside the book without leaving the reader."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Shiori handle external website links inside an EPUB?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tapping an external web link triggers a confirmation dialog showing the complete destination URL (https://...) with Cancel and Navigate options, preventing accidental exits from your book."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 23, 2026</span>
+        <span>🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Read Footnotes &amp; In-Book Links<br><span class="text-gradient">Without Losing Your Place on Android</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">อ่านเชิงอรรถ (Footnotes) และลิงก์ในเล่ม<br><span class="text-gradient">โดยไม่หลงตำแหน่งอ่านบน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">読書位置を見失わずに脚注や内部リンクを読む方法<br><span class="text-gradient">Androidでポップアッププレビューと外部リンク確認を活用する</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">无需跳转页面即可直接阅读脚注与内链<br><span class="text-gradient">Android 端弹窗预览脚注与外链安全确认指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Leia Notas de Rodapé e Links sem Perder o Lugar<br><span class="text-gradient">Prévias Pop-up e Confirmação de Links Externos no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Lee Notas al Pie y Enlaces sin Perder tu Posición<br><span class="text-gradient">Previsualización Emergente y Confirmación de Enlaces en Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('02-footnote-preview-popup.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📑</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Academic books, annotated classics and anything with endnotes share the same small annoyance on a phone or tablet: the footnote marker is a live link, and tapping it can throw you clear across the file. One second you're on page 40 reading about mixed principalities, the next you're staring at a wall of back-matter with no idea how far you scrolled or how to get back. Multiply that by every citation in a 300-page book and footnotes stop being useful — you start avoiding them.</p>
+        <p>Shiori handles in-book links differently. Tapping a footnote or a cross-chapter reference opens a small preview of what's on the other end first, so you can read it without leaving the page you're on. Tapping a link that points outside the book — to a website — is treated as a bigger decision, and Shiori asks you to confirm before it hands you off to a browser. This walkthrough shows both, using a real public-domain book with real footnotes.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">In-Place Pop-up Preview</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">Lossless Book Navigation</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">External URL Confirmation</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">Cross-Chapter References</div>
+          </div>
+        </div>
+
+        <h2>Why this matters for academic and footnote-heavy reading</h2>
+        <p>A footnote link and an external link look almost identical on the page: a small superscript number or a chain icon. But they do very different things if you tap them blind:</p>
+        <ul class="article-bullet-list">
+          <li><strong>An in-book link:</strong> A footnote, endnote, or "see Chapter 7" reference should be a quick detour — you check it and come straight back.</li>
+          <li><strong>An external link:</strong> A citation to a website or publisher URL takes you out of the reading app entirely, into your web browser.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Link Type</th><th>What Shiori Does</th><th>User Action</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Footnote / Endnote</strong> (<code>#anchor</code>)</td><td>Opens a pop-up preview card over the current page</td><td>Tap <em>Cancel</em> to stay or <em>Navigate</em> to jump to notes section</td></tr>
+              <tr><td><strong>Cross-Chapter Reference</strong></td><td>Previews destination heading and paragraph in-place</td><td>Inspect reference immediately without losing page scroll</td></tr>
+              <tr><td><strong>External Web Link</strong> (<code>https://...</code>)</td><td>Displays full URL in a safety confirmation dialog</td><td>Confirm before launching browser; protects reading context</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Context-Preserving Design:</strong><br />
+          Footnotes are supposed to add context, not cost you your place in the book. With instant previews and external confirmation, Shiori keeps you in the reading flow.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>สำหรับผู้ที่ชอบอ่านหนังสือวิชาการ วรรณกรรมคลาสสิก หรือหนังสือที่มีเชิงอรรถ (Footnotes) และอ้างอิงท้ายบท ปัญหาคลาสสิกบนมือถือคือ เมื่อเผลอแตะตัวเลขเชิงอรรถ ตัวแอปจะเด้งข้ามหน้าไปยังท้ายเล่มทันที จนลืมไปว่าอ่านถึงบรรทัดไหน และต้องเสียเวลาเลื่อนหากลับมาที่เดิม ยิ่งหนังสือมีเชิงอรรถเป็นร้อยจุด การกดอ่านเชิงอรรถจึงกลายเป็นเรื่องน่าหงุดหงิด</p>
+        <p>Shiori พัฒนาระบบจัดการลิงก์ในเล่มหนังสืออย่างใส่ใจ เมื่อคุณแตะตัวเลขเชิงอรรถหรือลิงก์อ้างอิงข้ามบท แอปจะเปิด **หน้าต่างพรีวิว (Pop-up Preview)** ขึ้นมาให้อ่านเนื้อหาเชิงอรรถได้ทันทีโดยที่ตำแหน่งการอ่านเดิมไม่ขยับ และหากเป็นลิงก์เว็บไซต์ภายนอก แอปจะแสดงหน้าต่างยืนยันก่อน เพื่อป้องกันการเด้งสลับไปเบราว์เซอร์โดยไม่ตั้งใจ</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">พรีวิวเชิงอรรถทันที</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">ไม่หลงตำแหน่งอ่าน</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">ยืนยันก่อนเปิดเว็บภายนอก</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">รองรับอ้างอิงข้ามบท</div>
+          </div>
+        </div>
+
+        <h2>ทำไมฟังก์ชันนี้จึงสำคัญสำหรับนักอ่านตัวจริง</h2>
+        <p>ตัวเลขเชิงอรรถและลิงก์เว็บไซต์ภายนอกมักมีหน้าตาคล้ายกันมากในเนื้อหาหนังสือ แต่ให้ผลลัพธ์ที่ต่างกันสิ้นเชิง:</p>
+        <ul class="article-bullet-list">
+          <li><strong>ลิงก์ภายในเล่ม (In-book Link):</strong> เชิงอรรถหรือคำอ้างอิง "ดูเพิ่มเติมที่บทที่ 7" ผู้อ่านต้องการเพียงแค่อ่านข้อความสั้นๆ แล้วอ่านเนื้อหาหลักต่อทันที</li>
+          <li><strong>ลิงก์เว็บไซต์ภายนอก (External Link):</strong> ลิงก์แหล่งอ้างอิงหรือเว็บสำนักพิมพ์ หากกดโดนโดยไม่ตั้งใจจะสลับแอปออกไปยัง Web Browser ทำให้เสียสมาธิในการอ่าน</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ประเภทลิงก์</th><th>การทำงานของ Shiori</th><th>ตัวเลือกการควบคุม</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>เชิงอรรถ / อ้างอิงท้ายบท</strong> (<code>#anchor</code>)</td><td>แสดงการ์ดพรีวิวข้อความเชิงอรรถขึ้นมาจากด้านล่าง</td><td>แตะ <em>Cancel</em> เพื่อปิดแล้วอ่านต่อ หรือ <em>Navigate</em> เพื่อข้ามไปยังจุดอ้างอิง</td></tr>
+              <tr><td><strong>อ้างอิงข้ามบทในเล่ม</strong></td><td>พรีวิวหัวข้อและย่อหน้าที่เกี่ยวข้องในหน้าต่างลอย</td><td>อ่านเนื้อหาอ้างอิงได้โดยที่หน้าจอหลักไม่เลื่อนหลุดตำแหน่ง</td></tr>
+              <tr><td><strong>ลิงก์เว็บไซต์ภายนอก</strong> (<code>https://...</code>)</td><td>แสดงกล่องข้อความเตือนพร้อมแสดง URL ปลายทางเต็ม</td><td>กดยืนยันก่อนเปิดเบราว์เซอร์ ป้องกันการเผลอกดโดน</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ออกแบบเพื่อรักษาโฟกัสการอ่าน:</strong><br />
+          เชิงอรรถมีไว้เพื่อเติมเต็มความเข้าใจ ไม่ใช่สร้างความรำคาญ Shiori ช่วยให้คุณอ่านคำอธิบายได้ราบรื่นโดยไม่เสียตำแหน่งและสมาธิในการอ่าน
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>学術書や注釈付きの古典文学、巻末注が多い書籍をスマホで読むとき、脚注番号をタップするとファイルの遥か彼方へ飛ばされ、元の読書位置を見失って困った経験はありませんか？</p>
+        <p>Shioriは電子書籍内のリンクを賢く処理します。脚注や章間の参照リンクをタップすると、まず**ポップアップカード**でその内容をプレビュー表示。元のページ位置を1ミリも動かさずに注釈を読めます。また、外部Webサイトへのリンクは誤タップを防ぐため確認ダイアログを表示します。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">その場でポップアップ表示</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">読書位置を完全キープ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">外部リンクの安全確認</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">章間クロスリファレンス対応</div>
+          </div>
+        </div>
+
+        <h2>学術書や注釈本でこの機能が重要な理由</h2>
+        <ul class="article-bullet-list">
+          <li><strong>書籍内部リンク：</strong> 脚注や巻末注は「少し確認してすぐ戻る」動作が前提です。</li>
+          <li><strong>外部Webリンク：</strong> 参考文献のURLをタップするとブラウザアプリに切り替わるため、確認を挟むことで読書への没入感を守ります。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>リンク種別</th><th>Shioriの動作</th><th>操作方法</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>脚注 / 巻末注</strong> (<code>#anchor</code>)</td><td>下部からプレビューカードがスライド表示</td><td><em>Cancel</em> で閉じ、<em>Navigate</em> で脚注の本文位置へ移動</td></tr>
+              <tr><td><strong>章間クロスリファレンス</strong></td><td>参照先の見出しや本文をポップアップで確認</td><td>スクロール位置を変えずに要点だけ確認可能</td></tr>
+              <tr><td><strong>外部Webリンク</strong> (<code>https://...</code>)</td><td>完全なURLを表示して確認ダイアログを展開</td><td>誤タップによるブラウザ起動を未然に防止</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>読書体験を途切れさせない設計：</strong><br />
+          注釈を読むためにページを行ったり来たりするストレスをゼロに。Shioriならいつでもスムーズに読書を続けられます。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>阅读学术著作、注释版名著或带有大量文末尾注的书籍时，最令人头疼的体验莫过于点击脚注链接后瞬间被跳跃至文件末尾，读完注释却再也找不到原来读到了哪一行。</p>
+        <p>Shiori 重新设计了书内链接与脚注的交互逻辑：点击脚注或跨章节引用时，应用会在屏幕底部弹出**悬浮卡片预览**，无需跳转页面即可直接阅读注释；而点击跳转至外部网站的链接时，则会弹出确认对话框，防止误触退出阅读。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">原地弹窗即时预览</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">阅读位置零丢失</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">外链跳转安全确认</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">支持跨章节内链</div>
+          </div>
+        </div>
+
+        <h2>为什么这对深度阅读至关重要</h2>
+        <ul class="article-bullet-list">
+          <li><strong>图书内链（脚注/尾注）：</strong> 属于短暂停留，读者希望快速看一眼便继续回到正文。</li>
+          <li><strong>外部网络链接：</strong> 会直接跳出阅读器并启动浏览器，通过二次确认可有效保护阅读连贯性。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>链接类型</th><th>Shiori 响应机制</th><th>操作选项</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>脚注 / 尾注引用</strong> (<code>#anchor</code>)</td><td>在当前页面下方弹出轻量预览卡片</td><td>点击 <em>Cancel</em> 关闭并留在原处，或点击 <em>Navigate</em> 跳转</td></tr>
+              <tr><td><strong>跨章节交叉引用</strong></td><td>原地悬浮预览对应章节标题与首段文字</td><td>无需翻页即可验证参考内容</td></tr>
+              <tr><td><strong>外部网页链接</strong> (<code>https://...</code>)</td><td>弹出安全对话框并显示完整目标 URL</td><td>确认后方打开浏览器，避免误触丢失阅读状态</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>保持专注的设计：</strong><br />
+          注释本应辅助理解，而不该打断思考。借助悬浮预览与安全拦截，Shiori 让深度阅读更加流畅自然。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Livros acadêmicos, clássicos anotados e obras com notas de fim de capítulo compartilham o mesmo incômodo no celular: tocar em uma nota de rodapé arremessa você para o final do arquivo, perdendo completamente o ponto de leitura.</p>
+        <p>O Shiori gerencia links internos de forma inteligente. Ao tocar em uma nota de rodapé ou referência cruzada, uma **janela pop-up de prévia** desliza na parte inferior para que você leia a nota sem sair do parágrafo. Já os links para a internet exigem confirmação antes de abrir o navegador.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">Prévia Pop-up Instantânea</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">Sem Perder o Ponto</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">Confirmação de URL Externa</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">Referências Entre Capítulos</div>
+          </div>
+        </div>
+
+        <h2>Por Que Isso É Essencial na Leitura Acadêmica</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Links internos (notas de rodapé):</strong> Devem ser conferidos rapidamente sem interromper a fluidez da leitura.</li>
+          <li><strong>Links externos (sites da web):</strong> Abrem outro aplicativo, exigindo confirmação para evitar toques acidentais.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Tipo de Link</th><th>Comportamento no Shiori</th><th>Ação do Usuário</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Nota de Rodapé / Fim</strong> (<code>#anchor</code>)</td><td>Abre um card pop-up sobre a página atual</td><td>Toque em <em>Cancel</em> para continuar ou <em>Navigate</em> para ir até a nota</td></tr>
+              <tr><td><strong>Referência Cruzada</strong></td><td>Exibe prévia do título e parágrafo de destino</td><td>Consulte sem mover a rolagem da página principal</td></tr>
+              <tr><td><strong>Link Externo</strong> (<code>https://...</code>)</td><td>Exibe aviso com a URL completa antes de abrir</td><td>Evita saídas acidentais do aplicativo de leitura</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Foco Total na Leitura:</strong><br />
+          Notas de rodapé devem somar ao conhecimento, não causar frustração. O Shiori mantém seu fluxo contínuo do início ao fim.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Los libros académicos, las ediciones comentadas y los textos con notas al pie suelen ser frustrantes en el móvil: al pulsar un número de nota, el lector salta al final del libro y pierdes tu línea de lectura.</p>
+        <p>Shiori soluciona este problema con elegancia. Al pulsar una nota al pie o referencia interna, se abre una **tarjeta emergente de vista previa** en la parte inferior para leerla al instante sin moverte de página. Y si el enlace apunta a un sitio web externo, Shiori te pide confirmación antes de abrir el navegador.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">Vista Previa Emergente</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧭</span>
+            <div class="stat-badge-title">Sin Perder tu Posición</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🛡️</span>
+            <div class="stat-badge-title">Confirmación de Enlace Web</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔗</span>
+            <div class="stat-badge-title">Referencias Cruzadas</div>
+          </div>
+        </div>
+
+        <h2>Por Qué Es Crucial para la Lectura de Estudio</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Enlaces internos (notas al pie):</strong> Deben ser una consulta rápida sin perder el hilo de la lectura.</li>
+          <li><strong>Enlaces externos (páginas web):</strong> Te sacan del lector, por lo que una confirmación previa evita salidas accidentales.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Tipo de Enlace</th><th>Respuesta de Shiori</th><th>Opciones del Usuario</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Nota al Pie / Final</strong> (<code>#anchor</code>)</td><td>Despliega una tarjeta de vista previa sobre la página</td><td>Pulsa <em>Cancel</em> para seguir leyendo o <em>Navigate</em> para ir a la nota</td></tr>
+              <tr><td><strong>Referencia Entre Capítulos</strong></td><td>Previsualiza el encabezado y contenido de destino</td><td>Comprueba la cita sin desplazar tu posición actual</td></tr>
+              <tr><td><strong>Enlace Externo</strong> (<code>https://...</code>)</td><td>Muestra un diálogo con la dirección URL completa</td><td>Confirma antes de abrir el navegador para proteger tu sesión</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Lectura Fluida y Sin Interrupciones:</strong><br />
+          Las notas al pie deben aportar claridad, no pérdida de tiempo. Shiori te ayuda a consultar cualquier anotación con total comodidad.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (5 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการทำงานจริง (5 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">実際の動作手順（5つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">功能实测指引（5 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (5 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (5 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Spot a Footnote Reference in Text</div>
+          <div class="step-desc">
+            <p>Footnote references appear inline as a superscript number with a small chain icon — here, <code>Lodovico[1]</code> in Chapter III of <em>The Prince</em>.</p>
+            <p>It reads like natural prose, but the icon visually indicates an interactive note reference.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>สังเกตสัญลักษณ์เชิงอรรถในเนื้อหา</div>
+          <div class="step-desc">
+            <p>ตัวอ้างอิงเชิงอรรถจะปรากฏเป็นตัวเลขยกกำลังพร้อมไอคอนรูปลิงก์เล็กๆ ในบรรทัดข้อความ เช่น <code>Lodovico[1]</code> ในบทที่ 3 ของ <em>The Prince</em></p>
+            <p>ตัวหนังสือจะกลมกลืนกับเนื้อหาปกติอย่างสวยงาม โดยมีไอคอนบอกให้ทราบว่าเป็นจุดที่สามารถแตะดูข้อมูลเพิ่มเติมได้</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>本文中の脚注参照マークを確認</div>
+          <div class="step-desc">
+            <p>脚注は本文中に上付き数字とリンクアイコンで表示されます（例：『君主論』第3章の <code>Lodovico[1]</code>）。</p>
+            <p>自然なレイアウトを保ちながら、タップして確認できる注釈であることが一目で分かります。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>在正文中发现脚注引用标记</div>
+          <div class="step-desc">
+            <p>脚注在段落中显示为带有小链条图标的上标数字，例如《君主论》第三章中的 <code>Lodovico[1]</code>。</p>
+            <p>排版自然优雅，图标直观提示该标记包含可点击查看的详细注释。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Localize a Nota de Rodapé no Texto</div>
+          <div class="step-desc">
+            <p>As notas aparecem como números sobrescritos ao lado de um pequeno ícone de link — como em <code>Lodovico[1]</code> no Capítulo III de <em>O Príncipe</em>.</p>
+            <p>Fácil de ler e perfeitamente integrado ao texto da página.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Localiza la Marca de Nota al Pie en el Texto</div>
+          <div class="step-desc">
+            <p>Las notas al pie se muestran como números volados junto a un pequeño icono de enlace (ejemplo: <code>Lodovico[1]</code> en el Capítulo III de <em>El Príncipe</em>).</p>
+            <p>Se integran limpiamente en la lectura y señalan que hay información ampliada disponible.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-footnote-reference-marker-in-chapter-text.jpg" alt="A page of Chapter III of The Prince showing an inline footnote reference Lodovico with superscript 1 and link icon" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Tap It — Pop-up Preview Appears</div>
+          <div class="step-desc">
+            <p>Tap the footnote reference. Shiori does not jump away; instead, an elegant pop-up card slides up from the bottom displaying the chapter heading and the footnote text.</p>
+            <p>You can read the full explanation right on the spot. Tap <strong>Cancel</strong> to close the card and continue reading mid-sentence.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>แตะเพื่อดูพรีวิว — หน้าต่างลอยจะเปิดขึ้นมาทันที</div>
+          <div class="step-desc">
+            <p>เมื่อแตะที่เชิงอรรถ หน้าจอจะไม่มีการกระโดดข้ามหน้า แต่จะแสดงการ์ดป๊อปอัปเลื่อนขึ้นมาจากด้านล่าง พร้อมหัวข้อบทและข้อความอธิบายของเชิงอรรถนั้นๆ</p>
+            <p>อ่านคำอธิบายได้ตรงนั้นทันที เมื่ออ่านเสร็จเพียงแตะ <strong>Cancel</strong> การ์ดจะปิดลง และคุณก็อ่านต่อในประโยคเดิมได้ทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>タップするとポップアッププレビューが表示</div>
+          <div class="step-desc">
+            <p>脚注マークをタップしてもページはジャンプせず、画面下部からプレビューカードが静かにせり上がります。</p>
+            <p>その場で注釈内容を確認し、読み終わったら <strong>Cancel</strong> をタップして元の読書にすぐ復帰できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>轻触即可呼出底部悬浮预览</div>
+          <div class="step-desc">
+            <p>点击脚注引用，页面完全不会跳动，屏幕底部会优雅升起一张包含章节标题与注释正文的预览卡片。</p>
+            <p>在当前页面即可快速读完注释，点击 <strong>Cancel</strong> 关闭卡片，无缝衔接刚才读到的句中位置。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Toque para Ver a Prévia Pop-up</div>
+          <div class="step-desc">
+            <p>Ao tocar na nota, o Shiori não pula de página: um card desliza na parte inferior com o título do capítulo e o texto da nota.</p>
+            <p>Leia a anotação na hora e toque em <strong>Cancel</strong> para fechar e continuar lendo de onde parou.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Pulsa y se Abrirá la Vista Previa Emergente</div>
+          <div class="step-desc">
+            <p>Al tocar la nota, la página no se mueve: se despliega una tarjeta inferior con el título del capítulo y el texto de la anotación.</p>
+            <p>Léela cómodamente en el acto y pulsa <strong>Cancel</strong> para cerrarla y seguir leyendo sin perder el hilo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-footnote-preview-popup.jpg" alt="A preview popup card over the reading page showing the footnote text with Cancel and Navigate buttons" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Tap "Navigate" for Full Context If Needed</div>
+          <div class="step-desc">
+            <p>If a footnote is particularly long and you want to view it in full context, tap <strong>Navigate</strong>.</p>
+            <p>Shiori scrolls you smoothly to the actual footnote position in the chapter. You remain inside the book with full progress indicators and can effortlessly swipe or back-tap to return.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เลือก "Navigate" หากต้องการดูเนื้อหาเชิงอรรถแบบเต็ม</div>
+          <div class="step-desc">
+            <p>หากเชิงอรรถมีความยาวมากและคุณต้องการอ่านเนื้อหาฉบับเต็ม ให้แตะปุ่ม <strong>Navigate</strong></p>
+            <p>Shiori จะเลื่อนไปยังตำแหน่งจริงของเชิงอรรถในหนังสือ โดยยังคงอยู่ภายในแอปและหนังสือเล่มเดิม คุณสามารถแตะย้อนกลับเพื่อกลับมายังจุดอ่านเดิมได้อย่างง่ายดาย</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>全文を確認したい場合は「Navigate」を選択</div>
+          <div class="step-desc">
+            <p>注釈が長文で全体を読みたい場合は、カード内の <strong>Navigate</strong> ボタンをタップします。</p>
+            <p>書籍内の注釈本文の位置へスムーズにスクロールします。アプリや本から離れることなく、いつでも元の場所へ戻れます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>如需完整阅读，可点击 "Navigate" 跳转</div>
+          <div class="step-desc">
+            <p>如果该条注释内容较长，需要查看完整段落，只需点击卡片上的 <strong>Navigate</strong> 按钮。</p>
+            <p>Shiori 会平滑滚动至图书内部该注释所在的原位置，全程保持在书内阅读状态，随时可轻松返回。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Toque em "Navigate" se Precisar de Mais Detalhes</div>
+          <div class="step-desc">
+            <p>Para notas muito extensas, toque no botão <strong>Navigate</strong> dentro do card de prévia.</p>
+            <p>O Shiori rola suavemente até a posição da nota no próprio livro, sem sair do aplicativo.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Pulsa «Navigate» para Ver Todo el Contexto</div>
+          <div class="step-desc">
+            <p>Si la nota es muy extensa y deseas leerla en su contexto completo, pulsa el botón <strong>Navigate</strong>.</p>
+            <p>Shiori se desplazará a la sección de notas dentro del propio libro sin salir de la app en ningún momento.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-footnote-navigate-stays-in-book.jpg" alt="Reading screen scrolled to the footnote position inside the book while preserving reading state" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>External Links are Handled Differently</div>
+          <div class="step-desc">
+            <p>Not every link in an EPUB points to another page inside the file. Front matter, citations, and publisher URLs often link to external websites (e.g., <code>www.gutenberg.org</code>).</p>
+            <p>In Shiori, external links are treated with extra care so you don't accidentally launch a browser while reading.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ลิงก์เว็บไซต์ภายนอกได้รับการดูแลเป็นพิเศษ</div>
+          <div class="step-desc">
+            <p>ไม่ใช่ทุกลิงก์ในหนังสือที่จะชี้ไปยังหน้าอื่นในเล่มเดียวกัน บ่อยครั้งในหน้าคำนำหรือข้อมูลลิขสิทธิ์จะมีลิงก์เว็บไซต์จริง (เช่น <code>www.gutenberg.org</code>)</p>
+            <p>Shiori จะแยกแยะลิงก์ภายนอกเหล่านี้ออกจากลิงก์ในเล่ม เพื่อป้องกันไม่ให้เผลอเปิดเบราว์เซอร์โดยไม่ได้ตั้งใจ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>外部Webリンクは特別に処理される</div>
+          <div class="step-desc">
+            <p>巻頭や奥付に記載された出版社サイトや参考URL（例：<code>www.gutenberg.org</code>）など、電子書籍の外へ繋がるリンクもあります。</p>
+            <p>Shioriはこれらを自動検出し、読書中の意図しないブラウザ起動を防ぐ仕組みを備えています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>外部网页链接获得专属安全处理</div>
+          <div class="step-desc">
+            <p>电子书中的链接并非全指向本文件内部，扉页、版权页与文献索引中经常包含真实外部网址（如 <code>www.gutenberg.org</code>）。</p>
+            <p>Shiori 能够精准识别外部链接，防止读者在沉浸阅读时误触跳转至系统浏览器。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Links Externos Recebem Tratamento Especial</div>
+          <div class="step-desc">
+            <p>Nem todos os links apontam para dentro do livro; citações e créditos frequentemente contêm endereços da web (como <code>www.gutenberg.org</code>).</p>
+            <p>O Shiori identifica esses links para evitar que o navegador abra inesperadamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Los Enlaces Externos Reciben un Trato Especial</div>
+          <div class="step-desc">
+            <p>En las páginas de créditos o bibliografías abundan enlaces a páginas web reales (como <code>www.gutenberg.org</code>).</p>
+            <p>Shiori detecta automáticamente estos enlaces externos para evitar abrir el navegador por accidente.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-external-link-in-book-text.jpg" alt="A page of front matter in The Prince mentioning www.gutenberg.org with a link icon marking it as an external link" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Safety Confirmation Before Leaving the App</div>
+          <div class="step-desc">
+            <p>Tapping an external link does not immediately jump to your browser. An <strong>External link</strong> dialog opens displaying the full resolved address (<code>https://www.gutenberg.org/</code>).</p>
+            <p>You can tap <strong>Cancel</strong> to stay safely in your book, or <strong>Navigate</strong> to open the webpage. This safeguards your reading position and prevents unintended app switching.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>หน้าต่างยืนยันความปลอดภัยก่อนออกจากแอป</div>
+          <div class="step-desc">
+            <p>เมื่อแตะลิงก์ภายนอก แอปจะไม่สลับไปเบราว์เซอร์ทันที แต่จะแสดงกล่องข้อความ <strong>External link</strong> พร้อม URL ปลายทางแบบเต็ม (<code>https://www.gutenberg.org/</code>)</p>
+            <p>คุณสามารถแตะ <strong>Cancel</strong> เพื่ออยู่ในหนังสือต่อ หรือแตะ <strong>Navigate</strong> เพื่อเปิดหน้าเว็บ หมดปัญหาเผลอแตะโดนลิงก์จนหลุดจากการอ่าน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>アプリを離れる前の安全確認ダイアログ</div>
+          <div class="step-desc">
+            <p>外部リンクをタップすると、完全なURL（<code>https://www.gutenberg.org/</code>）とともに確認ダイアログが表示されます。</p>
+            <p><strong>Cancel</strong> を選べばそのまま読書を継続でき、<strong>Navigate</strong> を選んだ場合のみブラウザへ移行するため安心です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>离开阅读器前的专属安全确认</div>
+          <div class="step-desc">
+            <p>点击外部链接时，Shiori 会弹出 <strong>External link</strong> 提示框，清晰列出完整的访问网址（<code>https://www.gutenberg.org/</code>）。</p>
+            <p>点击 <strong>Cancel</strong> 即可安全留在当前阅读界面，点击 <strong>Navigate</strong> 方调用浏览器，彻底杜绝误触干扰。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Confirmação Segura Antes de Sair do App</div>
+          <div class="step-desc">
+            <p>Ao tocar no link externo, uma caixa de diálogo exibe o endereço completo (<code>https://www.gutenberg.org/</code>).</p>
+            <p>Você pode escolher <strong>Cancel</strong> para continuar no livro ou <strong>Navigate</strong> para abrir o navegador com total segurança.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Confirmación de Seguridad Antes de Salir de la App</div>
+          <div class="step-desc">
+            <p>Al pulsar un enlace externo, se abre un cuadro de diálogo con la URL completa (<code>https://www.gutenberg.org/</code>).</p>
+            <p>Pulsa <strong>Cancel</strong> para permanecer en el libro o <strong>Navigate</strong> para abrir la web, protegiendo siempre tu lectura.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-external-link-confirmation-dialog.jpg" alt="An External link confirmation dialog showing the full URL with Cancel and Navigate buttons overlaid on reading page" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อยและการแก้ปัญหา (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">トラブルシューティング＆よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">故障排查与常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Solução de Problemas e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What if tapping a footnote scrolls the page instead of opening a preview?</div>
+        <div class="faq-a">Some older or poorly formatted EPUB files do not structure footnotes with proper HTML anchor tags (<code>&lt;a href="#note"&gt;</code>). If there is no link icon next to the number, the publisher embedded the number as plain text without link markup.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมแตะตัวเลขเชิงอรรถบางเล่มแล้วหน้าจอเลื่อนข้ามหน้า แทนที่จะขึ้นหน้าต่างพรีวิว?</div>
+        <div class="faq-a">เกิดจากไฟล์ EPUB บางเล่มไม่ได้สร้างแท็กไฮเปอร์ลิงก์ (<code>&lt;a href="#note"&gt;</code>) ตามมาตรฐาน หากไม่มีไอคอนรูปลิงก์ติดอยู่ข้างตัวเลข แสดงว่าเป็นข้อความธรรมดาที่ไม่ได้ผูกลิงก์ในไฟล์ต้นฉบับ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">脚注をタップしてもプレビューが出ずにページがスクロールしてしまう場合は？</div>
+        <div class="faq-a">一部の書籍データで脚注が適切なHTMLリンクタグ（<code>&lt;a href="#note"&gt;</code>）として作成されていない場合があります。リンクアイコンがない番号は単なる平文テキストとして埋め込まれています。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么点击某些电子书的脚注时没有弹出预览，而是直接跳页？</div>
+        <div class="faq-a">部分制作不规范的 EPUB 文件未采用标准的 HTML 锚点链接（<code>&lt;a href="#note"&gt;</code>）。如果数字旁没有链条图标，说明出版社仅将其排版为纯文本，未包含交互式链接。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que ao tocar em uma nota a página pula em vez de abrir a prévia?</div>
+        <div class="faq-a">Alguns arquivos EPUB mal formatados não incluem links HTML válidos (<code>&lt;a href="#note"&gt;</code>). Sem o ícone de link ao lado do número, trata-se de texto simples no arquivo original.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué al pulsar una nota la página salta en lugar de abrir la vista previa?</div>
+        <div class="faq-a">Algunos EPUBs antiguos no incluyen etiquetas de enlace HTML adecuadas (<code>&lt;a href="#note"&gt;</code>). Si no aparece el icono de enlace junto al número, es texto plano sin enlace interactivo en el archivo original.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Does the in-place preview work for cross-chapter references too?</div>
+        <div class="faq-a">Yes. Any internal link within the EPUB (such as "see Chapter 7" or index terms) triggers the same preview card, allowing you to check references without losing your scroll place.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การพรีวิวนี้รองรับการอ้างอิงข้ามบท (Cross-Chapter) ด้วยหรือไม่?</div>
+        <div class="faq-a">รองรับอย่างสมบูรณ์ครับ ทุกลิงก์ภายในเล่ม เช่น "ดูรายละเอียดในบทที่ 7" หรือดัชนีท้ายเล่ม จะเปิดการ์ดพรีวิวให้ตรวจสอบข้อมูลได้ทันทีโดยไม่เสียตำแหน่งการอ่าน</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">章をまたぐ参照リンクでもポップアッププレビューは動作しますか？</div>
+        <div class="faq-a">はい。「第7章を参照」や索引リンクなど、書籍内のすべての内部リンクで同様にポップアッププレビューが機能します。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">跨章节的交叉引用链接也支持弹窗预览吗？</div>
+        <div class="faq-a">完全支持。图书内部的所有内链（如“参见第 7 章”或文末索引条目）均会自动以悬浮卡片形式呈现预览，无需担心跳页。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A prévia pop-up funciona para referências entre capítulos?</div>
+        <div class="faq-a">Sim. Qualquer link interno dentro do EPUB (como "veja o Capítulo 7") aciona o mesmo card de prévia para que você confira sem mudar de página.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Funciona la vista previa para referencias entre distintos capítulos?</div>
+        <div class="faq-a">Sí. Cualquier enlace interno dentro del EPUB (como «véase el Capítulo 7») despliega la misma tarjeta de vista previa sin alterar tu posición.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What should I do if the footnote preview text looks cut off?</div>
+        <div class="faq-a">The pop-up preview is designed for quick checks. If a footnote is long or contains complex formatting, simply tap the <strong>Navigate</strong> button inside the preview card to jump directly to the full footnote in the book's text without leaving the app.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ถ้าข้อความในหน้าต่างพรีวิวเชิงอรรถแสดงไม่ครบหรือถูกตัดทอน ควรทำอย่างไร?</div>
+        <div class="faq-a">หน้าต่างพรีวิวถูกออกแบบมาเพื่อการอ่านสรุปแบบรวดเร็ว หากเชิงอรรถมีความยาวมากเป็นพิเศษ เพียงแตะปุ่ม <strong>Navigate</strong> ในการ์ดพรีวิว ระบบจะเลื่อนไปยังข้อความเชิงอรรถฉบับเต็มในเล่มทันทีโดยไม่ต้องออกจากแอป</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">プレビューの脚注テキストが途中で切れて見える場合はどうすればいいですか？</div>
+        <div class="faq-a">ポップアッププレビューは要点を素早く確認するための設計です。長文の注釈や詳細を読みたい場合は、カード内の <strong>Navigate</strong> ボタンをタップすれば、アプリを離れることなく書籍内の注釈全文へ移動できます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">如果悬浮卡片中的脚注文本显示不全或被截断怎么办？</div>
+        <div class="faq-a">底部预览卡片主要用于快速查阅。如果该条注释内容较长，只需点击卡片内的 <strong>Navigate</strong> 按钮，即可无缝平滑跳转至图书正文中的完整注释段落。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que fazer se o texto da prévia da nota parecer cortado?</div>
+        <div class="faq-a">O pop-up foi feito para consultas rápidas. Se a nota for muito longa, basta tocar no botão <strong>Navigate</strong> para rolar até o texto completo da nota dentro do próprio livro sem sair do aplicativo.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué hago si el texto de la nota al pie se corta en la vista previa?</div>
+        <div class="faq-a">La vista previa emergente está pensada para consultas rápidas. Si la nota es muy extensa, pulsa el botón <strong>Navigate</strong> para desplazarte al texto íntegro de la nota dentro del propio libro sin salir de la app.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How does Shiori know whether a link is internal or external?</div>
+        <div class="faq-a">Shiori inspects the link destination: standard anchor references (<code>#anchor</code>) within the EPUB open as non-intrusive preview pop-ups, while external addresses starting with <code>http://</code> or <code>https://</code> display the safety confirmation dialog showing the full URL.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori รู้ได้อย่างไรว่าลิงก์ไหนเป็นลิงก์ในเล่ม หรือลิงก์เว็บภายนอก?</div>
+        <div class="faq-a">Shiori จะตรวจสอบปลายทางของลิงก์โดยอัตโนมัติ: ลิงก์ภายในเล่ม (<code>#anchor</code>) จะเปิดเป็นการ์ดพรีวิวด้านล่าง ส่วนลิงก์ภายนอกที่ขึ้นต้นด้วย <code>http://</code> หรือ <code>https://</code> จะแสดงหน้าต่างยืนยันความปลอดภัยพร้อม URL เต็มเสมอ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">書籍内リンクと外部Webリンクはどのように判別されますか？</div>
+        <div class="faq-a">リンクの宛先から自動判定されます。書籍内のアンカーリンク（<code>#anchor</code>）はポップアッププレビューとして開き、<code>http://</code> や <code>https://</code> で始まる外部リンクは安全確認ダイアログが表示されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">Shiori 如何区分书内跳转链接与外部网页链接？</div>
+        <div class="faq-a">系统会自动解析链接目标：EPUB 内部锚点（<code>#anchor</code>）会触发底部悬浮预览卡片，而以 <code>http://</code> 或 <code>https://</code> 开头的外部网址则会触发二次确认对话框并展示完整目标 URL。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como o Shiori diferencia links internos de links externos?</div>
+        <div class="faq-a">O app analisa o destino do link: âncoras internas (<code>#anchor</code>) abrem a prévia pop-up, enquanto endereços externos iniciados por <code>http://</code> ou <code>https://</code> exibem o diálogo de confirmação com a URL completa.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo distingue Shiori si un enlace es interno o externo?</div>
+        <div class="faq-a">Shiori analiza la dirección del enlace: las referencias internas (<code>#anchor</code>) abren la vista previa emergente, mientras que los enlaces externos que empiezan por <code>http://</code> o <code>https://</code> muestran el cuadro de confirmación con la URL completa.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/highlight-and-take-notes-epub-android/">How to Highlight Text &amp; Take Notes in an Android EPUB Reader</a></li>
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen: A Touch-by-Touch Guide</a></li>
+        <li><a href="/blog/free-epub-sources/">5 Best Sites to Download Free EPUB Books Legally</a></li>
+        <li><a href="/blog/fix-broken-epub-styling-android/">How to Fix an EPUB with Broken Styling on Android</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Read Annotated Books with Zero Distraction</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Get Shiori on Google Play, open your favorite annotated classics, and preview footnotes effortlessly without ever losing your place.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">อ่านหนังสือพร้อมเชิงอรรถได้อย่างราบรื่น ไม่สะดุด</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori บน Google Play เปิดอ่านวรรณกรรมและตำราเล่มโปรด พร้อมอ่านเชิงอรรถผ่านป๊อปอัปพรีวิวโดยไม่หลงตำแหน่งอ่านอีกต่อไป
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">注釈本や学術書をストレスフリーに読む</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、ポップアッププレビューで読書位置を見失わずに快適な読書をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">畅读注释版名著，告别跳页迷路</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        立即在 Google Play 下载 Shiori，体验底部悬浮卡片即时预览，让深度阅读更加沉浸专注。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Leia Livros Anotados com Foco Total</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play e visualize notas de rodapé instantaneamente em cards pop-up sem nunca perder o fio da leitura.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Lee Libros Anotados sin Interrupciones</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play y consulta notas al pie y enlaces internos con vista previa emergente sin perder tu posición de lectura.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged view" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script with Wheel & Keyboard Support -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

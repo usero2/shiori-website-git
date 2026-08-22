@@ -284,6 +284,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-title": "The EPUB Is Fine, the Styling Is Broken: Take Back Control on Android",
       "blog-p25-desc": "Unreadable dark text, wrong fonts, or stretched lines? Learn how Shiori's 4 style overrides easily overrule broken publisher stylesheets.",
 
+      // Blog Post 26
+      "blog-p26-date": "📅 August 23, 2026",
+      "blog-p26-cat": "🏷️ Reading Experience",
+      "blog-p26-title": "Read Footnotes & In-Book Links Without Losing Your Place",
+      "blog-p26-desc": "Stop losing your reading position in academic and annotated EPUBs. Preview footnotes in a bottom pop-up card and verify external links safely.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -582,6 +588,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p25-title": "ไฟล์ EPUB ไม่ได้เสีย แต่สไตล์หนังสือพัง: วิธีคุมการแสดงผลบน Android",
       "blog-p25-desc": "ตัวหนังสือมืดกลืนพื้นหลัง ฟอนต์เพี้ยน หรือเว้นวรรคกว้างจนอ่านยาก? ปลดล็อกการแสดงผลด้วย 4 สวิตช์อัจฉริยะใน Shiori",
+
+      // Blog Post 26
+      "blog-p26-date": "📅 23 สิงหาคม 2026",
+      "blog-p26-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p26-title": "อ่านเชิงอรรถ (Footnotes) และลิงก์ในเล่ม โดยไม่หลงตำแหน่งอ่าน",
+      "blog-p26-desc": "แก้ปัญหาแตะเชิงอรรถแล้วเด้งข้ามหน้าจนหลงตำแหน่ง ด้วยหน้าต่างพรีวิว Pop-up ลอยด้านล่าง และระบบยืนยันความปลอดภัยก่อนเปิดเว็บภายนอก",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -882,6 +894,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-title": "EPUBは壊れていない、崩れているのはスタイルだ：レイアウトを取り戻す方法",
       "blog-p25-desc": "ダークテーマで文字が読めない、フォントが変わらない問題を解決。Shioriの4つのオーバーライド機能で快適な読書環境を取り戻しましょう。",
 
+      // Blog Post 26
+      "blog-p26-date": "📅 2026年8月23日",
+      "blog-p26-cat": "🏷️ 読書体験",
+      "blog-p26-title": "読書位置を見失わずに脚注や内部リンクを読む方法",
+      "blog-p26-desc": "学術書や注釈本の脚注タップによるページジャンプを防止。ポップアップカードでその場でプレビューし、外部リンクは安全に確認。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1180,6 +1198,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-cat": "🏷️ 阅读体验",
       "blog-p25-title": "EPUB 没坏，坏的是排版样式：在 Android 上夺回排版控制权",
       "blog-p25-desc": "深色模式下文字隐形、字号锁死或字距过宽？使用 Shiori 的 4 个样式覆盖开关，轻松重获纯净舒适的阅读体验。",
+
+      // Blog Post 26
+      "blog-p26-date": "📅 2026年8月23日",
+      "blog-p26-cat": "🏷️ 阅读体验",
+      "blog-p26-title": "无需跳转页面即可直接阅读脚注与内链：防迷路阅读指南",
+      "blog-p26-desc": "解决阅读注释版名著与学术电子书时跳页迷路的痛点。底部悬浮卡片即时预览脚注内容，外链跳转双重确认。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1480,6 +1504,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-title": "O EPUB Está Bom, o Estilo É que Quebrou: Retome o Controle no Android",
       "blog-p25-desc": "Texto invisível no tema escuro ou fontes travadas? Veja como 4 seletores no Shiori anulam estilos ruins da editora.",
 
+      // Blog Post 26
+      "blog-p26-date": "📅 23 de agosto de 2026",
+      "blog-p26-cat": "🏷️ Experiência de Leitura",
+      "blog-p26-title": "Leia Notas de Rodapé e Links sem Perder a Sua Posição",
+      "blog-p26-desc": "Nunca mais perca o fio da leitura ao tocar em notas de rodapé. Visualize notas em um card pop-up inferior e confirme links externos com segurança.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1778,6 +1808,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p25-cat": "🏷️ Experiencia de Lectura",
       "blog-p25-title": "El EPUB Está Bien, lo que Falla Es el Estilo: Toma el Control en Android",
       "blog-p25-desc": "¿Texto ilegible en modo oscuro o fuentes bloqueadas? Aprende a anular hojas de estilo defectuosas con 4 ajustes en Shiori.",
+
+      // Blog Post 26
+      "blog-p26-date": "📅 23 de agosto de 2026",
+      "blog-p26-cat": "🏷️ Experiencia de Lectura",
+      "blog-p26-title": "Lee Notas al Pie y Enlaces sin Perder tu Posición de Lectura",
+      "blog-p26-desc": "Evita perder tu línea de lectura en libros académicos y anotados. Previsualiza notas en una tarjeta emergente y confirma enlaces web externos.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",
