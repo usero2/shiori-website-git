@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Read Selected Text Aloud in Shiori EPUB Reader on Android — Shiori Blog</title>
+  <meta name="description" content="Check pronunciation phrase by phrase. Learn how to read single words and sentences aloud in Shiori EPUB Reader for Android without disrupting continuous playback or losing your reading position." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/read-selected-text-aloud-epub-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Check Your Pronunciation, One Sentence at a Time: Read Just the Selected Text Aloud in Shiori",
+    "description": "Learn how to read single words and sentences aloud in Shiori EPUB Reader for Android without disrupting continuous playback or losing your reading position.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-23",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/read-selected-text-aloud-epub-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What happens if nothing plays when I tap Aloud?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your Android device needs a working Text-to-Speech engine. Verify that a TTS engine (such as Google TTS or Samsung TTS) is installed and enabled in your device settings, or switch the TTS Engine in Shiori's Preview voice dialog."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I pick a different voice or language specifically for selected text?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Tap the slider icon next to Preview voice in the selection menu to choose a dedicated TTS engine and set a specific language instead of Auto, ensuring foreign words are pronounced with native accents."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does reading selected text aloud move my book position or interrupt continuous playback?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The Aloud function speaks only the selected passage once and immediately hands control back. It does not alter your chapter scroll position or disturb continuous book playback."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does dragging the handle scroll the page instead of expanding the selection?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Make sure to touch and drag directly from the round circular selection handles at the beginning or end of the highlighted text, rather than dragging across the body text."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 23, 2026</span>
+        <span>🏷️ Text-to-Speech &amp; Pronunciation</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Check Your Pronunciation, One Sentence at a Time<br><span class="text-gradient">Read Just the Selected Text Aloud in Shiori</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">เช็กการออกเสียงทีละประโยค<br><span class="text-gradient">อ่านออกเสียงเฉพาะข้อความที่เลือก โดยไม่เสียตำแหน่งการอ่าน</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">1文ずつ発音を確認<br><span class="text-gradient">読書位置を変えずに選択したテキストだけを読み上げる機能</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">逐句校准发音<br><span class="text-gradient">仅朗读选中文本与单句，零干扰保留原阅读位置</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Verifique a Pronúncia Frase por Frase<br><span class="text-gradient">Leia Apenas o Texto Selecionado sem Perder Sua Posição</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Comprueba la Pronunciación Frase a Frase<br><span class="text-gradient">Lee Solo el Texto Seleccionado sin Perder Tu Posición de Lectura</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('03-drag-handle-extend-full-sentence.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🗣️</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You hit one sentence you cannot parse — an unfamiliar word, a name in a foreign language, or a phrase that reads differently than it sounds. Starting the book's continuous read-aloud from there means listening through everything after it too, then having to pause and scroll back to where you actually were. All you wanted was to hear <em>that one sentence</em>, once.</p>
+        <p>Shiori EPUB Reader has a dedicated control for exactly this: select any word or sentence in the reader, and it will be read aloud once, on its own, without starting continuous playback or altering your reading position.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">Single-Sentence Audio</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">Zero Position Drift</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Custom Preview Voice</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Multilingual Study</div>
+          </div>
+        </div>
+
+        <h2>Why a one-off read matters</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Checking pronunciation while learning a language:</strong> Hear a single unfamiliar word or sentence spoken correctly without committing to listening through the rest of the chapter.</li>
+          <li><strong>Foreign names and phrases in text:</strong> A book often carries an expression in another language — select just that part and hear it in the native voice and accent.</li>
+          <li><strong>Confirming how text sounds before reading aloud:</strong> Great for preparing before classes, speeches, or language exchange sessions.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Feature Mode</th><th>Trigger Action</th><th>Behavior &amp; Reading Impact</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>One-off Read (Aloud)</strong></td><td>Selection Menu &rarr; <code>Aloud</code></td><td>Speaks only selected text once; leaves reading scroll &amp; book audio unchanged</td></tr>
+              <tr><td><strong>Continuous Read-Aloud</strong></td><td>Bottom Play bar / Headphone icon</td><td>Reads continuous text chapter by chapter with auto-scroll and playback controls</td></tr>
+              <tr><td><strong>Preview Voice Picker</strong></td><td>Selection Menu &rarr; Sliders icon</td><td>Allows setting a custom TTS engine and language specifically for one-off reads</td></tr>
+              <tr><td><strong>Bilingual Translate</strong></td><td>Selection Menu &rarr; <code>Translate</code></td><td>Displays instant multi-language translation without leaving the current screen</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Instant Engine Hand-Back &amp; Offline Speed:</strong><br />
+          The Aloud action utilizes your Android device's native TTS engine. It speaks the sentence instantly and hands full control straight back to the reader without spawning pop-up players or requiring internet access.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>บางครั้งขณะอ่านหนังสือ คุณอาจสะดุดกับประโยคที่มีคำศัพท์ไม่คุ้นเคย ชื่อเฉพาะในภาษาต่างประเทศ หรือวลีที่ไม่แน่ใจว่าออกเสียงอย่างไร การกดเริ่มเล่นเสียงอ่าน (TTS) ของทั้งเล่มเพื่อฟังคำนั้นคำเดียว หมายถึงการต้องทนฟังต่อจนจบ แล้วต้องคอยกดหยุดและเลื่อนหน้าจอกลับมายังจุดเดิม ทั้งที่คุณแค่ต้องการฟังเสียงอ่านของ <em>ประโยคเดียวตรงนั้น</em> เพียงรอบเดียวเท่านั้น</p>
+        <p>Shiori EPUB Reader มีฟังก์ชันแยกเฉพาะสำหรับกรณีนี้โดยตรง: เพียงเลือกคำหรือประโยคใดๆ ในหน้าอ่าน คุณก็สามารถสั่งให้อ่านออกเสียงเพียงรอบเดียวได้ทันที โดยไม่ไปรบกวนระบบการเล่นเสียงอ่านหลักของหนังสือ และไม่เปลี่ยนตำแหน่งการอ่านของคุณแม้แต่น้อย</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">อ่านเฉพาะประโยคที่เลือก</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">ตำแหน่งอ่านเดิมไม่ขยับ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">แยกเสียงพรีวิวอิสระ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">เหมาะกับการฝึกภาษา</div>
+          </div>
+        </div>
+
+        <h2>ทำไมการอ่านออกเสียงเฉพาะจุดจึงมีประโยชน์</h2>
+        <ul class="article-bullet-list">
+          <li><strong>เช็กการออกเสียงขณะเรียนภาษา:</strong> ฟังเสียงอ่านที่ถูกต้องของคำหรือประโยคที่ไม่คุ้นเคยได้ทันที โดยไม่ต้องเปิดฟังเนื้อหาที่เหลือทั้งหน้า</li>
+          <li><strong>ชื่อและวลีภาษาต่างประเทศที่แทรกในเนื้อหา:</strong> หนังสือหลายเล่มมักมีชื่อเฉพาะหรือสำนวนภาษาอื่นแทรกอยู่ คุณสามารถเลือกเฉพาะส่วนนั้นและฟังด้วยเสียงและสำเนียงของภาษานั้นได้โดยตรง</li>
+          <li><strong>ตรวจทานการออกเสียงก่อนพูดจริง:</strong> มีประโยชน์มากเมื่อต้องเตรียมอ่านบทความ สคริปต์ หรือฝึกพูดในคลาสเรียนภาษา</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>โหมดการทำงาน</th><th>วิธีเปิดใช้งาน</th><th>ลักษณะการทำงานและผลต่อการอ่าน</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>อ่านออกเสียงเฉพาะจุด (Aloud)</strong></td><td>เมนูข้อความ &rarr; แตะ <code>Aloud</code></td><td>อ่านเฉพาะข้อความที่เลือกหนึ่งรอบแล้วหยุด ตำแหน่งอ่านและเสียงอ่านหลักไม่ขยับ</td></tr>
+              <tr><td><strong>อ่านเสียงต่อเนื่องทั้งเล่ม</strong></td><td>แถบควบคุมด้านล่าง / ไอคอนหูฟัง</td><td>อ่านเนื้อหาต่อเนื่องข้ามบท พร้อมระบบเลื่อนหน้าจอตามเสียงอ่านอัตโนมัติ</td></tr>
+              <tr><td><strong>ตั้งค่าเสียงพรีวิว (Preview voice)</strong></td><td>เมนูข้อความ &rarr; ไอคอนตัวปรับ</td><td>เลือกเอ็นจินและภาษาเฉพาะสำหรับการอ่านทีละจุด โดยไม่กระทบเสียงอ่านหลัก</td></tr>
+              <tr><td><strong>แปลภาษาหลายภาษา</strong></td><td>เมนูข้อความ &rarr; แตะ <code>Translate</code></td><td>แสดงคำแปลทันทีในหน้าต่างป๊อปอัปโดยไม่ต้องสลับแอป</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>คืนการควบคุมทันที ใช้งานออฟไลน์ 100%:</strong><br />
+          ฟังก์ชัน Aloud เรียกใช้เอ็นจิน TTS ในเครื่อง Android โดยตรง อ่านจบแล้วจบเลยโดยไม่ต้องคอยกดปิดมินิเพลเยอร์ และใช้งานได้ทุกที่แม้ไม่มีสัญญาณอินเทอร์เน็ต
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>読書中に発音が分からない単語、外国語の人名、読み方に迷うフレーズに出会うことがあります。その1文を聴くためだけに本全体の朗読（TTS）を開始すると、その後も音声が流れ続け、停止して元の場所までスクロールして戻らなければなりません。求めているのは「その1文だけ」を1回聴くことです。</p>
+        <p>Shiori EPUBリーダーには、まさにこのための独立した機能が備わっています。リーダー画面上で単語や文章を選択するだけで、本全体の連続朗読を開始したり読書位置を動かしたりすることなく、選択部分だけを1度だけ読み上げます。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">選択文だけのスポット再生</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">読書位置は完全に維持</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">プレビュー音声の個別設定</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">語学学習・発音確認に最適</div>
+          </div>
+        </div>
+
+        <h2>スポット読み上げが役立つ理由</h2>
+        <ul class="article-bullet-list">
+          <li><strong>語学学習中の発音チェック：</strong> ページ全体の朗読に切り替えることなく、未知の単語や1文の正しい発音を素早く確認できます。</li>
+          <li><strong>英文中に混ざる外国語の人名やフレーズ：</strong> 異なる言語の単語が含まれている場合、その部分だけを選択して適切な言語音声で聴くことができます。</li>
+          <li><strong>声に出して読む前の事前確認：</strong> 音読練習、スピーチ、語学レッスン前の発音確認に最適です。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>機能モード</th><th>操作方法</th><th>動作の特徴と読書への影響</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>選択テキスト読み上げ (Aloud)</strong></td><td>選択メニュー &rarr; <code>Aloud</code></td><td>選択されたテキストだけを1回再生して終了。読書位置や再生状態は不変</td></tr>
+              <tr><td><strong>書籍全体の連続朗読</strong></td><td>下部再生バー / ヘッドホンアイコン</td><td>章をまたいで連続再生。自動スクロールと操作バー常駐</td></tr>
+              <tr><td><strong>Preview voice 設定</strong></td><td>選択メニュー &rarr; スライダーアイコン</td><td>スポット読み上げ専用のTTSエンジン・言語を個別に指定可能</td></tr>
+              <tr><td><strong>多言語ポップアップ翻訳</strong></td><td>選択メニュー &rarr; <code>Translate</code></td><td>アプリを離れることなく即座に多言語対訳を表示</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>即座に制御を返却・完全オフライン対応：</strong><br />
+          Android端末内の標準TTSエンジンを使用し、1文だけを再生してすぐに制御を戻すため、余計な操作パネルに邪魔されず快適に読書を続けられます。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在阅读过程中，你是否曾遇到过令人困惑的生词、外语人名或读音特殊的短语？如果为了听这一个词而启动全书的语音朗读（TTS），往往意味着音频会一直往下播放，你不得不手动暂停并重新往回滚动寻找原本的阅读位置。其实，你只是想听<em>那一个句子</em>读一次而已。</p>
+        <p>Shiori 为此提供了专属的独立功能：只需在阅读器中选中任意单词或句子，即可单次朗读该选区内容，完全不触发全书连续播放，也不会改变你的阅读位置。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">单句即选即听</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">阅读位置零漂移</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">独立配置发音人</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">外语研读利器</div>
+          </div>
+        </div>
+
+        <h2>为什么单次选区朗读至关重要</h2>
+        <ul class="article-bullet-list">
+          <li><strong>外语学习与发音校验：</strong> 快速听取单个生词或难句的地道发音，无需强制听完整页内容。</li>
+          <li><strong>英文书籍中的外语专有名词与短语：</strong> 许多著作中夹杂着法语、德语、拉丁语词句，只需选中该部分即可按对应语种发音。</li>
+          <li><strong>开口朗读前的音调确认：</strong> 适合在上课发言、配音演讲或语言交流前确认准确读音与语调。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>功能模式</th><th>触发路径</th><th>运行逻辑与阅读影响</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>选区单次朗读 (Aloud)</strong></td><td>选区菜单 &rarr; 点击 <code>Aloud</code></td><td>仅朗读选中文本一次后立即停止；阅读滚动位置与全书音频状态保持不变</td></tr>
+              <tr><td><strong>全书连续听书朗读</strong></td><td>底部控制栏 / 顶部耳机按钮</td><td>跨章节连续朗读，支持自动滚屏并常驻音频控制器</td></tr>
+              <tr><td><strong>Preview voice 独立设置</strong></td><td>选区菜单 &rarr; 滑块图标</td><td>为单次朗读单独指定 TTS 引擎与特定发音语种，不影响全书听书配置</td></tr>
+              <tr><td><strong>多语种对照翻译</strong></td><td>选区菜单 &rarr; 点击 <code>Translate</code></td><td>原地弹出多语言翻译面板，无需跳转外部应用</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>用完即走，100% 本地离线运行：</strong><br />
+          Aloud 功能直接调用安卓设备本地内置 TTS 引擎，发音完毕立即交还阅读器控制权，无需手动关闭播放器弹窗，无网络环境下同样秒级响应。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Durante a leitura de um livro, é comum encontrar uma frase difícil de pronunciar — uma palavra desconhecida, um nome em outro idioma ou uma expressão com fonética inesperada. Iniciar a leitura contínua do livro (TTS) apenas para ouvir esse trecho significa ter que escutar todo o restante da página, pausar e depois rolar a tela procurando onde você estava. Tudo o que você queria era ouvir <em>apenas aquela frase</em>, uma única vez.</p>
+        <p>O Shiori oferece uma função independente dedicada exatamente a isso: selecione qualquer palavra ou frase no leitor e ela será lida em voz alta uma única vez, sem iniciar a narração contínua do livro e sem mover sua posição de leitura.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">Leitura de Frase Única</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">Posição 100% Intacta</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Voz Preview Independente</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Estudo de Idiomas</div>
+          </div>
+        </div>
+
+        <h2>Por Que a Leitura Pontual é Tão Útil</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Verificação de pronúncia no aprendizado de idiomas:</strong> Ouça a pronúncia correta de uma palavra ou frase sem precisar reproduzir todo o capítulo.</li>
+          <li><strong>Nomes e expressões estrangeiras no texto:</strong> Livros frequentemente trazem termos em outras línguas — selecione apenas aquele trecho e ouça com a voz e o sotaque corretos.</li>
+          <li><strong>Confirmação fonética antes de falar:</strong> Ideal para leituras acadêmicas, apresentações ou práticas de conversação.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Modo de Recurso</th><th>Como Acionar</th><th>Comportamento e Impacto na Leitura</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Leitura Pontual (Aloud)</strong></td><td>Menu de Seleção &rarr; <code>Aloud</code></td><td>Lê apenas o texto selecionado uma vez; mantém a rolagem e o áudio geral inalterados</td></tr>
+              <tr><td><strong>Leitura Contínua do Livro</strong></td><td>Barra inferior / Ícone de fone</td><td>Narra o livro continuamente entre capítulos com rolagem automática</td></tr>
+              <tr><td><strong>Ajuste de Preview Voice</strong></td><td>Menu de Seleção &rarr; Ícone de ajustes</td><td>Define motor TTS e idioma específicos para leituras pontuais de forma independente</td></tr>
+              <tr><td><strong>Tradução Instantânea</strong></td><td>Menu de Seleção &rarr; <code>Translate</code></td><td>Exibe tradução multilíngue direta sem sair da tela de leitura</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Controle Imediato e Funcionamento 100% Offline:</strong><br />
+          A função Aloud aciona o motor TTS nativo do Android, lê o trecho selecionado instantaneamente e devolve o controle sem criar miniplayers indesejados.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>A menudo, al leer un libro, te encuentras con una frase cuya pronunciación dudas: un término desconocido, un nombre en un idioma extranjero o una expresión con una entonación particular. Iniciar la lectura en voz alta continua de todo el libro (TTS) solo para escuchar esa línea implica tener que escuchar el resto del texto, pausar y volver a desplazarte buscando dónde estabas. Lo único que querías era escuchar <em>esa frase en concreto</em>, una sola vez.</p>
+        <p>Shiori incluye una función independiente diseñada específicamente para esto: selecciona cualquier palabra o frase en el lector y se leerá en voz alta una sola vez, sin iniciar la narración continua de la obra ni modificar tu posición de lectura.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🗣️</span>
+            <div class="stat-badge-title">Audio de Frase Única</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📍</span>
+            <div class="stat-badge-title">Posición Intacta</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Voz Preview Separada</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Estudio de Idiomas</div>
+          </div>
+        </div>
+
+        <h2>Por Qué la Lectura Puntual Es Tan Práctica</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Comprobación de pronunciación al aprender idiomas:</strong> Escucha la pronunciación correcta de un término o frase sin necesidad de reproducir toda la página.</li>
+          <li><strong>Nombres y frases en otros idiomas intercalados:</strong> En obras con expresiones extranjeras, selecciona solo ese fragmento y escúchalo en el idioma y acento correctos.</li>
+          <li><strong>Confirmación auditiva antes de hablar:</strong> Muy útil al preparar lecturas en voz alta, exposiciones o intercambios lingüísticos.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Modalidad</th><th>Activación</th><th>Comportamiento e Impacto en Lectura</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Lectura Puntual (Aloud)</strong></td><td>Menú de Selección &rarr; <code>Aloud</code></td><td>Pronuncia solo el texto seleccionado una vez; no altera la posición ni el audio del libro</td></tr>
+              <tr><td><strong>Lectura Continua del Libro</strong></td><td>Barra inferior / Icono auricular</td><td>Narra el libro de forma ininterrumpida con desplazamiento automático</td></tr>
+              <tr><td><strong>Ajuste de Preview Voice</strong></td><td>Menú de Selección &rarr; Deslizadores</td><td>Permite elegir motor TTS e idioma independientes para lecturas de muestra</td></tr>
+              <tr><td><strong>Traducción Multilingüe</strong></td><td>Menú de Selección &rarr; <code>Translate</code></td><td>Muestra traducción directa en ventana emergente sin abandonar la lectura</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Retorno Instantáneo y 100% Fuera de Línea:</strong><br />
+          La función Aloud aprovecha el motor TTS nativo de Android, lee el texto seleccionado al instante y devuelve el control sin abrir reproductores molestos ni requerir internet.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide: Reading Selected Text (4 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการใช้งานจริง (4 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">使い方ガイド（4つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">操作与设置指南（4 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia de Uso Passo a Passo (4 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía de Uso Paso a Paso (4 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Press and Hold a Word to Select It</div>
+          <div class="step-desc">
+            <p>Press and hold on any word in the reader for about a second. The word is highlighted, round selection handles appear at each end, and a floating context menu opens above it.</p>
+            <p>The menu provides instant access to <strong>Read</strong>, <strong>Bookmark</strong>, <strong>Highlight</strong>, <strong>Translate</strong>, <strong>Aloud</strong>, and <strong>TTS preview</strong> options.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>แตะค้างที่คำเพื่อเลือกข้อความ</div>
+          <div class="step-desc">
+            <p>แตะนิ้วค้างไว้ที่คำใดก็ได้ในหน้าอ่านประมาณ 1 วินาที คำนั้นจะถูกไฮไลต์ขึ้นมา พร้อมปุ่มจับทรงกลมที่หัวและท้ายคำ และมีเมนูลอยปรากฏขึ้นมาด้านบน</p>
+            <p>เมนูลอยจะมีตัวเลือกครบครันทั้ง <strong>Read</strong>, <strong>Bookmark</strong>, <strong>Highlight</strong>, <strong>Translate</strong>, <strong>Aloud</strong> และ <strong>TTS preview</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>単語を長押しして選択する</div>
+          <div class="step-desc">
+            <p>リーダー画面内の任意の単語を約1秒間長押しします。単語がハイライトされ、両端に丸い選択ハンドルと上部フローティングメニューが表示されます。</p>
+            <p>メニュー内には <strong>Read</strong>、<strong>Bookmark</strong>、<strong>Highlight</strong>、<strong>Translate</strong>、<strong>Aloud</strong>、<strong>TTS preview</strong> などの操作が揃っています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>长按单词进行精准选词</div>
+          <div class="step-desc">
+            <p>在阅读器中长按任意单词约 1 秒钟。选中的单词将高亮显示，两端出现圆形手柄，上方弹出悬浮操作菜单。</p>
+            <p>悬浮菜单汇集了 <strong>Read</strong>、<strong>Bookmark</strong>、<strong>Highlight</strong>、<strong>Translate</strong>、<strong>Aloud</strong> 及 <strong>TTS preview</strong> 等实用工具。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Pressione e Segure Uma Palavra</div>
+          <div class="step-desc">
+            <p>Pressione qualquer palavra no leitor por cerca de um segundo. A palavra fica destacada com alças circulares e um menu flutuante surge acima.</p>
+            <p>O menu traz ações rápidas como <strong>Read</strong>, <strong>Bookmark</strong>, <strong>Highlight</strong>, <strong>Translate</strong>, <strong>Aloud</strong> e <strong>TTS preview</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Mantén Pulsada una Palabra para Seleccionarla</div>
+          <div class="step-desc">
+            <p>Mantén presionada cualquier palabra en el lector durante un segundo. Quedará resaltada con tiradores circulares y un menú flotante superior.</p>
+            <p>El menú ofrece opciones como <strong>Read</strong>, <strong>Bookmark</strong>, <strong>Highlight</strong>, <strong>Translate</strong>, <strong>Aloud</strong> y <strong>TTS preview</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-long-press-select-word-menu.jpg" alt="A single word selected in Shiori reader after a long-press showing selection handles and floating menu" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Drag Handle to Cover the Full Sentence</div>
+          <div class="step-desc">
+            <p>A single word is great for quick vocabulary checks, but for pronunciation and speech rhythm you usually want the whole phrase. Drag the round handle at either end across the sentence.</p>
+            <p>The context menu smoothly tracks the selection boundary, allowing you to clearly see what will be read aloud.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ลากปุ่มจับเพื่อคลุมทั้งประโยค</div>
+          <div class="step-desc">
+            <p>การเลือกเพียงคำเดียวเหมาะสำหรับการเช็กคำศัพท์สั้นๆ แต่สำหรับการฝึกออกเสียงและฟังจังหวะประโยค การฟังทั้งประโยคจะให้ความเป็นธรรมชาติกว่า ให้ลากปุ่มจับทรงกลมเพื่อขยายขอบเขต</p>
+            <p>เมนูลอยจะติดตามการขยายข้อความอย่างต่อเนื่อง ช่วยให้ตรวจสอบข้อความที่ต้องการอ่านได้อย่างแม่นยำ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>ハンドルをドラッグして文全体を選択</div>
+          <div class="step-desc">
+            <p>単語1つでも確認できますが、イントネーションやリズムを自然に聴くには文全体が最適です。丸いハンドルノブをドラッグして文末まで広げます。</p>
+            <p>メニューは選択範囲の拡大にリアルタイムで追従するため、対象テキストを確実に確認できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>拖拽手柄覆盖完整句子</div>
+          <div class="step-desc">
+            <p>单个单词适合查词，但若想把握地道语调与重音断句，听整句效果更佳。拖拽两端的圆形手柄延伸选区覆盖整句。</p>
+            <p>悬浮菜单将跟随选区实时平滑位移，方便在发音前确认选中的文字内容。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Arraste a Alça para Cobrir a Frase Inteira</div>
+          <div class="step-desc">
+            <p>Uma única palavra serve para checagem rápida, mas para ritmo e entonação o ideal é ouvir a frase completa. Arraste a alça redonda pela extensão desejada.</p>
+            <p>O menu flutuante acompanha o movimento permitindo verificar o trecho antes da leitura.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Arrastra el Tirador para Abarcar la Frase Completa</div>
+          <div class="step-desc">
+            <p>Una palabra basta para dudas puntuales, pero para captar el ritmo conviene seleccionar la frase entera. Desliza el tirador circular hasta el final de la oración.</p>
+            <p>El menú contextual acompaña la selección para que confirmes el fragmento antes de reproducirlo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-drag-handle-extend-full-sentence.jpg" alt="Selection dragged from a single word to a full sentence using the round handle with floating menu open" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Tap Aloud for Instant Playback</div>
+          <div class="step-desc">
+            <p>Tap <strong>Aloud</strong> in the menu. Shiori speaks the selected passage once and stops immediately — without advancing to subsequent lines and without bringing up full player controls.</p>
+            <p>The selection clears automatically and you are returned right where you were, with reading progress and scroll position 100% preserved.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>แตะ Aloud เพื่อให้อ่านออกเสียง</div>
+          <div class="step-desc">
+            <p>แตะที่ปุ่ม <strong>Aloud</strong> ในเมนูลอย Shiori จะอ่านข้อความที่เลือกหนึ่งรอบแล้วหยุดทันที — ไม่มีการอ่านเลยไปยังประโยคถัดไป และไม่มีแถบควบคุมเครื่องเล่นเสียงขึ้นมารบกวน</p>
+            <p>การเลือกข้อความจะถูกล้างออกโดยอัตโนมัติ และคุณจะกลับมาอยู่ที่ตำแหน่งเดิมทุกประการ ทั้งบทเดิมและบรรทัดเดิม</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>「Aloud」をタップして瞬時に再生</div>
+          <div class="step-desc">
+            <p>メニュー内の <strong>Aloud</strong> をタップします。Shioriは選択部分を1度だけ読み上げて停止します。次の文へ進むことも操作バーが開くこともありません。</p>
+            <p>ハイライトは自動解除され、読書進捗やスクロール位置はそのままでスムーズに読書を再開できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>点击 Aloud 立即单次朗读</div>
+          <div class="step-desc">
+            <p>点击菜单中的 <strong>Aloud</strong>。Shiori 立即调用 TTS 朗读选区文字并在读完后即刻停止，不会继续朗读下一句，也不会弹出全屏音频控制器。</p>
+            <p>选区高亮自动清除，阅读进度与页面滚动位置原封不动，无缝回归深度阅读。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Toque em Aloud para Reproduzir</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Aloud</strong> no menu. O Shiori lê o texto selecionado uma única vez e para imediatamente, sem avançar para outras frases nem abrir players extras.</p>
+            <p>O destaque se desfaz e você continua a leitura exatamente na mesma linha e capítulo.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Pulsa Aloud para Escuchar al Instante</div>
+          <div class="step-desc">
+            <p>Pulsa <strong>Aloud</strong> en el menú. Shiori pronunciará el fragmento seleccionado una sola vez y se detendrá al terminar, sin reproducir las líneas siguientes ni abrir reproductores adicionales.</p>
+            <p>El resaltado desaparece y continúas leyendo exactamente en el mismo punto de la página.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-back-to-reading-unchanged-position.jpg" alt="Reader returned to normal state after tapping Aloud with selection cleared and reading progress unchanged" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Customize Voice &amp; Language (Preview Voice)</div>
+          <div class="step-desc">
+            <p>The voice used for one-off reads can be configured independently from the book's main narrator. Tap the sliders icon next to <strong>Preview voice</strong> in the selection menu.</p>
+            <p>Select a dedicated <strong>TTS Engine</strong> and set <strong>Language</strong> explicitly to ensure foreign sentences are pronounced with native accents.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>ปรับแต่งเสียงและภาษา (Preview Voice)</div>
+          <div class="step-desc">
+            <p>เสียงที่ใช้สำหรับอ่านเฉพาะจุดสามารถตั้งค่าแยกอิสระจากเสียงอ่านหลักของเล่มได้ แตะไอคอนตัวปรับข้างข้อความ <strong>Preview voice</strong> ในเมนูข้อความ</p>
+            <p>เลือก <strong>TTS Engine</strong> และระบุ <strong>Language</strong> โดยตรง เพื่อให้ได้สำเนียงที่ถูกต้องเมื่อเจอประโยคภาษาต่างประเทศที่แทรกในเล่ม</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>音声と言語の個別設定（Preview voice）</div>
+          <div class="step-desc">
+            <p>スポット読み上げ用の音声は本全体の朗読音声とは別に設定可能です。メニュー下部 <strong>Preview voice</strong> 横のスライダーアイコンをタップします。</p>
+            <p>専用の <strong>TTS Engine</strong> や対象の <strong>Language</strong> を明示的に選ぶことで、外国語のフレーズもネイティブの自然な発音で再生できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>独立配置单次朗读语音与语种（Preview voice）</div>
+          <div class="step-desc">
+            <p>单次朗读所使用的发音人可与整书听书独立分离。点击选区菜单底部 <strong>Preview voice</strong> 旁边的调节滑块图标。</p>
+            <p>指定专属的 <strong>TTS Engine</strong> 并明确选择目标 <strong>Language</strong>（语种），在外语混排句子中精准呈现地道发音。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Personalize a Voz e o Idioma (Preview Voice)</div>
+          <div class="step-desc">
+            <p>A voz da leitura pontual pode ser configurada separadamente da voz principal do livro. Toque no ícone de controles ao lado de <strong>Preview voice</strong>.</p>
+            <p>Selecione um <strong>TTS Engine</strong> específico e defina o <strong>Language</strong> para garantir a pronúncia nativa em trechos em língua estrangeira.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Personaliza la Voz y el Idioma (Preview Voice)</div>
+          <div class="step-desc">
+            <p>La voz de lectura puntual es independiente de la voz general del libro. Pulsa el icono de controles deslizantes junto a <strong>Preview voice</strong>.</p>
+            <p>Elige un <strong>TTS Engine</strong> dedicado y ajusta el <strong>Language</strong> manualmente para obtener una pronunciación nativa impecable en citas extranjeras.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-preview-voice-language-picker.jpg" alt="Preview voice dialog in Shiori showing independent TTS engine and language selection options" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อยและการแก้ปัญหา (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">トラブルシューティング＆よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题与排查答疑（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Solução de Problemas e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What should I check if nothing plays when tapping Aloud?</div>
+        <div class="faq-a">Your Android device needs an active Text-to-Speech engine. Verify that Google Text-to-Speech or your phone manufacturer's TTS engine is enabled in Android System Settings, or open the <strong>Preview voice</strong> dialog and select a different TTS Engine.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">แตะ Aloud แล้วไม่มีเสียงอ่าน ควรตรวจสอบที่จุดใด?</div>
+        <div class="faq-a">อุปกรณ์ Android ของคุณต้องมีเอ็นจิน TTS ที่พร้อมทำงาน ให้ตรวจดูการตั้งค่า Text-to-Speech ในระบบของมือถือ (เช่น Google Speech Services) หรือเปิดหน้าต่าง <strong>Preview voice</strong> แล้วลองเปลี่ยนตัวเลือก TTS Engine</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">Aloud をタップしても音声が出ない場合はどうすればいいですか？</div>
+        <div class="faq-a">端末側に動作可能なTTSエンジンが必要です。Androidシステム設定でGoogle音声サービス等のTTSが有効になっているか確認するか、<strong>Preview voice</strong> ダイアログで別のTTS Engineを選択してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">点击 Aloud 没有发音声音该如何排查？</div>
+        <div class="faq-a">设备需具备正常运作的 TTS 语音引擎。请检查系统设置中的文本转语音（如 Google TTS），或在 <strong>Preview voice</strong> 弹窗中切换其他 TTS Engine 发音引擎。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que fazer se não sair som ao tocar em Aloud?</div>
+        <div class="faq-a">Verifique se o motor de texto em fala (TTS) do Google ou do fabricante está ativo nas configurações do Android, ou troque o TTS Engine na janela <strong>Preview voice</strong>.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué comprobar si no se escucha nada al pulsar Aloud?</div>
+        <div class="faq-a">Asegúrate de tener un motor TTS activo en los ajustes del sistema Android o cambia el TTS Engine abriendo el cuadro de <strong>Preview voice</strong>.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why does dragging the text scroll the page instead of expanding selection?</div>
+        <div class="faq-a">Always touch and drag directly from the round circular handles at the start or end of the highlight. Dragging across the body text is interpreted as a page scrolling gesture.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมเวลาลากขยายข้อความ หน้าจอกลับเลื่อนขึ้นลงแทน?</div>
+        <div class="faq-a">ให้แตะลากที่ปุ่มจับทรงกลมที่หัวหรือท้ายคำโดยตรง การลากบนตัวเนื้อหาหนังสือจะถูกตีความเป็นคำสั่งเลื่อนหน้าจอ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">選択範囲を広げようとすると画面がスクロールしてしまうのはなぜですか？</div>
+        <div class="faq-a">テキスト部分ではなく、ハイライト両端の丸いハンドルノブを正確に押してドラッグしてください。本文部分のドラッグはスクロール操作と判定されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么拖动手柄时页面会上下滑动而不是扩展选区？</div>
+        <div class="faq-a">请务必精准按住选区两端的圆形手柄进行拖动。如果按在正文文字区域拖拽，会被识别为屏幕滚动手势。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que a página rola ao tentar expandir a seleção?</div>
+        <div class="faq-a">Certifique-se de arrastar diretamente a partir do círculo das alças nas pontas do destaque, e não sobre o texto.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué la página se desplaza al intentar ampliar la selección?</div>
+        <div class="faq-a">Asegúrate de tirar directamente desde el círculo de los tiradores de selección y no sobre el cuerpo del texto.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I configure separate languages for different books or sections?</div>
+        <div class="faq-a">Yes. Shiori allows you to set up multi-language voice profiles under <strong>TTS Listening &rarr; TTS Languages</strong>, and Preview voice can tap directly into those profiles or use explicit language overrides anytime.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถตั้งค่าภาษาแยกสำหรับหนังสือหรือภาษาที่แตกต่างกันได้หรือไม่?</div>
+        <div class="faq-a">ทำได้ครับ Shiori รองรับการตั้งค่าโปรไฟล์เสียงหลายภาษาในเมนู <strong>TTS Listening &rarr; TTS Languages</strong> โดยฟังก์ชัน Preview voice สามารถดึงโปรไฟล์ดังกล่าวมาใช้งานหรือเลือกภาษาเฉพาะได้ตลอดเวลา</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">異なる言語ごとに音声を使い分けることは可能ですか？</div>
+        <div class="faq-a">はい。<strong>TTS Listening &rarr; TTS Languages</strong> で言語別プロファイルを設定しておけば、Preview voiceからもその設定を呼び出したり個別指定が可能です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">支持为不同语种单独配置发音人吗？</div>
+        <div class="faq-a">完全支持。在 <strong>TTS Listening &rarr; TTS Languages</strong> 中可预设多语种发音偏好，Preview voice 可随时直接调用或单独指定特定语言。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso configurar idiomas diferentes para trechos específicos?</div>
+        <div class="faq-a">Sim. Em <strong>TTS Listening &rarr; TTS Languages</strong> você pode configurar perfis de voz por idioma e utilizá-los no Preview voice a qualquer momento.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Es posible definir idiomas distintos para fragmentos concretos?</div>
+        <div class="faq-a">Sí. En <strong>TTS Listening &rarr; TTS Languages</strong> puedes configurar perfiles por idioma y aprovecharlos en Preview voice cuando lo desees.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/read-along-tts-karaoke-highlight-epub-android/">Read Along with Karaoke Highlighting in Shiori EPUB Reader</a></li>
+        <li><a href="/blog/multi-language-text-to-speech-android-epub/">Multi-Language Text-to-Speech: One Book, Every Voice on Android</a></li>
+        <li><a href="/blog/highlight-and-take-notes-epub-android/">Highlight and Take Notes in Shiori EPUB Reader</a></li>
+        <li><a href="/blog/how-to-translate-to-multiple-language/">How to Translate EPUB to Multiple Languages Simultaneously</a></li>
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen: A Touch-by-Touch Guide</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Check Pronunciation With Zero Interruption</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play and experience instant one-off phrase pronunciation, synchronized karaoke reading, and distraction-free offline study.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">เช็กการออกเสียงได้ทันใจ ไม่เสียจังหวะการอ่าน</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play เพลิดเพลินกับการอ่านออกเสียงเฉพาะจุด การไฮไลต์คาราโอเกะตามเสียง และการเรียนรู้ภาษาแบบออฟไลน์ที่ราบรื่น
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">読書を中断せずに発音をチェック</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、単語・文のスポット読み上げ、カラオケハイライト、快適なオフライン語学読書をお試しください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">即选即听，纯粹专注的阅读体验</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，体验选区单次极速发音、卡拉OK同步朗读与纯净离线学习。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Confira a Pronúncia Sem Interrupções</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader no Google Play e aproveite a leitura de frases pontuais, destaque em estilo karaoke e estudo offline contínuo.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Comprueba la Pronunciación sin Interrupciones</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader en Google Play y disfruta de la lectura instantánea de frases seleccionadas, resaltado karaoke y estudio sin distracciones.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

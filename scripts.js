@@ -290,6 +290,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-title": "Read Footnotes & In-Book Links Without Losing Your Place",
       "blog-p26-desc": "Stop losing your reading position in academic and annotated EPUBs. Preview footnotes in a bottom pop-up card and verify external links safely.",
 
+      // Blog Post 27
+      "blog-p27-date": "📅 August 23, 2026",
+      "blog-p27-cat": "🏷️ Text-to-Speech",
+      "blog-p27-title": "Read Along with Karaoke Highlighting in Shiori EPUB Reader",
+      "blog-p27-desc": "Boost reading focus and language learning with synchronized word and paragraph text-to-speech highlighting. Fully customizable colors and opacity.",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 August 23, 2026",
+      "blog-p28-cat": "🏷️ Text-to-Speech",
+      "blog-p28-title": "Read Selected Text Aloud: Check Pronunciation One Sentence at a Time",
+      "blog-p28-desc": "Check foreign words and tricky sentences instantly. Long-press to select text, tap Aloud, and hear it spoken once without losing your reading place or interrupting continuous playback.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -594,6 +606,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p26-title": "อ่านเชิงอรรถ (Footnotes) และลิงก์ในเล่ม โดยไม่หลงตำแหน่งอ่าน",
       "blog-p26-desc": "แก้ปัญหาแตะเชิงอรรถแล้วเด้งข้ามหน้าจนหลงตำแหน่ง ด้วยหน้าต่างพรีวิว Pop-up ลอยด้านล่าง และระบบยืนยันความปลอดภัยก่อนเปิดเว็บภายนอก",
+
+      // Blog Post 27
+      "blog-p27-date": "📅 23 สิงหาคม 2026",
+      "blog-p27-cat": "🏷️ เสียงอ่าน (TTS)",
+      "blog-p27-title": "อ่านไปพร้อมกับฟังด้วยไฮไลต์แบบคาราโอเกะใน Shiori",
+      "blog-p27-desc": "เพิ่มสมาธิในการอ่านและฝึกภาษาด้วยระบบไฮไลต์ซิงค์ตามเสียงอ่านแบบเรียลไทม์ ทั้งระดับคำและย่อหน้า ปรับแต่งสีและความโปร่งใสได้อิสระ",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 23 สิงหาคม 2026",
+      "blog-p28-cat": "🏷️ เสียงอ่าน (TTS)",
+      "blog-p28-title": "เช็กการออกเสียงทีละประโยค: อ่านออกเสียงเฉพาะข้อความที่เลือกใน Shiori",
+      "blog-p28-desc": "ตรวจทานคำศัพท์และประโยคยากได้ทันใจ เพียงแตะค้างเลือกข้อความแล้วกด Aloud ฟังเสียงอ่านหนึ่งรอบโดยไม่เสียตำแหน่งการอ่านและไม่รบกวนการเล่นเสียงหลัก",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -900,6 +924,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-title": "読書位置を見失わずに脚注や内部リンクを読む方法",
       "blog-p26-desc": "学術書や注釈本の脚注タップによるページジャンプを防止。ポップアップカードでその場でプレビューし、外部リンクは安全に確認。",
 
+      // Blog Post 27
+      "blog-p27-date": "📅 2026年8月23日",
+      "blog-p27-cat": "🏷️ 音声読み上げ（TTS）",
+      "blog-p27-title": "カラオケ風ハイライトで聴きながら読む：Shiori EPUBリーダー",
+      "blog-p27-desc": "音声と同期する単語・段落のカラオケハイライトで読書集中力と語学学習を強化。10色のカラーと透明度を自在にカスタマイズ。",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 2026年8月23日",
+      "blog-p28-cat": "🏷️ 音声読み上げ（TTS）",
+      "blog-p28-title": "1文ずつ発音を確認：選択したテキストだけを読み上げる機能",
+      "blog-p28-desc": "気になる単語や外国語のフレーズを素早く確認。長押しでテキストを選択し「Aloud」をタップするだけで、読書位置を変えずにその部分だけを1度再生。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1204,6 +1240,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-cat": "🏷️ 阅读体验",
       "blog-p26-title": "无需跳转页面即可直接阅读脚注与内链：防迷路阅读指南",
       "blog-p26-desc": "解决阅读注释版名著与学术电子书时跳页迷路的痛点。底部悬浮卡片即时预览脚注内容，外链跳转双重确认。",
+
+      // Blog Post 27
+      "blog-p27-date": "📅 2026年8月23日",
+      "blog-p27-cat": "🏷️ 语音朗读（TTS）",
+      "blog-p27-title": "伴随朗读同步卡拉OK式高亮：Shiori EPUB 阅读器",
+      "blog-p27-desc": "音字毫秒级同步，支持逐词光标与段落框架多层级高亮，提升外语学习与深度阅读专注力。10 种配色与透明度随心定制。",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 2026年8月23日",
+      "blog-p28-cat": "🏷️ 语音朗读（TTS）",
+      "blog-p28-title": "逐句校准发音：仅朗读选中的文字与单句",
+      "blog-p28-desc": "快速确认生词与外语插句发音。长按选中文本点击 Aloud，即可单次朗读目标语句，零干扰保留原阅读位置与全书听书状态。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1510,6 +1558,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-title": "Leia Notas de Rodapé e Links sem Perder a Sua Posição",
       "blog-p26-desc": "Nunca mais perca o fio da leitura ao tocar em notas de rodapé. Visualize notas em um card pop-up inferior e confirme links externos com segurança.",
 
+      // Blog Post 27
+      "blog-p27-date": "📅 23 de agosto de 2026",
+      "blog-p27-cat": "🏷️ Leitura em Voz Alta (TTS)",
+      "blog-p27-title": "Acompanhe a Leitura com Destaque em Estilo Karaoke no Shiori",
+      "blog-p27-desc": "Aumente o foco e o aprendizado de idiomas com destaque sincronizado por palavra e parágrafo. Cores e opacidade totalmente personalizáveis.",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 23 de agosto de 2026",
+      "blog-p28-cat": "🏷️ Leitura em Voz Alta (TTS)",
+      "blog-p28-title": "Leia Apenas o Texto Selecionado: Verifique a Pronúncia Frase por Frase",
+      "blog-p28-desc": "Confira termos e frases estrangeiras sem perder o ritmo. Pressione o texto, toque em Aloud e ouça a pronúncia uma única vez sem alterar sua posição no livro.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1814,6 +1874,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p26-cat": "🏷️ Experiencia de Lectura",
       "blog-p26-title": "Lee Notas al Pie y Enlaces sin Perder tu Posición de Lectura",
       "blog-p26-desc": "Evita perder tu línea de lectura en libros académicos y anotados. Previsualiza notas en una tarjeta emergente y confirma enlaces web externos.",
+
+      // Blog Post 27
+      "blog-p27-date": "📅 23 de agosto de 2026",
+      "blog-p27-cat": "🏷️ Lectura en Voz Alta (TTS)",
+      "blog-p27-title": "Lee y Escucha con Resaltado Estilo Karaoke en Shiori",
+      "blog-p27-desc": "Mejora tu concentración y aprendizaje de idiomas con resaltado sincronizado por palabra y párrafo. Colores y opacidad totalmente ajustables.",
+
+      // Blog Post 28
+      "blog-p28-date": "📅 23 de agosto de 2026",
+      "blog-p28-cat": "🏷️ Lectura en Voz Alta (TTS)",
+      "blog-p28-title": "Lee Solo el Texto Seleccionado: Comprueba la Pronunciación Frase a Frase",
+      "blog-p28-desc": "Comprueba palabras dudosas y frases en otros idiomas al instante. Mantén pulsado, toca Aloud y escucha la pronunciación sin mover tu posición ni pausar la lectura continua.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

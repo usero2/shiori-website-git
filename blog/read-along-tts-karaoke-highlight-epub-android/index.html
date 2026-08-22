@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Read Along with Karaoke Highlighting in Shiori EPUB Reader on Android — Shiori Blog</title>
+  <meta name="description" content="Boost reading comprehension and language acquisition with synchronized karaoke text-to-speech highlighting in Shiori EPUB Reader for Android. Customize word and paragraph colors." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/read-along-tts-karaoke-highlight-epub-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Read Along with Karaoke Highlighting in Shiori EPUB Reader on Android",
+    "description": "Boost reading comprehension and language acquisition with synchronized karaoke text-to-speech highlighting in Shiori EPUB Reader for Android. Customize word and paragraph colors.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-23",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/read-along-tts-karaoke-highlight-epub-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is bimodal reading and how does karaoke highlighting help?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bimodal reading is the simultaneous reception of spoken narration and visual text. Synchronized karaoke highlighting guides your eyes to match each spoken word, boosting comprehension, vocabulary retention, and focus."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I customize highlight colors and transparency for Dark Mode?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Shiori provides 10 color swatches and a granular Opacity slider (0–100%) so you can set subtle, glare-free highlights that blend naturally with Dark, AMOLED, and Sepia themes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does karaoke highlighting work offline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Shiori utilizes your Android device's built-in Text-to-Speech engine, allowing full speech playback, auto-scrolling, and synchronized highlighting completely offline without internet."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 23, 2026</span>
+        <span>🏷️ Text-to-Speech &amp; Reading</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Read Along with Karaoke Highlighting<br><span class="text-gradient">Synchronized Multi-Level Tracking in Shiori</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">อ่านไปพร้อมกับฟังด้วยไฮไลต์แบบคาราโอเกะ<br><span class="text-gradient">ระบบติดตามคำและย่อหน้าแบบซิงค์เรียลไทม์ใน Shiori</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">カラオケ風ハイライトで聴きながら読む<br><span class="text-gradient">Androidで音声と同期する単語・段落ハイライト機能</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">伴随朗读同步卡拉OK式高亮<br><span class="text-gradient">Android 端词句多层级实时音字同步追踪指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Acompanhe a Leitura com Destaque em Estilo Karaoke<br><span class="text-gradient">Rastreamento Sincronizado de Palavras e Parágrafos no Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Lee y Escucha con Resaltado Estilo Karaoke<br><span class="text-gradient">Seguimiento Sincronizado de Palabras y Párrafos en Shiori</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('04-karaoke-word-highlight-in-action.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🎙️</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>Listening to text-to-speech (TTS) while visually following the words on the screen—often called <strong>bimodal reading</strong>—is one of the most effective ways to boost reading comprehension, stay focused, and acquire new languages. When your eyes and ears receive the same information simultaneously, your brain processes vocabulary and sentence structure much faster than through listening or reading alone.</p>
+        <p>However, many reading apps treat audio narration and visual reading as completely separate experiences. Some play sound without showing where you are in the chapter, while others apply harsh, distracting highlight bars that clash with dark or AMOLED themes.</p>
+        <p>Shiori EPUB Reader bridges this gap with built-in, synchronized <strong>karaoke-style highlighting</strong>. As the voice reads aloud, Shiori tracks the text at multiple levels—paragraph, chunk/sentence, and individual word—allowing you to customize highlight colors and opacity to match your reading style. This walkthrough shows how to set up and customize karaoke highlighting on your Android device.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Word-by-Word Cursor</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Paragraph Bounding Box</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10 Color Swatches &amp; Opacity</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">Bimodal Reading Focus</div>
+          </div>
+        </div>
+
+        <h2>Why synchronized karaoke highlighting matters</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Language learning &amp; pronunciation:</strong> Hear native pronunciation while tracking exact spelling and word boundaries in real time.</li>
+          <li><strong>Focus &amp; ADHD support:</strong> The moving highlight serves as a visual anchor, keeping your eyes from wandering off the page during dense paragraphs.</li>
+          <li><strong>Comfortable contrast:</strong> With custom color presets and transparency controls, highlights remain easy on the eyes in both bright day themes and pitch-black dark modes.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Tracking Level</th><th>Visual Element</th><th>Recommended Setting &amp; Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight</strong></td><td>Active moving cursor on the current spoken word</td><td>50–55% Opacity with soft Purple/Orange for clear word tracking</td></tr>
+              <tr><td><strong>Paragraph highlight</strong></td><td>Subtle tinted bounding box around the active paragraph</td><td>25–30% Opacity to frame the context without glare</td></tr>
+              <tr><td><strong>Chunk highlight</strong></td><td>Clause/phrase level grouping</td><td>Provides natural speech rhythm guidance for dense texts</td></tr>
+              <tr><td><strong>Aloud word (translation)</strong></td><td>Highlight on translated bilingual vocabulary</td><td>Syncs audio speech with multi-language translation panels</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>100% Offline Capability:</strong><br />
+          Karaoke highlighting utilizes your Android device's native TTS speech engine. It works completely offline on long flights or subway commutes without requiring an internet connection.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>การฟังเสียงอ่านสังเคราะห์ (TTS) ไปพร้อมกับการกวาดสายตาอ่านข้อความบนหน้าจอ หรือที่เรียกว่า <strong>การอ่านแบบสองช่องทาง (Bimodal Reading)</strong> เป็นหนึ่งในวิธีที่มีประสิทธิภาพสูงสุดในการเพิ่มความเข้าใจในการอ่าน ช่วยเสริมสร้างสมาธิ และช่วยในการเรียนรู้ภาษาใหม่ๆ เมื่อดวงตาและหูของคุณได้รับข้อมูลเดียวกันไปพร้อมกัน สมองจะสามารถประมวลผลคำศัพท์และโครงสร้างประโยคได้เร็วกว่าการฟังหรือการอ่านเพียงอย่างเดียวมาก</p>
+        <p>อย่างไรก็ตาม แอปอ่านหนังสือทั่วไปมักแยกการฟังกับการอ่านออกจากกัน บางแอปเล่นเสียงแต่ไม่แสดงตำแหน่งว่าอ่านถึงจุดไหน ในขณะที่บางแอปใช้แถบสีทึบที่แสบตาและไม่เข้ากับธีมมืด</p>
+        <p>Shiori EPUB Reader ช่วยแก้ปัญหานี้ด้วยระบบ <strong>ไฮไลต์แบบคาราโอเกะ (Karaoke Highlighting)</strong> ที่ซิงค์กับเสียงอ่านอย่างแม่นยำ ติดตามข้อความได้หลายระดับทั้งระดับคำ ย่อหน้า และท่อนประโยค พร้อมทั้งปรับแต่งสีและความโปร่งใสได้อย่างอิสระ</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">เคอร์เซอร์ขยับตามคำพูด</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">กรอบย่อหน้าตีกรอบสายตา</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10 พรีเซ็ตสี + ปรับความโปร่งใส</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">เสริมสมาธิและการเรียนภาษา</div>
+          </div>
+        </div>
+
+        <h2>ทำไมการไฮไลต์แบบคาราโอเกะจึงสำคัญ</h2>
+        <ul class="article-bullet-list">
+          <li><strong>การเรียนภาษาและการออกเสียง:</strong> ฟังการออกเสียงที่ถูกต้องไปพร้อมกับการดูตัวสะกดและการแบ่งคำแบบเรียลไทม์</li>
+          <li><strong>ช่วยเรื่องสมาธิและผู้มีภาวะ ADHD:</strong> แถบไฮไลต์ที่ขยับตามเสียงอ่านทำหน้าที่เป็นจุดยึดสายตา ช่วยไม่ให้หลุดโฟกัสเมื่อเจอเนื้อหาที่ซับซ้อน</li>
+          <li><strong>สบายตาในทุกธีม:</strong> ปรับระดับความโปร่งใส (Opacity) ได้อย่างละเอียด สบายตาไม่ว่าจะเปิดในธีมกลางวันหรือโหมดมืดสนิท</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ระดับการไฮไลต์</th><th>การแสดงผลบนหน้าจอ</th><th>คำแนะนำและการใช้งาน</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight (ไฮไลต์คำ)</strong></td><td>เคอร์เซอร์ไฮไลต์ขยับตามคำที่กำลังอ่าน</td><td>ตั้งค่าความทึบแสง 50–55% สีม่วง/ส้ม เพื่อการกวาดสายตาที่ชัดเจน</td></tr>
+              <tr><td><strong>Paragraph highlight (ย่อหน้า)</strong></td><td>กรอบสีโปร่งแสงครอบย่อหน้าที่กำลังอ่าน</td><td>ตั้งค่าความทึบแสง 25–30% เพื่อตีกรอบสายตาโดยไม่แย่งความเด่นของคำ</td></tr>
+              <tr><td><strong>Chunk highlight (ท่อนวลี)</strong></td><td>เน้นกลุ่มคำหรือวลีตามจังหวะเว้นวรรค</td><td>ช่วยจับใจความประโยคยาวๆ ได้อย่างลื่นไหล</td></tr>
+              <tr><td><strong>Aloud word (คำแปล)</strong></td><td>ไฮไลต์คำในแถบแปลภาษาไปพร้อมกับเสียงอ่าน</td><td>ช่วยในการเทียบคำศัพท์แปลภาษาแบบเรียลไทม์</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ใช้งานออฟไลน์ได้ 100%:</strong><br />
+          ระบบไฮไลต์คาราโอเกะทำงานร่วมกับเอ็นจิน TTS ในเครื่อง Android โดยตรง สามารถฟังและอ่านตามได้ทุกที่แม้ไม่มีสัญญาณอินเทอร์เน็ต
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>テキスト読み上げ（TTS）の音声を聞きながら画面上の文字を目で追う「バイモーダル・リーディング（二重感覚読書）」は、読書理解力を高め、集中力を維持し、語学学習を加速させる最も効果的な手法の一つです。</p>
+        <p>Shiori EPUBリーダーは、音声と完全に同期する**カラオケ風ハイライト機能**を標準搭載。単語単位、段落単位、フレーズ単位で多層的に追従し、10色のプリセットと不透明度スライダーで目に優しい最適なカラー設定が可能です。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">単語ごとのカラオケ追従</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">段落ごとの背景フレーム</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10色プリセット＆透明度調整</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">集中力UP・語学学習に最適</div>
+          </div>
+        </div>
+
+        <h2>音声同期カラオケハイライトのメリット</h2>
+        <ul class="article-bullet-list">
+          <li><strong>語学学習と発音の定着：</strong> ネイティブの発音を聴きながら、正確なスペルや単語の区切りをリアルタイムに確認。</li>
+          <li><strong>集中力維持とADHDサポート：</strong> 動くハイライトが視線のアンカーとなり、難解な長文でも集中力を途切れさせません。</li>
+          <li><strong>ダークテーマでも目に優しい：</strong> 透明度を細かく調整できるため、夜間読書でも眩しさを感じることなく快適です。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ハイライトレベル</th><th>表示要素</th><th>推奨設定と用途</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight（単語）</strong></td><td>発話中の単語を追従するアクティブカーソル</td><td>不透明度50〜55％。視線誘導に最適</td></tr>
+              <tr><td><strong>Paragraph highlight（段落）</strong></td><td>現在読んでいる段落全体を囲む背景色</td><td>不透明度25〜30％。読書エリアの把握に便利</td></tr>
+              <tr><td><strong>Chunk highlight（句）</strong></td><td>文節・フレーズ単位のグループハイライト</td><td>自然なポーズやイントネーションの把握に有効</td></tr>
+              <tr><td><strong>Aloud word（翻訳）</strong></td><td>翻訳パネル内の対応単語ハイライト</td><td>多言語翻訳パネルと同期した語彙学習に活躍</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>完全オフライン対応：</strong><br />
+          Android端末内の標準TTSエンジンを使用するため、機内モードや電波の届かない場所でも快適に利用可能です。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>边听语音朗读（TTS）边用双眼跟随屏幕上的文字——即所谓的“双模阅读（Bimodal Reading）”，已被证实能够极大提升阅读理解深度、强化专注力并加速外语习得。眼耳并用能让大脑处理词汇与句式结构的速度远超单一模式。</p>
+        <p>Shiori EPUB 阅读器内置了毫秒级同步的**卡拉OK式字词高亮**。在朗读过程中，Shiori 支持在词语、段落和语句多层级精准追踪，并支持自由调节高亮色彩与透明度，完美适配各类主题。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">逐词实时动态追踪</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">段落视觉对焦框架</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10 种配色与透明度微调</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">外语学习与专注利器</div>
+          </div>
+        </div>
+
+        <h2>同步卡拉OK高亮的核心价值</h2>
+        <ul class="article-bullet-list">
+          <li><strong>外语学习与发音校验：</strong> 实时聆听地道发音，精准校对拼写与断句分词。</li>
+          <li><strong>防走神与 ADHD 辅助：</strong> 动态移动的高亮光标充当视觉锚点，面对密集长文时避免视线漂移。</li>
+          <li><strong>深色模式柔和护眼：</strong> 通过百分比透明度调节，在深色或纯黑背景下柔和清晰不刺眼。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>高亮层级</th><th>视觉表现</th><th>推荐设置与作用</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight（词语高亮）</strong></td><td>跟随正在发音的词语平滑跳动的动态光标</td><td>推荐透明度 50–55%，紫色或橙色追踪最清晰</td></tr>
+              <tr><td><strong>Paragraph highlight（段落高亮）</strong></td><td>当前朗读段落的浅色半透明背景框</td><td>推荐透明度 25–30%，营造对焦氛围而不抢焦点</td></tr>
+              <tr><td><strong>Chunk highlight（分块高亮）</strong></td><td>短语及意群层级的高亮分组</td><td>帮助把握长难句的停顿与语调节奏</td></tr>
+              <tr><td><strong>Aloud word（翻译词汇）</strong></td><td>多语言对照翻译面板中的同步词汇高亮</td><td>方便边听原著边对照多语种翻译学习</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>100% 离线可用：</strong><br />
+          卡拉OK高亮基于安卓设备内置的本地 TTS 引擎，无需网络连接即可在飞机、地铁等无网环境下畅听畅读。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Ouvir a conversão de texto em fala (TTS) enquanto acompanha visualmente as palavras na tela — prática conhecida como <strong>leitura bimodal</strong> — é uma das formas mais eficazes de melhorar a compreensão, manter o foco e aprender novos idiomas.</p>
+        <p>O Shiori EPUB Reader integra um **destaque sincronizado em estilo karaoke** que acompanha o texto em vários níveis (palavra, parágrafo e bloco de frases), com paleta de 10 cores e controle fino de transparência.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Cursor Palavra por Palavra</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Moldura de Parágrafo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10 Cores e Opacidade</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">Foco e Aprendizado Bimodal</div>
+          </div>
+        </div>
+
+        <h2>Por Que o Destaque em Karaoke Faz a Diferença</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Aprendizado de idiomas:</strong> Ouça a pronúncia correta acompanhando a ortografia em tempo real.</li>
+          <li><strong>Foco e suporte ao TDAH:</strong> O destaque em movimento evita a dispersão visual em textos longos.</li>
+          <li><strong>Contraste agradável:</strong> Perfeito para leitura noturna sem ofuscar a visão em temas escuros.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Nível de Destaque</th><th>Elemento Visual</th><th>Configuração Recomendada</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight</strong></td><td>Cursor ativo que acompanha a palavra falada</td><td>Opacidade em 50–55% para visualização nítida</td></tr>
+              <tr><td><strong>Paragraph highlight</strong></td><td>Caixa semitransparente ao redor do parágrafo</td><td>Opacidade em 25–30% para delimitar sem ofuscar</td></tr>
+              <tr><td><strong>Chunk highlight</strong></td><td>Destaque de blocos de frases e orações</td><td>Ajuda a acompanhar a cadência natural da fala</td></tr>
+              <tr><td><strong>Aloud word</strong></td><td>Destaque sincronizado na janela de tradução</td><td>Ideal para estudo bilíngue em tempo real</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Funcionamento 100% Offline:</strong><br />
+          O recurso utiliza o motor de TTS nativo do seu Android, funcionando perfeitamente sem conexão com a internet.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Escuchar la narración de texto a voz (TTS) mientras sigues visualmente las palabras en pantalla —la llamada <strong>lectura bimodal</strong>— es uno de los métodos más eficaces para multiplicar la comprensión lectora, potenciar la concentración y aprender idiomas.</p>
+        <p>Shiori EPUB Reader ofrece un **resaltado sincronizado estilo karaoke** que rastrea la lectura palabra por palabra, párrafo a párrafo o por bloques de oraciones, con selector de 10 colores y control de opacidad totalmente personalizable.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Seguimiento Palabra a Palabra</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Encuadre de Párrafo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">10 Colores y Control de Opacidad</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🧠</span>
+            <div class="stat-badge-title">Lectura Bimodal y Concentración</div>
+          </div>
+        </div>
+
+        <h2>Por Qué el Resaltado Karaoke Es una Ventaja Clave</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Aprendizaje de idiomas y pronunciación:</strong> Escucha la pronunciación nativa mientras compruebas la ortografía exacta en tiempo real.</li>
+          <li><strong>Enfoque y apoyo para el TDAH:</strong> El cursor visual actúa como ancla evitando distracciones en párrafos densos.</li>
+          <li><strong>Contraste adaptable y cómodo:</strong> Los colores y la transparencia se ajustan a la perfección a temas oscuros y AMOLED.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Nivel de Resaltado</th><th>Elemento Visual</th><th>Ajuste y Propósito Recomendado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Word highlight</strong></td><td>Cursor activo sobre la palabra pronunciada</td><td>Opacidad al 50–55% para un seguimiento nítido</td></tr>
+              <tr><td><strong>Paragraph highlight</strong></td><td>Fondo semitransparente sobre el párrafo activo</td><td>Opacidad al 25–30% para enmarcar el contexto</td></tr>
+              <tr><td><strong>Chunk highlight</strong></td><td>Agrupación de frases y oraciones</td><td>Facilita el ritmo y las pausas naturales de lectura</td></tr>
+              <tr><td><strong>Aloud word</strong></td><td>Resaltado sincronizado en el panel de traducción</td><td>Perfecto para comparar vocabulario bilingüe al instante</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>100% Funcional sin Conexión:</strong><br />
+          Utiliza el motor TTS integrado de Android, por lo que puedes leer y escuchar en modo avión o sin datos en cualquier lugar.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Configuration Guide (5 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่าและใช้งานจริง (5 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定と使い方ガイド（5つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">设置与实操指南（5 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia de Configuração Passo a Passo (5 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía de Configuración Paso a Paso (5 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Open TTS Listening Settings</div>
+          <div class="step-desc">
+            <p>From your bookshelf, tap the <strong>Settings</strong> icon in the top toolbar and select <strong>TTS Listening</strong>.</p>
+            <p>Scroll down to the highlighting section. You will find dedicated controls for <strong>Paragraph highlight</strong>, <strong>Chunk highlight</strong>, <strong>Word highlight</strong>, and <strong>Aloud word (translation)</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดเมนูตั้งค่า TTS Listening</div>
+          <div class="step-desc">
+            <p>จากหน้ารวมหนังสือ (Bookshelf) ให้แตะไอคอน <strong>Settings</strong> บนแถบเครื่องมือด้านบน แล้วเลือก <strong>TTS Listening</strong></p>
+            <p>เลื่อนลงมาที่ส่วนการไฮไลต์ คุณจะพบเมนูตั้งค่าสำหรับ <strong>Paragraph highlight</strong>, <strong>Chunk highlight</strong>, <strong>Word highlight</strong> และ <strong>Aloud word (translation)</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>TTS設定メニューを開く</div>
+          <div class="step-desc">
+            <p>本棚画面の上部ツールバーにある <strong>Settings</strong>（設定）アイコンをタップし、<strong>TTS Listening</strong> を選択します。</p>
+            <p>画面下部へスクロールすると、<strong>Paragraph highlight</strong>（段落）、<strong>Chunk highlight</strong>（句）、<strong>Word highlight</strong>（単語）などのハイライト設定項目が表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>进入 TTS 听书设置菜单</div>
+          <div class="step-desc">
+            <p>在书架界面点击顶部工具栏的 <strong>Settings</strong>（设置）图标，然后选择 <strong>TTS Listening</strong>。</p>
+            <p>下滑至高亮设置区域，即可看到 <strong>Paragraph highlight</strong>（段落）、<strong>Chunk highlight</strong>（分块）、<strong>Word highlight</strong>（词语）及翻译高亮专属选项。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Abra as Configurações de TTS Listening</div>
+          <div class="step-desc">
+            <p>Na estante de livros, toque no ícone de <strong>Settings</strong> na barra superior e selecione <strong>TTS Listening</strong>.</p>
+            <p>Role até a seção de destaque para acessar as opções de <strong>Paragraph highlight</strong>, <strong>Chunk highlight</strong> e <strong>Word highlight</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Abre los Ajustes de TTS Listening</div>
+          <div class="step-desc">
+            <p>Desde la estantería, toca el icono de <strong>Settings</strong> en la barra superior y selecciona <strong>TTS Listening</strong>.</p>
+            <p>Baja hasta la sección de resaltado para configurar <strong>Paragraph highlight</strong>, <strong>Chunk highlight</strong> y <strong>Word highlight</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-tts-highlight-levels-settings.jpg" alt="TTS Listening settings screen in Shiori showing options for Paragraph highlight, Chunk highlight, Word highlight, and translation highlight levels" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Customize Word Highlight Color &amp; Opacity</div>
+          <div class="step-desc">
+            <p>Tap <strong>Word highlight</strong>. The color picker modal opens with 10 vibrant presets and a theme default option.</p>
+            <p>Use the <strong>Opacity</strong> slider (50–55% recommended) to ensure words stand out clearly without hiding underlying text or punctuation. Inspect the live preview box and tap <strong>OK</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ปรับแต่งสีและความโปร่งใสของ Word Highlight</div>
+          <div class="step-desc">
+            <p>แตะที่ <strong>Word highlight</strong> หน้าต่างเลือกสีจะแสดงชุดสีพรีเซ็ต 10 สี พร้อมตัวเลือกสีตามธีม</p>
+            <p>เลื่อนแถบ <strong>Opacity</strong> (แนะนำ 50–55%) เพื่อให้ตัวหนังสือที่กำลังอ่านเด่นชัดโดยไม่บดบังเครื่องหมายวรรคตอน ดูตัวอย่างในกล่อง Sample แล้วแตะ <strong>OK</strong> เพื่อบันทึก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>単語ハイライトの色と透明度をカスタマイズ</div>
+          <div class="step-desc">
+            <p><strong>Word highlight</strong> をタップします。10色のカラーパレットとテーマ標準設定ダイアログが表示されます。</p>
+            <p><strong>Opacity</strong>（不透明度）スライダー（50〜55％推奨）で文字が隠れない自然な濃さに調整し、サンプルプレビューを確認して <strong>OK</strong> をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>自定义词语高亮颜色与透明度</div>
+          <div class="step-desc">
+            <p>点击 <strong>Word highlight</strong>。弹窗将展示 10 种配色色块与跟随主题默认选项。</p>
+            <p>滑动 <strong>Opacity</strong>（不透明度）滑块（推荐 50–55%），在不遮挡标点符号的前提下确保光标清晰可见，确认实时预览后点击 <strong>OK</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Personalize a Cor e Opacidade do Word Highlight</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Word highlight</strong>. A janela exibe 10 amostras de cores e a opção padrão do tema.</p>
+            <p>Ajuste o controle deslizante de <strong>Opacity</strong> (50–55% recomendado) para não cobrir a pontuação, confira a prévia e toque em <strong>OK</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Personaliza el Color y la Opacidad de la Palabra</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>Word highlight</strong> para abrir el selector con 10 colores y la opción del tema.</p>
+            <p>Ajusta el control de <strong>Opacity</strong> (50–55% sugerido) para no tapar los signos de puntuación, revisa la muestra y pulsa <strong>OK</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-word-highlight-color-picker-dialog.jpg" alt="Word highlight color picker dialog showing 10 color swatches, opacity slider set to 55 percent, and sample text preview" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Configure Paragraph &amp; Chunk Highlighting</div>
+          <div class="step-desc">
+            <p>Tap <strong>Paragraph highlight</strong> to add a surrounding visual container for the active paragraph.</p>
+            <p>Choose a gentle accent color with a subtle opacity level (25–30%). This gently anchors your peripheral vision while the word highlight moves across the line.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ตั้งค่าการไฮไลต์ย่อหน้าและท่อนประโยค</div>
+          <div class="step-desc">
+            <p>แตะที่ <strong>Paragraph highlight</strong> เพื่อสร้างกรอบไฮไลต์ล้อมรอบย่อหน้าที่กำลังอ่าน</p>
+            <p>เลือกโทนสีอ่อนและตั้งค่าความทึบแสงบางๆ (25–30%) เพื่อช่วยตีกรอบสายตาให้อยู่ในย่อหน้าปัจจุบัน โดยไม่แย่งความโดดเด่นไปจากคำที่กำลังอ่าน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>段落・フレーズハイライトを設定</div>
+          <div class="step-desc">
+            <p><strong>Paragraph highlight</strong> をタップして、現在読んでいる段落全体を囲む背景フレームを設定します。</p>
+            <p>淡いアクセントカラーと控えめな不透明度（25〜30％）を選ぶことで、単語の動きを邪魔せず段落エリアを優しく強調できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>配置段落与短语意群高亮</div>
+          <div class="step-desc">
+            <p>点击 <strong>Paragraph highlight</strong> 为当前朗读段落设置半透明背景框。</p>
+            <p>推荐选用柔和色彩并搭配较低的透明度（25–30%），既能辅助视线锁定在当前段落，又不会喧宾夺主影响词语追踪。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Configure o Destaque de Parágrafo e Bloco</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Paragraph highlight</strong> para definir a moldura do parágrafo ativo.</p>
+            <p>Escolha uma cor suave e opacidade discreta (25–30%) para manter o foco na leitura sem ofuscar a palavra falada.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Configura el Resaltado de Párrafo y Frase</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>Paragraph highlight</strong> para dar un marco visual al párrafo en curso.</p>
+            <p>Elige un tono suave y una opacidad discreta (25–30%) para centrar tu visión periférica sin competir con el cursor de la palabra.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-paragraph-highlight-color-picker.jpg" alt="Paragraph highlight color picker dialog in Shiori showing color selection options and opacity slider set to 28 percent" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Start Read-Aloud &amp; Watch Real-Time Tracking</div>
+          <div class="step-desc">
+            <p>Open any book and tap the <strong>Play</strong> button on the bottom control bar (or the headphone icon in the top bar).</p>
+            <p>As TTS speaks, Shiori frames the current paragraph in your background color and moves the vibrant word cursor smoothly across every spoken word in real time.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>กดเล่นเสียงอ่านและดูการไฮไลต์คาราโอเกะแบบเรียลไทม์</div>
+          <div class="step-desc">
+            <p>เปิดหนังสือเล่มใดก็ได้ แล้วแตะปุ่ม <strong>Play</strong> บนแถบควบคุมด้านล่าง (หรือไอคอนหูฟังด้านบน)</p>
+            <p>เมื่อเสียงอ่านเริ่มต้น Shiori จะแสดงกรอบย่อหน้าและเลื่อนเคอร์เซอร์ไฮไลต์สีสดใสไปตามคำที่กำลังเปล่งเสียงอย่างลื่นไหลและแม่นยำ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>朗読を開始してリアルタイム追従を体験</div>
+          <div class="step-desc">
+            <p>本を開き、下部コントロールバーの <strong>Play</strong> ボタン（または上部のヘッドホンアイコン）をタップします。</p>
+            <p>音声が始まると、段落フレームが表示され、発音に合わせて単語ハイライトカーソルが滑らかに移動します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>开启听书朗读，体验实时同步追踪</div>
+          <div class="step-desc">
+            <p>打开任意图书，轻触底部控制栏的 <strong>Play</strong>（播放）按钮（或顶部耳机图标）。</p>
+            <p>语音响起的同时，Shiori 立即点亮当前段落背景，高亮光标丝滑跟随每一个被朗读的单词流畅跃动。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Inicie a Leitura e Veja o Acompanhamento ao Vivo</div>
+          <div class="step-desc">
+            <p>Abra um livro e toque no botão <strong>Play</strong> na barra inferior (ou no ícone de fone de ouvido no topo).</p>
+            <p>Assim que o áudio começar, o Shiori destaca o parágrafo e move o cursor suavemente por cada palavra pronunciada.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Inicia la Lectura y Disfruta del Seguimiento en Vivo</div>
+          <div class="step-desc">
+            <p>Abre cualquier libro y pulsa el botón <strong>Play</strong> en la barra inferior (o el auricular superior).</p>
+            <p>En cuanto comience la voz, Shiori enmarcará el párrafo y moverá el cursor con total fluidez por cada palabra leída.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-karaoke-word-highlight-in-action.jpg" alt="Reading page in The Prince showing real-time karaoke word highlight on the active spoken word with paragraph bounding box" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Seamless Continuous Reading Across Chapters</div>
+          <div class="step-desc">
+            <p>As narration proceeds, Shiori automatically scrolls the document so the active sentence stays centered on screen.</p>
+            <p>Enjoy uninterrupted listening: Shiori turns pages and transitions across chapter boundaries automatically with full speed and pitch controls.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>อ่านต่อเนื่องข้ามบทอัตโนมัติ ไม่ต้องคอยกดเลื่อน</div>
+          <div class="step-desc">
+            <p>ขณะฟังเสียงอ่าน Shiori จะเลื่อนหน้าจออัตโนมัติเพื่อให้ประโยคที่กำลังอ่านอยู่ตรงกลางสายตาเสมอ</p>
+            <p>ระบบจะอ่านต่อเนื่องข้ามบทและพลิกหน้าให้อัตโนมัติ พร้อมปรับความเร็วและระดับเสียงได้อิสระจากแถบควบคุมด้านล่าง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>章をまたぐ自動スクロール＆連続再生</div>
+          <div class="step-desc">
+            <p>朗読が進むにつれて、Shioriが画面を自動スクロールし、発話中の文が常に画面中央に保たれます。</p>
+            <p>章の境目も自動でページ送りされ、手動操作不要で快適な連続リスニングを楽しめます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>跨章节无缝自动滚屏与连续朗读</div>
+          <div class="step-desc">
+            <p>随着朗读推进，Shiori 会平滑自动滚屏，使正在朗读的句子始终保持在屏幕居中舒适区域。</p>
+            <p>支持自动跨章节翻页连续播放，无需任何手动干预，底部控制栏随时支持微调语速与语调。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Leitura Contínua e Automática Entre Capítulos</div>
+          <div class="step-desc">
+            <p>O Shiori rola o texto automaticamente mantendo a frase em leitura centralizada na tela.</p>
+            <p>A transição de capítulos é 100% automática, permitindo longas sessões de leitura com controle total de velocidade.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Lectura Continua y Desplazamiento Automático</div>
+          <div class="step-desc">
+            <p>Shiori desplaza el texto automáticamente para mantener la frase que se está leyendo en el centro de la pantalla.</p>
+            <p>Pasa de capítulo sin interrupciones y ajusta velocidad y tono en cualquier momento desde los controles inferiores.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-synchronized-reading-karaoke-with-controls.jpg" alt="Reader view with full audio playback controls showing synchronized karaoke highlight on word collectively during continuous reading" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อยและการแก้ปัญหา (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">トラブルシューティング＆よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题与答疑（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Solução de Problemas e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I read just a single sentence aloud instead of playing the whole chapter?</div>
+        <div class="faq-a">Yes. Long-press any word or sentence in the reader, then tap <strong>Speak</strong> from the context menu. Shiori will read that specific passage with karaoke highlighting and stop automatically.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถแตะเลือกให้อ่านเฉพาะประโยคที่ต้องการแทนการเล่นทั้งบทได้หรือไม่?</div>
+        <div class="faq-a">ทำได้ครับ เพียงแตะค้างที่ข้อความหรือประโยคที่ต้องการในหน้าอ่าน แล้วเลือกเมนู <strong>Speak (อ่านออกเสียง)</strong> Shiori จะอ่านเฉพาะประโยคนั้นพร้อมไฮไลต์คาราโอเกะแล้วหยุดให้อัตโนมัติ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">章全体ではなく、特定の1文だけを読み上げさせることはできますか？</div>
+        <div class="faq-a">はい。読書画面で聴きたい文を長押しし、ポップアップメニューから <strong>Speak</strong>（発音）を選択すると、その部分だけをカラオケハイライト付きで再生できます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">可以仅朗读特定难句而不是整章播放吗？</div>
+        <div class="faq-a">完全可以。在阅读器中长按选中的生词或难句，在弹出菜单中点击 <strong>Speak</strong>（朗读），Shiori 便会以卡拉OK高亮精准朗读该句并在读完后自动停止。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Posso ouvir apenas uma frase específica em vez de tocar o capítulo inteiro?</div>
+        <div class="faq-a">Sim. Basta pressionar e segurar o texto desejado e selecionar <strong>Speak</strong> no menu flutuante para que o Shiori leia apenas aquele trecho com destaque sincronizado.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puedo escuchar solo una frase concreta en lugar de reproducir todo el capítulo?</div>
+        <div class="faq-a">Sí. Mantén pulsada cualquier palabra o frase en el lector y toca <strong>Speak</strong> en el menú contextual; Shiori leerá ese pasaje con resaltado karaoke y se detendrá al terminar.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How do I keep reading controls accessible while using other apps?</div>
+        <div class="faq-a">Turn on <strong>Floating Controls</strong> in TTS Listening settings. A compact floating panel will appear on your Android screen, allowing you to control playback, pause, and skip while multitasking or taking notes in other apps.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถควบคุมการฟังเสียงอ่านขณะสลับไปใช้งานแอปอื่นได้อย่างไร?</div>
+        <div class="faq-a">เปิดใช้งานตัวเลือก <strong>Floating Controls (ปุ่มควบคุมลอย)</strong> ในการตั้งค่า TTS Listening หน้าต่างควบคุมขนาดกะทัดรัดจะลอยอยู่บนหน้าจอ ให้คุณกดหยุด ข้าม หรือปรับเสียงได้สะดวกแม้กำลังจดโน้ตในแอปอื่น</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">他のアプリを使いながら朗読操作を続けるにはどうすればいいですか？</div>
+        <div class="faq-a">TTS設定で <strong>Floating Controls</strong>（フローティング操作パネル）を有効にすると、画面上に小さな操作パネルが常駐し、メモアプリなどを使いながらでも再生・停止が可能です。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">切换到其他应用时如何便捷控制听书朗读？</div>
+        <div class="faq-a">在 TTS 设置中开启 <strong>Floating Controls</strong>（悬浮控制面板）。一个紧凑的可移动悬浮窗将停靠在屏幕边缘，支持在记笔记或使用其他应用时随时暂停、快进。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como manter o controle da leitura ao alternar para outros apps?</div>
+        <div class="faq-a">Ative os <strong>Floating Controls</strong> nas opções de TTS Listening. Um painel flutuante compacto permanecerá sobre a tela para pausar e avançar enquanto você anota em outros aplicativos.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo controlo la lectura mientras uso otras aplicaciones en el móvil?</div>
+        <div class="faq-a">Activa <strong>Floating Controls</strong> en los ajustes de TTS Listening. Aparecerá un panel flotante interactivo en tu pantalla para pausar y avanzar mientras tomas notas en otras apps.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can Shiori automatically switch voices for multi-language books?</div>
+        <div class="faq-a">Yes. Shiori features smart script auto-detection and customizable language priority ordering under <strong>TTS Languages</strong>, ensuring seamless voice switching between Thai, English, Japanese, Chinese, German, and Korean.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori รองรับการสลับเสียงพูดอัตโนมัติในหนังสือที่มีหลายภาษาหรือไม่?</div>
+        <div class="faq-a">รองรับครับ Shiori มีระบบตรวจจับชุดตัวอักษรอัตโนมัติ (Script Auto-detection) และระบบจัดลำดับภาษาในเมนู <strong>TTS Languages</strong> ทำให้สามารถสลับเสียงอ่านระหว่างภาษาไทย อังกฤษ ญี่ปุ่น จีน เกาหลี และเยอรมันได้อย่างแนบเนียน</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">複数言語が混ざった本で音声を自動で切り替えられますか？</div>
+        <div class="faq-a">はい。Shioriは文字体系の自動検出機能を備えており、<strong>TTS Languages</strong> 設定で優先順位を指定することで、日本語、英語、タイ語、中国語などの音声を文中で自動切り替えできます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">多语言混排书籍支持自动切换发音人吗？</div>
+        <div class="faq-a">支持。Shiori 内置智能文字脚本识别引擎，并在 <strong>TTS Languages</strong> 中支持拖拽自定义优先级，在中文、英语、日语、泰语、德语及韩语之间实现无缝自动切音。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O Shiori consegue trocar de voz automaticamente em livros multilíngues?</div>
+        <div class="faq-a">Sim. O Shiori possui detecção automática de escrita e lista de prioridades em <strong>TTS Languages</strong>, alternando vozes suavemente entre diversos idiomas.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Puede Shiori cambiar de voz automáticamente en libros con varios idiomas?</div>
+        <div class="faq-a">Sí. Shiori cuenta con detección automática de escritura y jerarquía de idiomas en <strong>TTS Languages</strong>, alternando voces de forma fluida entre diferentes lenguas.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/multi-language-text-to-speech-android-epub/">Multi-Language Text-to-Speech: One Book, Every Voice on Android</a></li>
+        <li><a href="/blog/text-replacement-regex-epub-android/">Text Replacement &amp; Regex: Fix Pronunciation and Layouts</a></li>
+        <li><a href="/blog/how-to-translate-to-multiple-language/">How to Translate EPUB to Multiple Languages Simultaneously</a></li>
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen: A Touch-by-Touch Guide</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Experience Synchronized Reading Today</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play and enjoy synchronized karaoke highlighting, multi-language speech, and seamless offline reading.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">สัมผัสประสบการณ์การฟังและอ่านไปพร้อมกันวันนี้</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play เพลิดเพลินกับการไฮไลต์คาราโอเกะตามเสียงอ่าน เสียงอ่านหลายภาษา และการอ่านออฟไลน์ที่สมบูรณ์แบบ
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">音声と文字が重なる新しい読書体験を</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、カラオケハイライト同期、多言語音声切替、快適なオフライン読書をお試しください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">立即开启音字同步的高效阅读</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，体验卡拉OK实时高亮、多语种发音自动切换与纯净离线阅读。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Experimente a Leitura Sincronizada Hoje</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader no Google Play e aproveite o destaque em estilo karaoke, áudio multilíngue e leitura offline fluida.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Disfruta de la Lectura Sincronizada Hoy Mismo</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader en Google Play y disfruta del resaltado karaoke en tiempo real, voz multilingüe y lectura offline perfecta.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
