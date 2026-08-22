@@ -278,6 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-title": "How to Connect Komga to Shiori on Android (Covers + Progress Sync)",
       "blog-p24-desc": "Connect your self-hosted Komga server to Shiori on Android using the native REST API to get cover art, full book metadata and reading-progress sync instead of a bare file list.",
 
+      // Blog Post 25
+      "blog-p25-date": "📅 August 22, 2026",
+      "blog-p25-cat": "🏷️ Reading Experience",
+      "blog-p25-title": "The EPUB Is Fine, the Styling Is Broken: Take Back Control on Android",
+      "blog-p25-desc": "Unreadable dark text, wrong fonts, or stretched lines? Learn how Shiori's 4 style overrides easily overrule broken publisher stylesheets.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -570,6 +576,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-cat": "🏷️ เซิร์ฟเวอร์ห้องสมุด",
       "blog-p24-title": "วิธีเชื่อมต่อ Komga เข้ากับ Shiori บน Android (พร้อมภาพปกและการซิงค์ความคืบหน้า)",
       "blog-p24-desc": "เชื่อมต่อเซิร์ฟเวอร์ Komga เข้ากับ Shiori บน Android ด้วย REST API หลักโดยตรง รับภาพปกความละเอียดสูง รายละเอียดหนังสือครบถ้วน และซิงค์ตำแหน่งอ่านกลับเซิร์ฟเวอร์",
+
+      // Blog Post 25
+      "blog-p25-date": "📅 22 สิงหาคม 2026",
+      "blog-p25-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p25-title": "ไฟล์ EPUB ไม่ได้เสีย แต่สไตล์หนังสือพัง: วิธีคุมการแสดงผลบน Android",
+      "blog-p25-desc": "ตัวหนังสือมืดกลืนพื้นหลัง ฟอนต์เพี้ยน หรือเว้นวรรคกว้างจนอ่านยาก? ปลดล็อกการแสดงผลด้วย 4 สวิตช์อัจฉริยะใน Shiori",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -864,6 +876,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-title": "AndroidでKomgaをShioriに接続する方法（表紙・読書進捗の同期対応）",
       "blog-p24-desc": "ネイティブ REST API を使って自作のKomgaサーバーをShioriに接続。表紙画像、詳細な作品情報、読書進捗の双方向同期を完全サポート。",
 
+      // Blog Post 25
+      "blog-p25-date": "📅 2026年8月22日",
+      "blog-p25-cat": "🏷️ 読書体験",
+      "blog-p25-title": "EPUBは壊れていない、崩れているのはスタイルだ：レイアウトを取り戻す方法",
+      "blog-p25-desc": "ダークテーマで文字が読めない、フォントが変わらない問題を解決。Shioriの4つのオーバーライド機能で快適な読書環境を取り戻しましょう。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1156,6 +1174,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-cat": "🏷️ 书库服务器",
       "blog-p24-title": "如何在 Android 上将 Komga 连接至 Shiori（支持封面与进度同步）",
       "blog-p24-desc": "使用原生 REST API 将自建 Komga 漫画与图书服务器连接至 Android 端 Shiori，享受高清封面、完整元数据与双向阅读进度同步。",
+
+      // Blog Post 25
+      "blog-p25-date": "📅 2026年8月22日",
+      "blog-p25-cat": "🏷️ 阅读体验",
+      "blog-p25-title": "EPUB 没坏，坏的是排版样式：在 Android 上夺回排版控制权",
+      "blog-p25-desc": "深色模式下文字隐形、字号锁死或字距过宽？使用 Shiori 的 4 个样式覆盖开关，轻松重获纯净舒适的阅读体验。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1450,6 +1474,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-title": "Como Conectar o Komga ao Shiori no Android (Capas + Sincronização)",
       "blog-p24-desc": "Conecte seu servidor Komga ao Shiori no Android usando a REST API nativa para obter capas, metadados completos e sincronização de leitura.",
 
+      // Blog Post 25
+      "blog-p25-date": "📅 22 de agosto de 2026",
+      "blog-p25-cat": "🏷️ Experiência de Leitura",
+      "blog-p25-title": "O EPUB Está Bom, o Estilo É que Quebrou: Retome o Controle no Android",
+      "blog-p25-desc": "Texto invisível no tema escuro ou fontes travadas? Veja como 4 seletores no Shiori anulam estilos ruins da editora.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1742,6 +1772,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p24-cat": "🏷️ Servidores de Biblioteca",
       "blog-p24-title": "Cómo Conectar Komga a Shiori en Android (Portadas + Progreso)",
       "blog-p24-desc": "Conecta tu servidor Komga a Shiori en Android mediante la REST API nativa para disfrutar de portadas, metadatos completos y sincronización de lectura.",
+
+      // Blog Post 25
+      "blog-p25-date": "📅 22 de agosto de 2026",
+      "blog-p25-cat": "🏷️ Experiencia de Lectura",
+      "blog-p25-title": "El EPUB Está Bien, lo que Falla Es el Estilo: Toma el Control en Android",
+      "blog-p25-desc": "¿Texto ilegible en modo oscuro o fuentes bloqueadas? Aprende a anular hojas de estilo defectuosas con 4 ajustes en Shiori.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

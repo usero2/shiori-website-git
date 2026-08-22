@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The EPUB Is Fine, the Styling Is Broken: How to Take Back Control on Android — Shiori Blog</title>
+  <meta name="description" content="An EPUB that renders as invisible text, the wrong font or stretched, gap-riddled lines is fighting your reader. Four switches in Shiori's reading settings overrule the file's own stylesheet on Android." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/fix-broken-epub-styling-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The EPUB Is Fine, the Styling Is Broken: How to Take Back Control on Android",
+    "description": "An EPUB that renders as invisible text, the wrong font or stretched, gap-riddled lines is fighting your reader. Four switches in Shiori's reading settings overrule the file's own stylesheet on Android.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-22",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/fix-broken-epub-styling-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why is the text nearly invisible when using dark mode?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Many EPUB files contain hard-coded black or dark font colors in their stylesheets because they assumed a white background. Enabling 'Remove font color' strips hardcoded color declarations and lets your theme control text colors."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does changing font size or line spacing have no effect in some books?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Certain publisher stylesheets force fixed pixel sizes or important CSS rules. Turning on 'Disable EPUB styles' ignores publisher CSS and applies your custom font size, line height, and margin settings globally."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will style overrides modify my original EPUB file?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All style overrides operate only during rendering inside Shiori. Your original EPUB file remains 100% untouched and unchanged on your device storage."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.3rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step {
+        flex-direction: row;
+        align-items: center;
+      }
+      .step-text {
+        flex: 1;
+      }
+      .step-image-container {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 22, 2026</span>
+        <span>🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">The EPUB Is Fine, the Styling Is Broken<br><span class="text-gradient">How to Take Back Control on Android</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ไฟล์ EPUB ไม่ได้เสีย แต่สไตล์หนังสือพัง<br><span class="text-gradient">วิธีปรับแต่งและควบคุมการแสดงผลบน Android ด้วยตัวเอง</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">EPUBは壊れていない、崩れているのはスタイルだ<br><span class="text-gradient">Androidで電子書籍のレイアウトを取り戻す方法</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">EPUB 没坏，坏的是排版样式<br><span class="text-gradient">如何在 Android 上夺回电子书排版与字体的控制权</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">O EPUB Está Perfeito, o Estilo É que Está Quebrado<br><span class="text-gradient">Como Retomar o Controle da Leitura no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">El EPUB Está Bien, lo que Falla Es el Estilo<br><span class="text-gradient">Cómo Recuperar el Control de la Lectura en Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('04-text-readable-after-remove-font-color.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🎨</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You download a free EPUB, open it on your phone, and the text is a smear of grey on a black page. Or the letters are half the size you set. Or every line is stretched into rivers of white space. You change the font size in your reader and nothing happens.</p>
+        <p>The file is not corrupt, and your reader is not ignoring you. An EPUB is a small website in a box: it ships its own stylesheet, and that stylesheet can pin the text colour, the font, the alignment and the spacing. When the book's own styling was written for a white page and you read on a dark one, the result is a page you cannot read.</p>
+        <p>Shiori lets you overrule the file. This guide shows the four switches that do it, what each one actually changes, and the order to try them in.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Remove Font Color</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">Disable EPUB Styles</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Force Reader Fonts</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">Auto Contrast</div>
+          </div>
+        </div>
+
+        <h2>Why a book can look broken</h2>
+        <p>Three habits in EPUB stylesheets cause almost all of it:</p>
+        <ul class="article-bullet-list">
+          <li><strong>A hard-coded text colour:</strong> The file says "text is nearly black" because it assumed a white page. Switch to a dark theme and the text disappears into the background.</li>
+          <li><strong>A hard-coded font and size:</strong> The file names its own font — sometimes embedded, sometimes missing on your phone — and states a size relative to nothing useful.</li>
+          <li><strong>Justification with no hyphenation:</strong> Text stretched to both margins on a narrow phone screen opens huge gaps between words that drag your eye down the page.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Switch</th><th>What It Does</th><th>When to Use</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color</strong></td><td>Discards hardcoded font colours; uses theme text colour</td><td>Text is black-on-black or unreadable in Dark/Sepia</td></tr>
+              <tr><td><strong>Auto contrast</strong></td><td>Intelligently adjusts book colours for readability</td><td>When you want to preserve coloured headings or notes</td></tr>
+              <tr><td><strong>Disable EPUB styles</strong></td><td>Ignores publisher CSS layout, margins, and indents</td><td>When font size/line height settings are ignored</td></tr>
+              <tr><td><strong>Force reader fonts</strong></td><td>Replaces embedded book fonts with your selected font</td><td>When the book font is blurry or missing glyphs</td></tr>
+              <tr><td><strong>Clean hidden strings</strong></td><td>Cleans up hidden junk markup left inside the text</td><td>When stray code symbols show up or TTS stumbles</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Safe &amp; Non-destructive:</strong><br />
+          Nothing here modifies your original book file. Every switch changes only how Shiori renders the book, so you can turn them off anytime to restore the publisher's styling.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>เคยไหมเวลาดาวน์โหลดไฟล์ EPUB มาเปิดอ่านบนมือถือ แล้วพบว่าตัวหนังสือกลืนหายไปกับพื้นหลังสีดำ หรือตัวหนังสือเล็กจิ๋วปรับขนาดเท่าไหร่ก็ไม่เปลี่ยน หรือเว้นวรรคคำกระจัดกระจายจนอ่านแทบไม่รู้เรื่อง</p>
+        <p>ไฟล์หนังสือไม่ได้เสียหาย และแอปอ่านไม่ได้รวนครับ แต่ความจริงคือไฟล์ EPUB มีโครงสร้างคล้าย "หน้าเว็บไซต์ย่อส่วน" ซึ่งมาพร้อมไฟล์สไตล์ชีท (CSS) ของผู้จัดพิมพ์เอง หากผู้จัดพิมพ์ระบุสีตัวอักษรเป็นสีดำตายตัว เมื่อคุณเปิดอ่านด้วยโหมดกลางคืน (Dark Theme) ตัวหนังสือจึงกลืนไปกับพื้นหลัง</p>
+        <p>Shiori ออกแบบมาพร้อมฟังก์ชันปลดล็อกการควบคุมสไตล์หนังสือให้คุณปรับแต่งได้ตามใจชอบ คู่มือนี้จะแนะนำ 4 สวิตช์สำคัญที่จะช่วยแก้ปัญหานี้ให้หมดไปอย่างง่ายดาย</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">ลบสีฟอนต์ต้นฉบับ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">ปิดสไตล์ EPUB</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">บังคับใช้ฟอนต์ระบบ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">คอนทราสต์อัตโนมัติ</div>
+          </div>
+        </div>
+
+        <h2>สาเหตุที่ทำให้หน้าหนังสือแสดงผลเพี้ยน</h2>
+        <p>ปัญหาการแสดงผลส่วนใหญ่เกิดจาก 3 สาเหตุหลักในไฟล์ต้นฉบับ:</p>
+        <ul class="article-bullet-list">
+          <li><strong>กำหนดสีตัวอักษรตายตัว (Hard-coded Color):</strong> ไฟล์ระบุสีข้อความเป็นสีดำเพราะคิดว่าผู้อ่านจะเปิดบนหน้าจอสีขาว เมื่อสลับเป็นธีมมืด ตัวหนังสือจึงกลืนหายไปกับพื้นหลัง</li>
+          <li><strong>ระบุชื่อฟอนต์และขนาดตายตัว:</strong> หนังสือบางเล่มฝังฟอนต์เฉพาะที่เครื่องไม่มี หรือกำหนดขนาดเป็นพิกเซล ทำให้ปุ่มปรับขนาดตัวอักษรของแอปไม่ทำงาน</li>
+          <li><strong>กระจายข้อความชิดขอบซ้าย-ขวา (Justify):</strong> เมื่อเปิดอ่านบนจอมือถือที่หน้าจอแคบ จะเกิดช่องว่างระหว่างคำขนาดใหญ่จนอ่านสะดุด</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>สวิตช์ควบคุม</th><th>หน้าที่การทำงาน</th><th>กรณีที่ควรเปิดใช้งาน</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color (ลบสีฟอนต์)</strong></td><td>ตัดสีข้อความที่ฝังมา แล้วใช้สีตามธีมของแอป</td><td>เมื่อเปิดธีมมืดหรือซีเปียแล้วตัวหนังสือกลืนกับพื้นหลัง</td></tr>
+              <tr><td><strong>Auto contrast (ปรับคอนทราสต์)</strong></td><td>คงสีเดิมไว้ แต่ปรับระดับความสว่างให้อ่านออก</td><td>หนังสือที่มีหัวข้อหลากสีหรือตำราเรียนที่ต้องการเน้นสี</td></tr>
+              <tr><td><strong>Disable EPUB styles (ปิด CSS หนังสือ)</strong></td><td>ยกเลิกสไตล์การจัดหน้าและระยะขอบของหนังสือทั้งหมด</td><td>เมื่อปรับขนาดตัวอักษรหรือระยะห่างบรรทัดแล้วไม่เปลี่ยน</td></tr>
+              <tr><td><strong>Force reader fonts (บังคับใช้ฟอนต์)</strong></td><td>แทนที่ฟอนต์ที่ฝังมาด้วยฟอนต์ที่คุณเลือกในแอป</td><td>เมื่อฟอนต์เดิมอ่านยาก สระลอย หรือไม่มีภาษาไทย</td></tr>
+              <tr><td><strong>Clean hidden strings (ล้างโค้ดขยะ)</strong></td><td>ทำความสะอาดแท็กโค้ดหรือสัญลักษณ์แปลกปลอมในเนื้อหา</td><td>เมื่อมีตัวอักษรประหลาดโผล่ขึ้นมา หรือเสียง TTS อ่านสะดุด</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ปลอดภัย ไม่กระทบไฟล์ต้นฉบับ:</strong><br />
+          สวิตช์เหล่านี้ควบคุมเฉพาะการเรนเดอร์แสดงผลบนหน้าจอของ Shiori เท่านั้น ไฟล์ EPUB ต้นฉบับในเครื่องของคุณจะไม่ถูกแก้ไขหรือเปลี่ยนแปลงใดๆ ทั้งสิ้น
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>無料のEPUBをダウンロードしてスマートフォンで開いたとき、ダークテーマなのに文字が黒くて読めなかったり、文字サイズを変更しても反映されなかったり、単語間の空白が不自然に広がっていたりした経験はありませんか？</p>
+        <p>ファイルが壊れているわけでも、リーダーが不具合を起こしているわけでもありません。EPUBは内部に独自のスタイルシート（CSS）を持っています。制作者が白い背景を前提にして文字色を黒に固定していると、ダークモードにした際に文字が背景と同化してしまいます。</p>
+        <p>Shioriなら、本のスタイルシートを上書きして自分好みの快適な読書環境を取り戻せます。本ガイドでは4つの主要な切り替えスイッチの使い方を詳しく解説します。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">文字色をクリア</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">EPUBスタイル無効化</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">指定フォント強制</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">自動コントラスト</div>
+          </div>
+        </div>
+
+        <h2>本が崩れて見える主な原因</h2>
+        <ul class="article-bullet-list">
+          <li><strong>文字色の固定指定：</strong> 白背景前提で文字色が指定されているため、ダークテーマで背景と同化して読めなくなります。</li>
+          <li><strong>フォントやサイズが固定されている：</strong> 埋め込みフォントや絶対指定サイズにより、リーダー側のサイズ調整が効きません。</li>
+          <li><strong>両端揃えによる極端な余白：</strong> 画面幅の狭いスマホで無理に両端を揃えようとして単語間に巨大な空白が生じます。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>スイッチ</th><th>機能</th><th>使用する場面</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color</strong></td><td>固定された文字色を解除し、テーマ色を適用</td><td>ダークやセピアで文字が読みにくい場合</td></tr>
+              <tr><td><strong>Auto contrast</strong></td><td>元の色味を保ちつつ視認性を自動補正</td><td>見出しの色分けなどを保持したい場合</td></tr>
+              <tr><td><strong>Disable EPUB styles</strong></td><td>書籍側のCSSを破棄しアプリ標準で統一</td><td>文字サイズや行間設定が反映されない場合</td></tr>
+              <tr><td><strong>Force reader fonts</strong></td><td>埋め込みフォントをアプリで指定したフォントに置換</td><td>文字の表示が乱れる、好みのフォントで読みたい場合</td></tr>
+              <tr><td><strong>Clean hidden strings</strong></td><td>不要な非表示タグやゴミ文字を自動クリーニング</td><td>余計な記号が表示されたりTTSが引っかかる場合</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>元のファイルは無傷で安心：</strong><br />
+          これらの設定はShiori内部での描画時のみ適用されます。端末に保存されている元のEPUBファイル自体が書き換えられることはありません。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>你是否遇到过这样的情况：下载了一本免费的 EPUB 电子书，在手机上打开却发现深色模式下文字几乎隐形？或者无论怎么调整字号字体大小都纹丝不动？甚至排版两侧对齐留出了巨大的单词空白？</p>
+        <p>这并非文件损坏，也不是阅读器出故障。EPUB 本质上是一个打包的网页，自带出版社的样式表（CSS）。当原始样式锁死了文字颜色和字号，而在深色背景下阅读时，就会出现严重的显示冲突。</p>
+        <p>Shiori 赋予您完全覆盖书籍样式的能力。本文将为您详细介绍 4 个关键的样式覆盖开关及其使用场景。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">移除固定字体颜色</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">禁用图书 EPUB 样式</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">强制使用阅读器字体</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">智能自动对比度</div>
+          </div>
+        </div>
+
+        <h2>导致图书排版混乱的罪魁祸首</h2>
+        <ul class="article-bullet-list">
+          <li><strong>写死的字体颜色：</strong> 出版社预设了黑色字体，导致切换深色主题时文字隐入背景。</li>
+          <li><strong>锁死字体与字号：</strong> 强制使用未适配手机的内嵌字体或绝对像素单位，导致阅读器字号缩放失效。</li>
+          <li><strong>无断字的两端对齐：</strong> 在狭窄的手机屏幕上强行两端对齐，拉出极不协调的巨大字间距。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>覆盖开关</th><th>功能效果</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color</strong></td><td>清除内嵌字体颜色，完全遵循阅读器主题色彩</td><td>深色或羊皮纸模式下文字难以辨认时</td></tr>
+              <tr><td><strong>Auto contrast</strong></td><td>保留颜色层次的同时智能提升文字对比度</td><td>包含彩色标题或重点批注的书籍</td></tr>
+              <tr><td><strong>Disable EPUB styles</strong></td><td>完全忽略书籍自带的 CSS，采用纯净默认排版</td><td>调整字号、行距、边距无效时</td></tr>
+              <tr><td><strong>Force reader fonts</strong></td><td>强制替换为用户指定的系统或自定义字体</td><td>内嵌字体显示模糊或生僻字缺失时</td></tr>
+              <tr><td><strong>Clean hidden strings</strong></td><td>自动清理文本中残留的无用垃圾标签与乱码</td><td>出现多余隐藏代码或 TTS 朗读停顿时</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>安全无损：</strong><br />
+          所有覆盖操作仅在 Shiori 渲染时生效，绝不会修改您的本地 EPUB 原文件，随时可以恢复原始排版。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você baixa um EPUB gratuito, abre no celular e o texto fica ilegível no tema escuro. Ou o tamanho das letras não muda, ou as linhas ficam com espaços enormes entre as palavras. Você tenta ajustar a fonte no leitor e nada acontece.</p>
+        <p>O arquivo não está corrompido: um EPUB possui sua própria folha de estilos (CSS). Quando a editora define cores de fonte fixas para fundo branco, ao ler em tema escuro o texto desaparece.</p>
+        <p>O Shiori permite que você sobreponha esses estilos com facilidade. Confira abaixo como usar os 4 seletores para retomar o controle da sua leitura.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Remover Cor da Fonte</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">Desativar Estilos EPUB</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Forçar Fontes do Leitor</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">Contraste Automático</div>
+          </div>
+        </div>
+
+        <h2>Por Que um Livro Pode Ficar Desconfigurado</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Cores de texto fixas:</strong> O arquivo força a cor preta; no tema escuro, o texto se funde ao fundo.</li>
+          <li><strong>Fontes e tamanhos travados:</strong> O CSS bloqueia o redimensionamento padrão do aplicativo.</li>
+          <li><strong>Justificação sem hifenização:</strong> Cria espaços gigantescos entre palavras em telas estreitas.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Opção</th><th>O que Faz</th><th>Quando Usar</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color</strong></td><td>Descarta cores fixas do arquivo e usa as cores do tema</td><td>Texto invisível no modo escuro ou sépia</td></tr>
+              <tr><td><strong>Auto contrast</strong></td><td>Ajusta o contraste das cores do livro para melhor leitura</td><td>Livros com títulos coloridos que você quer manter</td></tr>
+              <tr><td><strong>Disable EPUB styles</strong></td><td>Ignora o CSS da editora e aplica layout padronizado</td><td>Quando os ajustes de tamanho e entrelinha não funcionam</td></tr>
+              <tr><td><strong>Force reader fonts</strong></td><td>Substitui as fontes embutidas pela fonte escolhida por você</td><td>Fontes ilegíveis ou com falhas de caracteres</td></tr>
+              <tr><td><strong>Clean hidden strings</strong></td><td>Limpa marcações e códigos ocultos desnecessários</td><td>Quando surgem símbolos estranhos no texto</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Totalmente Seguro:</strong><br />
+          Nenhuma dessas opções altera o arquivo EPUB original salvo no seu aparelho.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Descargas un EPUB gratuito, lo abres en el móvil y el texto resulta casi invisible en el tema oscuro. O las letras son diminutas y no cambian al ajustar el tamaño, o las líneas tienen huecos gigantescos entre palabras.</p>
+        <p>El archivo no está dañado: un EPUB contiene su propia hoja de estilos (CSS). Cuando el editor fija colores oscuros pensando en un fondo blanco, al activar el modo oscuro el texto se vuelve ilegible.</p>
+        <p>Shiori te permite anular los estilos del archivo para disfrutar de una lectura perfecta. Aquí te mostramos los 4 interruptores clave para solucionarlo.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Quitar Color de Fuente</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🚫</span>
+            <div class="stat-badge-title">Desactivar Estilos EPUB</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Forzar Fuentes del Lector</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌓</span>
+            <div class="stat-badge-title">Contraste Automático</div>
+          </div>
+        </div>
+
+        <h2>Por Qué el Formato del Libro Puede Verse Roto</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Color de texto forzado:</strong> El archivo exige texto oscuro, invisible sobre fondo negro.</li>
+          <li><strong>Fuente y tamaño bloqueados:</strong> La hoja de estilos impide que funcione el control de tamaño del lector.</li>
+          <li><strong>Justificación forzada:</strong> Provoca huecos exagerados entre palabras en la pantalla del teléfono.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Interruptor</th><th>Función</th><th>Cuándo Usarlo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Remove font color</strong></td><td>Elimina colores fijos del archivo y aplica los del tema</td><td>Texto oscuro sobre fondo negro o modo sepia</td></tr>
+              <tr><td><strong>Auto contrast</strong></td><td>Ajusta la visibilidad manteniendo colores originales</td><td>Libros con encabezados o notas de colores útiles</td></tr>
+              <tr><td><strong>Disable EPUB styles</strong></td><td>Ignora el CSS del archivo para aplicar márgenes y tamaño propios</td><td>Cuando el tamaño de letra o interlineado no cambia</td></tr>
+              <tr><td><strong>Force reader fonts</strong></td><td>Reemplaza fuentes incrustadas por tu tipografía elegida</td><td>Cuando la tipografía del libro es incómoda o borrosa</td></tr>
+              <tr><td><strong>Clean hidden strings</strong></td><td>Limpia etiquetas y códigos basura residuales</td><td>Cuando aparecen símbolos extraños en la lectura</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Completamente Seguro:</strong><br />
+          Estas opciones solo modifican la visualización en Shiori; tu archivo EPUB original permanece 100% intacto.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide (6 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่าอย่างละเอียด (6 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">設定手順ガイド（6つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">图文设置指引（6 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo (6 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso (6 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>See the Problem Clearly</div>
+          <div class="step-desc">
+            <p>Here is <em>O Cortiço</em> (Project Gutenberg) open in Shiori on the Dark theme with every override switched off.</p>
+            <p>The text is there, but painted dark on dark and stretched into ragged word spacing. This is what happens when the book's stylesheet wins over your reader.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>ดูปัญหาที่เกิดขึ้นจริงบนหน้าจอ</div>
+          <div class="step-desc">
+            <p>นี่คือตัวอย่างหนังสือ <em>O Cortiço</em> จาก Project Gutenberg เมื่อเปิดบนธีมมืด (Dark Theme) โดยที่ยังไม่ได้เปิดสวิตช์ปรับแต่งใดๆ</p>
+            <p>ตัวหนังสือยังอยู่ครบ แต่ถูกบังคับให้เป็นสีดำบนพื้นหลังสีมืด พร้อมการเว้นวรรคคำที่กระจัดกระจาย ทำให้อ่านแทบไม่ออก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>問題の状態を確認する</div>
+          <div class="step-desc">
+            <p>Project Gutenbergの <em>O Cortiço</em> を、オーバーライドをオフにした状態でダークテーマで開いた例です。</p>
+            <p>黒背景の上に黒い文字が重なり、不自然な空白が広がっています。これが「書籍側のCSSが優先されている」状態です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>查看排版冲突的原貌</div>
+          <div class="step-desc">
+            <p>这是在深色主题下打开 Project Gutenberg 电子书的实际画面（未开启任何样式覆盖）。</p>
+            <p>黑色文字隐入黑色背景，且字间距拉扯严重。这就是图书自带样式强行生效的典型表现。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Veja o Problema Claramente</div>
+          <div class="step-desc">
+            <p>Aqui está o livro <em>O Cortiço</em> aberto no Shiori com o tema escuro e todas as sobreposições desativadas.</p>
+            <p>O texto está lá, mas em preto sobre fundo escuro com espaçamento irregular entre as palavras.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Observa el Problema en Pantalla</div>
+          <div class="step-desc">
+            <p>Este es el libro <em>O Cortiço</em> abierto en Shiori en tema oscuro sin ninguna anulación activada.</p>
+            <p>El texto sigue ahí, pero en color oscuro sobre fondo negro con espacios desproporcionados entre palabras.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-epub-unreadable-dark-theme.jpg" alt="An EPUB rendered on Shiori's dark theme with the file's own styling, showing unreadable dark text on a black page" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Open Reading Settings Panel</div>
+          <div class="step-desc">
+            <p>While reading, tap the <strong>тT</strong> icon in the top bar. The settings panel slides up from the bottom while keeping the book visible above it.</p>
+            <p>The top half controls standard typography (Font Size, Line Height, Theme, Margin). The switches underneath let you overrule the file when its styles conflict with your preferences.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>เปิดแถบเมนูตั้งค่าการอ่าน (Reading Settings)</div>
+          <div class="step-desc">
+            <p>ขณะเปิดอ่านหนังสือ ให้แตะที่ไอคอน <strong>тT</strong> บนแถบเมนูด้านบน แผงการตั้งค่าจะเลื่อนขึ้นมาจากด้านล่างโดยยังคงเห็นหน้าหนังสืออยู่ด้านบน</p>
+            <p>ด้านบนเป็นการตั้งค่าตัวอักษรทั่วไป (ขนาด, ระยะบรรทัด, ธีม, ฟอนต์, ขอบจอ) ส่วนสวิตช์ด้านล่างคือตัวจัดการสไตล์หนังสือที่มีปัญหา</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>読書設定パネルを開く</div>
+          <div class="step-desc">
+            <p>読書画面の上部バーにある <strong>тT</strong> アイコンをタップします。画面下部から設定パネルが表示されます。</p>
+            <p>上部にはフォントサイズ、行の高さ、テーマ、余白などの基本設定があり、下部にあるスイッチ群で書籍側のCSSをオーバーライドできます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>打开阅读设置面板</div>
+          <div class="step-desc">
+            <p>在阅读界面轻触顶部栏的 <strong>тT</strong> 图标，设置面板将从底部滑出，同时上方依然保留页面预览。</p>
+            <p>上半部分用于调整字号、行距、主题与边距，下方的开关组则用于精准解决排版冲突。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Abra o Painel de Configurações de Leitura</div>
+          <div class="step-desc">
+            <p>Com o livro aberto, toque no ícone <strong>тT</strong> na barra superior. O painel desliza de baixo para cima mantendo a página visível.</p>
+            <p>A parte superior controla a tipografia básica e os seletores abaixo permitem anular os estilos problemáticos do livro.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Abre el Panel de Ajustes de Lectura</div>
+          <div class="step-desc">
+            <p>Con el libro abierto, pulsa el icono <strong>тT</strong> en la barra superior. El panel se desplegará desde la parte inferior.</p>
+            <p>La mitad superior controla los ajustes tipográficos habituales y los interruptores inferiores te permiten anular los estilos del archivo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-reading-settings-overrides-off.jpg" alt="Shiori reading settings panel showing typography controls and style override switches" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Turn on "Remove font color" First</div>
+          <div class="step-desc">
+            <p>Invisible text is the most urgent issue. Turn on <strong>Remove font color</strong> and close the panel.</p>
+            <p>The text immediately renders in your theme's native color (bright text on a dark background). If you want to preserve colored headings, try <strong>Auto contrast</strong> instead.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>เปิดสวิตช์ "Remove font color" (ลบสีฟอนต์)</div>
+          <div class="step-desc">
+            <p>ตัวหนังสือที่มองไม่เห็นคือปัญหาแรกที่ต้องแก้ ให้เปิดสวิตช์ <strong>Remove font color</strong> แล้วปิดแผงตั้งค่า</p>
+            <p>ตัวหนังสือจะเปลี่ยนมาใช้สีตามธีมทันที (ตัวหนังสือสีสว่างบนพื้นหลังมืด) หากเป็นหนังสือที่มีหัวข้อหลากสีและต้องการคงสีไว้ ให้ลองเปิด <strong>Auto contrast</strong> แทน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>まず「Remove font color」をオンにする</div>
+          <div class="step-desc">
+            <p>読めない文字を直すのが最優先です。<strong>Remove font color</strong>（文字色をクリア）をオンにします。</p>
+            <p>文字色がテーマの文字色（暗い背景に明るい文字）に切り替わります。色付きの見出しを活かしたい場合は <strong>Auto contrast</strong> を試してください。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>首先开启 "Remove font color"（移除字体颜色）</div>
+          <div class="step-desc">
+            <p>文字隐形是最先需要解决的问题。开启 <strong>Remove font color</strong> 后关闭面板。</p>
+            <p>正文文字会立即跟随当前主题（在深色背景下呈现清晰亮色）。如果需要保留彩色标题，可以尝试使用 <strong>Auto contrast</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Ative Primeiro "Remove font color"</div>
+          <div class="step-desc">
+            <p>O texto invisível é o problema principal. Ative <strong>Remove font color</strong> e feche o painel.</p>
+            <p>O texto assume a cor do tema atual instantaneamente. Para preservar títulos coloridos, você pode experimentar o <strong>Auto contrast</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Activa Primero «Remove font color»</div>
+          <div class="step-desc">
+            <p>El texto invisible es el primer problema a resolver. Activa <strong>Remove font color</strong> y cierra el panel.</p>
+            <p>El texto pasará a mostrarse con el color del tema actual. Si deseas mantener encabezados coloreados, prueba con <strong>Auto contrast</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-remove-font-color-on.jpg" alt="Reading settings panel with Remove font color switch enabled" class="img-preview" data-index="2" />
+        <img src="04-text-readable-after-remove-font-color.jpg" alt="Readable text rendered in theme color after enabling Remove font color" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Enable "Disable EPUB styles" &amp; "Force reader fonts"</div>
+          <div class="step-desc">
+            <p>Colour was only the first step. Bad layout and unnatural word spacing make reading tiring.</p>
+            <p>Turn on <strong>Disable EPUB styles</strong> and <strong>Force reader fonts</strong>. The ragged spacing disappears, forced indents reset, and your custom font size, line height and margins apply cleanly across every paragraph.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เปิด "Disable EPUB styles" และ "Force reader fonts"</div>
+          <div class="step-desc">
+            <p>การแก้สีเป็นเพียงขั้นตอนแรก แต่การจัดหน้าที่ไม่ลงตัวและช่องว่างระหว่างคำที่กว้างเกินไปจะทำให้สายตาเมื่อยล้าได้ง่าย</p>
+            <p>เปิดสวิตช์ <strong>Disable EPUB styles</strong> และ <strong>Force reader fonts</strong> ช่องว่างระหว่างคำที่ผิดปกติจะหายไป และค่าขนาดตัวอักษร ระยะห่างบรรทัด รวมถึงขอบจอที่คุณตั้งไว้จะทำงานอย่างสมบูรณ์แบบ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>「Disable EPUB styles」と「Force reader fonts」をオンにする</div>
+          <div class="step-desc">
+            <p>文字色の修正に加え、乱れたレイアウトや不自然な余白も整えましょう。</p>
+            <p><strong>Disable EPUB styles</strong> と <strong>Force reader fonts</strong> をオンにすると、無駄な空白や不要なインデントが消え、自分で設定した文字サイズや行間が均一に適用されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>开启 "Disable EPUB styles" 与 "Force reader fonts"</div>
+          <div class="step-desc">
+            <p>修正文字颜色只是第一步，糟糕的排版与过宽的字间距同样影响阅读体验。</p>
+            <p>开启 <strong>Disable EPUB styles</strong>（禁用书籍样式）与 <strong>Force reader fonts</strong>（强制阅读器字体），怪异的字距将被抹平，您自定义的字号、行距和边距即可统一生效。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ative "Disable EPUB styles" e "Force reader fonts"</div>
+          <div class="step-desc">
+            <p>O alinhamento ruim e os espaçamentos exagerados cansam a vista durante leituras longas.</p>
+            <p>Ao ativar <strong>Disable EPUB styles</strong> e <strong>Force reader fonts</strong>, os recuos forçados são removidos e seus ajustes de tamanho, entrelinha e margens são aplicados perfeitamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Activa «Disable EPUB styles» y «Force reader fonts»</div>
+          <div class="step-desc">
+            <p>Un diseño descuidado y espacios excesivos entre palabras cansan la vista con rapidez.</p>
+            <p>Al activar <strong>Disable EPUB styles</strong> y <strong>Force reader fonts</strong>, se eliminan sangrías forzadas y se aplican tus preferencias de tamaño, espaciado y márgenes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-all-style-overrides-on.jpg" alt="Reading settings panel with all style overrides enabled" class="img-preview" data-index="4" />
+        <img src="06-clean-layout-after-overrides.jpg" alt="Clean and comfortable book layout after enabling all style overrides" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Pick the Ideal Font per Language</div>
+          <div class="step-desc">
+            <p>Tap <strong>Reader font → All languages</strong> (or select a specific language) to choose the font Shiori will use.</p>
+            <p>You can choose <strong>System fonts</strong> or any custom <code>.ttf</code> / <code>.otf</code> font file you have imported. Shiori lets you assign different fonts for Thai, Japanese, Chinese, or Latin scripts independently.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เลือกฟอนต์ที่ต้องการใช้งานแยกตามภาษา</div>
+          <div class="step-desc">
+            <p>แตะที่เมนู <strong>Reader font → All languages</strong> (หรือเลือกภาษาที่ต้องการ) เพื่อกำหนดฟอนต์สำหรับอ่านหนังสือ</p>
+            <p>คุณสามารถใช้ <strong>System fonts</strong> หรือเลือกฟอนต์ <code>.ttf</code> / <code>.otf</code> ที่นำเข้าเข้ามาเองได้ โดย Shiori รองรับการแยกฟอนต์อิสระระหว่างภาษาไทย ภาษาญี่ปุ่น ภาษาจีน และภาษาอังกฤษ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>言語ごとに最適なフォントを選択</div>
+          <div class="step-desc">
+            <p><strong>Reader font → All languages</strong>（または各個別言語）をタップして、表示に使用するフォントを選択します。</p>
+            <p><strong>System fonts</strong>（システム標準）のほか、自分でインポートしたカスタムフォントも指定可能です。日本語・英語・タイ語など言語ごとにフォントを個別に割り当てられます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>按语言自由挑选心仪字体</div>
+          <div class="step-desc">
+            <p>点击 <strong>Reader font → All languages</strong>（或指定特定语言）选择渲染所用的字体。</p>
+            <p>可选用 <strong>System fonts</strong>（系统字体）或导入的 <code>.ttf</code> / <code>.otf</code> 自定义字体文件。Shiori 支持为中文、日文、泰文和西文分别指定专属字体。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Escolha a Fonte Ideal por Idioma</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Reader font → All languages</strong> para definir a fonte que o Shiori utilizará.</p>
+            <p>Você pode usar as <strong>System fonts</strong> ou fontes <code>.ttf</code> / <code>.otf</code> importadas por você, com controle independente para cada idioma.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Elige la Tipografía Adecuada por Idioma</div>
+          <div class="step-desc">
+            <p>Pulsa en <strong>Reader font → All languages</strong> para elegir la tipografía que utilizará Shiori.</p>
+            <p>Puedes seleccionar <strong>System fonts</strong> o fuentes personalizadas <code>.ttf</code> / <code>.otf</code> que hayas importado, con ajuste independiente para cada idioma.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="08-reader-font-picker.jpg" alt="Shiori reader font picker dialog listing system and imported custom fonts" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Now Your Reading Theme Truly Applies</div>
+          <div class="step-desc">
+            <p>Once hardcoded styles are cleared, your themes behave exactly as intended. Tap between Light, Dark, Sepia, Gray, and E-Ink.</p>
+            <p>The page background and text contrast change harmoniously in unison because typography decisions are now placed firmly back in your hands.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>เปลี่ยนธีมสีได้อย่างอิสระ สบายตาทุกสภาพแสง</div>
+          <div class="step-desc">
+            <p>เมื่อปลดล็อกสไตล์เดิมออกแล้ว ไม่ว่าคุณจะสลับระหว่างธีม Light (สว่าง), Dark (มืด), Sepia (ถนอมสายตา), Gray (เทา) หรือ E-Ink</p>
+            <p>สีพื้นหลังและสีตัวอักษรจะปรับเปลี่ยนคู่กันอย่างลงตัว มอบประสบการณ์การอ่านที่สบายตาและควบคุมได้ 100%</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>カラーテーマが美しく適用される</div>
+          <div class="step-desc">
+            <p>固定スタイルが解除されたことで、Light、Dark、Sepia、Gray、E-Inkなどのテーマが本来の美しいコントラストで適用されます。</p>
+            <p>背景色と文字色が完璧に調和し、長時間の読書でも目が疲れにくい快適な環境が完成します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>主题色彩完美生效，随心切换</div>
+          <div class="step-desc">
+            <p>清除了硬编码样式后，无论切换至 Light（明亮）、Dark（深色）、Sepia（羊皮纸）、Gray（水墨灰）还是 E-Ink 主题，</p>
+            <p>背景与文字色彩均能完美自适应，将排版与色彩的控制权完全交还到您的手中。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Agora Seus Temas Funcionam Perfeitamente</div>
+          <div class="step-desc">
+            <p>Sem estilos conflitantes, você pode alternar livremente entre os temas Claro, Escuro, Sépia, Cinza e E-Ink.</p>
+            <p>O fundo e o texto se adaptam em harmonia, garantindo o máximo de conforto para os seus olhos.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Tus Temas de Lectura se Aplican a la Perfección</div>
+          <div class="step-desc">
+            <p>Una vez eliminados los estilos fijos, puedes alternar entre Claro, Oscuro, Sepia, Gris y E-Ink sin fallos.</p>
+            <p>El fondo y la tipografía cambian de forma armónica para ofrecerte el máximo confort visual.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-sepia-theme-applies.jpg" alt="Book rendered in warm Sepia theme after clearing hardcoded styles" class="img-preview" data-index="7" />
+      </div>
+    </section>
+
+    <!-- ==================== TIPS & FAQ SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">การแก้ไขปัญหาและคำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">トラブルシューティング＆よくある質問（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">故障排查与常见问题解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Solução de Problemas e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What if the font size still doesn't change when adjusted?</div>
+        <div class="faq-a">The book's stylesheet is using fixed CSS rules with high specificity. Make sure <strong>Disable EPUB styles</strong> is turned ON so Shiori can take full control of font scaling and paragraph layout.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">หากปรับขนาดฟอนต์แล้วตัวหนังสือยังคงไม่เปลี่ยนขนาด ต้องทำอย่างไร?</div>
+        <div class="faq-a">เกิดจากไฟล์หนังสือล็อคขนาดฟอนต์แบบคงที่ใน CSS ให้เปิดสวิตช์ <strong>Disable EPUB styles (ปิดสไตล์ EPUB)</strong> ระบบจะเพิกเฉยต่อ CSS เดิมและบังคับใช้ขนาดที่คุณตั้งไว้ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">フォントサイズを変更してもサイズが変わらない場合は？</div>
+        <div class="faq-a">書籍側のCSSで固定サイズが指定されているためです。<strong>Disable EPUB styles</strong> をオンにすることで、アプリ側のフォントサイズ設定が強制適用されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么调整字号后文字大小依然没有变化？</div>
+        <div class="faq-a">这是因为图书内嵌的 CSS 样式强制锁死了文字大小。开启 <strong>Disable EPUB styles（禁用图书样式）</strong> 即可忽略书籍自带限制，使字号缩放正常生效。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">E se o tamanho da fonte ainda não mudar ao ser ajustado?</div>
+        <div class="faq-a">O CSS do livro está forçando um tamanho fixo. Ative a opção <strong>Disable EPUB styles</strong> para que o Shiori assuma o controle do tamanho do texto.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué hacer si el tamaño de letra sigue sin cambiar al ajustarlo?</div>
+        <div class="faq-a">La hoja de estilos del libro utiliza reglas fijas. Asegúrate de activar <strong>Disable EPUB styles</strong> para que Shiori tome el control total del tamaño tipográfico.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Will enabling these overrides apply to my other books automatically?</div>
+        <div class="faq-a">Yes. Style overrides are saved as your personal reader preferences, so whenever you open a poorly formatted book in the future, Shiori renders it cleanly right away.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การตั้งค่าสวิตช์เหล่านี้จะมีผลกับหนังสือเล่มอื่นๆ ด้วยหรือไม่?</div>
+        <div class="faq-a">มีผลอัตโนมัติครับ การตั้งค่าจะถูกบันทึกเป็นค่าเริ่มต้นของแอป Shiori ดังนั้นเมื่อคุณเปิดอ่านหนังสือเล่มใหม่ในอนาคต ระบบจะเรนเดอร์หน้าหนังสือให้อ่านง่ายโดยอัตโนมัติ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">この設定は他の本を開いたときにも適用されますか？</div>
+        <div class="faq-a">はい。オーバーライド設定はリーダー全体の個人設定として保存されるため、今後開く別の本でも自動的に快適な表示が維持されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">这些覆盖设置会自动应用到其他图书吗？</div>
+        <div class="faq-a">是的。样式覆盖会保存为您的专属阅读偏好，后续打开任何排版有冲突的书籍时，Shiori 都会自动呈现舒适整洁的版面。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Essas opções serão aplicadas a outros livros automaticamente?</div>
+        <div class="faq-a">Sim. As sobreposições são salvas nas preferências do leitor, aplicando-se automaticamente aos próximos livros que você abrir.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Se aplicarán estos ajustes a otros libros automáticamente?</div>
+        <div class="faq-a">Sí. Las anulaciones de estilo se guardan como tus preferencias generales del lector, aplicándose a cualquier libro futuro.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why does "Clean hidden strings" help with Text-to-Speech (TTS)?</div>
+        <div class="faq-a">Some EPUB conversions leave broken XML tags, zero-width characters or hidden soft hyphens in the text. <strong>Clean hidden strings</strong> strips them out so TTS speech flows naturally without random pauses.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมฟังก์ชัน "Clean hidden strings" ถึงช่วยให้เสียงอ่าน TTS ลื่นไหลขึ้น?</div>
+        <div class="faq-a">ไฟล์ EPUB ที่แปลงมาจากแหล่งต่างๆ มักมีแท็กขยะ ตัวอักษรความกว้างศูนย์ หรือโค้ดตัดคำแฝงอยู่ การเปิด <strong>Clean hidden strings</strong> จะช่วยล้างโค้ดเหล่านี้ออก ทำให้เสียงอ่าน TTS อ่านได้ต่อเนื่องไม่สะดุด</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">なぜ「Clean hidden strings」がTTS音声読み上げに効果的なのですか？</div>
+        <div class="faq-a">一部の書籍データには非表示のゴミタグやゼロ幅スペースが残っています。<strong>Clean hidden strings</strong> でこれらを自動除去することで、TTSがスムーズに読み上げられます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么 "Clean hidden strings" 能改善 TTS 语音朗读效果？</div>
+        <div class="faq-a">部分转换制作的 EPUB 包含零宽字符或残留的隐藏软连字符。开启 <strong>Clean hidden strings</strong> 可过滤这些干扰，让 TTS 朗读更自然流畅。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que o "Clean hidden strings" melhora a leitura em voz alta (TTS)?</div>
+        <div class="faq-a">Muitos arquivos contêm caracteres invisíveis ou códigos residuais. O <strong>Clean hidden strings</strong> remove esse lixo para que o TTS leia sem pausas estranhas.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué «Clean hidden strings» mejora la narración por voz (TTS)?</div>
+        <div class="faq-a">Muchos EPUBs conservan caracteres invisibles o etiquetas rotas. <strong>Clean hidden strings</strong> los elimina para que la voz fluya con total naturalidad.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/how-to-import-custom-epub-fonts/">How to Import Custom Fonts into Shiori (OTF &amp; TTF Guide)</a></li>
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen: A Touch-by-Touch Guide</a></li>
+        <li><a href="/blog/eink-theme-for-android-epub-reader/">E-Ink Theme for Android EPUB Reader: Crisp Contrast &amp; Ghosting-Free Reading</a></li>
+        <li><a href="/blog/free-epub-sources/">5 Best Sites to Download Free EPUB Books Legally</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+      <p>Built with ❤️ for Readers</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-close" id="lightbox-close">&times;</div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate thumbnail strip
+      images.forEach((img, index) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb' + (index === 0 ? ' active' : '');
+        thumb.addEventListener('click', () => showImage(index));
+        lightboxThumbs.appendChild(thumb);
+
+        img.addEventListener('click', () => {
+          openLightbox(index);
+        });
+      });
+
+      function openLightbox(index) {
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        showImage(index);
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showImage(index) {
+        currentIndex = index;
+        const target = images[currentIndex];
+        lightboxImg.src = target.src;
+        lightboxCaption.textContent = target.alt;
+
+        const thumbs = lightboxThumbs.querySelectorAll('.lightbox-thumb');
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+          if (i === currentIndex) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
+      function nextImage() {
+        showImage((currentIndex + 1) % images.length);
+      }
+
+      function prevImage() {
+        showImage((currentIndex - 1 + images.length) % images.length);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+      });
+
+      // Mouse wheel navigation with debounce
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 280) return;
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          nextImage();
+          lastScrollTime = now;
+        } else if (e.deltaY < 0 || e.deltaX < 0) {
+          prevImage();
+          lastScrollTime = now;
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
