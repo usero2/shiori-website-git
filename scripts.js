@@ -302,6 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-title": "Read Selected Text Aloud: Check Pronunciation One Sentence at a Time",
       "blog-p28-desc": "Check foreign words and tricky sentences instantly. Long-press to select text, tap Aloud, and hear it spoken once without losing your reading place or interrupting continuous playback.",
 
+      // Blog Post 29
+      "blog-p29-date": "📅 August 23, 2026",
+      "blog-p29-cat": "🏷️ Reading Experience",
+      "blog-p29-title": "Your First 10 Minutes with Shiori: A Beginner's Walkthrough",
+      "blog-p29-desc": "New to Shiori? A four-step walkthrough for your first ten minutes: import a book, listen with read-aloud, translate a paragraph, and set a reading theme on Android.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -618,6 +624,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-cat": "🏷️ เสียงอ่าน (TTS)",
       "blog-p28-title": "เช็กการออกเสียงทีละประโยค: อ่านออกเสียงเฉพาะข้อความที่เลือกใน Shiori",
       "blog-p28-desc": "ตรวจทานคำศัพท์และประโยคยากได้ทันใจ เพียงแตะค้างเลือกข้อความแล้วกด Aloud ฟังเสียงอ่านหนึ่งรอบโดยไม่เสียตำแหน่งการอ่านและไม่รบกวนการเล่นเสียงหลัก",
+
+      // Blog Post 29
+      "blog-p29-date": "📅 23 สิงหาคม 2026",
+      "blog-p29-cat": "🏷️ ประสบการณ์การอ่าน",
+      "blog-p29-title": "10 นาทีแรกของคุณกับ Shiori: คู่มือเริ่มต้นสำหรับมือใหม่",
+      "blog-p29-desc": "เพิ่งเริ่มใช้ Shiori? แนะนำ 4 ขั้นตอนสำคัญใน 10 นาทีแรก: นำเข้าหนังสือ, ฟังด้วยเสียงอ่านอัตโนมัติ, แปลข้อความย่อหน้า และปรับธีมการอ่านบน Android",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -936,6 +948,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-title": "1文ずつ発音を確認：選択したテキストだけを読み上げる機能",
       "blog-p28-desc": "気になる単語や外国語のフレーズを素早く確認。長押しでテキストを選択し「Aloud」をタップするだけで、読書位置を変えずにその部分だけを1度再生。",
 
+      // Blog Post 29
+      "blog-p29-date": "📅 2026年8月23日",
+      "blog-p29-cat": "🏷️ 読書体験",
+      "blog-p29-title": "Shioriでの最初の10分間：初心者向けウォークスルー",
+      "blog-p29-desc": "Shioriを初めて使う方へ。最初の10分で試したい4つのステップ（本のインポート、音声読み上げ、段落翻訳、読書テーマ設定）を分かりやすく解説。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1252,6 +1270,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-cat": "🏷️ 语音朗读（TTS）",
       "blog-p28-title": "逐句校准发音：仅朗读选中的文字与单句",
       "blog-p28-desc": "快速确认生词与外语插句发音。长按选中文本点击 Aloud，即可单次朗读目标语句，零干扰保留原阅读位置与全书听书状态。",
+
+      // Blog Post 29
+      "blog-p29-date": "📅 2026年8月23日",
+      "blog-p29-cat": "🏷️ 阅读体验",
+      "blog-p29-title": "Shiori 上手前 10 分钟：新手入门指南",
+      "blog-p29-desc": "初次使用 Shiori？前 10 分钟必试的四个核心步骤：导入图书、使用 TTS 朗读听书、翻译单段文字以及在 Android 上自定义阅读主题。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1570,6 +1594,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-title": "Leia Apenas o Texto Selecionado: Verifique a Pronúncia Frase por Frase",
       "blog-p28-desc": "Confira termos e frases estrangeiras sem perder o ritmo. Pressione o texto, toque em Aloud e ouça a pronúncia uma única vez sem alterar sua posição no livro.",
 
+      // Blog Post 29
+      "blog-p29-date": "📅 23 de agosto de 2026",
+      "blog-p29-cat": "🏷️ Experiência de Leitura",
+      "blog-p29-title": "Seus Primeiros 10 Minutos com o Shiori: Um Guia para Iniciantes",
+      "blog-p29-desc": "Novo no Shiori? Um passo a passo em 4 etapas para seus primeiros dez minutos: importe um livro, ouça com leitura em voz alta, traduza um parágrafo e defina um tema no Android.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1886,6 +1916,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p28-cat": "🏷️ Lectura en Voz Alta (TTS)",
       "blog-p28-title": "Lee Solo el Texto Seleccionado: Comprueba la Pronunciación Frase a Frase",
       "blog-p28-desc": "Comprueba palabras dudosas y frases en otros idiomas al instante. Mantén pulsado, toca Aloud y escucha la pronunciación sin mover tu posición ni pausar la lectura continua.",
+
+      // Blog Post 29
+      "blog-p29-date": "📅 23 de agosto de 2026",
+      "blog-p29-cat": "🏷️ Experiencia de Lectura",
+      "blog-p29-title": "Tus primeros 10 minutos con Shiori: Guía para principiantes",
+      "blog-p29-desc": "¿Nuevo en Shiori? Una guía en cuatro pasos para tus primeros diez minutos: importa un libro, escucha con lectura en voz alta, traduce un párrafo y elige un tema de lectura en Android.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

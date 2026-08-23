@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://shioriepubreader.com/blog/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -116,6 +116,24 @@
   </url>
   <url>
     <loc>https://shioriepubreader.com/blog/read-footnotes-without-losing-your-place-android/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shioriepubreader.com/blog/read-along-tts-karaoke-highlight-epub-android/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shioriepubreader.com/blog/read-selected-text-aloud-epub-android/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shioriepubreader.com/blog/first-10-minutes-with-shiori-android/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

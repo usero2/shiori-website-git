@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Your First 10 Minutes with Shiori: A Beginner's Walkthrough — Shiori Blog</title>
+  <meta name="description" content="New to Shiori? A four-step walkthrough for your first ten minutes: import a book, listen with read-aloud, translate a paragraph, and set a reading theme on Android." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/first-10-minutes-with-shiori-android/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Your First 10 Minutes with Shiori: A Beginner's Walkthrough",
+    "description": "New to Shiori? A four-step walkthrough for your first ten minutes: import a book, listen with read-aloud, translate a paragraph, and set a reading theme on Android.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-23",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/first-10-minutes-with-shiori-android/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Nothing happens when I tap + to add a book?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Confirm the file you are picking is a supported format (EPUB, KEPUB, FB2, PDF, or CBZ). Files in unsupported formats will not import or may fail to open."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is read-aloud silent when I press play?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Check your device media volume. If it is still silent, open the speaking-head icon in the top bar and confirm a TTS voice is configured for the book's language."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is translation stuck on 'Translating…'?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "On the first use of an on-device AI engine, the model needs a few extra seconds to warm up into memory. You can also switch to ML Kit in the translate panel for instant offline results."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did my chosen theme revert or look different?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Themes apply across the whole app rather than per-book. Check the Theme row in reading settings (тT icon) to confirm your active selection."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2.25rem 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Step Gallery Grid (Multi-image horizontal layout) */
+    .step-gallery-grid {
+      display: grid;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.75rem;
+    }
+    .step-gallery-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .step-gallery-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .step-gallery-grid.cols-1 {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .gallery-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+    }
+
+    .gallery-item .img-preview {
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: none;
+      border: none;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    .gallery-item:hover .img-preview {
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.25rem 0.25rem 0;
+    }
+    .gallery-caption-badge {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .gallery-caption-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      text-align: left;
+      flex: 1;
+    }
+    .gallery-caption-text strong {
+      color: var(--text-primary);
+    }
+
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 440px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (max-width: 860px) {
+      .step-gallery-grid.cols-3 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .tutorial-step {
+        padding: 1.75rem 1.25rem;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .step-gallery-grid.cols-3,
+      .step-gallery-grid.cols-2 {
+        grid-template-columns: 1fr;
+      }
+      .gallery-item .img-preview {
+        max-height: 380px;
+      }
+      .step-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 23, 2026</span>
+        <span>🏷️ Reading Experience</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Your First 10 Minutes with Shiori<br><span class="text-gradient">A Beginner's Walkthrough</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">10 นาทีแรกของคุณกับ Shiori<br><span class="text-gradient">คู่มือเริ่มต้นสำหรับมือใหม่</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">Shioriでの最初の10分間<br><span class="text-gradient">初心者向けウォークスルー</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">Shiori 上手前 10 分钟<br><span class="text-gradient">新手入门实操指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Seus Primeiros 10 Minutos com o Shiori<br><span class="text-gradient">Um Guia para Iniciantes</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Tus primeros 10 minutos con Shiori<br><span class="text-gradient">Guía para principiantes</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('08-sepia-theme-applied.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">⏱️</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You just installed Shiori and you are looking at an empty bookshelf, wondering what to try first. This guide covers the four things worth doing in your first ten minutes: importing a book, listening to it with read-aloud, translating a paragraph, and picking a reading theme. Each step below is a real action on a real device, in the order a new reader is likely to want them.</p>
+        <p>This is not a reference of every button on the reader screen — for that, see <a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen</a>. This is a shorter path through the four features that matter most on day one.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">Quick Book Import</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Karaoke Read-Aloud</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Instant Translation</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5 Visual Themes</div>
+          </div>
+        </div>
+
+        <h2>What You Need</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Shiori ePub Reader</strong> installed on an Android phone or tablet.</li>
+          <li><strong>An EPUB, FB2, Kobo (KEPUB), PDF, or comic (CBZ) file:</strong> Any EPUB works for testing; public-domain classics from Standard Ebooks or Project Gutenberg are a convenient starting place if you do not have a file handy.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Step Action</th><th>Trigger Location</th><th>Core Benefit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. Import Book</strong></td><td>Bookshelf &rarr; Purple <code>+</code> button</td><td>Uses system file picker; import from local storage, cloud apps, or downloads</td></tr>
+              <tr><td><strong>2. Read-Aloud</strong></td><td>Bottom Bar &rarr; Play button</td><td>Bimodal TTS with synchronized paragraph and word karaoke highlighting</td></tr>
+              <tr><td><strong>3. Translate</strong></td><td>Text Selection &rarr; <code>Translate paragraph</code></td><td>In-line bilingual translation box without losing your reading position</td></tr>
+              <tr><td><strong>4. Theme Switch</strong></td><td>Top Bar &rarr; <code>тT</code> Display Settings</td><td>Instant single-tap color switch (Light, Dark, Sepia, Gray, E-Ink) with auto-save</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Built for Real Reading Flow:</strong><br />
+          Everything in Shiori is designed to stay out of your way. Books load instantly, reading progress saves automatically, and style changes happen live on screen without restarting the app.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>คุณเพิ่งติดตั้ง Shiori และกำลังมองหน้าชั้นหนังสือที่ว่างเปล่า พร้อมกับสงสัยว่าจะเริ่มลองอะไรเป็นอย่างแรกดี คู่มือนี้จะแนะนำ 4 สิ่งที่คุ้มค่าแก่การลองทำในสิบนาทีแรกของคุณ: การนำเข้าหนังสือ, การฟังด้วยฟังก์ชันอ่านออกเสียง, การแปลข้อความหนึ่งย่อหน้า และการเลือกธีมการอ่าน โดยแต่ละขั้นตอนด้านล่างคือการใช้งานจริงบนอุปกรณ์จริง ตามลำดับที่ผู้อ่านใหม่น่าจะได้ใช้งานมากที่สุด</p>
+        <p>นี่ไม่ใช่คู่มืออธิบายปุ่มทุกปุ่มบนหน้าจอการอ่าน — หากต้องการดูรายละเอียดส่วนนั้น โปรดดูที่ <a href="/blog/epub-reader-screen-guide-android/">คู่มือปุ่มทั้งหมดบนหน้าจออ่าน EPUB</a> นี่คือเส้นทางลัดผ่าน 4 ฟีเจอร์ที่สำคัญที่สุดในวันแรกของคุณ</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">นำเข้าหนังสือทันใจ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">ฟังเสียงอ่านคาราโอเกะ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">แปลย่อหน้าตรงจุด</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5 ธีมสีสบายตา</div>
+          </div>
+        </div>
+
+        <h2>สิ่งที่คุณต้องมี</h2>
+        <ul class="article-bullet-list">
+          <li><strong>แอป Shiori ePub Reader</strong> ที่ติดตั้งบนโทรศัพท์หรือแท็บเล็ต Android</li>
+          <li><strong>ไฟล์หนังสือ EPUB, FB2, Kobo (KEPUB), PDF หรือการ์ตูน (CBZ):</strong> ใช้ไฟล์ EPUB ใดๆ เพื่อทดสอบ หากยังไม่มีหนังสือ วรรณกรรมคลาสสิกสาธารณสมบัติจาก Standard Ebooks หรือ Project Gutenberg เป็นจุดเริ่มต้นที่ดี</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ขั้นตอน</th><th>ตำแหน่งที่กด</th><th>ประโยชน์หลัก</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. นำเข้าหนังสือ</strong></td><td>หน้าชั้นหนังสือ &rarr; ปุ่ม <code>+</code> สีม่วง</td><td>ใช้ตัวเลือกไฟล์ระบบ นำเข้าจากหน่วยความจำเครื่อง หรือคลาวด์ได้ทันที</td></tr>
+              <tr><td><strong>2. ฟังเสียงอ่าน</strong></td><td>แถบควบคุมด้านล่าง &rarr; ปุ่ม Play</td><td>ระบบอ่านออกเสียง TTS ไฮไลต์ตามคำและย่อหน้าแบบคาราโอเกะ</td></tr>
+              <tr><td><strong>3. แปลภาษา</strong></td><td>เมนูเลือกข้อความ &rarr; <code>Translate paragraph</code></td><td>แปลย่อหน้าแทรกใต้ข้อความเดิมโดยตรง ไม่ต้องสลับแอป</td></tr>
+              <tr><td><strong>4. เปลี่ยนธีม</strong></td><td>แถบด้านบน &rarr; ไอคอน <code>тT</code> (การแสดงผล)</td><td>สลับธีมสีทันที (Light, Dark, Sepia, Gray, E-Ink) บันทึกค่าอัตโนมัติ</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ออกแบบเพื่อสมาธิการอ่านอย่างแท้จริง:</strong><br />
+          ทุกฟังก์ชันใน Shiori ถูกออกแบบให้ไม่รบกวนจังหวะการอ่านของคุณ หนังสือโหลดเร็ว บันทึกหน้าอ่านอัตโนมัติ และเปลี่ยนการตั้งค่าได้แบบเรียลไทม์โดยไม่ต้องรีสตาร์ตแอป
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>Shioriをインストールしたばかりで、空の本棚を前に何を試せばよいか迷っていませんか？本ガイドでは、最初の10分間で試す価値のある4つの手順（本をインポートする、読み上げ機能で聴く、段落を翻訳する、読書テーマを選ぶ）を解説します。以下の各ステップは、新しい読者が実際にやりたいと思う順番に沿った、実機での具体的な操作手順です。</p>
+        <p>これはリーダー画面の全ボタンを説明するリファレンスではありません。画面ボタンの詳細については <a href="/blog/epub-reader-screen-guide-android/">リーダー画面の全ボタンガイド — タッチ操作でわかるEPUB読書</a> を参照してください。本記事は、使い始めた初日に最も重要な4つの機能を迅速に体験するためのショートカットガイドです。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">簡単本インポート</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">カラオケ風読み上げ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">その場で段落翻訳</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5つの読書テーマ</div>
+          </div>
+        </div>
+
+        <h2>必要なもの</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Android端末</strong>（スマートフォンまたはタブレット）に Shiori ePub Reader がインストールされていること</li>
+          <li><strong>EPUB、FB2、Kobo（KEPUB）、PDF、またはコミック（CBZ）ファイル：</strong> テスト用には手持ちのEPUBファイル、または Standard Ebooks / Project Gutenberg などのパブリックドメイン作品が手軽です。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>操作ステップ</th><th>操作場所</th><th>主なメリット</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. 本のインポート</strong></td><td>本棚画面 &rarr; 右下紫色の <code>+</code> ボタン</td><td>OS標準ファイルピッカーで本体・クラウドストレージから自在に追加</td></tr>
+              <tr><td><strong>2. 音声読み上げ</strong></td><td>画面下部バー &rarr; 再生ボタン</td><td>段落と単語が同時に同期するカラオケハイライト付きTTS</td></tr>
+              <tr><td><strong>3. 段落翻訳</strong></td><td>選択メニュー &rarr; <code>Translate paragraph</code></td><td>読書位置を変えずに原文の直下に訳文ブロックを表示</td></tr>
+              <tr><td><strong>4. テーマ変更</strong></td><td>上部バー &rarr; <code>тT</code> 表示設定アイコン</td><td>ワンタップで即時反映（Light, Dark, Sepia, Gray, E-Ink）、自動保存</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>快適な読書体験のために：</strong><br />
+          Shioriは読書の集中を妨げないよう細部まで最適化されています。高速な読み込み、自動進捗保存、リアルタイムなテーマ変更が可能です。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>你刚安装了 Shiori，看着空荡荡的书架，不知道该从何入手。本指南将带你完成前 10 分钟最值得尝试的四件事：导入图书、使用朗读功能听书、翻译段落以及选择阅读主题。接下来的每一步都是在真实设备上的实际操作，并按照新读者最可能需要的顺序排列。</p>
+        <p>本文不是阅读器界面上每个按钮的参考手册——如需了解相关内容，请参阅 <a href="/blog/epub-reader-screen-guide-android/">阅读器界面全按钮图解指南</a>。本文提供了一条更快速的捷径，带你直接体验第一天最重要的四个功能。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">快捷导入书籍</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">卡拉OK同步听书</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">原地段落翻译</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5 种护眼主题</div>
+          </div>
+        </div>
+
+        <h2>准备工作</h2>
+        <ul class="article-bullet-list">
+          <li><strong>在 Android 手机或平板电脑上</strong> 安装 Shiori ePub Reader</li>
+          <li><strong>准备一本电子书文件：</strong> 支持 EPUB、FB2、Kobo (KEPUB)、PDF 或漫画 (CBZ)。测试时任何 EPUB 文件均可，如 Standard Ebooks 或 Project Gutenberg 的公版名著。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>核心操作</th><th>触发入口</th><th>核心优势</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. 导入图书</strong></td><td>书架界面 &rarr; 右下角紫色 <code>+</code> 按钮</td><td>调用系统文件选择器，支持从本地、网盘或下载目录多选导入</td></tr>
+              <tr><td><strong>2. 听书朗读</strong></td><td>阅读器底部控制栏 &rarr; 播放按钮</td><td>支持段落框架与当前单词同步高亮的卡拉OK双层朗读体验</td></tr>
+              <tr><td><strong>3. 段落翻译</strong></td><td>长按选区菜单 &rarr; <code>Translate paragraph</code></td><td>翻译结果原地内嵌显示，不离开当前页面，不打乱阅读进度</td></tr>
+              <tr><td><strong>4. 切换主题</strong></td><td>顶部工具栏 &rarr; <code>тT</code> 显示设置图标</td><td>一键即时换肤（浅色、深色、羊皮纸、灰色、水墨屏），自动保存</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>专注沉浸阅读体验：</strong><br />
+          Shiori 专注于无打扰的纯粹阅读。秒级排版加载，阅读进度自动云同步，样式设置无需重启即刻生效。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você acabou de instalar o Shiori e está olhando para uma estante vazia, perguntando-se o que testar primeiro. Este guia cobre as quatro coisas que valem a pena fazer nos seus primeiros dez minutos: importar um livro, ouvi-lo com a leitura em voz alta, traduzir um parágrafo e escolher um tema de leitura. Cada etapa abaixo é uma ação real em um dispositivo real, na ordem em que um novo leitor provavelmente deseja realizá-las.</p>
+        <p>Isto não é uma referência de todos os botões da tela do leitor — para isso, consulte <a href="/blog/epub-reader-screen-guide-android/">Todos os Botões da Tela do Leitor</a>. Este é um caminho mais curto pelas quatro funcionalidades que mais importam no primeiro dia.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">Importação Rápida</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Leitura em Karaoke</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Tradução de Parágrafo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5 Temas Visuais</div>
+          </div>
+        </div>
+
+        <h2>O Que Você Precisa</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Shiori ePub Reader</strong> instalado em um celular ou tablet Android.</li>
+          <li><strong>Um arquivo de livro:</strong> EPUB, FB2, Kobo (KEPUB), PDF ou quadrinhos (CBZ). Qualquer arquivo EPUB serve para testes (por exemplo, clássicos do Standard Ebooks ou Project Gutenberg).</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Ação</th><th>Onde Tocar</th><th>Benefício Principal</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. Importar Livro</strong></td><td>Estante &rarr; Botão roxo <code>+</code></td><td>Usa o seletor do sistema; importe de pastas locais, nuvem ou downloads</td></tr>
+              <tr><td><strong>2. Ler em Voz Alta</strong></td><td>Barra inferior &rarr; Botão Play</td><td>TTS bimodal com destaque sincronizado por parágrafo e palavra em karaoke</td></tr>
+              <tr><td><strong>3. Traduzir</strong></td><td>Menu de Seleção &rarr; <code>Translate paragraph</code></td><td>Caixa de tradução inserida diretamente abaixo do texto original</td></tr>
+              <tr><td><strong>4. Trocar Tema</strong></td><td>Barra superior &rarr; Ícone <code>тT</code> (Configurações)</td><td>Troca instantânea em um toque (Claro, Escuro, Sépia, Cinza, E-Ink) sem reiniciar</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Foco Total na Leitura:</strong><br />
+          O Shiori foi desenvolvido para fluir com você. Os livros abrem instantaneamente, o progresso é salvo de forma automática e todas as alterações visuais ocorrem em tempo real.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Acabas de instalar Shiori y estás viendo una estantería vacía, preguntándote qué probar primero. Esta guía cubre las cuatro cosas que vale la pena hacer en tus primeros diez minutos: importar un libro, escucharlo con la lectura en voz alta, traducir un párrafo y elegir un tema de lectura. Cada paso a continuación es una acción real en un dispositivo real, en el orden en que un nuevo lector probablemente querrá realizarlas.</p>
+        <p>Esta no es una referencia de cada botón en la pantalla del lector; para eso, consulta <a href="/blog/epub-reader-screen-guide-android/">Cada botón en la pantalla del lector</a>. Este es un camino más corto a través de las cuatro funciones que más importan en el primer día.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📥</span>
+            <div class="stat-badge-title">Importación Rápida</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Lectura en Karaoke</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Traducción de Párrafo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">5 Temas Visuales</div>
+          </div>
+        </div>
+
+        <h2>Lo que necesitas</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Shiori ePub Reader</strong> instalado en un teléfono o tableta Android.</li>
+          <li><strong>Un archivo de libro:</strong> EPUB, FB2, Kobo (KEPUB), PDF o cómic (CBZ). Cualquier EPUB sirve para probar (como títulos de dominio público de Standard Ebooks o Project Gutenberg).</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Paso</th><th>Punto de Acceso</th><th>Beneficio Clave</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1. Importar Libro</strong></td><td>Estantería &rarr; Botón morado <code>+</code></td><td>Utiliza el selector del sistema; importa desde almacenamiento, nube o descargas</td></tr>
+              <tr><td><strong>2. Lectura en Voz Alta</strong></td><td>Barra inferior &rarr; Botón Play</td><td>TTS bimodal con resaltado sincronizado estilo karaoke por palabra y párrafo</td></tr>
+              <tr><td><strong>3. Traducir Párrafo</strong></td><td>Menú de Selección &rarr; <code>Translate paragraph</code></td><td>Muestra la traducción directamente debajo del original sin perder la página</td></tr>
+              <tr><td><strong>4. Cambiar Tema</strong></td><td>Barra superior &rarr; Icono <code>тT</code> (Ajustes)</td><td>Cambio inmediato en un toque (Claro, Oscuro, Sepia, Gris, E-Ink) con guardado automático</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Diseñado para la Concentración:</strong><br />
+          Shiori se adapta a tu ritmo sin interrupciones. Las obras cargan al instante, el progreso se almacena solo y los temas se ajustan en vivo sin necesidad de reiniciar la app.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Walkthrough (4 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการใช้งานจริง 4 ขั้นตอน</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">ステップ別ガイド（4つの操作手順）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">四步快速实操指南</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Prático Passo a Passo (4 Etapas)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Práctica Paso a Paso (4 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Import Your First Book</div>
+          <div class="step-desc">
+            <p>Open Shiori to the <strong>Bookshelf</strong> tab and tap the purple <strong>+</strong> button in the bottom-right corner.</p>
+            <p>Tapping it opens Android's native file picker rather than an isolated custom browser. Navigate to wherever your book is stored — commonly the Downloads folder or a synced cloud folder — and tap the file.</p>
+            <p>The book appears on your bookshelf immediately, with its cover art, author, chapter count, and file size already indexed.</p>
+            <p><em>Why this matters:</em> You can pull books from anywhere your device reaches, including Google Drive, Nextcloud, or via "Open with Shiori". Multi-file selection is also supported.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>นำเข้าหนังสือเล่มแรกของคุณ</div>
+          <div class="step-desc">
+            <p>เปิด Shiori ไปที่แท็บ <strong>Bookshelf (ชั้นหนังสือ)</strong> แล้วแตะปุ่ม <strong>+</strong> สีม่วงที่มุมล่างขวา</p>
+            <p>การแตะปุ่มนี้จะเปิดตัวเลือกไฟล์มาตรฐานของ Android ขึ้นมา ให้คุณไปยังโฟลเดอร์ที่เก็บไฟล์หนังสือไว้ เช่น โฟลเดอร์ Downloads หรือโฟลเดอร์คลาวด์ แล้วแตะเลือกไฟล์</p>
+            <p>หนังสือจะปรากฏบนชั้นหนังสือของคุณทันที พร้อมแสดงภาพหน้าปก ชื่อผู้แต่ง จำนวนบท และขนาดไฟล์</p>
+            <p><em>ทำไมฟังก์ชันนี้จึงสำคัญ:</em> คุณสามารถนำเข้าหนังสือจากทุกที่ในเครื่อง รวมถึงแอปคลาวด์ หรือเปิดผ่านคำสั่ง "Open with Shiori" และสามารถเลือกนำเข้าทีละหลายไฟล์ได้พร้อมกัน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>最初の本をインポートする</div>
+          <div class="step-desc">
+            <p>Shiori を開き、<strong>Bookshelf</strong>（本棚）タブの右下にある紫色の <strong>+</strong> ボタンをタップします。</p>
+            <p>Android標準のファイルピッカーが開くので、本のファイル（ダウンロードフォルダやクラウドストレージなど）を選択します。</p>
+            <p>インポートした本はすぐに本棚に並び、表紙画像、著者名、章数、ファイルサイズが自動で読み込まれます。</p>
+            <p><em>ポイント：</em> 端末内のあらゆる保存先やクラウドアプリから直接インポート可能で、複数ファイルの一括選択にも対応しています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>导入你的第一本电子书</div>
+          <div class="step-desc">
+            <p>打开 Shiori 的 <strong>Bookshelf（书架）</strong> 标签页，点击右下角的紫色 <strong>+</strong> 按钮。</p>
+            <p>点击后将打开 Android 系统原生文件选择器。浏览并选中存放的电子书（如 Downloads 文件夹或云盘目录）。</p>
+            <p>图书会即刻呈现在书架最上方，封面、作者、章节数及文件体积已自动解析完毕。</p>
+            <p><em>核心优势：</em> 依托系统选择器可无缝读取本地或网盘文件，亦支持通过“用 Shiori 打开”直接导入，且支持多选批量添加。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Importe Seu Primeiro Livro</div>
+          <div class="step-desc">
+            <p>Abra o Shiori na aba <strong>Bookshelf (Estante)</strong> e toque no botão roxo <strong>+</strong> no canto inferior direito.</p>
+            <p>O seletor de arquivos do Android será exibido. Navegue até a pasta onde seu livro está salvo (como Downloads) e selecione o arquivo.</p>
+            <p>O livro aparecerá na estante imediatamente com capa, autor, total de capítulos e tamanho do arquivo preenchidos.</p>
+            <p><em>Por que isso importa:</em> Permite importar de qualquer local acessível pelo Android (armazenamento interno, nuvem ou via "Abrir com Shiori").</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Importa tu Primer Libro</div>
+          <div class="step-desc">
+            <p>Abre Shiori en la pestaña <strong>Bookshelf (Estantería)</strong> y toca el botón morado <strong>+</strong> en la esquina inferior derecha.</p>
+            <p>Se abrirá el selector de archivos nativo de Android. Ve a la carpeta donde esté tu libro (por ejemplo, Descargas) y selecciónalo.</p>
+            <p>La obra aparecerá de inmediato en tu estantería con portada, autor, número de capítulos y tamaño indexados.</p>
+            <p><em>Por qué es útil:</em> Puedes añadir libros desde cualquier ubicación accesible (almacenamiento, nube o mediante "Abrir con Shiori"), con soporte para selección múltiple.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-gallery-grid cols-3">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="01-bookshelf-add-book-button.jpg" alt="Shiori bookshelf with purple add book button" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">1</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Tap <strong>+</strong> button on Bookshelf</span>
+              <span class="lang-th">แตะปุ่ม <strong>+</strong> สีม่วงบนหน้าชั้นหนังสือ</span>
+              <span class="lang-jp">本棚画面の紫色の <strong>+</strong> ボタンをタップ</span>
+              <span class="lang-cn">点击书架右下角的紫色 <strong>+</strong> 按钮</span>
+              <span class="lang-pt">Toque no botão <strong>+</strong> roxo na estante</span>
+              <span class="lang-es">Toca el botón <strong>+</strong> morado en la estantería</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="02-file-picker-select-epub.jpg" alt="Android file picker showing EPUB file" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">2</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Select your EPUB in Android picker</span>
+              <span class="lang-th">เลือกไฟล์หนังสือ (EPUB) จากตัวเลือกไฟล์</span>
+              <span class="lang-jp">Android標準ファイル選択で本を選択</span>
+              <span class="lang-cn">在系统文件选择器中选中电子书文件</span>
+              <span class="lang-pt">Selecione o arquivo EPUB no seletor</span>
+              <span class="lang-es">Elige el archivo EPUB en el explorador</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="03-book-added-to-bookshelf.jpg" alt="Imported book listed on bookshelf" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">3</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Book indexed &amp; ready to read</span>
+              <span class="lang-th">หนังสือปรากฏบนชั้นหนังสือพร้อมเปิดอ่าน</span>
+              <span class="lang-jp">本棚に本が追加されすぐに読書可能</span>
+              <span class="lang-cn">电子书解析完成并直接展示在书架上</span>
+              <span class="lang-pt">Livro adicionado e pronto para ler</span>
+              <span class="lang-es">Libro indexado y listo para leer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Listen with Karaoke Read-Aloud</div>
+          <div class="step-desc">
+            <p>Open the imported book and tap the <strong>Play</strong> button on the bottom navigation bar of the reader.</p>
+            <p>Narration starts immediately with two-level bimodal karaoke highlighting: the current paragraph is boxed in blue, while the specific word being spoken is highlighted in purple.</p>
+            <p><em>Why this matters:</em> Following along visually while listening boosts comprehension and retention. Read-aloud plays continuously across chapters, runs with the screen locked or in the background, and includes a media notification with sleep timer.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ฟังเสียงอ่านพร้อมไฮไลต์แบบคาราโอเกะ</div>
+          <div class="step-desc">
+            <p>เปิดหนังสือที่เพิ่งนำเข้า แล้วแตะปุ่ม <strong>Play (เล่น)</strong> บนแถบควบคุมด้านล่างของหน้าจออ่าน</p>
+            <p>เสียงอ่านจะเริ่มทำงานทันทีพร้อมระบบไฮไลต์สองระดับ: ย่อหน้าที่กำลังอ่านจะถูกเน้นด้วยกรอบสีฟ้า และคำที่กำลังอ่านออกเสียงจะถูกไฮไลต์ด้วยสีม่วงแบบเรียลไทม์</p>
+            <p><em>ทำไมฟังก์ชันนี้จึงสำคัญ:</em> การอ่านไปพร้อมกับฟังช่วยเสริมสมาธิและการเรียนรู้ภาษา เสียงอ่านจะเล่นต่อเนื่องข้ามบท ทำงานได้แม้ล็อกหน้าจอ และมีแถบแจ้งเตือนพร้อมตัวตั้งเวลาปิด (Sleep Timer)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>カラオケハイライト付き読み上げを聴く</div>
+          <div class="step-desc">
+            <p>インポートした本を開き、画面下部バーの <strong>再生ボタン</strong> をタップします。</p>
+            <p>朗読が即座に始まり、現在読み上げ中の段落が青色枠で囲まれ、発音中の単語が紫色でハイライトされます。</p>
+            <p><em>ポイント：</em> 目と耳で同時に追えるため語学学習や集中読書に最適です。画面消灯中やバックグラウンドでも章を跨いで連続再生でき、スリープタイマーも備えています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>开启卡拉OK双层同步朗读听书</div>
+          <div class="step-desc">
+            <p>打开已导入的图书，点击阅读界面底部控制栏上的 <strong>播放按钮</strong>。</p>
+            <p>朗读即刻启动，呈现双层卡拉OK高亮：当前朗读段落由蓝色背景框锁定，正念诵的字词实时以紫色光标高亮跟随。</p>
+            <p><em>核心优势：</em> 音字同步极大地提升外语理解力与沉浸感。支持锁屏后台持续跨章节播放，通知栏常驻音频控件与睡眠定时器。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Ouça com Leitura em Voz Alta (Karaoke)</div>
+          <div class="step-desc">
+            <p>Abra o livro importado e toque no botão <strong>Play</strong> na barra inferior do leitor.</p>
+            <p>A narração começa imediatamente com destaque bimodal: o parágrafo atual fica delimitado em azul e a palavra exata que está sendo falada é destacada em roxo.</p>
+            <p><em>Por que isso importa:</em> Acompanhar o texto com os olhos enquanto ouve melhora a retenção e o estudo de idiomas. Funciona com tela bloqueada e possui timer de suspensão.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Escucha con Lectura en Voz Alta y Karaoke</div>
+          <div class="step-desc">
+            <p>Abre el libro importado y pulsa el botón <strong>Play</strong> en la barra inferior del lector.</p>
+            <p>La narración comienza de inmediato con resaltado bimodal: el párrafo actual se enmarca en azul y la palabra pronunciada se resalta en morado.</p>
+            <p><em>Por qué es útil:</em> Seguir el texto visualmente mientras escuchas refuerza la concentración y el aprendizaje de idiomas. Reproduce en segundo plano y cuenta con temporizador de apagado.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-gallery-grid cols-1">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="04-tts-karaoke-highlighting.jpg" alt="TTS karaoke word and paragraph highlighting in reader screen" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">✦</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Bimodal karaoke highlighting (paragraph &amp; spoken word)</span>
+              <span class="lang-th">เสียงอ่านพร้อมไฮไลต์สองระดับ (ย่อหน้าและคำที่กำลังอ่าน)</span>
+              <span class="lang-jp">段落と発音単語の2段階カラオケハイライト</span>
+              <span class="lang-cn">卡拉OK双层同步高亮（段落框与朗读字词光标）</span>
+              <span class="lang-pt">Destaque duplo de karaoke (parágrafo e palavra falada)</span>
+              <span class="lang-es">Resaltado bimodal estilo karaoke (párrafo y palabra actual)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Translate a Paragraph In-Place</div>
+          <div class="step-desc">
+            <p>Long-press any word in the text to bring up the selection context menu, then tap <strong>Translate paragraph</strong>.</p>
+            <p>A translated block appears directly underneath the original paragraph, labeled with the translation engine (e.g., Gemma on-device AI or ML Kit offline) and the target language.</p>
+            <p><em>Why this matters:</em> You see translations instantly without jumping to a separate browser tab or losing your reading spot. Target languages and engine models can be changed from the <code>文A</code> icon in the top bar.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>แปลข้อความทั้งย่อหน้าได้ทันที</div>
+          <div class="step-desc">
+            <p>แตะค้างที่คำใดก็ได้ในข้อความเพื่อเปิดเมนูตัวเลือก จากนั้นแตะที่คำสั่ง <strong>Translate paragraph (แปลย่อหน้า)</strong></p>
+            <p>กล่องข้อความฉบับแปลจะปรากฏขึ้นมาใต้ข้อความต้นฉบับโดยตรง พร้อมระบุชื่อเอนจินที่ใช้แปล (เช่น Gemma AI บนเครื่อง หรือ ML Kit แบบออฟไลน์) และภาษาเป้าหมาย</p>
+            <p><em>ทำไมฟังก์ชันนี้จึงสำคัญ:</em> คุณสามารถอ่านคำแปลได้ทันทีโดยไม่ต้องสลับแอปและไม่เสียตำแหน่งการอ่าน สามารถเลือกภาษาปลายทางและเอนจินแปลภาษาได้จากไอคอน <code>文A</code> ที่แถบด้านบน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>段落をその場で直接翻訳する</div>
+          <div class="step-desc">
+            <p>テキスト内の単語を長押しして選択メニューを開き、<strong>Translate paragraph（段落を翻訳）</strong> をタップします。</p>
+            <p>原文のすぐ下に翻訳結果のボックスが表示され、使用エンジン（GemmaオンデバイスAIやオフラインML Kitなど）と言語ラベルが確認できます。</p>
+            <p><em>ポイント：</em> 外部アプリに切り替えることなく、読書位置を維持したまま段落全体を瞬時に理解できます。翻訳先言語やエンジンは上部バーの <code>文A</code> アイコンから変更可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>原地即时翻译整段文字</div>
+          <div class="step-desc">
+            <p>长按页面中的任意单词唤出选区菜单，点击 <strong>Translate paragraph（翻译段落）</strong>。</p>
+            <p>译文框将直接嵌入在原文段落下侧，清晰标注文档翻译引擎（如 Gemma 端侧 AI 或 ML Kit 离线引擎）与目标语种。</p>
+            <p><em>核心优势：</em> 零跳页即读译文，不丢失当前的阅读上下文。点击顶部工具栏的 <code>文A</code> 图标可随时切换目标语言与翻译模型。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Traduza um Parágrafo Diretamente</div>
+          <div class="step-desc">
+            <p>Pressione qualquer palavra para abrir o menu de contexto e toque em <strong>Translate paragraph</strong>.</p>
+            <p>Um bloco com a tradução surgirá logo abaixo do texto original, indicando o motor utilizado (Gemma IA no dispositivo ou ML Kit offline) e o idioma de destino.</p>
+            <p><em>Por que isso importa:</em> Visualize traduções sem sair da página e sem perder seu ponto de leitura. Configure idiomas pelo ícone <code>文A</code> na barra superior.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Traduce un Párrafo al Instante</div>
+          <div class="step-desc">
+            <p>Mantén pulsada cualquier palabra para abrir el menú de selección y toca <strong>Translate paragraph</strong>.</p>
+            <p>Aparecerá un bloque con la traducción justo debajo del texto original, indicando el motor usado (Gemma IA en dispositivo o ML Kit fuera de línea) y el idioma de destino.</p>
+            <p><em>Por qué es útil:</em> Consulta la traducción sin cambiar de pantalla ni perder tu posición de lectura. Ajusta idiomas y motores desde el icono <code>文A</code> en la barra superior.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="05-translate-paragraph-menu.jpg" alt="Selection menu with Translate and Translate paragraph options" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">1</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Long-press text &amp; tap <strong>Translate paragraph</strong></span>
+              <span class="lang-th">แตะค้างที่ข้อความแล้วเลือก <strong>Translate paragraph</strong></span>
+              <span class="lang-jp">テキストを長押しして <strong>段落を翻訳</strong> を選択</span>
+              <span class="lang-cn">长按选中文本并点击 <strong>Translate paragraph</strong></span>
+              <span class="lang-pt">Pressione o texto e toque em <strong>Translate paragraph</strong></span>
+              <span class="lang-es">Mantén pulsado y toca <strong>Translate paragraph</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="06-paragraph-translated-result.jpg" alt="Translated paragraph block inserted below original text" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">2</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Translated block appears directly beneath original</span>
+              <span class="lang-th">กล่องข้อความฉบับแปลจะแสดงผลใต้ข้อความต้นฉบับทันที</span>
+              <span class="lang-jp">原文のすぐ下に翻訳結果ボックスが即座に表示</span>
+              <span class="lang-cn">译文卡片直接嵌入显示在原文段落下侧</span>
+              <span class="lang-pt">O bloco de tradução surge logo abaixo do original</span>
+              <span class="lang-es">El bloque traducido aparece justo bajo el párrafo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Pick Your Favorite Reading Theme</div>
+          <div class="step-desc">
+            <p>Tap the <strong>тT</strong> (display settings) icon in the top bar to open reading settings, then select a palette from the <strong>Theme</strong> row: Light, Dark, Sepia, Gray, or E-Ink.</p>
+            <p>Tap any option — such as Sepia — and the reader recolors instantly without prompts, reload delays, or app restarts.</p>
+            <p><em>Why this matters:</em> The ideal theme depends on lighting conditions and eye comfort. Shiori saves your choice automatically. On e-paper devices, the E-Ink theme disables all animations for maximum clarity.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>เลือกธีมการอ่านที่สบายตาที่สุด</div>
+          <div class="step-desc">
+            <p>แตะไอคอน <strong>тT (ตั้งค่าการแสดงผล)</strong> ที่แถบด้านบนเพื่อเปิดการตั้งค่า จากนั้นเลือกธีมจากแถว <strong>Theme</strong>: Light, Dark, Sepia, Gray หรือ E-Ink</p>
+            <p>แตะเลือกธีมที่ต้องการ เช่น ธีม Sepia หน้าอ่านหนังสือจะเปลี่ยนโทนสีทันทีโดยไม่ต้องรอกดบันทึกหรือรีสตาร์ตแอป</p>
+            <p><em>ทำไมฟังก์ชันนี้จึงสำคัญ:</em> โทนสีที่เหมาะสมช่วยถนอมสายตาในแต่ละสภาพแสง โดย Shiori จะจำค่าธีมของคุณไว้เสมอ และสำหรับหน้าจอ E-Ink จะมีการปิดแอนิเมชันทั้งหมดเพื่อการแสดงผลที่คมชัดสูงสุด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>お好みの読書テーマを設定する</div>
+          <div class="step-desc">
+            <p>上部バーの <strong>тT</strong>（表示設定）アイコンをタップし、<strong>Theme</strong>（テーマ）行から好みの配色（Light、Dark、Sepia、Gray、E-Ink）を選びます。</p>
+            <p>Sepia などのテーマをタップすると、確認ダイアログや再起動なしで即座に画面全体が温かみのある配色に切り替わります。</p>
+            <p><em>ポイント：</em> 部屋の明るさや目の疲れ具合に合わせてワンタップで切り替えられ、設定は自動保存されます。電子ペーパー端末ではアニメーションを無効化する E-Ink テーマが最適です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>选择最舒适的阅读主题配色</div>
+          <div class="step-desc">
+            <p>点击顶部工具栏的 <strong>тT</strong>（显示设置）图标打开设置面板，在 <strong>Theme（主题）</strong> 一栏中选择：Light（浅色）、Dark（深色）、Sepia（羊皮纸）、Gray（灰色）或 E-Ink（水墨屏）。</p>
+            <p>点击目标主题（如 Sepia），整个阅读界面将瞬间完成换色，无需确认弹窗或重启应用。</p>
+            <p><em>核心优势：</em> 随环境光线自由切换护眼配色并自动保存设置。在墨水屏设备上开启 E-Ink 主题还会全局关闭过渡动画，保证字迹极其清晰锐利。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Escolha Seu Tema de Leitura Preferido</div>
+          <div class="step-desc">
+            <p>Toque no ícone <strong>тT</strong> (configurações de exibição) na barra superior e escolha um estilo na linha <strong>Theme</strong>: Light, Dark, Sepia, Gray ou E-Ink.</p>
+            <p>Ao selecionar uma opção como Sépia, o leitor muda de cor imediatamente, sem confirmações e sem precisar reiniciar.</p>
+            <p><em>Por que isso importa:</em> O tema ideal garante conforto visual em qualquer luminosidade. O Shiori salva sua escolha automaticamente, e o modo E-Ink desativa animações para telas e-paper.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Elige tu Tema de Lectura Favorito</div>
+          <div class="step-desc">
+            <p>Toca el icono <strong>тT</strong> (ajustes de visualización) en la barra superior y selecciona una opción en la fila <strong>Theme</strong>: Light, Dark, Sepia, Gray o E-Ink.</p>
+            <p>Al pulsar una opción como Sepia, la pantalla cambia de tonalidad al instante, sin pasos de confirmación ni recargas.</p>
+            <p><em>Por qué es útil:</em> El tema adecuado protege tu vista según la luz ambiental. Shiori recuerda tu elección automáticamente, y el tema E-Ink desactiva animaciones para pantallas de tinta electrónica.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="07-reading-settings-theme-picker.jpg" alt="Reading settings theme picker with Light Dark Sepia Gray E-Ink" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">1</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Open <strong>тT</strong> settings and choose a theme palette</span>
+              <span class="lang-th">แตะไอคอน <strong>тT</strong> เพื่อเลือกธีมที่ชอบ</span>
+              <span class="lang-jp"><strong>тT</strong> 設定パネルから読書テーマを選択</span>
+              <span class="lang-cn">点击顶部 <strong>тT</strong> 面板挑选喜好的主题配色</span>
+              <span class="lang-pt">Abra o menu <strong>тT</strong> e escolha o tema desejado</span>
+              <span class="lang-es">Abre los ajustes <strong>тT</strong> y elige la paleta de color</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="08-sepia-theme-applied.jpg" alt="Sepia theme applied with warm background and brown text" class="img-preview" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">2</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en">Reader recolors instantly (e.g., Warm Sepia)</span>
+              <span class="lang-th">โทนสีหน้าอ่านเปลี่ยนทันที (เช่น ธีมสี Sepia สบายตา)</span>
+              <span class="lang-jp">温かみのあるセピアなどの配色へ瞬時に切り替え</span>
+              <span class="lang-cn">界面瞬间完成换色（如柔和护眼的 Sepia 羊皮纸）</span>
+              <span class="lang-pt">Leitor muda de cor na hora (ex: tema Sépia acolhedor)</span>
+              <span class="lang-es">La interfaz cambia al instante (ej: modo Sepia cálido)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TROUBLESHOOTING & FAQ ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">การแก้ปัญหาเบื้องต้นและคำถามที่พบบ่อย</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">トラブルシューティングとよくある質問</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题与排错指南</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Resolução de Problemas e Perguntas Frequentes</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">❓ Nothing happens when I tap the + button?</div>
+        <div class="faq-a">Confirm that the file you are picking is in a supported format (EPUB, KEPUB, FB2, PDF, or CBZ). Files with incompatible extensions will not show up as importable or will fail to index.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">❓ แตะปุ่ม + แล้วไม่มีอะไรเกิดขึ้นหรือนำเข้าไม่ได้?</div>
+        <div class="faq-a">ตรวจสอบว่าไฟล์ที่คุณเลือกเป็นรูปแบบที่รองรับ (EPUB, KEPUB, FB2, PDF หรือ CBZ) ไฟล์รูปแบบอื่นอาจไม่ปรากฏในหน้าต่างเลือกไฟล์หรือเปิดอ่านไม่สำเร็จ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">❓ + ボタンをタップしても本が追加されない場合は？</div>
+        <div class="faq-a">選択したファイルが対応形式（EPUB、KEPUB、FB2、PDF、CBZ）であることを確認してください。非対応フォーマットのファイルはインポート一覧に表示されないか、正常に開けません。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">❓ 点击 + 按钮无法导入或没有反应？</div>
+        <div class="faq-a">请确认所选文件属于支持的格式（EPUB、KEPUB、FB2、PDF 或 CBZ）。不支持的格式文件将无法在选择器中识别或无法正常加载。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">❓ Nada acontece ao tocar no botão +?</div>
+        <div class="faq-a">Verifique se o arquivo escolhido está em um formato compatível (EPUB, KEPUB, FB2, PDF ou CBZ). Formatos não suportados não serão importados corretamente.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">❓ ¿No ocurre nada al tocar el botón +?</div>
+        <div class="faq-a">Asegúrate de que el archivo seleccionado sea un formato compatible (EPUB, KEPUB, FB2, PDF o CBZ). Otros formatos no se podrán importar ni abrir correctamente.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">❓ Read-aloud is silent when I press play?</div>
+        <div class="faq-a">Check your device's media volume level (not just ringtone volume). If it remains silent, tap the speaking-head icon in the top bar and ensure a TTS voice is assigned for the language of the book.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">❓ เสียงอ่านเงียบ ไม่มีเสียงออกมาหลังกดเล่น?</div>
+        <div class="faq-a">ตรวจสอบระดับเสียง Media ของอุปกรณ์ (ไม่ใช่เสียงเรียกเข้า) หากยังไม่มีเสียง ให้แตะไอคอนรูปศีรษะคนพูดที่แถบด้านบน เพื่อตรวจดูว่ามีการตั้งค่าเสียงอ่าน (TTS Voice) สำหรับภาษาของหนังสือนั้นไว้หรือไม่</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">❓ 再生ボタンを押しても音声が鳴らない場合は？</div>
+        <div class="faq-a">端末のメディア音量設定を確認してください。それでも音が出ない場合は、上部バーの音声アイコンを開き、本の言語に対応するTTS音声が割り当てられているか確認してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">❓ 点击播放后听不到朗读声音？</div>
+        <div class="faq-a">请检查设备的媒体音量（非铃声音量）。若仍无声音，请点击顶部工具栏的头像语音图标，确认是否已为当前书籍语种配置了可用的 TTS 语音引擎。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">❓ A leitura em voz alta não emite som ao iniciar?</div>
+        <div class="faq-a">Verifique o volume de mídia do dispositivo. Se continuar sem som, abra o ícone de voz na barra superior e confirme se há uma voz TTS configurada para o idioma do livro.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">❓ ¿La lectura en voz alta no suena al pulsar reproducir?</div>
+        <div class="faq-a">Comprueba el volumen multimedia de tu dispositivo. Si sigue en silencio, toca el icono de voz en la barra superior y comprueba que haya una voz TTS asignada al idioma del libro.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">❓ Translation is stuck on 'Translating…'?</div>
+        <div class="faq-a">On the first translation of a session using an on-device AI model, the model takes a few extra seconds to initialize. You can also switch to the ML Kit engine in the translate panel for instant offline results.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">❓ การแปลภาษาค้างอยู่ที่สถานะ "Translating…"?</div>
+        <div class="faq-a">การใช้งานเอนจิน AI บนเครื่องในครั้งแรกของเซสชัน โมเดลจะต้องใช้เวลาโหลดข้อมูลเข้าสู่หน่วยความจำสักครู่ หากต้องการความเร็วทันใจ สามารถสลับไปใช้เอนจิน ML Kit ในแผงแปลภาษาได้ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">❓ 「Translating…（翻訳中）」のまま進まない場合は？</div>
+        <div class="faq-a">オンデバイスAIエンジンを初めて起動する際、モデルの読み込みに数秒から十数秒かかることがあります。即座に訳文を得たい場合は、翻訳パネルでオフライン高速な ML Kit エンジンに切り替えてください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">❓ 翻译一直显示“Translating…”加载状态？</div>
+        <div class="faq-a">首次调用端侧 AI 大模型引擎时，模型需要数秒预热加载到内存。如需极速响应，可在翻译面板中切换至免预热的本地 ML Kit 离线引擎。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">❓ A tradução travou em 'Translating…'?</div>
+        <div class="faq-a">No primeiro uso de um modelo de IA no dispositivo, o sistema leva alguns segundos extras para inicializar. Você também pode alternar para o motor ML Kit no painel para traduções offline imediatas.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">❓ ¿La traducción se queda en 'Translating…'?</div>
+        <div class="faq-a">En el primer uso de un modelo de IA en dispositivo, el sistema tarda unos segundos en inicializarse. También puedes cambiar al motor ML Kit en el panel de traducción para una respuesta sin esperas.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">❓ The theme reverted or looks different than expected?</div>
+        <div class="faq-a">Themes apply globally across the entire app rather than per individual book. Check the Theme row in reading settings (тT icon) to verify which palette is currently active.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">❓ ธีมสีเปลี่ยนกลับ หรือแสดงผลต่างจากที่ตั้งไว้?</div>
+        <div class="faq-a">ธีมสีจะถูกนำไปใช้กับทั้งแอปพลิเคชัน ไม่ได้แยกตามรายเล่ม หากสีเปลี่ยนไป ให้เปิดแผงตั้งค่าการอ่าน (ไอคอน тT) เพื่อตรวจสอบแถว Theme อีกครั้ง</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">❓ テーマが元に戻ったり、想定と違う見た目になる場合は？</div>
+        <div class="faq-a">テーマ設定は本ごとではなくアプリ全体に適用されます。上部バーの表示設定（тT）を開き、Theme 行で現在選択されているカラーパレットを確認してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">❓ 主题配色恢复原样或显示效果与预期不符？</div>
+        <div class="faq-a">阅读主题属于全局配置，作用于整个应用而非单独某一本书。请点击顶部 тT 图标重新确认 Theme 行中所激活的主题选项。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">❓ O tema voltou ao padrão ou está com aparência diferente?</div>
+        <div class="faq-a">Os temas se aplicam a todo o aplicativo, e não por livro individual. Acesse as configurações de leitura (ícone тT) para verificar qual paleta está ativa.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">❓ ¿El tema se restableció o se ve diferente?</div>
+        <div class="faq-a">Los temas se aplican a toda la aplicación de manera global y no por libro. Abre los ajustes de lectura (icono тT) para verificar qué paleta está seleccionada actualmente.</div>
+      </div>
+    </div>
+
+    <!-- ==================== RELATED READING ==================== -->
+    <div style="margin-top: 3.5rem;">
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-en">Related Guides &amp; Tutorials</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-th">บทความและคู่มือที่เกี่ยวข้อง</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-jp">関連ガイド・記事</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-cn">相关阅读与进阶指南</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-pt">Guias e Leituras Relacionadas</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1.25rem; color: var(--text-primary);" class="lang-es">Guías y Lecturas Relacionadas</h2>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen — A Touch-by-Touch Guide to Reading EPUBs</a></li>
+        <li><a href="/blog/read-along-tts-karaoke-highlight-epub-android/">Read Along with Karaoke Highlighting in Shiori EPUB Reader</a></li>
+        <li><a href="/blog/read-selected-text-aloud-epub-android/">Read Selected Text Aloud: Check Pronunciation One Sentence at a Time</a></li>
+        <li><a href="/blog/how-to-translate-to-multiple-language/">How to Translate EPUB to Multiple Languages Simultaneously</a></li>
+        <li><a href="/blog/eink-theme-for-android-epub-reader/">Using the E-Ink Theme for Paper-Like EPUB Reading on Android</a></li>
+        <li><a href="/blog/book-drop-send-books-to-android-over-wifi/">Drop a Book Into a Browser and Watch It Land on Your Phone — Book Drop, Explained</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Start Your Reading Journey with Shiori</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play and enjoy powerful karaoke read-aloud, instant on-device translation, and paper-like themes.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">เริ่มต้นประสบการณ์อ่านหนังสือที่ดีที่สุดกับ Shiori</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play สัมผัสฟังก์ชันอ่านออกเสียงคาราโอเกะ การแปลภาษาอัจฉริยะ และธีมอ่านสบายตาได้แล้ววันนี้
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">Shioriで快適な読書体験を始めよう</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、カラオケ風TTS読み上げ、オンデバイス翻訳、目に優しい読書テーマをご体験ください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">即刻开启 Shiori 纯净阅读之旅</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，畅享卡拉OK同步听书、端侧 AI 智能翻译与护眼墨水屏主题。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Comece Sua Jornada de Leitura com o Shiori</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori EPUB Reader no Google Play e aproveite a leitura com karaoke, tradução no dispositivo e temas visuais confortáveis.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Comienza Tu Experiencia de Lectura con Shiori</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori EPUB Reader en Google Play y disfruta de la lectura en voz alta con karaoke, traducción en dispositivo y temas relajantes.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
