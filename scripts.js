@@ -308,6 +308,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-title": "Your First 10 Minutes with Shiori: A Beginner's Walkthrough",
       "blog-p29-desc": "New to Shiori? A four-step walkthrough for your first ten minutes: import a book, listen with read-aloud, translate a paragraph, and set a reading theme on Android.",
 
+      // Blog Post 30
+      "blog-p30-date": "📅 August 24, 2026",
+      "blog-p30-cat": "🏷️ Formats & Reading",
+      "blog-p30-title": "Read Saved Web Pages on Your Phone: Importing HTML Files into Shiori",
+      "blog-p30-desc": "Turn saved articles and documentation into full ebooks with semantic text reflow, wide table wrap toggles, legacy encoding support, and TTS read-aloud.",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 August 25, 2026",
+      "blog-p31-cat": "🏷️ Import & Transfer",
+      "blog-p31-title": "Import Several Books at Once: Add a ZIP Full of Ebooks to Shiori",
+      "blog-p31-desc": "Bundle several EPUB, PDF, or CBZ files into one ZIP archive. Shiori unpacks it and imports each book automatically, no separate file extraction needed.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -630,6 +642,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-cat": "🏷️ ประสบการณ์การอ่าน",
       "blog-p29-title": "10 นาทีแรกของคุณกับ Shiori: คู่มือเริ่มต้นสำหรับมือใหม่",
       "blog-p29-desc": "เพิ่งเริ่มใช้ Shiori? แนะนำ 4 ขั้นตอนสำคัญใน 10 นาทีแรก: นำเข้าหนังสือ, ฟังด้วยเสียงอ่านอัตโนมัติ, แปลข้อความย่อหน้า และปรับธีมการอ่านบน Android",
+
+      // Blog Post 30
+      "blog-p30-date": "📅 24 สิงหาคม 2026",
+      "blog-p30-cat": "🏷️ รูปแบบไฟล์และการอ่าน",
+      "blog-p30-title": "อ่านหน้าเว็บที่บันทึกไว้บนมือถือ: วิธีนำเข้าและเปิดไฟล์ HTML ใน Shiori",
+      "blog-p30-desc": "เปลี่ยนบทความและเอกสาร HTML ให้เป็นอีบุ๊กอ่านสบาย จัดหน้าไหลลื่นตามหน้าจอ ปุ่มสลับการตัดคำในตาราง รองรับรหัสภาษาเก่า และฟังเสียงอ่าน TTS ได้เต็มรูปแบบ",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 25 สิงหาคม 2026",
+      "blog-p31-cat": "🏷️ การนำเข้าและถ่ายโอน",
+      "blog-p31-title": "นำเข้าหนังสือทีละหลายเล่มพร้อมกัน: เพิ่มไฟล์ ZIP รวมอีบุ๊กเข้า Shiori",
+      "blog-p31-desc": "รวมไฟล์ EPUB, PDF หรือ CBZ หลายเล่มไว้ในไฟล์ ZIP เดียว Shiori จะแตกไฟล์และนำเข้าหนังสือทุกเล่มขึ้นชั้นหนังสือให้อัตโนมัติในแตะเดียว",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -954,6 +978,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-title": "Shioriでの最初の10分間：初心者向けウォークスルー",
       "blog-p29-desc": "Shioriを初めて使う方へ。最初の10分で試したい4つのステップ（本のインポート、音声読み上げ、段落翻訳、読書テーマ設定）を分かりやすく解説。",
 
+      // Blog Post 30
+      "blog-p30-date": "📅 2026年8月24日",
+      "blog-p30-cat": "🏷️ フォーマット＆読書",
+      "blog-p30-title": "スマホで保存したWebページを読む：ShioriへのHTMLファイル取り込みガイド",
+      "blog-p30-desc": "保存した記事やドキュメントを電子書籍化。テキストリフロー、幅広テーブルの折り返し切替、Shift_JIS等の文字コード自動認識、TTS朗読に対応。",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 2026年8月25日",
+      "blog-p31-cat": "🏷️ 取り込みと転送",
+      "blog-p31-title": "複数の本をまとめて一括インポート：ZIPファイルをそのままShioriに追加",
+      "blog-p31-desc": "複数のEPUB、PDF、CBZをまとめたZIPファイルを直接選択可能。手動解凍不要で、含まれるすべての本を自動展開して本棚へ登録します。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1276,6 +1312,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-cat": "🏷️ 阅读体验",
       "blog-p29-title": "Shiori 上手前 10 分钟：新手入门指南",
       "blog-p29-desc": "初次使用 Shiori？前 10 分钟必试的四个核心步骤：导入图书、使用 TTS 朗读听书、翻译单段文字以及在 Android 上自定义阅读主题。",
+
+      // Blog Post 30
+      "blog-p30-date": "📅 2026年8月24日",
+      "blog-p30-cat": "🏷️ 图书格式与阅读",
+      "blog-p30-title": "在手机上舒适阅读已保存的网页：将 HTML 文件导入 Shiori",
+      "blog-p30-desc": "将离线网页与技术文档变为排版精美的电子书。支持语义重排、宽表格折行与横向滑动一键切换、Shift_JIS 等老旧编码自动识别及 TTS 朗读。",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 2026年8月25日",
+      "blog-p31-cat": "🏷️ 导入与传输",
+      "blog-p31-title": "一键批量导入多本图书：直接将包含电子书的 ZIP 压缩包添加至 Shiori",
+      "blog-p31-desc": "将多本 EPUB、PDF 或 CBZ 打包为一个 ZIP 压缩文件，Shiori 会直接自动解压并逐本独立加入书架，彻底免去手动解包步骤。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1600,6 +1648,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-title": "Seus Primeiros 10 Minutos com o Shiori: Um Guia para Iniciantes",
       "blog-p29-desc": "Novo no Shiori? Um passo a passo em 4 etapas para seus primeiros dez minutos: importe um livro, ouça com leitura em voz alta, traduza um parágrafo e defina um tema no Android.",
 
+      // Blog Post 30
+      "blog-p30-date": "📅 24 de agosto de 2026",
+      "blog-p30-cat": "🏷️ Formatos e Leitura",
+      "blog-p30-title": "Leia Páginas da Web Salvas no Celular: Como Importar Arquivos HTML para o Shiori",
+      "blog-p30-desc": "Transforme artigos e documentações em e-books completos com refluxo de texto, controle de quebra de tabelas largas, suporte a codificações legadas e TTS.",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 25 de agosto de 2026",
+      "blog-p31-cat": "🏷️ Importação e Transferência",
+      "blog-p31-title": "Importe Vários Livros de uma Só Vez: Adicione um ZIP com E-books no Shiori",
+      "blog-p31-desc": "Reúna vários arquivos EPUB, PDF ou CBZ em um único ZIP. O Shiori descompacta e importa cada livro automaticamente sem etapas extras.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1922,6 +1982,18 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p29-cat": "🏷️ Experiencia de Lectura",
       "blog-p29-title": "Tus primeros 10 minutos con Shiori: Guía para principiantes",
       "blog-p29-desc": "¿Nuevo en Shiori? Una guía en cuatro pasos para tus primeros diez minutos: importa un libro, escucha con lectura en voz alta, traduce un párrafo y elige un tema de lectura en Android.",
+
+      // Blog Post 30
+      "blog-p30-date": "📅 24 de agosto de 2026",
+      "blog-p30-cat": "🏷️ Formatos y Lectura",
+      "blog-p30-title": "Lee Páginas Web Guardadas en tu Teléfono: Cómo Importar Archivos HTML a Shiori",
+      "blog-p30-desc": "Convierte artículos y manuales en libros electrónicos con ajuste de texto, alternancia de tablas anchas, compatibilidad con codificaciones antiguas y TTS.",
+
+      // Blog Post 31
+      "blog-p31-date": "📅 25 de agosto de 2026",
+      "blog-p31-cat": "🏷️ Importación y Transferencia",
+      "blog-p31-title": "Importa Varios Libros a la Vez: Añade un Archivo ZIP con E-books a Shiori",
+      "blog-p31-desc": "Reúne varios archivos EPUB, PDF o CBZ en un único ZIP. Shiori lo descomprime y añade cada libro a tu estantería automáticamente en un toque.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

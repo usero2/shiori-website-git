@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Read Saved Web Pages on Your Phone: Importing HTML Files into Shiori — Shiori Blog</title>
+  <meta name="description" content="Turn saved web pages, documentation, and HTML articles into full e-books on Android. Shiori features semantic reflow, wide table toggles, legacy encoding detection, and full reader tools." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/read-html-files-android-epub-reader/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Read Saved Web Pages on Your Phone: Importing HTML Files into Shiori",
+    "description": "Turn saved web pages, documentation, and HTML articles into full e-books on Android. Shiori features semantic reflow, wide table toggles, legacy encoding detection, and full reader tools.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-24",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/read-html-files-android-epub-reader/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does Shiori name imported HTML files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Shiori reads the webpage's <title> tag rather than using the generic filename, so articles saved as 'page(1).html' appear on your bookshelf under their real readable titles."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Shiori handle non-UTF-8 character encodings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Shiori reads the charset declaration inside the HTML <meta> tags. Legacy encodings such as Shift_JIS (Japanese) or Windows-1251 (Russian) are decoded accurately without garbled characters."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use text-to-speech, translation, and highlighting on HTML files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Imported HTML files gain the full suite of Shiori reader features: TTS read-aloud with karaoke highlighting, multi-language translation, font overrides, bookmarks, and notes."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps Base */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Single-image layout */
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Multi-image Gallery Grid */
+    .tutorial-step.multi-img {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .tutorial-step.multi-img .step-text {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-gallery-grid {
+      display: grid;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .step-gallery-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .gallery-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+    }
+
+    .gallery-item .img-preview {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: none;
+      border: none;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    .gallery-item:hover .img-preview {
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.25rem 0.25rem 0;
+    }
+    .gallery-caption-badge {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .gallery-caption-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      text-align: left;
+      flex: 1;
+    }
+    .gallery-caption-text strong {
+      color: var(--text-primary);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step.single-img {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.single-img .step-text {
+        flex: 1.1;
+      }
+      .tutorial-step.single-img .step-image-container {
+        flex: 0.9;
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .step-gallery-grid.cols-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 24, 2026</span>
+        <span>🏷️ Formats &amp; Reading</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Read Saved Web Pages on Your Phone<br><span class="text-gradient">Importing HTML Files into Shiori</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">อ่านหน้าเว็บที่บันทึกไว้บนมือถือ<br><span class="text-gradient">วิธีนำเข้าและเปิดอ่านไฟล์ HTML ใน Shiori</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">スマホで保存したWebページを読む<br><span class="text-gradient">ShioriへのHTMLファイル取り込み・閲覧ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">在手机上舒适阅读已保存的网页<br><span class="text-gradient">将 HTML 文件导入 Shiori 电子书阅读器</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Leia Páginas da Web Salvas no Celular<br><span class="text-gradient">Como Importar Arquivos HTML para o Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Lee Páginas Web Guardadas en tu Teléfono<br><span class="text-gradient">Cómo Importar Archivos HTML a Shiori</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('02-imported-html-books-bookshelf.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🌐</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You save a long article from your browser. You export a page of documentation. Someone sends you a chapter that was pulled out of an ebook. All of it is HTML, and all of it ends up in your Downloads folder — where it stays, because tapping it opens a browser tab with no font control, no dark themes, no bookmarks, and no place to leave a note.</p>
+        <p><strong>Shiori treats an HTML file as a book.</strong> Import it once and it sits on your bookshelf right next to your EPUBs, with the exact same reading tools attached: continuous scroll, custom typography, text-to-speech read-aloud, on-device translation, and bookmarks.</p>
+        <p>Shiori reads the semantic markup, not a flat picture of the page. Headings stay headings, lists stay lists, tables stay tables, and text reflows gracefully to your screen width, your custom font, and your chosen margins.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Semantic Reflow &amp; Clean Layout</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">Wide Table Wrap / Scroll Toggle</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Shift_JIS &amp; Windows-1251 Support</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Multi-Script &amp; RTL Arabic Rendering</div>
+          </div>
+        </div>
+
+        <h2>Two Key Details to Know Before You Start</h2>
+        <ul class="article-bullet-list">
+          <li><strong>The book title comes from the file's <code>&lt;title&gt;</code> tag:</strong> A page saved with a generic name like <code>article(3).html</code> will still appear on your bookshelf under its real article title.</li>
+          <li><strong>The character encoding comes from the file's own declaration:</strong> A page that specifies <code>Shift_JIS</code> or <code>windows-1251</code> is read in its native encoding, not guessed at as UTF-8. This prevents garbled character glitches.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Table Display Mode</th><th>Visual Behavior</th><th>When to Use</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped (Default)</strong></td><td>Cell text breaks over multiple lines; rows stay on screen</td><td>Articles, API docs with long description paragraphs</td></tr>
+              <tr><td><strong>Single-Line Scroll</strong></td><td>Cells stay on 1 line; table scrolls sideways with horizontal arrows</td><td>Numerical matrices, comparison specs, compact data tables</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Safe &amp; Non-Destructive:</strong><br />
+          Importing copies the HTML document into Shiori's local library. Your original downloaded file remains completely untouched in your Downloads folder.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>หลายคนเคยบันทึกบทความยาวๆ จากเว็บเบราว์เซอร์ ส่งออกเอกสารคู่มือ หรือได้รับไฟล์เนื้อหาที่แยกออกมาจากอีบุ๊ก ไฟล์เหล่านี้ล้วนเป็น <strong>HTML</strong> ที่มักถูกทิ้งค้างไว้ในโฟลเดอร์ Downloads เพราะการเปิดผ่านเบราว์เซอร์ทั่วไปปรับแต่งฟอนต์ไม่ได้ ไม่มีโหมดมืดที่สบายตา บันทึกที่คั่นหน้าหรือจดโน้ตไม่ได้</p>
+        <p><strong>Shiori ออกแบบให้จัดการไฟล์ HTML เหมือนหนังสือหนึ่งเล่ม</strong> เมื่อนำเข้าไฟล์ หน้าเว็บจะเข้ามาอยู่บนชั้นหนังสือเคียงข้างไฟล์ EPUB พร้อมใช้งานเครื่องมือการอ่านระดับพรีเมียมครบทุกฟีเจอร์: การเลื่อนอ่านแบบไร้รอยต่อ, ปรับฟอนต์และระยะขอบ, ฟังเสียงอ่านสังเคราะห์ (TTS), แปลภาษา และจดบันทึก</p>
+        <p>Shiori ถอดรหัสโครงสร้างมาร์กอัปของหน้าเว็บโดยตรง ไม่ใช่แค่การแคปหน้าจอ ทำให้หัวข้อ รายการ และตารางจัดเรียงไหลลื่น (Reflow) พอดีกับหน้าจอมือถือของคุณเสมอ</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">ตัดคำและจัดหน้าไหลลื่นตามหน้าจอ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">ปุ่มสลับการแสดงผลตารางกว้าง</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">รองรับ Shift_JIS และ Windows-1251</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">แสดงผลหลากภาษาและภาษาอาหรับ RTL</div>
+          </div>
+        </div>
+
+        <h2>2 จุดเด่นสำคัญที่ควรรู้ก่อนเริ่มใช้งาน</h2>
+        <ul class="article-bullet-list">
+          <li><strong>ชื่อหนังสือถูกดึงจากแท็ก <code>&lt;title&gt;</code> อัตโนมัติ:</strong> แม้ไฟล์จะตั้งชื่อว่า <code>article(3).html</code> แต่บนชั้นหนังสือจะแสดงชื่อหัวข้อบทความจริงอย่างถูกต้อง</li>
+          <li><strong>ตรวจจับการเข้ารหัสอักขระ (Encoding) จากไฟล์โดยตรง:</strong> ไฟล์ภาษาญี่ปุ่นเก่าแบบ <code>Shift_JIS</code> หรือภาษารัสเซียแบบ <code>windows-1251</code> จะถูกอ่านตามรหัสที่ระบุ ไม่เกิดปัญหาตัวอักษรต่างดาว</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>โหมดแสดงผลตาราง</th><th>พฤติกรรมการแสดงผล</th><th>กรณีการใช้งานที่แนะนำ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped (ตัดบรรทัด - ค่าเริ่มต้น)</strong></td><td>ข้อความในช่องจะตัดขึ้นบรรทัดใหม่ แสดงครบทุกคอลัมน์</td><td>บทความยาว ตารางคู่มือ API ที่มีคำอธิบายยาวๆ</td></tr>
+              <tr><td><strong>Single-Line Scroll (บรรทัดเดียวเลื่อนข้าง)</strong></td><td>ข้อความอยู่บรรทัดเดียว ตารางกะทัดรัดและใช้นิ้วเลื่อนแนวนอน</td><td>ตารางสเปก ตัวเลข การเปรียบเทียบข้อมูลแบบกระชับ</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ปลอดภัย ไม่กระทบไฟล์ต้นฉบับ:</strong><br />
+          การนำเข้าจะทำการคัดลอกไฟล์เข้าสู่คลังของแอป Shiori โดยไฟล์เดิมในโฟลเดอร์ Downloads จะยังคงอยู่เหมือนเดิมทุกประการ
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>ブラウザで保存したWeb記事、出力したAPIドキュメント、配布されたHTMLファイル。これらはスマホのブラウザで開くとフォント調整やダークテーマ、しおり機能が使えず、読書には不向きでした。</p>
+        <p><strong>ShioriはHTMLファイルを1冊の「書籍」として扱います。</strong> 一度取り込めば本棚にEPUBと並んで配置され、連続スクロール、フォント変更、音声読み上げ（TTS）、翻訳、しおり・メモなど全ての読書ツールがそのまま利用できます。</p>
+        <p>ページの画像をただ表示するのではなく、HTMLのタグ構造を解析して文字をリフローするため、スマホの画面幅に合わせて美しく再レイアウトされます。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">画面幅に応じたテキストリフロー</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">幅広テーブルの折り返し切替</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Shift_JIS等の文字コード自動認識</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">多言語混在＆アラビア語RTL対応</div>
+          </div>
+        </div>
+
+        <h2>知っておくべき2つのポイント</h2>
+        <ul class="article-bullet-list">
+          <li><strong>書籍名は <code>&lt;title&gt;</code> タグから自動取得：</strong> ファイル名が <code>page(1).html</code> のような名前でも、本棚には正しい記事タイトルで並びます。</li>
+          <li><strong>宣言された文字コードを正確に読み込み：</strong> 古い日本のWebサイトの <code>Shift_JIS</code> 宣言も正確に解釈し、文字化けを起こさず表示します。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>テーブル表示モード</th><th>表示の挙動</th><th>おすすめの用途</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped（折り返し - 標準）</strong></td><td>セル内の文字が自動改行され、全列が画面内に収まる</td><td>長文解説や説明文が多いAPIドキュメントなど</td></tr>
+              <tr><td><strong>Single-Line Scroll（1行スクロール）</strong></td><td>各セルが1行に維持され、横スクロールで閲覧可能</td><td>数値表、仕様比較表、コンパクトに見比べたいデータ</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>元ファイルを傷つけない安心設計：</strong><br />
+          インポート時にアプリ内へコピーされるため、端末のダウンロードフォルダにある元のファイルはそのまま残ります。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在手机浏览器中离线保存的长文、导出的技术文档或单独的章节文件，通常都是 HTML 格式。但用浏览器打开时往往无法调整字号、没有舒适的深色模式，也无法添加书签或做笔记。</p>
+        <p><strong>Shiori 将 HTML 文件视为完整的电子书。</strong> 导入后，网页将陈列在书架上与 EPUB 并肩展示，并可无缝使用连续滚动、自定义字体、TTS 语音朗读、内置翻译与书签笔记等全部专业读屏工具。</p>
+        <p>Shiori 解析文档语义而非单纯展示截图，标题、列表与表格均可根据屏幕宽度与页边距自适应智能重排（Reflow）。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">文档语义解析与智能重排</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">宽表格折行 / 横向滚动一键切换</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">自动识别 Shift_JIS 与 Windows-1251</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">多语种混排与阿拉伯语 RTL 渲染</div>
+          </div>
+        </div>
+
+        <h2>导入前必知的两大特性</h2>
+        <ul class="article-bullet-list">
+          <li><strong>书名自动提取自 <code>&lt;title&gt;</code> 标签：</strong> 即便文件名为 <code>article(3).html</code>，书架上仍会显示原本优美完整的文章大标题。</li>
+          <li><strong>依文档编码声明准确解析：</strong> 完美支持非 UTF-8 的历史网页编码（如日文 <code>Shift_JIS</code> 或俄文 <code>windows-1251</code>），彻底告别乱码。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>表格显示模式</th><th>视觉呈现</th><th>适用场景</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped（自动折行 - 默认）</strong></td><td>单元格文本自动换行，所有列均完整显示在屏幕内</td><td>包含长文本描述的文档、API 说明</td></tr>
+              <tr><td><strong>Single-Line Scroll（单行横向滚动）</strong></td><td>单元格保持单行紧凑，支持左右滑动表格查看更多列</td><td>数字矩阵、规格参数对比表、紧凑型数据</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>非破坏性导入：</strong><br />
+          导入过程会将文件复制进 Shiori 应用专属图书库，下载文件夹中的原始文件将保持完好无损。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você salva um artigo longo do navegador ou exporta uma documentação em HTML. No celular, abrir pelo navegador não oferece controle de fontes, temas escuros confortáveis nem marcadores.</p>
+        <p><strong>O Shiori trata arquivos HTML como livros.</strong> Ao importá-los, eles ficam na sua estante ao lado dos seus EPUBs com suporte a rolagem contínua, tipografia personalizada, leitura em voz alta (TTS), tradução e anotações.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Refluxo Semântico de Layout</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">Seletor de Quebra para Tabelas</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Suporte a Shift_JIS e Windows-1251</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Multilíngue e Árabe RTL</div>
+          </div>
+        </div>
+
+        <h2>Dois Detalhes Importantes</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Título extraído da tag <code>&lt;title&gt;</code>:</strong> Mesmo que o arquivo se chame <code>pagina(2).html</code>, o título real do artigo aparecerá na estante.</li>
+          <li><strong>Detecção automática de codificação:</strong> Páginas legadas em <code>Shift_JIS</code> ou <code>windows-1251</code> são lidas corretamente sem caracteres corrompidos.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Modo de Tabela</th><th>Comportamento Visual</th><th>Quando Usar</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped (Padrão)</strong></td><td>O texto quebra em várias linhas; todas as colunas visíveis</td><td>Artigos com descrições e explicações longas</td></tr>
+              <tr><td><strong>Single-Line Scroll</strong></td><td>Células em 1 linha; rolagem horizontal suave sob o dedo</td><td>Tabelas de dados numéricos e especificações</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Processo 100% Seguro:</strong><br />
+          A importação cria uma cópia do documento na biblioteca do app, preservando o arquivo original intacto na pasta Downloads.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Guardas un artículo largo del navegador o descargas documentación técnica en HTML. En el teléfono, abrirlos en el navegador carece de control de fuentes, temas oscuros o notas al margen.</p>
+        <p><strong>Shiori trata los archivos HTML como libros completos.</strong> Al importarlos, se organizan en tu estantería junto a tus EPUBs y disfrutan de desplazamiento continuo, tipografía personalizada, TTS, traducción y marcadores.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📄</span>
+            <div class="stat-badge-title">Ajuste y Reflujo Semántico</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📊</span>
+            <div class="stat-badge-title">Ajuste de Línea en Tablas Anchas</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔤</span>
+            <div class="stat-badge-title">Detección de Shift_JIS y Windows-1251</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌍</span>
+            <div class="stat-badge-title">Multilingüe y Árabe RTL Nativo</div>
+          </div>
+        </div>
+
+        <h2>Dos Puntos Clave que Debes Conocer</h2>
+        <ul class="article-bullet-list">
+          <li><strong>El título se obtiene de la etiqueta <code>&lt;title&gt;</code>:</strong> Un archivo llamado <code>doc(1).html</code> mostrará el título real de la página en la estantería.</li>
+          <li><strong>Codificación declarada respetada al 100%:</strong> Las páginas en <code>Shift_JIS</code> o <code>windows-1251</code> se leen en su codificación nativa sin caracteres extraños.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Modo de Tabla</th><th>Comportamiento</th><th>Uso Recomendado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Wrapped (Por Defecto)</strong></td><td>El texto se divide en varias líneas; todo permanece en pantalla</td><td>Artículos y descripciones de texto extensas</td></tr>
+              <tr><td><strong>Single-Line Scroll</strong></td><td>Celdas en 1 línea con desplazamiento horizontal interactivo</td><td>Matrices de datos, especificaciones y tablas compactas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Importación no destructiva:</strong><br />
+          El documento se copia a la biblioteca interna de Shiori, dejando el archivo original intacto en tu carpeta de Descargas.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide: Importing &amp; Reading HTML Files (5 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการนำเข้าและปรับแต่งการอ่านไฟล์ HTML (5 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">ステップ別ガイド：HTMLファイルの取り込みと閲覧（5つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">分步操作指南：导入与阅读 HTML 文件（5 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Guia Passo a Passo: Importação e Leitura de HTML (5 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso: Importar y Leer Archivos HTML (5 Pasos)</h2>
+
+    <!-- STEP 1 (Single Image) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Add Files in Batches via the File Picker</div>
+          <div class="step-desc">
+            <p>On your bookshelf, tap the floating <strong>+</strong> button in the bottom-right corner to open the system file picker.</p>
+            <p>To bring in multiple articles at once, long-press the first file to enter selection mode, then tap the rest. Tap <strong>Select</strong> to import the entire batch.</p>
+            <p>Shiori reports the outcome immediately: it confirms the number of imported books and names any unsupported file.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เลือกและนำเข้าไฟล์ HTML ทีละหลายไฟล์</div>
+          <div class="step-desc">
+            <p>ในหน้าชั้นหนังสือ ให้แตะปุ่ม <strong>+</strong> ที่มุมล่างขวาเพื่อเปิดหน้าต่างเลือกไฟล์ของระบบ</p>
+            <p>หากต้องการนำเข้าหลายไฟล์พร้อมกัน ให้แตะค้างที่ไฟล์แรกเพื่อเปิดโหมดเลือกหลายรายการ จากนั้นแตะเลือกไฟล์อื่นๆ แล้วกด <strong>Select</strong> เพื่อนำเข้าทั้งชุด</p>
+            <p>Shiori จะแจ้งผลลัพธ์ทันทีว่าสามารถนำเข้าได้กี่เล่ม และระบุชื่อไฟล์ที่ไม่สามารถเปิดได้ (ถ้ามี)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>ファイルピッカーからまとめて取り込む</div>
+          <div class="step-desc">
+            <p>本棚画面の右下にある <strong>+</strong> ボタンをタップしてファイル選択画面を開きます。</p>
+            <p>最初のファイルを長押しして複数選択モードに入り、残りのファイルをタップして <strong>Select</strong> を押すと、一括で取り込めます。</p>
+            <p>取り込み結果が通知され、追加された冊数や受け入れられなかったファイル名が明示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>通过文件选择器批量导入 HTML</div>
+          <div class="step-desc">
+            <p>在书架界面点击右下角的 <strong>+</strong> 悬浮按钮，打开系统文件选择器。</p>
+            <p>长按第一个文件进入多选模式，依次勾选其他 HTML 文档，点击 <strong>Select</strong> 即可一键批量导入。</p>
+            <p>Shiori 会即时反馈导入结果，明确提示成功导入的图书数量及无法识别的文件名。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Adicione Arquivos em Lote pelo Seletor</div>
+          <div class="step-desc">
+            <p>Na estante, toque no botão flutuante <strong>+</strong> no canto inferior direito para abrir o seletor de arquivos.</p>
+            <p>Pressione e segure o primeiro arquivo para ativar a seleção múltipla, marque os demais e toque em <strong>Select</strong>.</p>
+            <p>O Shiori informa o resultado do lote, confirmando quantos livros foram importados com sucesso.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Añade Archivos por Lotes desde el Selector</div>
+          <div class="step-desc">
+            <p>En la estantería, pulsa el botón flotante <strong>+</strong> en la esquina inferior derecha para abrir el selector.</p>
+            <p>Mantén pulsado el primer archivo para activar la selección múltiple, toca los demás y pulsa <strong>Select</strong> para importar.</p>
+            <p>Shiori informa de inmediato cuántos libros se han añadido y avisa si algún archivo no es compatible.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-select-html-files-in-picker.jpg" alt="The Android file picker inside Shiori showing five saved web pages selected with 5 selected in toolbar" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 (Single Image) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>HTML Books on Your Bookshelf</div>
+          <div class="step-desc">
+            <p>Each imported HTML document appears on the bookshelf titled from its <code>&lt;title&gt;</code> tag and clearly badged <strong>HTML</strong>.</p>
+            <p>Expand a book's detail card to see its source filename. From here, you can track progress, use full-text search, add bookmarks, and trigger TTS read-aloud just like an EPUB.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>หนังสือ HTML พร้อมป้ายกำกับบนชั้นหนังสือ</div>
+          <div class="step-desc">
+            <p>หน้าเว็บที่นำเข้าจะปรากฏบนชั้นหนังสือโดยใช้ชื่อเรื่องจากแท็ก <code>&lt;title&gt;</code> พร้อมป้ายกำกับ <strong>HTML</strong> ระบุที่มาอย่างชัดเจน</p>
+            <p>กดขยายดูรายละเอียดเพื่อดูชื่อไฟล์เดิม สามารถติดตามความคืบหน้าการอ่าน ค้นหาข้อความ คั่นหน้า และเปิดเสียงอ่าน TTS ได้เหมือนหนังสือ EPUB</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>本棚にHTMLバッジ付きでスマートに並ぶ</div>
+          <div class="step-desc">
+            <p>取り込まれた各ドキュメントは、<code>&lt;title&gt;</code> タグのタイトルで本棚に並び、<strong>HTML</strong> バッジが付きます。</p>
+            <p>詳細カードで元のファイル名を確認でき、読書進捗の管理、全文検索、しおり、TTS朗読などがそのまま利用可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>书架陈列与专属 HTML 徽章</div>
+          <div class="step-desc">
+            <p>导入的文档将以其实际网页 <code>&lt;title&gt;</code> 呈现在书架上，并附带醒目的 <strong>HTML</strong> 专属格式角标。</p>
+            <p>展开书籍详情可查看原始文件名。支持阅读进度记录、全文检索、添加书签与卡拉OK式 TTS 语音朗读。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Livros HTML na Sua Estante</div>
+          <div class="step-desc">
+            <p>Cada documento importado ganha o título da tag <code>&lt;title&gt;</code> e a tag <strong>HTML</strong> na estante.</p>
+            <p>Exiba os detalhes para ver o nome original do arquivo e use todas as ferramentas de leitura e áudio normalmente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Libros HTML en tu Estantería</div>
+          <div class="step-desc">
+            <p>Cada página importada se muestra con el título de su etiqueta <code>&lt;title&gt;</code> y la etiqueta distintiva <strong>HTML</strong>.</p>
+            <p>Revisa el nombre de archivo original en los detalles y disfruta de búsqueda, marcadores y lectura en voz alta.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-imported-html-books-bookshelf.jpg" alt="Shiori bookshelf showing four imported web pages in Recently row marked with HTML badge and source filenames" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 (Multi-Image Gallery: 2 Columns Side-by-Side) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Wide Tables: The Word-Wrap Toggle Button</div>
+          <div class="step-desc">
+            <p>Wide tables are notoriously hard to read on phone screens. Every table in Shiori gets a dedicated round button at its top-left corner to switch how it handles width.</p>
+            <p><strong>Wrapped Mode:</strong> Breaks cell text into multiple lines so all columns stay visible together. <strong>Single-Line Mode:</strong> Keeps rows compact and allows smooth horizontal scrolling under your finger.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>จัดการตารางขนาดกว้างด้วยปุ่มสลับการตัดคำ (Wrap Toggle)</div>
+          <div class="step-desc">
+            <p>ตารางข้อมูลหลายคอลัมน์มักอ่านยากบนจอมือถือ Shiori จึงใส่ปุ่มกลมเล็กๆ ไว้ที่มุมบนซ้ายของทุกตารางเพื่อให้คุณเลือกวิธีแสดงผลได้ตามต้องการ</p>
+            <p><strong>โหมด Wrapped:</strong> ตัดข้อความในช่องหลายบรรทัดเพื่อแสดงทุกคอลัมน์บนจอ <strong>โหมด Single-Line:</strong> ตรึงข้อความบรรทัดเดียว แถวกะทัดรัดและใช้นิ้วเลื่อนแนวนอนได้อย่างอิสระ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>幅広テーブルを快適化：折り返し切替ボタン</div>
+          <div class="step-desc">
+            <p>列数の多い比較表をスマホで快適に読めるよう、各テーブルの左上に丸い切り替えボタンが配置されています。</p>
+            <p><strong>折り返しモード：</strong> セル内を自動改行し全列を画面内に表示。 <strong>1行スクロールモード：</strong> セルを1行に固定し指で左右に横スクロールして軽快に閲覧。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>宽表格应对方案：折行与滚动一键切换</div>
+          <div class="step-desc">
+            <p>针对多列对比表格在手机端难以排版的痛点，Shiori 在每个表格左上角均提供了一个圆形的排版切换按键。</p>
+            <p><strong>折行模式：</strong> 单元格文字自动换行，所有列同屏呈现。 <strong>单行滚动模式：</strong> 单元格保持单行紧凑，支持手指左右横向滑动浏览。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Tabelas Largas: Botão de Quebra de Linha</div>
+          <div class="step-desc">
+            <p>Tabelas com muitas colunas recebem um botão circular no canto superior esquerdo para alternar a exibição.</p>
+            <p><strong>Modo Quebrado:</strong> Texto quebra em várias linhas mantendo tudo visível. <strong>Modo Linha Única:</strong> Células compactas em uma linha com rolagem horizontal.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Tablas Anchas: Botón de Ajuste de Línea</div>
+          <div class="step-desc">
+            <p>Las tablas con muchas columnas incluyen un botón circular en la esquina superior izquierda para cambiar de modo.</p>
+            <p><strong>Modo Ajustado:</strong> El texto se divide en varias líneas para mantener todas las columnas. <strong>Modo Una Línea:</strong> Celdas compactas en 1 línea con desplazamiento lateral.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="03-wide-table-word-wrap-on.jpg" alt="Six-column comparison table in Shiori with word wrap on and round toggle button" class="img-preview" data-index="2" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>Wrapped Mode (Default):</strong> Cell text breaks into multiple lines; all columns stay visible on screen.</span>
+              <span class="lang-th"><strong>โหมด Wrapped (ค่าเริ่มต้น):</strong> ข้อความในช่องตัดขึ้นบรรทัดใหม่ แสดงครบทุกคอลัมน์บนจอ</span>
+              <span class="lang-jp"><strong>折り返しモード（標準）：</strong> セル内を自動改行し、すべての列を画面内に収めて表示</span>
+              <span class="lang-cn"><strong>折行模式（默认）：</strong> 单元格文字自动换行，所有数据列完整保留在屏幕内</span>
+              <span class="lang-pt"><strong>Modo Quebrado (Padrão):</strong> O texto quebra em várias linhas; todas as colunas visíveis.</span>
+              <span class="lang-es"><strong>Modo Ajustado (Por Defecto):</strong> El texto se divide en varias líneas; todas las columnas en pantalla.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="04-wide-table-single-line-scroll.jpg" alt="Comparison table after tapping the toggle now in single-line horizontal scroll mode" class="img-preview" data-index="3" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>Single-Line Scroll Mode:</strong> Cells stay on 1 line; table scrolls sideways with horizontal arrows.</span>
+              <span class="lang-th"><strong>โหมด Single-Line:</strong> ข้อความในช่องอยู่บรรทัดเดียว ตารางกะทัดรัดและใช้นิ้วเลื่อนแนวนอน</span>
+              <span class="lang-jp"><strong>1行スクロールモード：</strong> 各セルが1行に固定され、指で左右に横スクロールして軽快に確認</span>
+              <span class="lang-cn"><strong>单行滚动模式：</strong> 单元格保持单行紧凑，支持左右滑动表格查看密集参数</span>
+              <span class="lang-pt"><strong>Modo Linha Única:</strong> Células compactas em 1 linha e tabela rolável horizontalmente.</span>
+              <span class="lang-es"><strong>Modo Una Línea:</strong> Celdas compactas en 1 sola línea con desplazamiento lateral interactivo.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4 (Multi-Image Gallery: 2 Columns Side-by-Side) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Flawless Multi-Script &amp; RTL Rendering</div>
+          <div class="step-desc">
+            <p>Saved pages frequently mix writing systems. Shiori renders Latin, Japanese, Arabic, Thai, Chinese, and Cyrillic seamlessly in the same document.</p>
+            <p>Arabic text with <code>dir="rtl"</code> flows right-to-left with proper cursive joining, while Thai vowel and tone mark stacks align with pixel perfection.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>แสดงผลหลากภาษา สระภาษาไทย และภาษาอาหรับ (RTL) ได้อย่างแม่นยำ</div>
+          <div class="step-desc">
+            <p>หน้าเว็บที่ผสมหลายภาษา ทั้งลาติน ญี่ปุ่น อาหรับ ไทย จีน และซีริลลิก สามารถแสดงผลร่วมกันในหน้าเดียวได้อย่างสมบูรณ์แบบ</p>
+            <p>ภาษาอาหรับที่มี <code>dir="rtl"</code> จะจัดหน้าจากขวาไปซ้ายพร้อมตัวอักษรเชื่อมอย่างถูกต้อง และวรรณยุกต์สระภาษาไทยจะวางซ้อนในตำแหน่งที่ถูกต้อง ไม่ทับซ้อนหรือเพี้ยน</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>多言語混在・タイ語声調・アラビア語RTLも美しく描画</div>
+          <div class="step-desc">
+            <p>ラテン文字、日本語、アラビア語、タイ語、中国語、キリル文字が1つのファイルに混在していても正確にレンダリングされます。</p>
+            <p><code>dir="rtl"</code> を持つアラビア語段落は右から左への連結筆記体で正しく配置され、タイ語の複雑な声調記号も崩れず表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>多语种混排、泰语音标与阿拉伯语 RTL 完美呈现</div>
+          <div class="step-desc">
+            <p>当网页混合包含拉丁文、日文、阿拉伯文、泰文、中文和西里尔文时，Shiori 能够完美协同渲染。</p>
+            <p>带有 <code>dir="rtl"</code> 属性的阿拉伯语段落自右向左自然连笔排版，泰语复杂的上下堆叠声调音标亦能精准定位不重叠。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Renderização Multilíngue e Árabe RTL Impecável</div>
+          <div class="step-desc">
+            <p>O Shiori renderiza textos em latim, japonês, árabe, tailandês, chinês e cirílico no mesmo documento sem erros de fonte.</p>
+            <p>Trechos em árabe com <code>dir="rtl"</code> fluem da direita para a esquerda e as marcas tonais do tailandês alinham-se perfeitamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Representación Multilingüe y Árabe RTL Sin Errores</div>
+          <div class="step-desc">
+            <p>Shiori renderiza texto en alfabeto latino, japonés, árabe, tailandés, chino y cirílico en el mismo documento con total fidelidad.</p>
+            <p>El árabe con <code>dir="rtl"</code> se alinea de derecha a izquierda y los caracteres y acentos tailandeses se posicionan con exactitud.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="05-six-scripts-latin-japanese-arabic.jpg" alt="Imported HTML page showing English Japanese and Arabic right-to-left text" class="img-preview" data-index="4" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>English, Japanese &amp; RTL Arabic:</strong> Proper native glyphs and right-to-left cursive layout.</span>
+              <span class="lang-th"><strong>ภาษาอังกฤษ ญี่ปุ่น และอาหรับ RTL:</strong> แสดงผลตัวอักษรถูกต้อง และจัดหน้าอาหรับจากขวาไปซ้าย</span>
+              <span class="lang-jp"><strong>英語・日本語・アラビア語RTL：</strong> 固有の字形と右から左への連結筆記体を正確に描画</span>
+              <span class="lang-cn"><strong>英语、日语与阿拉伯语 RTL：</strong> 原生字体字形与自右向左自然连笔排版</span>
+              <span class="lang-pt"><strong>Inglês, Japonês e Árabe RTL:</strong> Glifos nativos e escrita conectada da direita para a esquerda.</span>
+              <span class="lang-es"><strong>Inglés, Japonés y Árabe RTL:</strong> Caracteres nativos y flujo cursivo continuo de derecha a izquierda.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="06-six-scripts-thai-chinese-russian.jpg" alt="HTML page showing Thai with correct tone marks Chinese and Cyrillic script above comparison table" class="img-preview" data-index="5" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>Thai, Chinese &amp; Cyrillic:</strong> Flawless tone mark stacking and multi-language comparison table.</span>
+              <span class="lang-th"><strong>ภาษาไทย จีน และซีริลลิก:</strong> วรรณยุกต์สระภาษาไทยวางซ้อนพอดี ไม่ทับซ้อน พร้อมตารางเปรียบเทียบ</span>
+              <span class="lang-jp"><strong>タイ語・中国語・キリル文字：</strong> 重なるタイ語声調記号と多言語比較テーブルも完璧に整列</span>
+              <span class="lang-cn"><strong>泰语、中文与西里尔文：</strong> 泰语音标上下精准定位对齐，多语种对比表清晰整洁</span>
+              <span class="lang-pt"><strong>Tailandês, Chinês e Cirílico:</strong> Marcas de tom alinhadas e tabela comparativa multilíngue.</span>
+              <span class="lang-es"><strong>Tailandés, Chino y Cirílico:</strong> Acentos tailandeses alineados sin solaparse y tabla multilingüe.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5 (Multi-Image Gallery: 2 Columns Side-by-Side) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Automatic Non-UTF-8 Encoding Support</div>
+          <div class="step-desc">
+            <p>Plenty of archived webpages are encoded in legacy formats like Japanese <strong>Shift_JIS</strong> or Russian <strong>windows-1251</strong>.</p>
+            <p>Shiori reads the encoding from the file's <code>&lt;meta charset&gt;</code> header and decodes it accurately without requiring manual menu adjustments.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>รองรับการเข้ารหัสอักขระแบบเก่าที่ไม่ใช่ UTF-8 โดยอัตโนมัติ</div>
+          <div class="step-desc">
+            <p>หน้าเว็บบทความหรือคลังเอกสารเก่าๆ มักใช้รหัสภาษาเฉพาะ เช่น ภาษาญี่ปุ่น <strong>Shift_JIS</strong> หรือภาษารัสเซีย <strong>windows-1251</strong></p>
+            <p>Shiori จะอ่านค่าจากส่วนหัว <code>&lt;meta charset&gt;</code> ของไฟล์โดยตรง และถอดรหัสออกมาเป็นตัวหนังสือที่อ่านออกได้อย่างถูกต้องทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>Shift_JISなどの非UTF-8文字コードも自動認識</div>
+          <div class="step-desc">
+            <p>過去に保存した日本のレガシーサイト（<strong>Shift_JIS</strong>）やロシアのアーカイブ（<strong>windows-1251</strong>）も安心です。</p>
+            <p>HTML内の <code>&lt;meta charset&gt;</code> 宣言を読み取って自動デコードするため、手動で文字コードを探す手間なく美しく表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>原生支持非 UTF-8 历史网页编码</div>
+          <div class="step-desc">
+            <p>许多留存的历史网页采用老式编码格式，例如日文 <strong>Shift_JIS</strong> 或俄文 <strong>windows-1251</strong>。</p>
+            <p>Shiori 会自动解析 <code>&lt;meta charset&gt;</code> 声明并进行针对性解码，彻底杜绝乱码，无需手动寻找编码切换菜单。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Suporte Automático a Codificações Não UTF-8</div>
+          <div class="step-desc">
+            <p>Arquivos antigos salvos em <strong>Shift_JIS</strong> (japonês) ou <strong>windows-1251</strong> (russo) são abertos sem problemas.</p>
+            <p>O Shiori lê a tag <code>&lt;meta charset&gt;</code> e decodifica o texto perfeitamente sem necessidade de menus manuais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Compatibilidad con Codificaciones no UTF-8</div>
+          <div class="step-desc">
+            <p>Documentos web antiguos guardados en <strong>Shift_JIS</strong> (japonés) o <strong>windows-1251</strong> (russo) se abren sin errores.</p>
+            <p>Shiori lee la etiqueta <code>&lt;meta charset&gt;</code> y descodifica el texto a la perfección de forma totalmente automática.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="07-japanese-shift-jis-page.jpg" alt="Japanese HTML page saved in Shift_JIS rendering correctly with kanji hiragana and katakana" class="img-preview" data-index="6" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>Japanese Shift_JIS:</strong> Auto-detected from meta tag with clear kanji, hiragana, and katakana.</span>
+              <span class="lang-th"><strong>ภาษาญี่ปุ่น Shift_JIS:</strong> ตรวจจับจากแท็ก meta อัตโนมัติ แสดงคันจิ ฮิรางานะ คาตาคานะชัดเจน</span>
+              <span class="lang-jp"><strong>日本語 Shift_JIS：</strong> metaタグから自動判別し、漢字・ひらがな・カタカナを正確に表示</span>
+              <span class="lang-cn"><strong>日文 Shift_JIS：</strong> 自动识别 meta 声明，汉字、平假名与片假名清晰无乱码</span>
+              <span class="lang-pt"><strong>Japonês Shift_JIS:</strong> Detectado automaticamente pela meta tag com kanji e kana legíveis.</span>
+              <span class="lang-es"><strong>Japonés Shift_JIS:</strong> Detectado automáticamente por la etiqueta meta con kanji y kana nítidos.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="08-russian-windows-1251-page.jpg" alt="Russian HTML page saved in windows-1251 rendering correctly in Cyrillic" class="img-preview" data-index="7" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <div class="gallery-caption-text">
+              <span class="lang-en"><strong>Russian Windows-1251:</strong> Flawless Cyrillic alphabet rendering without garbled characters.</span>
+              <span class="lang-th"><strong>ภาษารัสเซีย Windows-1251:</strong> แสดงผลอักษรซีริลลิกอย่างสมบูรณ์แบบ ไม่มีตัวอักษรต่างดาว</span>
+              <span class="lang-jp"><strong>ロシア語 Windows-1251：</strong> 文字化けすることなくキリル文字のアルファベットを綺麗にレンダリング</span>
+              <span class="lang-cn"><strong>俄文 Windows-1251：</strong> 完美渲染西里尔字母全字符集，彻底杜绝乱码</span>
+              <span class="lang-pt"><strong>Russo Windows-1251:</strong> Renderização cirílica impecável sem caracteres corrompidos.</span>
+              <span class="lang-es"><strong>Ruso Windows-1251:</strong> Representación cirílica impecable sin caracteres extraños ni errores.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== NOTE ON XHTML FILES ==================== -->
+    <div class="quote-callout" style="border-left-color: var(--accent-secondary); margin-top: 2rem;">
+      <div class="lang-en">
+        <strong>Tip for <code>.xhtml</code> files:</strong><br />
+        If you unpack an EPUB or export single chapter files ending in <code>.xhtml</code>, simply rename the file extension from <code>.xhtml</code> to <code>.html</code> and import it again. Shiori handles all internal XML structures smoothly once accepted.
+      </div>
+      <div class="lang-th">
+        <strong>คำแนะนำสำหรับไฟล์ <code>.xhtml</code>:</strong><br />
+        หากคุณแยกไฟล์บทจาก EPUB ที่มีนามสกุล <code>.xhtml</code> เพียงเปลี่ยนชื่อนามสกุลไฟล์เป็น <code>.html</code> แล้วนำเข้าอีกครั้ง Shiori จะสามารถอ่านโครงสร้าง XML ภายในได้อย่างสมบูรณ์แบบ
+      </div>
+      <div class="lang-jp">
+        <strong><code>.xhtml</code> ファイルに関するTips：</strong><br />
+        EPUBを展開して得られた <code>.xhtml</code> ファイルは、拡張子を <code>.html</code> にリネームするだけでShioriに正常に取り込めます。
+      </div>
+      <div class="lang-cn">
+        <strong>针对 <code>.xhtml</code> 文件的操作技巧：</strong><br />
+        如果是从 EPUB 解包得到的 <code>.xhtml</code> 单章节文件，只需将其文件后缀重命名为 <code>.html</code> 即可直接导入，XML 结构完全兼容。
+      </div>
+      <div class="lang-pt">
+        <strong>Dica para arquivos <code>.xhtml</code>:</strong><br />
+        Se você extrair capítulos de um EPUB terminados em <code>.xhtml</code>, basta renomear a extensão para <code>.html</code> para importá-los normalmente.
+      </div>
+      <div class="lang-es">
+        <strong>Consejo para archivos <code>.xhtml</code>:</strong><br />
+        Si extraes capítulos de un EPUB con extensión <code>.xhtml</code>, simplemente renómbralos a <code>.html</code> para importarlos sin inconvenientes.
+      </div>
+    </div>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions &amp; Troubleshooting</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อยและการแก้ปัญหา (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問＆トラブルシューティング（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题与答疑（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes e Solução de Problemas (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes y Solución de Problemas (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">What should I do if a copied file doesn't appear in the file picker?</div>
+        <div class="faq-a">Files transferred over USB are sometimes not immediately indexed by Android MediaStore. Open the folder once using your device's built-in file manager, or restart the device, and the file will appear immediately.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำอย่างไรถ้าไฟล์ HTML ที่เพิ่งก๊อปลงเครื่องไม่แสดงในหน้าต่างเลือกไฟล์?</div>
+        <div class="faq-a">ไฟล์ที่ถ่ายโอนผ่านสาย USB บางครั้งระบบ Android อาจยังไม่ได้ทำดัชนี (Index) แนะนำให้เปิดแอปจัดการไฟล์ (File Manager) ของเครื่องเข้าไปดูโฟลเดอร์นั้นหนึ่งครั้ง หรือรีสตาร์ตเครื่อง ไฟล์จะปรากฏให้เลือกทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">USB経由でコピーしたファイルがピッカーに表示されない場合は？</div>
+        <div class="faq-a">Androidのメディアインデックスが未更新の場合があります。端末標準のファイルマネージャーで対象フォルダを一度開くか、端末を再起動するとピッカーに表示されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">通过 USB 导入的 HTML 文件未出现在选择器中怎么办？</div>
+        <div class="faq-a">部分通过 USB 传输的文件可能未被 Android 系统及时建立索引。使用手机自带的文件管理器打开该文件夹一次，或重启手机即可正常显示。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O que fazer se um arquivo transferido por USB não aparecer no seletor?</div>
+        <div class="faq-a">Arquivos copiados via USB podem não ser indexados na hora pelo Android. Abra a pasta pelo gerenciador de arquivos do celular ou reinicie o aparelho para que apareçam.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Qué hacer si un archivo copiado por USB no aparece en el selector?</div>
+        <div class="faq-a">Los archivos copiados por USB a veces tardan en ser indexados por Android. Abre la carpeta con el explorador de archivos del móvil o reinicia el dispositivo para verlo.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I hide table gridlines to make dense documentation look cleaner?</div>
+        <div class="faq-a">Yes. In <strong>Reading settings</strong>, simply toggle off <strong>Show table borders</strong> to remove heavy gridlines across the entire book for a minimalist reading experience.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถซ่อนเส้นขอบตารางเพื่อให้หน้าเอกสารดูสะอาดตาขึ้นได้หรือไม่?</div>
+        <div class="faq-a">ทำได้ครับ ในเมนู <strong>Reading settings (การตั้งค่าการอ่าน)</strong> จะมีตัวเลือก <strong>Show table borders (แสดงเส้นขอบตาราง)</strong> คุณสามารถปิดตัวเลือกนี้เพื่อซ่อนเส้นขอบตารางทั่วทั้งเล่มได้ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">テーブルの枠線を非表示にしてシンプルに読めますか？</div>
+        <div class="faq-a">はい。<strong>Reading settings</strong>（読書設定）内の <strong>Show table borders</strong>（表の枠線を表示）をオフにすると、書籍全体の表の枠線を消してすっきりと読めます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">可以隐藏表格边框以获得更简洁的排版吗？</div>
+        <div class="faq-a">可以。在 <strong>Reading settings</strong>（阅读设置）中，关闭 <strong>Show table borders</strong>（显示表格边框）开关，即可隐藏全书所有表格的网格边框线。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">É possível ocultar as bordas das tabelas para uma leitura mais limpa?</div>
+        <div class="faq-a">Sim. Em <strong>Reading settings</strong>, desative a opção <strong>Show table borders</strong> para remover as grades de todas as tabelas do documento.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Se pueden ocultar los bordes de las tablas para una lectura más limpia?</div>
+        <div class="faq-a">Sí. En <strong>Reading settings</strong>, desactiva la casilla <strong>Show table borders</strong> para quitar las líneas de cuadrícula de todas las tablas del libro.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Should I save pages as "HTML Only" or "Webpage, Complete"?</div>
+        <div class="faq-a">We recommend saving as "Webpage, Complete" if you want embedded images and illustrations to be saved in an accompanying folder for offline reading.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ควรบันทึกหน้าเว็บแบบ "HTML Only" หรือ "Webpage, Complete"?</div>
+        <div class="faq-a">แนะนำให้เลือกบันทึกแบบ "Webpage, Complete" หากคุณต้องการให้รูปภาพและภาพประกอบในบทความถูกบันทึกมาด้วยเพื่อการอ่านแบบออฟไลน์ที่สมบูรณ์แบบ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">保存時は「HTMLのみ」と「完全なWebページ」のどちらが良いですか？</div>
+        <div class="faq-a">記事内の画像やイラストも一緒にオフラインで閲覧したい場合は、「完全なWebページ（Webpage, Complete）」で保存することをおすすめします。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">保存网页时应选择“仅 HTML”还是“完整网页”？</div>
+        <div class="faq-a">如果文章中包含重要的图表与插图，建议选择“完整网页（Webpage, Complete）”保存，以便将配图一并保存在同名资源文件夹中离线浏览。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Devo salvar como "Apenas HTML" ou "Página Completa"?</div>
+        <div class="faq-a">Recomendamos salvar como "Página da Web Completa" para que as imagens do artigo sejam salvas junto e exibidas offline.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Es mejor guardar como "Solo HTML" o "Página web completa"?</div>
+        <div class="faq-a">Recomendamos guardar como "Página web completa" si el artículo contiene imágenes o esquemas que quieras ver sin conexión.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/how-to-import-custom-epub-fonts/">How to Import Custom Fonts into Shiori (Assign Fonts per Language)</a></li>
+        <li><a href="/blog/fix-broken-epub-styling-android/">The EPUB Is Fine, the Styling Is Broken: Take Back Control</a></li>
+        <li><a href="/blog/read-along-tts-karaoke-highlight-epub-android/">Read Along with Karaoke Highlighting in Shiori EPUB Reader</a></li>
+        <li><a href="/blog/epub-reader-screen-guide-android/">Every Button on the Reader Screen: A Touch-by-Touch Guide</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Turn Your Downloads Folder into a Reading List</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play, import saved HTML articles and documentation, and enjoy a distraction-free, comfortable reading experience.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">เปลี่ยนโฟลเดอร์ Downloads ให้เป็นคลังบทความอ่านสบาย</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play นำเข้าบทความและหน้าเอกสาร HTML เพื่อการอ่านที่สบายตาและไร้สิ่งรบกวนได้แล้ววันนี้
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">ダウンロードフォルダを快適な読書リストへ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、保存したHTML記事やドキュメントをノイズのない美しい環境で快適にお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">将下载文件夹打造为专属离线书单</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，一键导入已保存的网页长文与技术文档，尽享纯净专注的阅读体验。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Transforme Seus Downloads em uma Lista de Leitura</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play e importe páginas e artigos em HTML para ler com foco e conforto visual incomparáveis.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Convierte tus Descargas en tu Lista de Lectura</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play e importa páginas y artículos HTML guardados para disfrutar de una lectura sin distracciones.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

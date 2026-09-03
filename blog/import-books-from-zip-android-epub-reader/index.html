@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Import Several Books at Once: Add a ZIP Full of Ebooks to Shiori — Shiori Blog</title>
+  <meta name="description" content="Bundle several EPUB, PDF, or CBZ files into one ZIP archive and Shiori extracts and imports every book automatically, no separate extraction or file manager needed." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/import-books-from-zip-android-epub-reader/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Import Several Books at Once: Add a ZIP Full of Ebooks to Shiori",
+    "description": "Bundle several EPUB, PDF, or CBZ files into one ZIP archive and Shiori extracts and imports every book automatically, no separate extraction or file manager needed.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-08-25",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/import-books-from-zip-android-epub-reader/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I need to extract ZIP files before importing them into Shiori?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. You can select the .zip file directly in the file picker. Shiori unpacks the archive automatically and imports each supported ebook as an individual library entry."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if a ZIP file contains books I already own?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Shiori checks each extracted book against your existing library to prevent duplicates. Existing books are preserved without creating redundant copies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a single ZIP archive contain mixed book formats?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A single ZIP archive can hold a combination of EPUB, PDF, CBZ, and FB2 files. Shiori extracts and categorizes each file format into its respective reader type automatically."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps Base */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Single-image layout */
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Multi-image Gallery Grid (Side-by-side, no vertical stacking) */
+    .tutorial-step.multi-img {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .tutorial-step.multi-img .step-text {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-gallery-grid {
+      display: grid;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .step-gallery-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .step-gallery-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .gallery-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+    }
+
+    .gallery-item .img-preview {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: none;
+      border: none;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    .gallery-item:hover .img-preview {
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.25rem 0.25rem 0;
+    }
+    .gallery-caption-badge {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .gallery-caption-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      text-align: left;
+      flex: 1;
+    }
+    .gallery-caption-text strong {
+      color: var(--text-primary);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step.single-img {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.single-img .step-text {
+        flex: 1.1;
+      }
+      .tutorial-step.single-img .step-image-container {
+        flex: 0.9;
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .step-gallery-grid.cols-2,
+      .step-gallery-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 August 25, 2026</span>
+        <span>🏷️ Import &amp; Transfer</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Import Several Books at Once<br><span class="text-gradient">Add a ZIP Full of Ebooks to Shiori</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">นำเข้าหนังสือทีละหลายเล่มพร้อมกัน<br><span class="text-gradient">วิธีเปิดไฟล์ ZIP เพื่อแตกไฟล์และเพิ่มอีบุ๊กเข้า Shiori อัตโนมัติ</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">複数の本をまとめて一括インポート<br><span class="text-gradient">ZIPファイルをそのままShioriに取り込む方法</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">一键批量导入多本图书<br><span class="text-gradient">直接将包含电子书的 ZIP 压缩包导入 Shiori</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Importe Vários Livros de uma Só Vez<br><span class="text-gradient">Como Adicionar um Arquivo ZIP com E-books no Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Importa Varios Libros a la Vez<br><span class="text-gradient">Cómo Añadir un Archivo ZIP con E-books a Shiori</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('02-books-imported-from-zip.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">📦</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You just downloaded a course archive, a story bundle, or a folder of books someone shared with you, and it landed on your phone as one <code>.zip</code> file with half a dozen books inside it. The usual routine is to find a file manager, extract the archive, and import the books one by one — an unnecessary chore every single time.</p>
+        <p><strong>Shiori skips that step completely.</strong> Point the file picker at the ZIP file itself, and Shiori unpacks it and adds every book inside straight to your bookshelf.</p>
+        <p>Shiori's file picker treats a <code>.zip</code> archive the same way it treats any book file — it is never greyed out or hidden from the list. Select it, and Shiori looks inside, pulls out each supported book, and adds it to your library as its own independent entry: its own cover, title, author metadata, and reading progress.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Direct ZIP Unpacking</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">Zero Extra Extraction Steps</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Full Metadata &amp; Cover Indexing</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">Multi-Format Batch Support</div>
+          </div>
+        </div>
+
+        <h2>What Happens When You Import a ZIP</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Independent bookshelf entries:</strong> Nothing stays bundled inside an archive container. Each file becomes a standalone book with its own position tracking.</li>
+          <li><strong>Metadata parsed directly:</strong> Titles, authors, and cover art are pulled from each ebook file itself, not from the ZIP's filename.</li>
+          <li><strong>Duplicate prevention:</strong> Shiori checks each extracted book against what is already on your shelf to avoid creating redundant duplicates.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Format Inside ZIP</th><th>Extraction Behavior</th><th>Supported Extensions</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>Extracted as full reflowable book with chapters, fonts &amp; TTS</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>Comic Archive (CBZ)</strong></td><td>Imported with full image viewer, zoom &amp; OCR features</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>PDF Document</strong></td><td>Extracted with page cache and smart reflow capability</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>Parsed into readable text with structured XML formatting</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Safe &amp; Non-Destructive:</strong><br />
+          Importing copies the discovered books into Shiori's local library. Your original downloaded <code>.zip</code> file remains completely untouched in your Downloads folder.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>เมื่อคุณดาวน์โหลดไฟล์ชุดหนังสือ คอร์สเรียน หรือรวมนิยายที่เพื่อนส่งให้มาเป็นไฟล์ <code>.zip</code> ก้อนเดียวที่มีหนังสือหลายเล่มอยู่ข้างใน ปกติแล้วคุณต้องเปิดแอปจัดการไฟล์เพื่อแตกไฟล์ (Extract) ออกมาก่อน แล้วค่อยเข้าไปกดนำเข้าทีละเล่ม ซึ่งเป็นขั้นตอนที่ยุ่งยากและเสียเวลา</p>
+        <p><strong>Shiori ช่วยข้ามขั้นตอนนี้ได้ทันที</strong> เพียงเลือกไฟล์ ZIP ในตัวเลือกไฟล์ Shiori จะทำการแตกไฟล์และดึงหนังสือทุกเล่มที่อยู่ข้างในออกมาเพิ่มลงบนชั้นหนังสือให้โดยอัตโนมัติ</p>
+        <p>ตัวเลือกไฟล์ของ Shiori มองไฟล์ <code>.zip</code> เหมือนไฟล์หนังสือทั่วไป ไม่ถูกทำให้เป็นสีเทาหรือถูกซ่อนไว้ เมื่อเลือกไฟล์ Shiori จะเปิดดูข้างในและดึงหนังสือแต่ละเล่มมาแสดงบนชั้นหนังสือแยกกันเป็นอิสระ พร้อมภาพหน้าปก ชื่อเรื่อง ผู้แต่ง และบันทึกความคืบหน้าการอ่านเฉพาะตัว</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">เปิดไฟล์ ZIP และแตกไฟล์อัตโนมัติ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">แตะครั้งเดียว ไม่ต้องแตกไฟล์เอง</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">ดึงข้อมูลปกและชื่อเรื่องครบถ้วน</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">รองรับหลายฟอร์แมตใน ZIP เดียว</div>
+          </div>
+        </div>
+
+        <h2>สิ่งที่เกิดขึ้นเมื่อคุณนำเข้าไฟล์ ZIP</h2>
+        <ul class="article-bullet-list">
+          <li><strong>แยกหนังสือแต่ละเล่มเป็นอิสระ:</strong> หนังสือจะไม่ถูกรวมค้างไว้ใน ZIP แต่จะกลายเป็นหนังสือแต่ละเล่มบนชั้นหนังสือที่มีการบันทึกหน้าอ่านแยกกัน</li>
+          <li><strong>ดึงข้อมูลเมทาดาตาจากไฟล์จริง:</strong> ชื่อหนังสือ ผู้แต่ง และรูปปกจะถูกอ่านจากข้อมูลภายในไฟล์หนังสือโดยตรง ไม่ใช่ชื่อไฟล์ ZIP</li>
+          <li><strong>ป้องกันหนังสือซ้ำซ้อน:</strong> Shiori จะตรวจสอบหนังสือกับคลังที่มีอยู่แล้วโดยอัตโนมัติเพื่อไม่ให้เกิดรายการซ้ำ</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ฟอร์แมตภายใน ZIP</th><th>พฤติกรรมการนำเข้า</th><th>นามสกุลไฟล์ที่รองรับ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>นำเข้าเป็นหนังสือจัดหน้าไหลลื่น พร้อมรองรับฟอนต์และเสียงอ่าน TTS</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>หนังสือการ์ตูน (CBZ)</strong></td><td>นำเข้าเข้าสู่ระบบอ่านการ์ตูน พร้อมซูมและ OCR</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>เอกสาร PDF</strong></td><td>แยกไฟล์พร้อมระบบแคชหน้าและปรับไหลหน้ากระดาษ</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>แปลงข้อมูลโครงสร้าง XML เป็นเนื้อหาอ่านง่ายสบายตา</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>ปลอดภัย ไม่กระทบไฟล์ต้นฉบับ:</strong><br />
+          การนำเข้าจะทำการคัดลอกไฟล์หนังสือเข้าสู่คลังของแอป Shiori โดยไฟล์ <code>.zip</code> ต้นฉบับในโฟลเดอร์ Downloads จะยังคงอยู่เหมือนเดิมทุกประการ
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>ダウンロードした講座資料や電子書籍セットが1つの <code>.zip</code> ファイルにまとまっている場合、通常はファイル管理アプリで解凍してから1冊ずつアプリに取り込むという面倒な手順が必要でした。</p>
+        <p><strong>Shioriならその手間を完全にスキップできます。</strong> ファイルピッカーでZIPファイルを選択するだけで、Shioriが内部を自動展開し、含まれるすべての本を本棚に直接追加します。</p>
+        <p>ZIPファイルは選択画面で除外されることなく通常の本と同じように選択可能。解凍された各書籍は独立した本として登録され、個別の表紙、タイトル、読書進捗が管理されます。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">ZIPの直接解凍＆取り込み</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">手動解凍の手間がゼロ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">表紙・著者メタデータを自動取得</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">複数フォーマット混在に対応</div>
+          </div>
+        </div>
+
+        <h2>ZIPインポート時の特徴</h2>
+        <ul class="article-bullet-list">
+          <li><strong>各書籍が個別に本棚へ登録：</strong> ZIP内に束ねられたままにならず、1冊ごとの独立した本として読書進捗が記録されます。</li>
+          <li><strong>ファイル固有のメタデータを取得：</strong> ZIP名ではなく、各書籍ファイル内部の正確なタイトルや著者名、表紙を反映します。</li>
+          <li><strong>重複インポート防止機能：</strong> すでに本棚にある本は自動検知され、重複して登録されるのを防ぎます。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ZIP内のフォーマット</th><th>展開時の挙動</th><th>対応拡張子</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>リフロー電子書籍として展開、フォント変更やTTS朗読に対応</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>コミックアーカイブ (CBZ)</strong></td><td>画像ビューア・見開き・OCR機能付きコミックとして追加</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>PDFドキュメント</strong></td><td>ページキャッシュとリフロー対応PDFとして展開</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>XMLタグをパースして快適な読書形式で登録</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>元ファイルを保護する安全設計：</strong><br />
+          インポート時に書籍データのみがShioriのローカルライブラリへコピーされるため、端末のダウンロードフォルダにあるZIPファイルはそのまま残ります。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>当你从网上下载打包的课程资料、书单合集或朋友分享的书籍包时，它们通常是以单个 <code>.zip</code> 压缩包形式保存在手机中。以往的操作往往需要先打开文件管理器解压，再逐本导入，繁琐耗时。</p>
+        <p><strong>Shiori 完全免去了繁琐的解压步骤。</strong> 只需在文件选择器中直接点击该 ZIP 压缩包，Shiori 便会自动解析解包，并将其中包含的所有电子书一键加入书架。</p>
+        <p>Shiori 的文件选择器完全支持 <code>.zip</code> 格式。导入完成后，每本图书都会以独立的条目呈现在书架上，拥有专属的封面、从元数据中提取的书名作者信息以及独立的阅读进度。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">ZIP 压缩包直接自动解包</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">免去手动解压多余步骤</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">精准解析图书封面与元数据</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">支持压缩包内多格式混排</div>
+          </div>
+        </div>
+
+        <h2>ZIP 导入的核心优势</h2>
+        <ul class="article-bullet-list">
+          <li><strong>独立书架条目：</strong> 导入后不会被打包捆绑，每本书都成为独立的图书馆藏，单独记录阅读进度与书签。</li>
+          <li><strong>提取真实文件信息：</strong> 封面、书名及作者直接解析自电子书本体内部的元数据，而非压缩包文件名。</li>
+          <li><strong>智能去重防冲突：</strong> Shiori 会对照已有书架检测重复书籍，不会生成多余副本。</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>ZIP 内包含的格式</th><th>导入处理方式</th><th>支持的文件扩展名</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>导入为自适应排版电子书，支持字体定制与 TTS 语音朗读</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>漫画压缩包 (CBZ)</strong></td><td>自动进入漫画阅读模式，支持智能裁边与 OCR 气泡取词</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>PDF 文档</strong></td><td>提取并建立高速页面缓存，支持文本重排</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>完整解析 XML 章节排版并适配主题配色</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>非破坏性安全导入：</strong><br />
+          导入时仅将解压后的图书文件复制到应用本地专属目录中，下载文件夹内的原始 <code>.zip</code> 文件完好无损。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você acabou de baixar um pacote de livros ou uma coletânea compartilhada em formato <code>.zip</code>. O procedimento comum exigiria abrir um gerenciador de arquivos, descompactar tudo e depois importar livro por livro.</p>
+        <p><strong>O Shiori elimina completamente essa etapa.</strong> Basta selecionar o arquivo ZIP diretamente no seletor de arquivos, e o Shiori descompacta e adiciona cada livro contido direto na sua estante.</p>
+        <p>O arquivo <code>.zip</code> é tratado como qualquer outro formato de livro. Após a importação, cada obra ganha sua própria capa, título, autor extraídos dos metadados e progresso de leitura individual.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Extração Direta de Arquivos ZIP</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">Sem Etapas Extras de Descompactação</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Capas e Metadados Completos</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">Suporte a Vários Formatos no ZIP</div>
+          </div>
+        </div>
+
+        <h2>Como Funciona a Importação de ZIP</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Livros independentes na estante:</strong> Cada obra se torna um livro separado com seu próprio controle de progresso.</li>
+          <li><strong>Metadados extraídos do arquivo:</strong> Título e capa vêm do arquivo do livro e não do nome do ZIP.</li>
+          <li><strong>Prevenção de duplicatas:</strong> O Shiori compara os livros encontrados com sua biblioteca para não duplicar títulos que você já possui.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Formato no ZIP</th><th>Comportamento na Extração</th><th>Extensões Suportadas</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>Importado como e-book com controle de fontes e TTS</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>Quadrinhos (CBZ)</strong></td><td>Importado para o leitor de quadrinhos com OCR</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>Documentos PDF</strong></td><td>Extraído com cache de páginas e reflow inteligente</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>Estrutura XML formatada em texto limpo</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Processo Não Destrutivo:</strong><br />
+          O Shiori copia os livros para a biblioteca interna, mantendo o arquivo <code>.zip</code> original intacto na pasta Downloads.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Acabas de descargar un lote de libros o un curso en formato <code>.zip</code>. El proceso habitual implicaría abrir un explorador de archivos, descomprimir el paquete e importar cada libro uno a uno.</p>
+        <p><strong>Shiori elimina ese paso innecesario.</strong> Selecciona el archivo ZIP directamente en el selector y Shiori lo descomprime y añade cada libro incluido a tu estantería al instante.</p>
+        <p>El archivo <code>.zip</code> se trata como cualquier otro archivo legible. Cada obra importada se registra por separado con su propia portada, título, autor y progreso de lectura.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Extracción Directa de Archivos ZIP</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">⚡</span>
+            <div class="stat-badge-title">Sin Pasos Previos de Descompresión</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📚</span>
+            <div class="stat-badge-title">Portadas y Metadatos Completos</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📑</span>
+            <div class="stat-badge-title">Formatos Mixtos en un Solo ZIP</div>
+          </div>
+        </div>
+
+        <h2>Puntos Clave al Importar un ZIP</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Obras independientes en la estantería:</strong> Cada título se guarda de forma individual con su propio seguimiento de páginas.</li>
+          <li><strong>Metadatos reales del archivo:</strong> El título y autor se leen del contenido del libro y no del nombre del archivo ZIP.</li>
+          <li><strong>Control de duplicados:</strong> Shiori comprueba tu biblioteca para evitar duplicar títulos que ya tengas añadidos.</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Formato en el ZIP</th><th>Comportamiento de Importación</th><th>Extensiones Compatibles</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>EPUB / KEPUB</strong></td><td>Libro de texto fluido con tipografía personalizada y TTS</td><td><code>.epub</code>, <code>.kepub</code></td></tr>
+              <tr><td><strong>Cómics (CBZ)</strong></td><td>Lector de cómics con zoom y OCR integrado</td><td><code>.cbz</code></td></tr>
+              <tr><td><strong>Documento PDF</strong></td><td>Extracción con caché rápida y ajuste de texto</td><td><code>.pdf</code></td></tr>
+              <tr><td><strong>FictionBook (FB2)</strong></td><td>Lectura limpia con estructura de capítulos XML</td><td><code>.fb2</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Importación Segura y Limpia:</strong><br />
+          Shiori copia las obras extraídas a su biblioteca interna sin alterar ni borrar el archivo <code>.zip</code> de tus Descargas.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Guide: Importing Books from a ZIP (2 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการนำเข้าไฟล์หนังสือจาก ZIP (2 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">ZIPファイルから本を一括追加する手順（2つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">从 ZIP 压缩包导入电子书实操步骤（2 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Passo a Passo: Como Importar Livros de um Arquivo ZIP (2 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Guía Paso a Paso: Importar Libros desde un ZIP (2 Pasos)</h2>
+
+    <!-- STEP 1 (Single Image) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Pick the ZIP in the File Picker</div>
+          <div class="step-desc">
+            <p>On your bookshelf, tap the floating <strong>+</strong> button in the bottom-right corner. The system file picker opens to browse your device.</p>
+            <p>A ZIP archive appears in the list looking just like any other book file — same row style, same thumbnail — because Shiori can read what is packed inside. Tap the archive file just as you would tap a single book.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เลือกไฟล์ ZIP ในหน้าต่างเลือกไฟล์</div>
+          <div class="step-desc">
+            <p>บนหน้าชั้นหนังสือ ให้แตะปุ่ม <strong>+</strong> ที่มุมล่างขวาเพื่อเปิดหน้าต่างเลือกไฟล์ของระบบ</p>
+            <p>ไฟล์ ZIP จะแสดงอยู่ในรายการเหมือนไฟล์หนังสือทั่วไป สามารถกดเลือกได้ทันทีโดยไม่ต้องแตกไฟล์ล่วงหน้า</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>ファイル選択画面でZIPファイルを選ぶ</div>
+          <div class="step-desc">
+            <p>本棚画面の右下にある <strong>+</strong> ボタンをタップしてファイル選択画面を開きます。</p>
+            <p>ZIPアーカイブは通常の書籍ファイルと同じように選択可能に表示されます。そのままタップして選択してください。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>在文件选择器中选中 ZIP 压缩包</div>
+          <div class="step-desc">
+            <p>在书架界面点击右下角的 <strong>+</strong> 悬浮按钮，打开系统文件选择器。</p>
+            <p>ZIP 压缩包将同普通图书文件一样正常展示在列表中，无需预先解压，直接点击即可开始导入。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Selecione o Arquivo ZIP no Seletor</div>
+          <div class="step-desc">
+            <p>Na estante, toque no botão <strong>+</strong> no canto inferior direito para abrir o seletor.</p>
+            <p>O arquivo ZIP aparece como qualquer outro livro. Basta tocar nele para iniciar a descompactação automática.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Elige el Archivo ZIP en el Selector</div>
+          <div class="step-desc">
+            <p>En la estantería, toca el botón <strong>+</strong> en la esquina inferior derecha para abrir el selector.</p>
+            <p>El archivo ZIP aparece habilitado en la lista. Tócalo igual que si fuera un libro individual.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-zip-file-in-picker.jpg" alt="The Android file picker inside Shiori showing a ZIP archive named my-ebooks.zip listed alongside several EPUB files" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 (Single Image) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Each Book Lands on the Shelf Individually</div>
+          <div class="step-desc">
+            <p>Shiori unpacks the archive, discovers every supported book, and imports each one separately onto your bookshelf.</p>
+            <p>In this example, one ZIP held two completely different books — a philosophy text and an illustrated Japanese scroll. Both appear with their real titles, authors, and cover art pulled from their metadata.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>หนังสือแต่ละเล่มจะถูกเพิ่มลงชั้นหนังสือแยกกัน</div>
+          <div class="step-desc">
+            <p>Shiori จะทำการแตกไฟล์ ค้นหาไฟล์หนังสือที่รองรับ และนำเข้าแต่ละเล่มขึ้นชั้นหนังสือแยกกันเป็นอิสระ</p>
+            <p>ในตัวอย่างนี้ ไฟล์ ZIP หนึ่งไฟล์มีหนังสือสองเล่มที่แตกต่างกัน (วรรณกรรมปรัชญาและม้วนภาพโบราณญี่ปุ่น) ทั้งสองเล่มจะแสดงพร้อมชื่อเรื่อง ผู้แต่ง และรูปปกจริงอย่างถูกต้อง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>解凍された本がそれぞれ個別に本棚へ並ぶ</div>
+          <div class="step-desc">
+            <p>ShioriがZIP内を展開し、含まれるすべての対応電子書籍を本棚へ1冊ずつ登録します。</p>
+            <p>例として1つのZIPに哲学書と絵巻物の2冊が入っていた場合、それぞれの表紙、タイトル、著者名が正確に読み込まれて独立した本として並びます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>图书全部独立解析并展示在书架上</div>
+          <div class="step-desc">
+            <p>Shiori 会迅速解压该压缩包，提取内部所有支持的电子书，并逐本独立导入至书架。</p>
+            <p>在此示例中，一个 ZIP 包内包含两本截然不同的图书（古典哲学书与日本绘卷），两者均正确显示其真实的书名、作者以及高清封面。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Cada Livro Aparece Separadamente na Estante</div>
+          <div class="step-desc">
+            <p>O Shiori extrai o arquivo e adiciona cada e-book separadamente na sua biblioteca.</p>
+            <p>Neste exemplo, um único ZIP continha dois livros diferentes (um texto clássico e um pergaminho japonês). Ambos aparecem com títulos, autores e capas reais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Cada Libro se Añade de Forma Individual</div>
+          <div class="step-desc">
+            <p>Shiori extrae el contenido e importa cada libro por separado en tu estantería.</p>
+            <p>En este ejemplo, un solo ZIP contenía dos obras diferentes (un texto de filosofía y un rollo ilustrado). Ambas aparecen con sus títulos, autores y portadas originales.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-books-imported-from-zip.jpg" alt="Shiori bookshelf showing two books imported from a single ZIP archive with titles authors and covers" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Frequently Asked Questions &amp; Troubleshooting</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">คำถามที่พบบ่อยและการแก้ปัญหา (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問＆トラブルシューティング（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题与答疑（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Perguntas Frequentes e Solução de Problemas (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Preguntas Frecuentes y Solución de Problemas (FAQ)</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why doesn't a book from the ZIP show up as newly added?</div>
+        <div class="faq-a">Shiori checks each extracted book against your current library to prevent duplicates. If a title is missing from the recently imported section, it is already on your shelf under its existing entry.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมหนังสือบางเล่มใน ZIP ถึงไม่ขึ้นเป็นหนังสือที่เพิ่งนำเข้าใหม่?</div>
+        <div class="faq-a">Shiori มีระบบตรวจสอบหนังสือซ้ำอัตโนมัติ หากหนังสือเล่มนั้นมีอยู่แล้วในคลังของคุณ ระบบจะไม่สร้างรายการซ้ำ คุณสามารถเปิดอ่านต่อจากรายการเดิมที่มีอยู่แล้วได้ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">ZIP内の本が「新規追加」として表示されないのはなぜですか？</div>
+        <div class="faq-a">Shioriは重複防止機能を備えています。すでに本棚にある本は再登録されないため、以前からライブラリ内に存在しているかご確認ください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么 ZIP 里的某本书没有显示在最新导入列表中？</div>
+        <div class="faq-a">Shiori 具备智能查重机制。如果该图书已存在于书架中，系统会自动跳过以防止产生重复条目。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que um livro do ZIP não aparece como recém-adicionado?</div>
+        <div class="faq-a">O Shiori verifica duplicatas automaticamente. Se o título já estiver na sua estante, ele não será duplicado.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué un libro del ZIP no aparece como recién añadido?</div>
+        <div class="faq-a">Shiori comprueba si ya tienes el libro en tu biblioteca para no crear duplicados. Si ya existía, se mantendrá su entrada original.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Can I zip an entire folder on my PC to transfer it quickly?</div>
+        <div class="faq-a">Yes! Compressing a folder of books into a single <code>.zip</code> file on your computer is the fastest way to transfer dozens of books at once. On your phone, one tap on the ZIP imports the whole collection.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">สามารถบีบอัดโฟลเดอร์หนังสือบนคอมพิวเตอร์เป็น ZIP แล้วส่งเข้ามือถือได้หรือไม่?</div>
+        <div class="faq-a">ทำได้เลยครับ! การบีบอัดโฟลเดอร์หนังสือบนคอมพิวเตอร์เป็นไฟล์ <code>.zip</code> ไฟล์เดียวเป็นวิธีที่รวดเร็วที่สุดในการส่งหนังสือหลายสิบเล่มเข้ามือถือ เพียงแตะเลือกไฟล์ ZIP ครั้งเดียว หนังสือทั้งหมดจะถูกนำเข้าสู่ Shiori ทันที</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">パソコン上のフォルダをZIP化して転送するのがおすすめですか？</div>
+        <div class="faq-a">はい！PC上でフォルダごと <code>.zip</code> にまとめて転送すれば、スマホ側では1タップで数十冊の本を一括取り込みできます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在电脑上把整个图书文件夹打包为 ZIP 传输更高效吗？</div>
+        <div class="faq-a">非常推荐！在电脑上将包含数十本电子书的文件夹压缩为一个 <code>.zip</code> 文件传输至手机，只需一次点击即可完成批量导入。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">É recomendado compactar uma pasta no computador para transferir?</div>
+        <div class="faq-a">Sim! Compactar uma pasta inteira em um arquivo <code>.zip</code> no computador é a maneira mais rápida de transferir vários livros de uma só vez para o celular.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Es recomendable comprimir una carpeta en el ordenador para transferirla?</div>
+        <div class="faq-a">¡Totalmente! Comprimir una carpeta con libros en un archivo <code>.zip</code> en tu PC es la forma más rápida de transferir decenas de libros a la vez.</div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">How should I organize a large batch of newly imported books?</div>
+        <div class="faq-a">We recommend creating a custom collection under <a href="/blog/organize-ebooks-with-collections-android/">Collections</a> right after a large batch import to group the books by genre, series, or subject before they mix into your main bookshelf.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ควรจัดระเบียบหนังสือที่เพิ่งนำเข้าเป็นชุดจำนวนมากอย่างไร?</div>
+        <div class="faq-a">แนะนำให้สร้างคอลเลกชันในเมนู <a href="/blog/organize-ebooks-with-collections-android/">Collections</a> ทันทีหลังนำเข้าชุดใหญ่ เพื่อจัดกลุ่มหนังสือตามหมวดหมู่หรือซีรีส์ก่อนที่จะปะปนกับหนังสือเล่มอื่นบนชั้น</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">一度に大量の本を取り込んだ後の整理方法は？</div>
+        <div class="faq-a">一括インポート直後に <a href="/blog/organize-ebooks-with-collections-android/">コレクション機能</a> でグループを作成し、ジャンルやシリーズごとに整理することをおすすめします。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">批量导入大量图书后如何高效整理？</div>
+        <div class="faq-a">建议在批量导入后，立即使用 <a href="/blog/organize-ebooks-with-collections-android/">Collections（书单收藏）</a> 功能按系列或主题建立分组，以便井井有条地归类管理。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Como organizar muitos livros importados de uma só vez?</div>
+        <div class="faq-a">Recomendamos usar o recurso de <a href="/blog/organize-ebooks-with-collections-android/">Coleções</a> logo após a importação para categorizar os livros por gênero ou série.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Cómo organizo una gran cantidad de libros recién importados?</div>
+        <div class="faq-a">Te recomendamos usar la función de <a href="/blog/organize-ebooks-with-collections-android/">Colecciones</a> justo después de la importación masiva para agrupar las obras por tema o saga.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/book-drop-send-books-to-android-over-wifi/">Book Drop: Send Books to Your Android Phone Over Wi-Fi (No Cables)</a></li>
+        <li><a href="/blog/organize-ebooks-with-collections-android/">Organize Your Ebooks with Collections: Create, Filter &amp; Manage</a></li>
+        <li><a href="/blog/read-html-files-android-epub-reader/">Read Saved Web Pages on Your Phone: Importing HTML Files into Shiori</a></li>
+        <li><a href="/blog/first-10-minutes-with-shiori-android/">Your First 10 Minutes with Shiori: A Beginner's Walkthrough</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">One Tap Instead of Several</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play, select your ZIP archives directly, and enjoy instant batch importing with zero extraction hassle.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">แตะครั้งเดียว นำเข้าหนังสือได้ทั้งชุด</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play นำเข้าไฟล์ ZIP รวมอีบุ๊กได้โดยตรง สะดวกรวดเร็ว ไม่ต้องแตกไฟล์เองอีกต่อไป
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">解凍不要、ワンタップでまとめて本棚へ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShioriをダウンロードし、ZIPファイルをそのまま選択して快適な一括インポートを体験してください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">告别解压烦恼，一键批量入库</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，直接选取 ZIP 电子书合集，体验极速顺畅的批量导入。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Um Toque em Vez de Vários</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play e importe seus arquivos ZIP diretamente sem precisar de descompactadores externos.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Un Solo Toque en Lugar de Varios</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play e importa archivos ZIP con libros directamente y sin pasos extra de descompresión.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
