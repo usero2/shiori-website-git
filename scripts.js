@@ -320,6 +320,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-title": "Import Several Books at Once: Add a ZIP Full of Ebooks to Shiori",
       "blog-p31-desc": "Bundle several EPUB, PDF, or CBZ files into one ZIP archive. Shiori unpacks it and imports each book automatically, no separate file extraction needed.",
 
+      // Blog Post 32
+      "blog-p32-date": "📅 September 5, 2026",
+      "blog-p32-cat": "🏷️ Text-to-Speech & Reading",
+      "blog-p32-title": "Keep Listening While You Use Other Apps: Shiori's Floating Controls",
+      "blog-p32-desc": "Keep playback buttons and a live karaoke line on screen while using any other app. Customize size, position snapping, colors, and opacity.",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 September 5, 2026",
+      "blog-p33-cat": "🏷️ Text-to-Speech & Reading",
+      "blog-p33-title": "Set Up Read-Aloud Properly: TTS Engine, Languages and Priority in Shiori",
+      "blog-p33-desc": "Choose the best TTS engine, enable the languages you read, tune per-language voice pitch and speed, and solve shared script conflicts with priority ordering.",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 September 5, 2026",
+      "blog-p34-cat": "🏷️ Typography & Reading",
+      "blog-p34-title": "How to Use Google Fonts in Shiori: Download and Set Per Language",
+      "blog-p34-desc": "Download free typography from Google Fonts and assign custom fonts per script in Shiori EPUB Reader for Android. Complete guide with font ZIP unpacking and per-language setup.",
+
       // Feature Chips
       "chip-f1": "1. Formats",
       "chip-f2": "2. Reading",
@@ -654,6 +672,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-cat": "🏷️ การนำเข้าและถ่ายโอน",
       "blog-p31-title": "นำเข้าหนังสือทีละหลายเล่มพร้อมกัน: เพิ่มไฟล์ ZIP รวมอีบุ๊กเข้า Shiori",
       "blog-p31-desc": "รวมไฟล์ EPUB, PDF หรือ CBZ หลายเล่มไว้ในไฟล์ ZIP เดียว Shiori จะแตกไฟล์และนำเข้าหนังสือทุกเล่มขึ้นชั้นหนังสือให้อัตโนมัติในแตะเดียว",
+
+      // Blog Post 32
+      "blog-p32-date": "📅 5 กันยายน 2026",
+      "blog-p32-cat": "🏷️ เสียงอ่าน (TTS) และการอ่าน",
+      "blog-p32-title": "ฟังหนังสือต่อเนื่องแม้สลับไปใช้แอปอื่น: ปุ่มควบคุม TTS แบบลอยใน Shiori",
+      "blog-p32-desc": "แสดงปุ่มควบคุมและแถบข้อความคาราโอเกะลอยซ้อนเหนือทุกแอปขณะฟังเสียงอ่าน ปรับขนาด การดูดติดขอบจอ สี และความโปร่งแสงได้อย่างอิสระ",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 5 กันยายน 2026",
+      "blog-p33-cat": "🏷️ เสียงอ่าน (TTS) และการอ่าน",
+      "blog-p33-title": "ตั้งค่าเสียงอ่าน TTS ให้ถูกต้อง: เลือกเอนจินภาษา ลำดับความสำคัญ และการปรับแต่งใน Shiori",
+      "blog-p33-desc": "เลือกเอนจิน TTS ที่ดีที่สุด เปิดใช้งานภาษาที่อ่าน ปรับระดับเสียงและความเร็วรายภาษา พร้อมแก้ปัญหาตัวอักษรทับซ้อนด้วยการจัดลำดับความสำคัญ",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 5 กันยายน 2026",
+      "blog-p34-cat": "🏷️ ตัวอักษร (Typography) และการอ่าน",
+      "blog-p34-title": "วิธีใช้ Google Fonts ใน Shiori: ดาวน์โหลดฟอนต์และตั้งค่าแยกตามภาษา",
+      "blog-p34-desc": "ดาวน์โหลดฟอนต์ฟรีจาก Google Fonts แตกไฟล์ ZIP และกำหนดฟอนต์แยกตามระบบภาษาใน Shiori เพื่อการอ่านหนังสือที่สบายตาและแสดงผลวรรณยุกต์สระได้ถูกต้อง",
 
       // Feature Chips
       "chip-f1": "1. รูปแบบไฟล์",
@@ -990,6 +1026,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-title": "複数の本をまとめて一括インポート：ZIPファイルをそのままShioriに追加",
       "blog-p31-desc": "複数のEPUB、PDF、CBZをまとめたZIPファイルを直接選択可能。手動解凍不要で、含まれるすべての本を自動展開して本棚へ登録します。",
 
+      // Blog Post 32
+      "blog-p32-date": "📅 2026年9月5日",
+      "blog-p32-cat": "🏷️ 音声読み上げ＆読書",
+      "blog-p32-title": "他のアプリを使いながら音声朗読を継続：Shioriのフローティングコントロール",
+      "blog-p32-desc": "他アプリを操作中も画面上に再生ボタンとリアルタイム歌詞を表示。サイズ、端スナップ、カラー、背景不透明度を自在にカスタマイズ。",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 2026年9月5日",
+      "blog-p33-cat": "🏷️ 音声読み上げ＆読書",
+      "blog-p33-title": "音声読み上げを正しく設定：ShioriのTTSエンジン・言語選択・優先順位の完全ガイド",
+      "blog-p33-desc": "最適なTTSエンジンの選択、言語ごとの声・速度・高さの個別調整、漢字やアルファベット等の文字競合を解消する優先順位設定を徹底解説。",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 2026年9月5日",
+      "blog-p34-cat": "🏷️ タイポグラフィ＆読書",
+      "blog-p34-title": "ShioriでGoogle Fontsを使う方法：フォントをダウンロードして言語別に設定",
+      "blog-p34-desc": "Google Fontsから無料フォントを導入し、言語・文字体系ごとに個別割り当て。ZIP解凍から分語種設定、反映されない時の対処法まで徹底解説。",
+
       // Feature Chips
       "chip-f1": "1. フォーマット",
       "chip-f2": "2. 読書設定",
@@ -1324,6 +1378,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-cat": "🏷️ 导入与传输",
       "blog-p31-title": "一键批量导入多本图书：直接将包含电子书的 ZIP 压缩包添加至 Shiori",
       "blog-p31-desc": "将多本 EPUB、PDF 或 CBZ 打包为一个 ZIP 压缩文件，Shiori 会直接自动解压并逐本独立加入书架，彻底免去手动解包步骤。",
+
+      // Blog Post 32
+      "blog-p32-date": "📅 2026年9月5日",
+      "blog-p32-cat": "🏷️ 语音朗读与阅读",
+      "blog-p32-title": "在使用其他应用时持续畅听：Shiori 悬浮窗朗读控制面板全指南",
+      "blog-p32-desc": "在使用任意手机应用时，常驻悬浮显示播控按键与单行卡拉OK跟读条。自由调节缩放比例、边缘吸附、主题色彩及背景透明度。",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 2026年9月5日",
+      "blog-p33-cat": "🏷️ 语音朗读与阅读",
+      "blog-p33-title": "正确配置 TTS 朗读：Shiori 语音引擎、多语种列表与优先级排序全指南",
+      "blog-p33-desc": "选择最佳语音引擎，启用阅读语种，独立微调音高与语速，并通过优先级排序彻底解决中日汉字与西文字符冲突。",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 2026年9月5日",
+      "blog-p34-cat": "🏷️ 字体排印与阅读",
+      "blog-p34-title": "如何在 Shiori 中使用 Google Fonts：字型下载与分语种独立配置全指南",
+      "blog-p34-desc": "从 Google Fonts 免费下载开源字族，解压并为不同文字系统独立配置专属正文字体，彻底解决多音标排版错位并提升长读舒适度。",
 
       // Feature Chips
       "chip-f1": "1. 图书格式",
@@ -1660,6 +1732,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-title": "Importe Vários Livros de uma Só Vez: Adicione um ZIP com E-books no Shiori",
       "blog-p31-desc": "Reúna vários arquivos EPUB, PDF ou CBZ em um único ZIP. O Shiori descompacta e importa cada livro automaticamente sem etapas extras.",
 
+      // Blog Post 32
+      "blog-p32-date": "📅 5 de setembro de 2026",
+      "blog-p32-cat": "🏷️ Leitura em Voz Alta (TTS)",
+      "blog-p32-title": "Continue Ouvindo Enquanto Usa Outros Apps: Controles Flutuantes do Shiori",
+      "blog-p32-desc": "Mantenha botões de reprodução e a linha de karaokê na tela sobre qualquer outro aplicativo. Ajuste tamanho, fixação nas bordas, cores e opacidade.",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 5 de setembro de 2026",
+      "blog-p33-cat": "🏷️ Leitura em Voz Alta (TTS)",
+      "blog-p33-title": "Configure a Leitura em Voz Alta: Mecanismo de TTS, Idiomas e Prioridade no Shiori",
+      "blog-p33-desc": "Escolha o melhor mecanismo de TTS, ative os idiomas lidos, ajuste tom e velocidade individuais e resolva conflitos de escrita pela ordem de prioridade.",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 5 de setembro de 2026",
+      "blog-p34-cat": "🏷️ Tipografia e Leitura",
+      "blog-p34-title": "Como Usar o Google Fonts no Shiori: Baixe Fontes e Configure por Idioma",
+      "blog-p34-desc": "Baixe fontes gratuitas do Google Fonts, descompacte o ZIP e configure fontes personalizadas por idioma no Shiori para leitura com máximo conforto visual.",
+
       // Feature Chips
       "chip-f1": "1. Formatos",
       "chip-f2": "2. Leitura",
@@ -1994,6 +2084,24 @@ document.addEventListener('DOMContentLoaded', () => {
       "blog-p31-cat": "🏷️ Importación y Transferencia",
       "blog-p31-title": "Importa Varios Libros a la Vez: Añade un Archivo ZIP con E-books a Shiori",
       "blog-p31-desc": "Reúne varios archivos EPUB, PDF o CBZ en un único ZIP. Shiori lo descomprime y añade cada libro a tu estantería automáticamente en un toque.",
+
+      // Blog Post 32
+      "blog-p32-date": "📅 5 de septiembre de 2026",
+      "blog-p32-cat": "🏷️ Lectura en Voz Alta (TTS)",
+      "blog-p32-title": "Sigue Escuchando Mientras Usas Otras Apps: Controles Flotantes de Shiori",
+      "blog-p32-desc": "Mantén los botones de reproducción y la línea de karaoke en pantalla sobre cualquier otra app. Personaliza tamaño, anclaje a bordes, colores y opacidad.",
+
+      // Blog Post 33
+      "blog-p33-date": "📅 5 de septiembre de 2026",
+      "blog-p33-cat": "🏷️ Lectura en Voz Alta (TTS)",
+      "blog-p33-title": "Configura la Lectura en Voz Alta: Motor de TTS, Idiomas y Prioridad en Shiori",
+      "blog-p33-desc": "Elige el mejor motor TTS, activa tus idiomas, afina el tono y la velocidad de cada voz y resuelve conflictos de alfabeto con el orden de prioridad.",
+
+      // Blog Post 34
+      "blog-p34-date": "📅 5 de septiembre de 2026",
+      "blog-p34-cat": "🏷️ Tipografía y Lectura",
+      "blog-p34-title": "Cómo Usar Google Fonts en Shiori: Descarga Fuentes y Configúralas por Idioma",
+      "blog-p34-desc": "Descarga fuentes libres de Google Fonts, descomprime el ZIP y asigna tipografías independientes por alfabeto en Shiori para una lectura óptima y descansada.",
 
       // Feature Chips
       "chip-f1": "1. Formatos",

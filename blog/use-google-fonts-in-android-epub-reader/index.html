@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>How to Use Google Fonts in Shiori: Download and Set Per Language — Shiori Blog</title>
+  <meta name="description" content="Download free typography from Google Fonts and assign custom fonts per script in Shiori EPUB Reader for Android. Complete guide with font ZIP unpacking and per-language setup." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/use-google-fonts-in-android-epub-reader/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  <link rel="icon" type="image/png" href="../../images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Use Google Fonts in Shiori: Download and Set Per Language",
+    "description": "Download free typography from Google Fonts and assign custom fonts per script in Shiori EPUB Reader for Android. Complete guide with font ZIP unpacking and per-language setup.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-09-05",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/use-google-fonts-in-android-epub-reader/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why didn't the book font change after importing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Check two things: First, ensure the font file actually contains glyphs for that writing system. Second, verify that Force reader fonts is enabled in Settings > Reading so publisher CSS fonts are overridden."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I assign different fonts for Thai and English in the same book?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Shiori's Reader font settings feature dedicated slots for Thai, Latin, Japanese, Chinese, Korean, Arabic, Cyrillic, and Devanagari. You can assign Maitree to Thai and Literata to Latin independently."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which font file should I select from the Google Fonts ZIP?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Always choose the Regular weight (e.g. Maitree-Regular.ttf). If the font ships with optical sizes in a static folder, pick the smallest optical size (18pt) designed for body reading on mobile screens."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to keep the downloaded ZIP file after importing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Shiori creates its own internal copy of imported fonts. Once imported into the app, you can safely delete the ZIP archive and extracted folder to save device storage."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "\2726";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.35rem 1.6rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Stat Badges */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    .stat-badge-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    /* Data Table Styling */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.98rem;
+    }
+    .data-table th {
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table td {
+      padding: 0.95rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Step-by-Step Sections */
+    .tutorial-step {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Single-image layout */
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Multi-image Gallery Grid (Side-by-side, no vertical stacking) */
+    .tutorial-step.multi-img {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .tutorial-step.multi-img .step-text {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-gallery-grid {
+      display: grid;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .step-gallery-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .step-gallery-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .gallery-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+    }
+
+    .gallery-item .img-preview {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: none;
+      border: none;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    .gallery-item:hover .img-preview {
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.25rem 0.25rem 0;
+    }
+    .gallery-caption-badge {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .gallery-caption-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      text-align: left;
+      flex: 1;
+    }
+    .gallery-caption-text strong {
+      color: var(--text-primary);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .faq-q::before {
+      content: "❓";
+      font-size: 1.1rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.02rem;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      color: #fff;
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.8;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 10002;
+    }
+    .lightbox-close:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 75vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.15);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      color: #e2e8f0;
+      margin-top: 1rem;
+      font-size: 1rem;
+      text-align: center;
+      max-width: 700px;
+      line-height: 1.5;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step.single-img {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.single-img .step-text {
+        flex: 1.1;
+      }
+      .tutorial-step.single-img .step-image-container {
+        flex: 0.9;
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .step-gallery-grid.cols-2,
+      .step-gallery-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 September 5, 2026</span>
+        <span>🏷️ Typography &amp; Reading</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">How to Use Google Fonts in Shiori<br><span class="text-gradient">Download and Set Per Language on Android</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">วิธีใช้ Google Fonts ใน Shiori<br><span class="text-gradient">ดาวน์โหลดฟอนต์และตั้งค่าแยกตามภาษาบน Android</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">ShioriでGoogle Fontsを使う方法<br><span class="text-gradient">フォントをダウンロードして言語別に設定する完全ガイド</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">如何在 Shiori 中使用 Google Fonts<br><span class="text-gradient">字型下载与分语种独立配置全指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Como Usar o Google Fonts no Shiori<br><span class="text-gradient">Baixe Fontes e Configure por Idioma no Android</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Cómo Usar Google Fonts en Shiori<br><span class="text-gradient">Descarga Fuentes y Configúralas por Idioma en Android</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('03-maitree-specimen-google-fonts.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🔤</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>The font a book is read in is not a small thing. It decides how long you can read before your eyes give up, and in some scripts it decides whether the text is even correct — Thai tone marks and vowels sit above and below the line, and a font that places them badly turns a paragraph into a mess.</p>
+        <p>Shiori lets you import your own <code>.ttf</code> or <code>.otf</code> files and assign a <strong>different font to each script</strong>. This guide walks through choosing a font on <strong>Google Fonts</strong>, downloading it onto your phone, extracting the usable font file from the ZIP, and configuring it — one font for Thai, another for Latin — on the same page.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">Per-Script Font Slots</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Free Google Fonts</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Easy ZIP Unpacking</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Eye-Comfort Reading</div>
+          </div>
+        </div>
+
+        <h2>Two things to know before you start</h2>
+        <ul class="article-bullet-list">
+          <li><strong>A font only covers the scripts it was drawn for:</strong> A beautiful Latin serif contains no Thai or CJK letters at all. Assign it to an unsupported script and Android quietly falls back to system fonts, making it seem like nothing happened.</li>
+          <li><strong>Google Fonts gives you a ZIP, not a single font:</strong> Shiori's importer asks for <code>.ttf</code> or <code>.otf</code> files, so the downloaded archive must be unpacked first.</li>
+        </ul>
+
+        <h2>What you need</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori installed on an Android device (tested on v2.3.6)</li>
+          <li>A browser to reach <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a></li>
+          <li>Any file manager that can extract ZIP archives</li>
+          <li>An ebook containing the script you want to restyle</li>
+        </ul>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>ฟอนต์ที่ใช้ในการอ่านหนังสือไม่ใช่เรื่องเล็ก เพราะมันเป็นตัวตัดสินว่าคุณจะอ่านต่อเนื่องได้นานแค่ไหนก่อนที่ดวงตาจะรู้สึกล้า และในบางระบบภาษา มันยังเป็นตัวชี้วัดว่าข้อความนั้นจะแสดงผลถูกต้องหรือไม่ — เช่น วรรณยุกต์และสระภาษาไทยที่อยู่เหนือและล่างบรรทัด หากใช้ฟอนต์ที่วางตำแหน่งไม่ดี ย่อหน้านั้นจะกลายเป็นความยุ่งเหยิงทันที</p>
+        <p>Shiori อนุญาตให้คุณนำเข้าไฟล์ <code>.ttf</code> หรือ <code>.otf</code> ของคุณเอง และสามารถ <strong>กำหนดฟอนต์ที่แตกต่างกันให้กับแต่ละภาษา/ระบบตัวเขียน</strong> ได้อย่างอิสระ คู่มือนี้จะครอบคลุมขั้นตอนตั้งแต่การค้นหาฟอนต์บน <strong>Google Fonts</strong>, ดาวน์โหลดลงมือถือ, แตกไฟล์ ZIP, จนถึงการนำมาผูกเข้ากับระบบ — กำหนดฟอนต์หนึ่งสำหรับภาษาไทย และอีกฟอนต์สำหรับภาษาอังกฤษ/ละติน</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">แยกฟอนต์ตามภาษา</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">ฟรีจาก Google Fonts</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">แตกไฟล์ ZIP ง่ายดาย</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">สบายตา สระไม่จมไม่ลอย</div>
+          </div>
+        </div>
+
+        <h2>2 สิ่งที่ต้องรู้ก่อนเริ่มใช้งาน</h2>
+        <ul class="article-bullet-list">
+          <li><strong>ฟอนต์แสดงผลได้เฉพาะภาษาที่ถูกวาดขึ้นมาเท่านั้น:</strong> ฟอนต์อักษรละตินที่สวยงามมากอาจไม่มีตัวอักษรภาษาไทยเลย หากนำไปผูกไว้กับแถวภาษาไทย ระบบ Android จะสลับกลับไปใช้ฟอนต์มาตรฐานของเครื่องโดยอัตโนมัติ</li>
+          <li><strong>Google Fonts ให้ไฟล์มาเป็น ZIP ไม่ใช่ตัวฟอนต์เดี่ยวๆ:</strong> Shiori ต้องการไฟล์ <code>.ttf</code> หรือ <code>.otf</code> ดังนั้นคุณต้องแตกไฟล์ออกจาก ZIP ก่อนเสมอ</li>
+        </ul>
+
+        <h2>สิ่งที่คุณต้องเตรียม</h2>
+        <ul class="article-bullet-list">
+          <li>แอป Shiori บนอุปกรณ์ Android (ทดสอบบนเวอร์ชัน 2.3.6)</li>
+          <li>เว็บเบราว์เซอร์ เพื่อเข้าไปที่ <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a></li>
+          <li>แอปจัดการไฟล์ (File Manager) ที่สามารถแตกไฟล์ ZIP ได้</li>
+          <li>หนังสือที่มีข้อความในภาษาที่คุณต้องการทดสอบเพื่อดูผลลัพธ์จริง</li>
+        </ul>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>電子書籍を読むフォントは、読書体験において決して小さな要素ではありません。目が疲れるまでにどれだけ長く読めるかを左右し、一部の言語体系では記号や声調が正しく表示されるかどうかを決定づけます。</p>
+        <p>Shioriでは、手持ちの <code>.ttf</code> や <code>.otf</code> ファイルを取り込み、<strong>言語・文字体系（スクリプト）ごとに異なるフォントを割り当てる</strong>ことができます。本ガイドでは、<strong>Google Fonts</strong> で適切なフォントを選び、ZIPを解凍して言語別にフォントを設定する一連の手順を詳しく解説します。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">言語別フォント枠</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">無料のGoogle Fonts</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">簡単なZIP解凍</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">目に優しい読書設計</div>
+          </div>
+        </div>
+
+        <h2>開始前に知っておくべき2つのポイント</h2>
+        <ul class="article-bullet-list">
+          <li><strong>フォントは描画対象として設計された文字体系しかカバーしない:</strong> 欧文フォントにはタイ文字や日本語文字は含まれていません。不対応の枠に設定するとシステム標準フォントへ戻ってしまいます。</li>
+          <li><strong>Google FontsからはZIPファイルで保存される:</strong> Shioriは <code>.ttf</code> または <code>.otf</code> を要求するため、あらかじめ解凍しておく必要があります。</li>
+        </ul>
+
+        <h2>必要な準備</h2>
+        <ul class="article-bullet-list">
+          <li>Android端末にインストールされたShiori（バージョン2.3.6で検証）</li>
+          <li>Webブラウザ（<a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a> にアクセス）</li>
+          <li>ZIPを解凍できるファイルマネージャーアプリ</li>
+          <li>表示を確認するための電子書籍</li>
+        </ul>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>阅读电子书时，字体绝非无足轻重的小事。它不仅直接决定了双眼在产生疲劳感前能坚持阅读多久，在某些特殊文字系统中，更决定了字形与排版是否规范正确。</p>
+        <p>Shiori 允许读者自由导入 <code>.ttf</code> 或 <code>.otf</code> 字体文件，并为 <strong>每一种文字系统/语种独立分配专属字体</strong>。本指南将带你走通导入前的完整流程：从如何在 <strong>Google Fonts</strong> 上精准筛选字族、下载解压，到最终分语种独立配置。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">分语种独立字槽</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">开源 Google Fonts</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">快捷 ZIP 解压缩</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">舒适长读护眼</div>
+          </div>
+        </div>
+
+        <h2>上手前必须明确的两大常识</h2>
+        <ul class="article-bullet-list">
+          <li><strong>字体只包含为其专门绘制的文字系统：</strong> 一款优雅的拉丁衬线字体中不含泰文字符。绑定至不兼容槽位时系统底层会自动回滚为系统默认字体。</li>
+          <li><strong>Google Fonts 提供的是 ZIP 压缩包：</strong> Shiori 导入器只接受 <code>.ttf</code> 或 <code>.otf</code> 格式，因此必须先解压获取真实字体文件。</li>
+        </ul>
+
+        <h2>准备工作</h2>
+        <ul class="article-bullet-list">
+          <li>已安装 Shiori 2.3.6 的 Android 设备</li>
+          <li>手机移动端浏览器（用于访问 <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a>）</li>
+          <li>支持解压 ZIP 的文件管理器</li>
+          <li>一本包含目标文字的电子书，用于检验效果</li>
+        </ul>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>A fonte em que um livro é lido define quanto tempo você consegue ler antes de cansar a vista e, em certos alfabetos, determina se o texto será renderizado com alinhamento perfeito de acentos e sinais.</p>
+        <p>O Shiori permite importar arquivos <code>.ttf</code> ou <code>.otf</code> e atribuir <strong>uma fonte diferente para cada sistema de escrita</strong>. Este guia explica como filtrar no <strong>Google Fonts</strong>, descompactar os arquivos no celular e associá-los por idioma no aplicativo.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">Slots por Idioma</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Google Fonts Grátis</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Extração Simples</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Leitura Confortável</div>
+          </div>
+        </div>
+
+        <h2>Duas coisas para saber antes de começar</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Uma fonte só cobre a escrita para a qual foi desenhada:</strong> Uma fonte latina não cobre tailandês ou japonês; ao associá-la incorretamente, o sistema reverterá para a fonte padrão.</li>
+          <li><strong>O Google Fonts fornece arquivos ZIP:</strong> O Shiori aceita arquivos <code>.ttf</code> ou <code>.otf</code>, exigindo a descompactação prévia.</li>
+        </ul>
+
+        <h2>O que você precisa</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori instalado no Android (v2.3.6)</li>
+          <li>Navegador para acessar <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a></li>
+          <li>Gerenciador de arquivos para descompactar ZIP</li>
+          <li>Um livro com o idioma desejado para testar</li>
+        </ul>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>La tipografía de lectura determina cuánto tiempo puedes leer antes de fatigar la vista y define si los signos ortográficos y tildes complejas se posicionan con exactitud.</p>
+        <p>Shiori te permite importar archivos <code>.ttf</code> u <code>.otf</code> y asignar <strong>una tipografía diferente para cada alfabeto</strong>. Esta guía cubre cómo filtrar en <strong>Google Fonts</strong>, descargar en tu móvil, extraer los archivos y asignarlos por idioma.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🔠</span>
+            <div class="stat-badge-title">Ranuras por Alfabeto</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🌐</span>
+            <div class="stat-badge-title">Google Fonts Gratis</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">📦</span>
+            <div class="stat-badge-title">Extracción de ZIP</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">👁️</span>
+            <div class="stat-badge-title">Máximo Confort Visual</div>
+          </div>
+        </div>
+
+        <h2>Dos cosas que debes saber antes de empezar</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Una fuente solo cubre los alfabetos para los que fue diseñada:</strong> Una fuente latina no contiene caracteres de otros alfabetos y provocará que el sistema vuelva a la fuente predeterminada.</li>
+          <li><strong>Google Fonts se descarga en ZIP:</strong> Shiori necesita archivos <code>.ttf</code> u <code>.otf</code> descomprimidos.</li>
+        </ul>
+
+        <h2>Requisitos previos</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori instalado en Android (v2.3.6)</li>
+          <li>Navegador web para <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a></li>
+          <li>Explorador de archivos compatible con archivos ZIP</li>
+          <li>Un libro en el idioma deseado para probar</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step Font Setup Guide (9 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการดาวน์โหลดและติดตั้งฟอนต์ (9 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">ステップごとのフォント設定手順（9つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">字体下载与分步设置实操指南（9 个步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Passo a Passo de Configuração de Fontes (9 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Paso a Paso para Configurar Fuentes (9 Pasos)</h2>
+
+    <!-- STEP 1 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Filter Google Fonts by Writing System</div>
+          <div class="step-desc">
+            <p>Open <strong>fonts.google.com</strong> in your mobile browser and tap <strong>Filters</strong>. Under <strong>Language</strong>, open <strong>Writing system</strong>, search for the script you need (e.g. Thai), and tick it.</p>
+            <p>Notice the count drops from <strong>1,946 families to 34</strong>. Filtering first guarantees that every font you evaluate actually supports your target language.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>กรอง Google Fonts ตามระบบตัวเขียน (Writing System)</div>
+          <div class="step-desc">
+            <p>เปิด <strong>fonts.google.com</strong> บนมือถือแล้วแตะปุ่ม <strong>Filters</strong> ในส่วน <strong>Language</strong> ให้เปิดเมนู <strong>Writing system</strong> ค้นหาคำว่า Thai แล้วติ๊กเลือก</p>
+            <p>จำนวนตระกูลฟอนต์จะลดลงจาก <strong>1,946 ตระกูล เหลือเพียง 34 ตระกูล</strong> การกรองก่อนจะช่วยตัดฟอนต์ที่ไม่รองรับภาษาไทยออกไปทั้งหมดทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>Google Fonts で文字体系を絞り込む</div>
+          <div class="step-desc">
+            <p>スマホで <strong>fonts.google.com</strong> を開き、<strong>Filters</strong> をタップします。<strong>Writing system</strong> から対象言語（例：Thai）を検索して選択します。</p>
+            <p>候補数が <strong>1,946ファミリーから34ファミリーへ絞り込まれ</strong>、実際に対象言語を表示できるフォントだけを厳選できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>按文字系统精准筛选可用字族</div>
+          <div class="step-desc">
+            <p>在手机浏览器中打开 <strong>fonts.google.com</strong>，点击 <strong>Filters</strong>。在 <strong>Writing system</strong> 下搜索并勾选目标语种（如 Thai）。</p>
+            <p>可用字族数立即从 <strong>1,946 款缩减至 34 款</strong>，确保挑选的每一款字体都能百分之百正确渲染文字。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Filtre pelo Sistema de Escrita no Google Fonts</div>
+          <div class="step-desc">
+            <p>Acesse <strong>fonts.google.com</strong> e toque em <strong>Filters</strong>. Em <strong>Writing system</strong>, busque o alfabeto desejado (ex: Thai) e marque-o.</p>
+            <p>O catálogo cai de <strong>1.946 para 34 famílias</strong>, garantindo que você só visualize fontes compatíveis.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Filtra Google Fonts por Sistema de Escritura</div>
+          <div class="step-desc">
+            <p>Entra en <strong>fonts.google.com</strong> y pulsa <strong>Filters</strong>. En <strong>Writing system</strong>, busca tu alfabeto (ej: Thai) y selecciónalo.</p>
+            <p>Las fuentes se reducen de <strong>1.946 a 34 familias</strong>, asegurando compatibilidad total desde el primer momento.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="01-google-fonts-filter-writing-system.jpg" alt="Google Fonts filter panel with Writing system dropdown searched for Thai" class="img-preview" data-index="0" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>Filter Panel:</strong> Select Writing system &rarr; Thai to exclude incompatible families.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="02-google-fonts-thai-families-count.jpg" alt="Google Fonts catalogue filtered to Thai, showing 34 of 1,946 families" class="img-preview" data-index="1" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Filtered Count:</strong> 34 compatible families remain, all ready for long reading.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 (SINGLE-IMG) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Read the Specimen Before You Commit</div>
+          <div class="step-desc">
+            <p>Tap a family (such as <strong>Maitree</strong> by Cadson Demak) to open its specimen. Switch the sample text to your language and check the letterforms for eye comfort.</p>
+            <p>For book body text, you always want a balanced <strong>Regular weight</strong> meant for sustained, immersive reading.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>ดูตัวอย่างฟอนต์ (Specimen) ก่อนตัดสินใจ</div>
+          <div class="step-desc">
+            <p>แตะที่ฟอนต์ที่สนใจ (ตัวอย่างนี้เลือก <strong>Maitree</strong> โดย Cadson Demak) ตรวจสอบตัวอย่างข้อความภาษาไทยเพื่อความสบายตาในการอ่าน</p>
+            <p>สำหรับเนื้อหาในหนังสือ แนะนำให้เลือกน้ำหนัก <strong>Regular (ปกติ)</strong> ที่ออกแบบมาสำหรับการอ่านหนังสือยาวๆ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>見本（Specimen）で可読性を確認</div>
+          <div class="step-desc">
+            <p>好みのフォント（例：<strong>Maitree</strong>）を開き、対象言語のサンプル文で字形や読みやすさを確認します。</p>
+            <p>長文の読書用には、視認性の高い <strong>Regular（標準ウェイト）</strong> が最も適しています。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>查验字体样本页再做决定</div>
+          <div class="step-desc">
+            <p>点击进入字体样本页（本篇选用 <strong>Maitree</strong>）。切换至真实语言文本观察字形排印是否匀称舒服。</p>
+            <p>正文沉浸阅读请务必认准 <strong>Regular（常规字重）</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Confira a Amostra da Fonte</div>
+          <div class="step-desc">
+            <p>Abra a página da fonte escolhida (como a <strong>Maitree</strong>) e avalie as formas das letras no seu idioma.</p>
+            <p>Para o corpo de texto de livros, escolha sempre a variante <strong>Regular</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Revisa la Muestra Tipográfica</div>
+          <div class="step-desc">
+            <p>Abre la página de muestra de la fuente (ej: <strong>Maitree</strong>) y verifica la legibilidad en tu idioma.</p>
+            <p>Para lectura continua, utiliza siempre el peso <strong>Regular</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-maitree-specimen-google-fonts.jpg" alt="The Maitree specimen page on Google Fonts with Get font button" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 3 (SINGLE-IMG) -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Download the Font Archive</div>
+          <div class="step-desc">
+            <p>Tap <strong>Get font</strong>. You can queue multiple families (e.g. one Thai face and one Latin face) before tapping <strong>Download all</strong>.</p>
+            <p>The ZIP archive is saved directly to your phone's <strong>Downloads</strong> directory.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ดาวน์โหลดไฟล์ฟอนต์</div>
+          <div class="step-desc">
+            <p>แตะปุ่ม <strong>Get font</strong> คุณสามารถเลือกหลายตระกูลพร้อมกัน (เช่น ฟอนต์ไทย 1 ตัว และฟอนต์อังกฤษ 1 ตัว) แล้วแตะ <strong>Download all</strong></p>
+            <p>ไฟล์ ZIP จะถูกดาวน์โหลดลงในโฟลเดอร์ <strong>Downloads</strong> ของมือถือ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>フォントアーカイブを一括ダウンロード</div>
+          <div class="step-desc">
+            <p><strong>Get font</strong> をタップして追加します。複数言語のフォントをまとめて選び、<strong>Download all</strong> でダウンロードします。</p>
+            <p>ZIPアーカイブが端末の <strong>Downloads</strong> フォルダに保存されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>下载打包字体压缩文件</div>
+          <div class="step-desc">
+            <p>点击 <strong>Get font</strong>。可同时加选多套字族，点击 <strong>Download all</strong> 一键下载。</p>
+            <p>字体 ZIP 压缩包将直接保存至手机的 <strong>Downloads</strong> 目录。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Baixe o Pacote de Fontes</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Get font</strong> e adicione as famílias desejadas. Depois, toque em <strong>Download all</strong>.</p>
+            <p>O arquivo ZIP será salvo na pasta <strong>Downloads</strong> do aparelho.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Descarga el Paquete Comprimido</div>
+          <div class="step-desc">
+            <p>Pulsa <strong>Get font</strong>, añade las familias necesarias y pulsa <strong>Download all</strong>.</p>
+            <p>El archivo ZIP quedará guardado en tu carpeta <strong>Downloads</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-three-families-selected-download-all.jpg" alt="Google Fonts selection panel with 3 families and Download all button" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 4 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Extract and Inspect the ZIP Archive</div>
+          <div class="step-desc">
+            <p>Open the ZIP in your file manager. A single family ships with variable fonts or a <code>static/</code> folder. Multi-family downloads unpack into <strong>one folder per family</strong>.</p>
+            <p>Extract the archive to an easily accessible location (such as beside the ZIP in Downloads).</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>แตกไฟล์และเปิดดูเนื้อหาข้างใน ZIP</div>
+          <div class="step-desc">
+            <p>เปิดไฟล์ ZIP ในแอปจัดการไฟล์ ฟอนต์เดี่ยวจะมีโฟลเดอร์ <code>static/</code> หรือ variable font ส่วนการโหลดหลายตระกูลจะแยกเป็น <strong>หนึ่งโฟลเดอร์ต่อหนึ่งตระกูล</strong></p>
+            <p>ให้แตกไฟล์ (Extract) ไว้ในตำแหน่งที่จำง่าย เช่น ในโฟลเดอร์ Downloads เดิม</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>ZIPファイルを解凍して構成を確認</div>
+          <div class="step-desc">
+            <p>ファイルマネージャーでZIPを開きます。単一フォントは <code>static/</code> や可変フォント、複数フォント時は <strong>ファミリー別のフォルダ</strong> に展開されます。</p>
+            <p>Downloads等のわかりやすい場所に解凍してください。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>解压并检查 ZIP 内部目录结构</div>
+          <div class="step-desc">
+            <p>在文件管理中解压 ZIP。单个字族包含可变字体或 <code>static/</code> 目录，多字族打包则呈现 <strong>每个字族独立一个子文件夹</strong>。</p>
+            <p>解压至便于查找的路径（如 Downloads 目录）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Descompacte e Veja o Conteúdo do ZIP</div>
+          <div class="step-desc">
+            <p>Abra o ZIP no gerenciador de arquivos. Downloads com várias fontes criam <strong>uma pasta para cada família</strong>.</p>
+            <p>Extraia os arquivos na pasta Downloads para facilitar o acesso.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Descomprime y Examina el Archivo ZIP</div>
+          <div class="step-desc">
+            <p>Abre el ZIP en tu explorador. Las descargas múltiples organizan <strong>una carpeta por cada familia</strong> tipográfica.</p>
+            <p>Extrae el contenido en Downloads para localizarlo sin problemas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="05-inside-the-downloaded-font-zip.jpg" alt="Inside a single-family Google Fonts ZIP showing static folder and variable TTF" class="img-preview" data-index="4" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>Single Family ZIP:</strong> Contains static folder, variable TTF, and OFL license.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="06-multi-family-zip-one-folder-each.jpg" alt="Extracted archive of a three-family download with one folder per family" class="img-preview" data-index="5" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Multi-Family ZIP:</strong> Neatly sorted into dedicated folders for each typeface.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Pick the Correct File Out of the Folder</div>
+          <div class="step-desc">
+            <p>Maitree lists weights plainly from ExtraLight to Bold. Other families like Literata ship optical sizes in <code>static/</code> (e.g. <code>18pt</code>, <code>24pt</code>, <code>60pt</code>).</p>
+            <p>Always pick <strong>Regular</strong> (e.g. <code>Maitree-Regular.ttf</code>). For optical sizes, select the smallest size (<strong>18pt</strong>), which is crafted for mobile screen reading.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เลือกไฟล์ที่ถูกต้องออกจากโฟลเดอร์</div>
+          <div class="step-desc">
+            <p>Maitree รวมไฟล์น้ำหนักไว้ในโฟลเดอร์เดียว ส่วน Literata มีโฟลเดอร์ <code>static/</code> และแยก Optical sizes (เช่น 18pt, 24pt, 60pt)</p>
+            <p>กฎสำคัญ: เลือกไฟล์น้ำหนัก <strong>Regular</strong> เสมอ และหากมี Optical sizes ให้เลือกขนาดเล็กที่สุด (<strong>18pt</strong>) สำหรับการอ่านเนื้อหาบนมือถือ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>フォルダから最適なファイルを特定</div>
+          <div class="step-desc">
+            <p>Maitreeのように直下に並ぶ場合と、Literataのように <code>static/</code> 内に <code>18pt</code> や <code>24pt</code> などの光学サイズ（Optical sizes）が分かれている場合があります。</p>
+            <p>常に <strong>Regular</strong> を選び、光学サイズがある場合は読書サイズ用の最小（<strong>18pt</strong>）を選択します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>在文件夹中精准挑出可用字体文件</div>
+          <div class="step-desc">
+            <p>Maitree 直接陈列各级字重，而 Literata 等字族在 <code>static/</code> 中还包含 <code>18pt</code>、<code>24pt</code> 等视觉字号尺寸（Optical sizes）。</p>
+            <p>黄金法则：认准 <strong>Regular</strong> 字重；存在视觉字号时选用最小号（<strong>18pt</strong>）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Escolha o Arquivo Correto na Pasta</div>
+          <div class="step-desc">
+            <p>Algumas fontes reúnem os pesos diretamente; outras trazem tamanhos ópticos na pasta <code>static/</code>.</p>
+            <p>Regra de ouro: escolha sempre a variante <strong>Regular</strong> e, em tamanhos ópticos, prefira <strong>18pt</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Selecciona el Archivo Adecuado</div>
+          <div class="step-desc">
+            <p>Algunas familias organizan los pesos directamente; otras como Literata ofrecen tamaños ópticos en <code>static/</code>.</p>
+            <p>Elige siempre el peso <strong>Regular</strong> y el tamaño óptico menor (<strong>18pt</strong>) para lectura en pantalla.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="07-maitree-weight-files.jpg" alt="Maitree folder listing weight files from ExtraLight to Bold" class="img-preview" data-index="6" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>Standard Weights:</strong> Select <code>Maitree-Regular.ttf</code> for body text.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="08-literata-static-optical-sizes.jpg" alt="Literata static folder listing optical sizes" class="img-preview" data-index="7" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Optical Sizes:</strong> Pick <code>Literata_18pt-Regular.ttf</code> for body reading.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 6 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Open Shiori's Per-Script Font Settings</div>
+          <div class="step-desc">
+            <p>In Shiori, go to <strong>Settings &rarr; Reading &rarr; Reader font</strong>. A dialog opens with 9 slots: <strong>All languages</strong>, <strong>Thai</strong>, <strong>Latin</strong>, <strong>Japanese</strong>, <strong>Chinese</strong>, <strong>Korean</strong>, <strong>Arabic</strong>, <strong>Cyrillic</strong>, and <strong>Devanagari</strong>.</p>
+            <p>Tap the script you are configuring — in this walkthrough, <strong>Thai</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>เปิดหน้ารายการฟอนต์แยกภาษาใน Shiori</div>
+          <div class="step-desc">
+            <p>ในแอป Shiori ไปที่ <strong>Settings &rarr; Reading &rarr; Reader font</strong> จะพบรายการ 9 ช่อง ได้แก่ <strong>All languages</strong>, <strong>Thai</strong>, <strong>Latin</strong>, <strong>Japanese</strong>, <strong>Chinese</strong>, <strong>Korean</strong>, <strong>Arabic</strong>, <strong>Cyrillic</strong> และ <strong>Devanagari</strong></p>
+            <p>แตะเลือกภาษาที่ต้องการตั้งค่า — ในที่นี้แตะที่ <strong>Thai</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>Shioriの言語別フォント設定を開く</div>
+          <div class="step-desc">
+            <p>Shioriで <strong>Settings &rarr; Reading &rarr; Reader font</strong> を開きます。<strong>All languages</strong> に加え、Thai、Latin、Japaneseなど9つの枠が並びます。</p>
+            <p>設定したい言語枠（ここでは <strong>Thai</strong>）をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>打开 Shiori 分语种字型配置面板</div>
+          <div class="step-desc">
+            <p>在 Shiori 中进入 <strong>Settings &rarr; Reading &rarr; Reader font</strong>，显示 9 个文字槽位（All languages、Thai、Latin、Japanese、Chinese 等）。</p>
+            <p>点击需要定制的语种槽位——此处点击 <strong>Thai</strong>。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Abra o Menu de Fontes por Idioma</div>
+          <div class="step-desc">
+            <p>No Shiori, acesse <strong>Settings &rarr; Reading &rarr; Reader font</strong> para ver os 9 slots de idiomas disponíveis.</p>
+            <p>Toque no idioma desejado — neste caso, <strong>Thai</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Abre la Configuración de Fuentes por Alfabeto</div>
+          <div class="step-desc">
+            <p>En Shiori, entra en <strong>Settings &rarr; Reading &rarr; Reader font</strong> para ver las 9 ranuras de alfabeto disponibles.</p>
+            <p>Pulsa en el alfabeto que vas a configurar (en este caso, <strong>Thai</strong>).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="09-shiori-reader-font-script-slots.jpg" alt="Shiori Reader font dialog listing per-script slots" class="img-preview" data-index="8" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>Script Slots:</strong> Individual typeface assignment for each language script.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="10-thai-slot-import-font-button.jpg" alt="Thai font slot in Shiori showing Import font button" class="img-preview" data-index="9" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Thai Slot:</strong> Tap Import font (.ttf / .otf) to browse your storage.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 7 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>Import and Select the Font File</div>
+          <div class="step-desc">
+            <p>Tap <strong>Import font</strong> and navigate to the extracted folder in Android's file picker. Tap <code>Maitree-Regular.ttf</code>.</p>
+            <p>Shiori imports the file, registers it into your font library, and selects it immediately. Tap <strong>OK</strong> on both dialogs to confirm.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>นำเข้าและเลือกใช้งานไฟล์ฟอนต์</div>
+          <div class="step-desc">
+            <p>แตะปุ่ม <strong>Import font</strong> แล้วเข้าไปยังโฟลเดอร์ที่แตกไฟล์ไว้ในตัวเลือกไฟล์ของ Android แตะเลือก <code>Maitree-Regular.ttf</code></p>
+            <p>Shiori จะนำเข้าฟอนต์และเลือกใช้งานให้อัตโนมัติทันที แตะ <strong>OK</strong> ทั้งสองหน้าต่างเพื่อบันทึก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>フォントファイルをインポート</div>
+          <div class="step-desc">
+            <p><strong>Import font</strong> をタップし、ファイルピッカーから <code>Maitree-Regular.ttf</code> を選択します。</p>
+            <p>Shioriが即座にインポートして適用状態にします。両方のダイアログで <strong>OK</strong> をタップします。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>导入并应用字体文件</div>
+          <div class="step-desc">
+            <p>点击 <strong>Import font</strong>，在文件选择器中定位并点击 <code>Maitree-Regular.ttf</code>。</p>
+            <p>Shiori 自动导入、入库并完成选中。点击两层弹窗的 <strong>OK</strong> 保存设置。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Importe e Ative a Fonte</div>
+          <div class="step-desc">
+            <p>Toque em <strong>Import font</strong> e selecione o arquivo <code>Maitree-Regular.ttf</code>.</p>
+            <p>O Shiori importa e ativa a fonte automaticamente. Toque em <strong>OK</strong> para confirmar.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Importa y Aplica la Fuente</div>
+          <div class="step-desc">
+            <p>Pulsa <strong>Import font</strong> y selecciona <code>Maitree-Regular.ttf</code> en el explorador.</p>
+            <p>Shiori la importará y seleccionará automáticamente. Pulsa <strong>OK</strong> para guardar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="11-file-picker-inside-font-folder.jpg" alt="Android file picker inside the extracted font folder" class="img-preview" data-index="10" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>File Picker:</strong> Browse into the extracted folder and tap the Regular TTF.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="12-thai-slot-maitree-selected.jpg" alt="Thai slot in Shiori with Maitree-Regular.ttf selected" class="img-preview" data-index="11" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Active Font:</strong> <code>Maitree-Regular.ttf</code> is instantly selected and ready.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 8 (MULTI-IMG: 3 images - BEFORE, AFTER, CROP) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">8</span>See the Transformation on a Real Page</div>
+          <div class="step-desc">
+            <p>Look at the test page containing multiple scripts. Before, Thai is displayed in the narrow system font. After assigning Maitree, the Thai heading, paragraph, and table row rewrap with spacious, comfortable letterforms.</p>
+            <p>Chinese and Russian paragraphs on the exact same page are completely untouched, showing per-script typography in action.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">8</span>ดูผลลัพธ์จริงบนหน้าหนังสือ</div>
+          <div class="step-desc">
+            <p>เปรียบเทียบหน้าเอกสารที่มีหลายภาษา: ภาพก่อนหน้าข้อความภาษาไทยใช้ฟอนต์แคบเดิมของระบบ หลังเปลี่ยนเป็น Maitree ตัวอักษรภาษาไทยขยายกว้าง โปร่งสบายตา และวางสระวรรณยุกต์ได้อย่างลงตัว</p>
+            <p>ข้อความภาษาจีนและรัสเซียในหน้าเดียวกันไม่ได้รับผลกระทบใดๆ นี่คือการแยกฟอนต์ตามภาษาอย่างแท้จริง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">8</span>実際の読書画面で変化を確認</div>
+          <div class="step-desc">
+            <p>多言語ページのビフォー・アフター比較：適用前は狭いシステムフォントでしたが、Maitree適用後はゆったりと読みやすいタイ文字に切り替わります。</p>
+            <p>同一ページ内にある中国語やロシア語の段落には一切影響を与えません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">8</span>检验书页真实排版的华丽蜕变</div>
+          <div class="step-desc">
+            <p>多语种测试页面对比：应用前泰语显示为扁窄生硬的原生字体；绑定 Maitree 后，字形开阔优美，音标排版舒展自然。</p>
+            <p>同页中的中文与俄文段落完全不受影响，独立保持原有风貌。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">8</span>Veja a Transformação na Leitura</div>
+          <div class="step-desc">
+            <p>Antes com a fonte padrão do sistema; depois com Maitree aplicada ao tailandês, com traços largos e harmoniosos.</p>
+            <p>Os textos em chinês e russo na mesma página continuam inalterados.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">8</span>Comprueba el Cambio en la Página Real</div>
+          <div class="step-desc">
+            <p>Antes con la tipografía del sistema; después con Maitree aplicada al texto tailandés, mucho más legible y proporcionada.</p>
+            <p>El texto en chino y ruso en la misma pantalla no se ve alterado en absoluto.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-3">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="13-thai-before-system-font.jpg" alt="Book page showing Thai text in narrow default system font" class="img-preview" data-index="12" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">1</span>
+            <span class="gallery-caption-text"><strong>Before:</strong> Thai in default narrow system font.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="14-thai-after-maitree.jpg" alt="Same page showing Thai text rendered in spacious Maitree font" class="img-preview" data-index="13" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">2</span>
+            <span class="gallery-caption-text"><strong>After:</strong> Thai rendered in elegant Maitree font.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="15-thai-row-system-vs-maitree.jpg" alt="Cropped comparison of Thai row: narrow system font vs wider Maitree font" class="img-preview" data-index="14" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">3</span>
+            <span class="gallery-caption-text"><strong>Comparison:</strong> System font vs Maitree letterforms.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 9 (MULTI-IMG: 2 images) -->
+    <section class="tutorial-step multi-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">9</span>Assign a Second Font for Another Language</div>
+          <div class="step-desc">
+            <p>Repeat the process for other scripts you read. For Latin text, import <strong>Literata</strong> (<code>Literata_18pt-Regular.ttf</code>) into the <strong>Latin</strong> slot.</p>
+            <p>The Reader font dialog now shows Thai pointing to Maitree and Latin pointing to Literata, while remaining scripts use system fonts.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">9</span>กำหนดฟอนต์สำหรับภาษาที่สอง (Latin / อังกฤษ)</div>
+          <div class="step-desc">
+            <p>ทำขั้นตอนเดิมซ้ำสำหรับภาษาอื่น เช่น นำเข้า <strong>Literata</strong> (<code>Literata_18pt-Regular.ttf</code>) สำหรับช่อง <strong>Latin</strong></p>
+            <p>หน้า Reader font จะแสดงทั้งสองภาษาชี้ไปยังไฟล์ฟอนต์ของตัวเองอย่างลงตัว โดยภาษาอื่นยังคงใช้ฟอนต์ระบบตามปกติ</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">9</span>2つ目の言語（ラテン文字等）を設定</div>
+          <div class="step-desc">
+            <p>欧文用に <strong>Literata</strong>（<code>Literata_18pt-Regular.ttf</code>）を <strong>Latin</strong> スロットに割り当てます。</p>
+            <p>タイ語にMaitree、ラテン文字にLiterataが割り当てられ、多言語混在書籍でも理想の組版が実現します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">9</span>为第二门语言绑定专属西文字库</div>
+          <div class="step-desc">
+            <p>重复上述流程，为 <strong>Latin</strong> 槽位导入专为电子阅读打造的 <strong>Literata</strong>（<code>Literata_18pt-Regular.ttf</code>）。</p>
+            <p>Reader font 面板中两套字库各司其职，各语言文字均呈现最完美的阅读质感。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">9</span>Configure um Segundo Idioma (Latino)</div>
+          <div class="step-desc">
+            <p>Repita para outro idioma. Para textos latinos, importamos a <strong>Literata</strong> (<code>Literata_18pt-Regular.ttf</code>) no slot <strong>Latin</strong>.</p>
+            <p>O Shiori gerencia fontes independentes para cada alfabeto perfeitamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">9</span>Asigna una Segunda Fuente para Texto Latino</div>
+          <div class="step-desc">
+            <p>Importa <strong>Literata</strong> (<code>Literata_18pt-Regular.ttf</code>) en la fila <strong>Latin</strong> para texto en inglés o español.</p>
+            <p>Ambos alfabetos disfrutarán de tipografías dedicadas e independientes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-gallery-grid cols-2">
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="16-latin-slot-literata-selected.jpg" alt="Latin font slot in Shiori with Literata_18pt-Regular selected" class="img-preview" data-index="15" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">A</span>
+            <span class="gallery-caption-text"><strong>Latin Slot:</strong> <code>Literata_18pt-Regular.ttf</code> selected for Latin script.</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-img-wrap">
+            <img src="17-reader-font-two-scripts-assigned.jpg" alt="Reader font dialog with Thai set to Maitree and Latin set to Literata" class="img-preview" data-index="16" />
+          </div>
+          <div class="gallery-caption">
+            <span class="gallery-caption-badge">B</span>
+            <span class="gallery-caption-text"><strong>Two Scripts Assigned:</strong> Thai and Latin have independent custom fonts.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAPS & TROUBLESHOOTING SECTION -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">When Nothing Changes: Two Common Traps</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">เมื่อเปลี่ยนฟอนต์แล้วหน้าหนังสือไม่เปลี่ยน: 2 กับดักที่พบบ่อย</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">画面が変わらない場合の2つの落とし穴</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">排查页面毫无变化的两个隐蔽陷阱</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Quando Nada Muda: Duas Armadilhas Comuns</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Cuando Nada Cambia: Dos Trampas Frecuentes</h2>
+
+    <div class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title">Trap 1: The font lacks glyphs for that script</div>
+          <div class="step-desc">
+            <p>Assigning a Latin font (like Literata) to Thai causes Android to quietly fall back to the system font. A font must contain the actual characters for that script.</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">Trap 2: The font is identical to your system font</div>
+          <div class="step-desc">
+            <p>Below, the same Thai paragraph is shown with the system font, <code>NotoSerifThai-Regular</code>, and <code>Maitree-Regular</code>. Because Android phones use Noto by default, Noto Thai differs from the system font by only <strong>0.3%</strong>, whereas Maitree differs by <strong>13%</strong>.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title">กับดักที่ 1: ฟอนต์ไม่มีตัวอักษรของภาษานั้น</div>
+          <div class="step-desc">
+            <p>หากนำฟอนต์อังกฤษไปใส่ในช่องภาษาไทย ระบบจะสลับกลับไปใช้ฟอนต์เดิมของเครื่องทันที ทำให้ดูเหมือนไม่มีอะไรเปลี่ยนแปลง</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">กับดักที่ 2: ฟอนต์ใหม่เป็นตัวเดียวกับที่มือถือใช้อยู่แล้ว</div>
+          <div class="step-desc">
+            <p>ภาพด้านข้างแสดงข้อความเดียวกันใน 3 ฟอนต์: ระบบ, <code>NotoSerifThai-Regular</code> และ <code>Maitree-Regular</code> โดย Noto ต่างจากฟอนต์ระบบเดิมแค่ <strong>0.3%</strong> เพราะมือถือใช้ Noto อยู่แล้ว ส่วน Maitree ต่างถึง <strong>13%</strong></p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title">落とし穴 1：対象言語のグリフが存在しない</div>
+          <div class="step-desc">
+            <p>欧文専用フォントをタイ語枠に設定しても、文字が含まれないためシステムフォントへ自動フォールバックします。</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">落とし穴 2：端末の標準フォントと同じものを再導入した</div>
+          <div class="step-desc">
+            <p>Android標準フォントとNoto Serif Thaiはほぼ100%同一（差はわずか0.3%）。見た目の変化を得るにはMaitree（差13%）のように個性の異なる書体を選びましょう。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title">陷阱 1：字体不含该语种字形</div>
+          <div class="step-desc">
+            <p>将纯西文字体绑定至泰语槽位，底层会自动回滚为系统字体。</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">陷阱 2：挑选的字体与系统自带完全同款</div>
+          <div class="step-desc">
+            <p>多数 Android 手机出厂自带 Noto 字体，重新安装 Noto 差异度仅 0.3%，肉眼完全不可见；而换装 Maitree 差异度达 13%，焕然一新。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title">Armadilha 1: A fonte não tem os caracteres</div>
+          <div class="step-desc">
+            <p>Associar uma fonte latina ao tailandês faz o sistema reverter para a fonte padrão.</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">Armadilha 2: A nova fonte é gêmea da fonte do celular</div>
+          <div class="step-desc">
+            <p>Instalar Noto em celulares que já usam Noto de fábrica gera apenas 0.3% de diferença. Escolha fontes como Maitree para notar a transformação.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title">Trampa 1: La fuente carece de los caracteres necesarios</div>
+          <div class="step-desc">
+            <p>Asignar una fuente latina a tailandés provoca que Android recurra a la tipografía del sistema.</p>
+          </div>
+          <div class="step-title" style="margin-top: 1.25rem;">Trampa 2: La nueva fuente es idéntica a la del sistema</div>
+          <div class="step-desc">
+            <p>Muchos terminales ya usan Noto por defecto (diferencia de solo 0.3%). Opta por familias distintas como Maitree (diferencia del 13%).</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="18-same-paragraph-three-thai-fonts.jpg" alt="Comparison of the same Thai paragraph with System font, Noto Serif Thai and Maitree" class="img-preview" data-index="17" />
+      </div>
+    </div>
+
+    <!-- FAQ Items -->
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Nothing changed after importing the font.</div>
+        <div class="faq-a">Check if <strong>Force reader fonts</strong> is enabled in <strong>Settings &rarr; Reading</strong>. When off, EPUB files with embedded CSS font declarations override your settings.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">เปลี่ยนฟอนต์แล้วแต่หน้าหนังสือไม่เปลี่ยนเลย</div>
+        <div class="faq-a">ให้ตรวจสอบว่าเปิดตัวเลือก <strong>Force reader fonts</strong> ใน <strong>Settings &rarr; Reading</strong> หรือไม่ หากปิดอยู่ หนังสือที่มี CSS กำหนดฟอนต์ไว้จะแสดงผลตามฟอนต์เดิมของหนังสือ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">フォントを変えても画面が変わらない</div>
+        <div class="faq-a"><strong>Settings &rarr; Reading</strong> の <strong>Force reader fonts</strong> がオンになっているか確認してください。オフの場合、EPUB内のCSSフォントが優先されます。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">导入并选中字体后书页没有发生任何改变？</div>
+        <div class="faq-a">检查 <strong>Settings &rarr; Reading</strong> 中的 <strong>Force reader fonts</strong> 开关是否已打开，以强制覆盖图书内部 CSS 指定的字体。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A fonte não mudou após a importação.</div>
+        <div class="faq-a">Verifique se <strong>Force reader fonts</strong> está ativado em <strong>Settings &rarr; Reading</strong> para ignorar estilos CSS embutidos no EPUB.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">No noto ningún cambio tras importar la fuente.</div>
+        <div class="faq-a">Comprueba que <strong>Force reader fonts</strong> está activado en <strong>Settings &rarr; Reading</strong> para sobreescribir las fuentes CSS del libro.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Shiori will not open the file I selected.</div>
+        <div class="faq-a">The importer only accepts <code>.ttf</code> and <code>.otf</code> files. You cannot select a <code>.zip</code> directly; extract the archive first and choose the font file inside.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">Shiori ไม่ยอมเปิดไฟล์ที่เลือก</div>
+        <div class="faq-a">ตัวนำเข้ารองรับเฉพาะไฟล์นามสกุล <code>.ttf</code> และ <code>.otf</code> เท่านั้น ไม่สามารถเลือกไฟล์ <code>.zip</code> ได้ ให้ทำการแตกไฟล์ออกมาก่อนเสมอ</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">選択したファイルが開けない</div>
+        <div class="faq-a">インポート可能なのは <code>.ttf</code> および <code>.otf</code> のみです。ZIPファイルを解凍してからファイルを選んでください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">提示无法打开所选文件？</div>
+        <div class="faq-a">仅支持 <code>.ttf</code> 与 <code>.otf</code> 文件，切勿直接选择 <code>.zip</code> 压缩包。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O Shiori não abre o arquivo selecionado.</div>
+        <div class="faq-a">O aplicativo só aceita arquivos <code>.ttf</code> e <code>.otf</code>. Descompacte o arquivo ZIP antes de importar.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">Shiori no abre el archivo seleccionado.</div>
+        <div class="faq-a">Solo se admiten archivos <code>.ttf</code> y <code>.otf</code>. Extrae el ZIP previamente antes de importar.</div>
+      </div>
+    </div>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/how-to-import-custom-epub-fonts/">How to Import Custom EPUB Fonts into Shiori</a></li>
+        <li><a href="/blog/fix-broken-epub-styling-android/">Fix Broken EPUB Styling on Android: Font Overrides</a></li>
+        <li><a href="/blog/multi-language-text-to-speech-android-epub/">Multi-Language Text-to-Speech in Shiori</a></li>
+        <li><a href="/blog/eink-theme-for-android-epub-reader/">An E-Ink Theme for Your Android EPUB Reader</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Read with Typography Built for Your Eyes</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play, assign custom Google Fonts per language, and enjoy perfectly rendered books in every script.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">อ่านหนังสือด้วยฟอนต์ที่ออกแบบมาเพื่อดวงตาคุณ</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play กำหนดฟอนต์ Google Fonts แยกตามภาษา แล้วเพลิดเพลินกับการอ่านหนังสือที่สบายตาทุกตัวอักษร
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">目に優しい美しい書体で読書を楽しもう</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShiori EPUB Readerをダウンロードし、Google Fontsを言語別に設定して、最高のタイポグラフィ体験をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">定制专属字型，畅享舒适排版</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，分语种独立绑定 Google Fonts 开源字体，让每一页排印都赏心悦目。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Leia com Tipografia Perfeita para Seus Olhos</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play, configure fontes do Google Fonts por idioma e desfrute de livros com renderização tipográfica impecável.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Lee con Tipografía Pensada para tu Confort</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play, asigna Google Fonts personalizados por alfabeto y disfruta de libros con una tipografía inmejorable.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  <script src="../../scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt || `Screenshot ${idx + 1}`;
+        thumb.className = 'lightbox-thumb' + (idx === 0 ? ' active' : '');
+        thumb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openImage(idx);
+        });
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.querySelectorAll('.lightbox-thumb'));
+
+      function openImage(index) {
+        currentIndex = index;
+        const targetImg = images[currentIndex];
+        lightboxImg.src = targetImg.src;
+        lightboxCaption.textContent = targetImg.alt || `Screenshot ${currentIndex + 1} of ${images.length}`;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+          if (i === currentIndex) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>

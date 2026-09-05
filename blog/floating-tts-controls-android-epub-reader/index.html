@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Keep Listening While You Use Other Apps: Shiori's Floating Controls — Shiori Blog</title>
+  <meta name="description" content="Turn on Shiori's Floating Controls to keep the karaoke line and playback buttons on screen while using any other Android app. Customize size, opacity, and colors." />
+  <link rel="canonical" href="https://shioriepubreader.com/blog/floating-tts-controls-android-epub-reader/" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="icon" type="image/png" href="/images/icon-trim.png" />
+  <link rel="icon" type="image/png" href="../../images/icon-trim.png" />
+
+  <!-- Structured Data (Schema.org TechArticle) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Keep Listening While You Use Other Apps: Shiori's Floating Controls",
+    "description": "Turn on Shiori's Floating Controls to keep the karaoke line and playback buttons on screen while using any other Android app. Customize size, opacity, and colors.",
+    "author": { "@type": "Organization", "name": "Endofday" },
+    "publisher": { "@type": "Organization", "name": "Shiori ePub Reader" },
+    "datePublished": "2026-09-05",
+    "mainEntityOfPage": "https://shioriepubreader.com/blog/floating-tts-controls-android-epub-reader/"
+  }
+  </script>
+
+  <!-- Structured Data (Schema.org FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why do the floating controls never appear?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The overlay permission was declined. Turn the Floating Controls switch off and on again to bring the permission dialog back, or grant display over other apps for Shiori in Android system settings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "The floating card shows buttons but no text. Why?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Karaoke ticker on floating controls is switched off, so the card is in buttons-only mode. Turn it back on in Settings > TTS Listening > Floating control."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I bring the floating card back after dragging it somewhere awkward?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Double-tap the card and it instantly jumps back to the middle of the screen. You can also set edge snapping to Top or Bottom."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does closing the floating card stop playback?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The close button dismisses the card and stops the narration. To hide the card but keep listening in the background, switch Floating Controls off instead."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-section {
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+    .article-section h2 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      margin: 2.25rem 0 1rem;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-section p {
+      margin-bottom: 1.35rem;
+    }
+
+    .article-bullet-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .article-bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.7;
+    }
+    .article-bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .quote-callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 16px 16px 0;
+      margin: 2rem 0;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      line-height: 1.75;
+    }
+
+    /* Comparison / Data Table */
+    .data-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0 2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      box-shadow: var(--card-shadow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table th {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .data-table code {
+      color: var(--accent-primary);
+    }
+
+    /* Badges Grid */
+    .stat-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .stat-badge-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-badge-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-primary);
+    }
+    .stat-badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .stat-badge-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Steps Base */
+    .tutorial-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .tutorial-step:hover {
+      border-color: var(--accent-primary);
+    }
+    .step-number {
+      background: var(--accent-gradient);
+      color: #fff;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .step-desc {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+    .step-desc p {
+      margin-bottom: 0.85rem;
+    }
+    .step-desc p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Single-image layout */
+    .step-image-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-preview {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .img-preview:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 35px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Multi-image Gallery Grid (Side-by-side, no vertical stacking) */
+    .tutorial-step.multi-img {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .tutorial-step.multi-img .step-text {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-gallery-grid {
+      display: grid;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .step-gallery-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .step-gallery-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .gallery-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+    }
+
+    .gallery-item .img-preview {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: none;
+      border: none;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    .gallery-item:hover .img-preview {
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.25rem 0.25rem 0;
+    }
+    .gallery-caption-badge {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .gallery-caption-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      text-align: left;
+      flex: 1;
+    }
+    .gallery-caption-text strong {
+      color: var(--text-primary);
+    }
+
+    /* FAQ Items */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .faq-q {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      font-family: var(--font-display);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .lightbox-arrow {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-arrow:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+    .lightbox-thumbs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+    .lightbox-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .lightbox-thumb.active, .lightbox-thumb:hover {
+      opacity: 1;
+      border-color: var(--accent-primary);
+    }
+
+    @media (min-width: 768px) {
+      .tutorial-step.single-img {
+        flex-direction: row;
+        align-items: center;
+      }
+      .tutorial-step.single-img .step-text {
+        flex: 1.1;
+      }
+      .tutorial-step.single-img .step-image-container {
+        flex: 0.9;
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .step-gallery-grid.cols-2,
+      .step-gallery-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+        <span>Shiori</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="nav-link" data-i18n="nav-home">Home</a></li>
+        <li><a href="/download" class="nav-link" data-i18n="nav-download">Download</a></li>
+        <li><a href="/blog/" class="nav-link active" data-i18n="nav-blog">Blog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" id="lang-toggle" aria-label="Toggle Language">🌐 EN</button>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Switch Theme">☀️</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Post Content Layout -->
+  <main class="post-layout animate-fade-in" style="max-width: 960px;">
+    <header class="post-header">
+      <div class="post-meta">
+        <span>📅 September 5, 2026</span>
+        <span>🏷️ Text-to-Speech &amp; Reading</span>
+      </div>
+
+      <!-- English Title -->
+      <h1 class="post-title lang-en">Keep Listening While You Use Other Apps<br><span class="text-gradient">Shiori's Floating TTS Controls</span></h1>
+      <!-- Thai Title -->
+      <h1 class="post-title lang-th">ฟังหนังสือต่อเนื่องแม้สลับไปใช้แอปอื่น<br><span class="text-gradient">ปุ่มควบคุม TTS แบบลอย (Floating Controls) ของ Shiori</span></h1>
+      <!-- Japanese Title -->
+      <h1 class="post-title lang-jp">他のアプリを使いながら音声朗読を継続<br><span class="text-gradient">ShioriのフローティングTTSコントロール機能</span></h1>
+      <!-- Chinese Title -->
+      <h1 class="post-title lang-cn">在使用其他应用时持续畅听电子书<br><span class="text-gradient">Shiori 悬浮窗朗读控制面板全指南</span></h1>
+      <!-- Portuguese Title -->
+      <h1 class="post-title lang-pt">Continue Ouvindo Enquanto Usa Outros Apps<br><span class="text-gradient">Controles Flutuantes de TTS do Shiori</span></h1>
+      <!-- Spanish Title -->
+      <h1 class="post-title lang-es">Sigue Escuchando Mientras Usas Otras Apps<br><span class="text-gradient">Controles Flotantes de TTS de Shiori</span></h1>
+    </header>
+
+    <div class="post-hero-image" style="background: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.6)), url('06-floating-card-over-another-app.jpg') no-repeat center center; background-size: cover; height: 360px; display: flex; align-items: center; justify-content: center; border-radius: 24px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+      <span style="font-size: 5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">🎧</span>
+    </div>
+
+    <!-- Article Intro Section -->
+    <article class="article-section">
+      <!-- ==================== ENGLISH CONTENT ==================== -->
+      <div class="lang-en">
+        <p>You are halfway through a chapter with text-to-speech running, and a message arrives. You switch to your messaging app to answer it — and now the narration is somewhere behind you, out of reach. To pause it, skip back a sentence, or check which line is being read, you have to leave what you are doing and return to the reader.</p>
+        <p><strong>Floating Controls solve that.</strong> Once the feature is on, Shiori draws a small card on top of whatever app you are using. The card shows the sentence being spoken with the current word highlighted, and carries full playback buttons — so pausing, skipping, or jumping straight back into the book is one tap away without leaving the app you are in.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Controls Over Any App</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Live Karaoke Line</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">One-Tap Jump to Position</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Size, Colour &amp; Opacity</div>
+          </div>
+        </div>
+
+        <h2>What the Floating Card Actually Gives You</h2>
+        <p>The card is not just a play/pause widget. In its default form it contains:</p>
+        <ul class="article-bullet-list">
+          <li><strong>A karaoke line</strong> — one scrolling line of the text being read, with the current word highlighted so you can follow along without opening the book.</li>
+          <li><strong>Go to position</strong> — the leftmost button jumps the reader straight to the exact spot being narrated.</li>
+          <li><strong>Add text replacement</strong> — opens the replacement dialog for the passage you are hearing to fix mispronunciations on the fly.</li>
+          <li><strong>Previous / Play-Pause / Next</strong> — responsive transport controls sized comfortably for thumb taps.</li>
+          <li><strong>A close button</strong> — dismisses the card and stops the narration cleanly.</li>
+        </ul>
+
+        <h2>What You Need</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori installed on your Android device (tested on v2.3.6)</li>
+          <li>Any book in your library (this walkthrough uses <em>The Picture of Dorian Gray</em>)</li>
+          <li>A working Android text-to-speech engine (the system default is fine)</li>
+          <li>Permission to draw over other apps, requested when you enable the toggle</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Setting</th><th>Default</th><th>What it changes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>Scales the entire card, buttons and text included</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>Gap between the card and screen boundaries</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>Internal breathing room inside the card container</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>Size of the live scrolling karaoke line</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>Controls how much of the underlying app shows through</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Legibility Tip:</strong><br />
+          Because the floating card sits on top of unpredictable apps (white web pages, colourful chats, dark games), keep opacity around 80%–90% and use high-contrast text and background colors for effortless reading.
+        </div>
+      </div>
+
+      <!-- ==================== THAI CONTENT ==================== -->
+      <div class="lang-th">
+        <p>ขณะที่คุณกำลังฟังเสียงอ่านสังเคราะห์ (TTS) อย่างเพลิดเพลิน จู่ๆ ก็มีข้อความแจ้งเตือนเข้ามา เมื่อสลับไปแอปแช็ต เสียงอ่านก็ยังคงเล่นอยู่เบื้องหลัง แต่หากต้องการหยุดชั่วคราว ข้ามประโยค หรืออยากรู้ว่าอ่านถึงคำไหน คุณต้องออกจากแช็ตเพื่อสลับกลับมาเปิด Shiori ใหม่ทุกครั้ง</p>
+        <p><strong>ปุ่มควบคุมแบบลอย (Floating Controls) ช่วยแก้ปัญหานี้ได้อย่างสมบูรณ์แบบ</strong> เมื่อเปิดใช้งาน Shiori จะสร้างการ์ดควบคุมขนาดเล็กซ้อนอยู่เหนือทุกแอปที่คุณกำลังใช้งาน แสดงประโยคที่กำลังอ่านพร้อมไฮไลต์คาราโอเกะตามคำ และมีปุ่มควบคุมครบชุด คุณจึงสามารถสั่งหยุด ย้อนประโยค หรือกดแตะครั้งเดียวเพื่อกลับไปยังตำแหน่งที่อ่านในหนังสือได้ทันทีโดยไม่ต้องสลับแอป</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">ลอยซ้อนทับเหนือทุกแอป</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">ไฮไลต์คาราโอเกะแบบสด</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">แตะครั้งเดียวกลับไปหน้าหนังสือ</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">ปรับขนาด สี และความโปร่งแสง</div>
+          </div>
+        </div>
+
+        <h2>ฟังก์ชันบนการ์ดควบคุมลอยมีอะไรบ้าง</h2>
+        <p>การ์ดควบคุมลอยไม่ได้มีแค่ปุ่มเล่น/หยุด แต่รวบรวมฟังก์ชันระดับมืออาชีพไว้อย่างครบถ้วน:</p>
+        <ul class="article-bullet-list">
+          <li><strong>แถบข้อความคาราโอเกะ:</strong> แสดงข้อความที่กำลังอ่าน 1 บรรทัด พร้อมไฮไลต์คำที่กำลังเปล่งเสียงแบบเรียลไทม์ ช่วยให้อ่านตามได้โดยไม่ต้องเปิดหน้าหนังสือ</li>
+          <li><strong>ปุ่มกระโดดไปยังตำแหน่งอ่าน:</strong> แตะปุ่มซ้ายสุดเพื่อสลับกลับไปยังหน้าหนังสือตรงจุดที่กำลังอ่านอยู่ทันที</li>
+          <li><strong>ปุ่มเพิ่มกฎแทนที่คำ (Text Replacement):</strong> กดเพื่อเปิดหน้าต่างแก้ไขคำอ่านที่ไม่ถูกต้องได้ทันทีขณะฟัง</li>
+          <li><strong>ปุ่มย้อนกลับ / เล่น-หยุด / ข้ามประโยค:</strong> ปุ่มควบคุมการเล่นขนาดพอดีกับนิ้วหัวแม่มือ</li>
+          <li><strong>ปุ่มปิด (×):</strong> ปิดแผงควบคุมลอยและหยุดการอ่านทันที</li>
+        </ul>
+
+        <h2>สิ่งที่คุณต้องเตรียม</h2>
+        <ul class="article-bullet-list">
+          <li>แอป Shiori ติดตั้งบนอุปกรณ์ Android ของคุณ (ทดสอบบนเวอร์ชัน 2.3.6)</li>
+          <li>หนังสือในคลังเล่มใดก็ได้ (ตัวอย่างนี้ใช้ <em>The Picture of Dorian Gray</em>)</li>
+          <li>เอนจินเสียงสังเคราะห์ Android TTS ที่พร้อมใช้งาน (ใช้เสียงมาตรฐานของเครื่องได้ทันที)</li>
+          <li>สิทธิ์การแสดงทับแอปอื่น (Display over other apps) ซึ่งระบบจะขออนุญาตเมื่อคุณเปิดสวิตช์</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>การตั้งค่า</th><th>ค่าเริ่มต้น</th><th>ผลลัพธ์ที่เปลี่ยนแปลง</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>ปรับย่อ/ขยายขนาดของการ์ดควบคุมและปุ่มทั้งหมด</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>ระยะห่างระหว่างตัวการ์ดกับขอบหน้าจอ</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>ระยะช่องว่างภายในรอบตัวอักษรและปุ่ม</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>ขนาดตัวอักษรของแถบข้อความคาราโอเกะ</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>ระดับความโปร่งแสงของการ์ดควบคุมลอย</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>คำแนะนำด้านความคมชัด:</strong><br />
+          เนื่องจากการ์ดจะลอยทับแอปต่างๆ ที่มีพื้นหลังหลากหลาย แนะนำให้ตั้งค่าความทึบแสง (Opacity) ไว้ที่ 80%–90% และเลือกสีข้อความที่ตัดกับสีพื้นหลังของการ์ดอย่างชัดเจน
+        </div>
+      </div>
+
+      <!-- ==================== JAPANESE CONTENT ==================== -->
+      <div class="lang-jp">
+        <p>音声読み上げ（TTS）で章の途切れない朗読を楽しんでいる最中に、SNSやメッセージが届くことがあります。返信のために別アプリを開くと、音声は背後で流れるものの、一時停止や巻き戻しをするには再びリーダー画面に戻らなければなりません。</p>
+        <p><strong>Shioriの「フローティングコントロール」がこの課題を解決します。</strong> この機能をオンにすると、他のアプリ画面の上に小型の操作カードがオーバーレイ表示されます。現在読み上げられている文と単語がリアルタイムにハイライトされ、再生・スキップ・書籍へのジャンプボタンが指一本で操作できます。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">他アプリ上で常時操作</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">カラオケ歌詞表示</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">書籍位置へ1タップ復帰</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">サイズ・配色・透明度調整</div>
+          </div>
+        </div>
+
+        <h2>フローティングカードの主な機能</h2>
+        <ul class="article-bullet-list">
+          <li><strong>カラオケティッカー：</strong> 読書中の1行をスクロール表示し、発声中の単語を別色でハイライト。本を開かずに内容を追跡可能。</li>
+          <li><strong>位置へジャンプ：</strong> 左端のアイコンをタップすると、Shioriリーダーの該当箇所を即座に開きます。</li>
+          <li><strong>読み上げ単語置換：</strong> 誤読を見つけた際、その場ですぐに置換ルールダイアログを呼び出せます。</li>
+          <li><strong>前へ / 再生・一時停止 / 次へ：</strong> 親指で押しやすいトランスポートボタン。</li>
+          <li><strong>閉じるボタン（×）：</strong> カードを非表示にし、音声朗読を終了します。</li>
+        </ul>
+
+        <h2>必要な準備</h2>
+        <ul class="article-bullet-list">
+          <li>Android端末にインストールされたShiori（バージョン2.3.6で検証）</li>
+          <li>ライブラリ内の任意の電子書籍（例：<em>ドリアン・グレイの肖像</em>）</li>
+          <li>動作するAndroid TTSエンジン（OS標準で問題ありません）</li>
+          <li>「他のアプリの上に重ねて表示」の権限許可</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>設定項目</th><th>初期値</th><th>変更される内容</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>カード全体およびボタンの倍率スケール</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>画面端とカードとの外側マージン</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>カード内側の余白スペース</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>カラオケ表示テキストのフォントサイズ</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>背後のアプリをどの程度透かすかの不透明度</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>視認性向上のコツ：</strong><br />
+          背景不透明度を80%〜90%に設定し、暗めのカード色に明るい文字色を選ぶと、白基調のブラウザやカラフルなアプリの上でも常にくっきり文字が読めます。
+        </div>
+      </div>
+
+      <!-- ==================== CHINESE CONTENT ==================== -->
+      <div class="lang-cn">
+        <p>在后台使用 TTS 听书时，常常需要切换到即时通讯软件回复消息。然而此时音频在后台播放，一旦需要暂停、倒回某一句或确认生词，就必须退出当前应用重新打开阅读器，十分繁琐。</p>
+        <p><strong>Shiori 的“悬浮窗朗读控制面板”完美解决了这一痛点。</strong> 开启该功能后，Shiori 会在任意应用界面上悬浮显示一个精致的控制卡片。卡片不仅实时同步当前正在朗读的句子并精准高亮单词，更集成完整的播放控制器，无需离开当前软件即可随时暂停、跳段或一键返回书中当前位置。</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">悬浮于任意应用之上</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">单行卡拉OK同步滚动</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">一键直达图书当前页</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">尺寸透明度全自由定制</div>
+          </div>
+        </div>
+
+        <h2>悬浮控制卡片的核心功能</h2>
+        <ul class="article-bullet-list">
+          <li><strong>卡拉OK歌词滚动条：</strong> 仅显示单行动态滚动文本，并以醒目颜色点亮当前发音词，边用手机边跟读。</li>
+          <li><strong>跳转至当前位置：</strong> 点击最左侧定位图标，即可快速唤醒 Shiori 并直接跳转至正在朗读的书页。</li>
+          <li><strong>快捷添加词汇替换：</strong> 遇到专有名词发音错误时，直接在此打开替换规则弹窗，无需中断后续听书。</li>
+          <li><strong>上一句 / 播放暂停 / 下一句：</strong> 专为大拇指触控优化的大尺寸播控键。</li>
+          <li><strong>关闭按键（×）：</strong> 移除悬浮卡片并同步停止朗读播放。</li>
+        </ul>
+
+        <h2>准备工作</h2>
+        <ul class="article-bullet-list">
+          <li>已安装 Shiori 电子书阅读器的 Android 设备（推荐 v2.3.6 或更高版本）</li>
+          <li>书架中的任意电子书（本指南演示采用《道林·格雷的画像》）</li>
+          <li>可正常发音的系统 TTS 引擎</li>
+          <li>“在其他应用上层显示”的系统悬浮窗权限（开启开关时会自动引导授权）</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>设置项</th><th>默认值</th><th>控制效果</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>等比缩放整个卡片与按钮尺寸</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>卡片与屏幕边界的外边距</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>卡片内部元素内边距</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>单行滚动歌词的字号大小</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>卡片背景透明度，决定底层应用的透出程度</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>实用排版建议：</strong><br />
+          由于悬浮窗常用于微信、浏览器等复杂背景之上，建议将透明度设为 80%–90%，并采用深色背景搭配高亮浅色文字以确保全天候清晰易读。
+        </div>
+      </div>
+
+      <!-- ==================== PORTUGUESE CONTENT ==================== -->
+      <div class="lang-pt">
+        <p>Você está ouvindo um capítulo por TTS e recebe uma mensagem importante. Ao alternar para o app de mensagens, a narração continua tocando ao fundo, mas para pausar, retroceder uma frase ou conferir o texto, você precisava voltar ao leitor.</p>
+        <p><strong>Os Controles Flutuantes do Shiori resolvem isso.</strong> Ao ativar o recurso, o Shiori desenha um pequeno cartão flutuante sobre qualquer aplicativo. O cartão exibe a frase falada com a palavra atual destacada em estilo karaokê e traz botões completos de reprodução.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Controles Sobre Qualquer App</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Linha de Karaokê ao Vivo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">Salto Direto para a Posição</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Tamanho, Cores e Opacidade</div>
+          </div>
+        </div>
+
+        <h2>O Que o Cartão Flutuante Oferece</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Linha de karaokê:</strong> Uma linha de texto rolável com a palavra em reprodução destacada para acompanhar a leitura sem abrir o livro.</li>
+          <li><strong>Ir para a posição:</strong> O botão à esquerda leva o leitor diretamente para o trecho narrado.</li>
+          <li><strong>Adicionar substituição de texto:</strong> Abre o diálogo para corrigir pronúncias incorretas sem interromper o fluxo.</li>
+          <li><strong>Anterior / Reproduzir-Pausar / Próximo:</strong> Botões de controle dimensionados confortavelmente.</li>
+          <li><strong>Botão de fechar (×):</strong> Fecha o cartão e interrompe a narração.</li>
+        </ul>
+
+        <h2>O Que Você Precisa</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori instalado no Android (testado na versão 2.3.6)</li>
+          <li>Qualquer livro na sua biblioteca (ex: <em>O Retrato de Dorian Gray</em>)</li>
+          <li>Mecanismo de TTS configurado no Android</li>
+          <li>Permissão para sobrepor a outros apps</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Configuração</th><th>Padrão</th><th>O Que Altera</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>Escala o cartão inteiro e os botões</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>Distância entre o cartão e a borda da tela</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>Espaço interno do cartão</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>Tamanho do texto na linha de karaokê</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>Opacidade do fundo do cartão flutuante</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Dica de Legibilidade:</strong><br />
+          Mantenha a opacidade entre 80% e 90% com fundo escuro e texto claro para garantir ótima leitura sobre qualquer aplicativo.
+        </div>
+      </div>
+
+      <!-- ==================== SPANISH CONTENT ==================== -->
+      <div class="lang-es">
+        <p>Estás escuchando la lectura en voz alta (TTS) de un capítulo y recibes un mensaje. Cambias de app para responder y la voz sigue en segundo plano, pero para pausar o comprobar el texto debías volver a abrir el lector.</p>
+        <p><strong>Los Controles Flotantes de Shiori solucionan esto.</strong> Al activarlos, Shiori muestra una tarjeta flotante sobre cualquier aplicación que estés usando, mostrando la frase leída con la palabra resaltada en tiempo real y controles de reproducción completos.</p>
+
+        <div class="stat-badge-grid">
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎧</span>
+            <div class="stat-badge-title">Controles Sobre Cualquier App</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎙️</span>
+            <div class="stat-badge-title">Línea de Karaoke en Vivo</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎯</span>
+            <div class="stat-badge-title">Salto Directo a la Lectura</div>
+          </div>
+          <div class="stat-badge-card">
+            <span class="stat-badge-icon">🎨</span>
+            <div class="stat-badge-title">Tamaño, Colores y Opacidad</div>
+          </div>
+        </div>
+
+        <h2>Qué Incluye la Tarjeta Flotante</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Línea de karaoke:</strong> Texto deslizante con la palabra leída resaltada para seguir la narración sin abrir el libro.</li>
+          <li><strong>Ir a la posición:</strong> El botón izquierdo abre el lector exactamente en la línea narrada.</li>
+          <li><strong>Añadir sustitución de texto:</strong> Corrige palabras mal pronunciadas al instante desde la tarjeta.</li>
+          <li><strong>Anterior / Reproducir-Pausar / Siguiente:</strong> Botones táctiles cómodos para el pulgar.</li>
+          <li><strong>Botón cerrar (×):</strong> Cierra la tarjeta flotante y detiene la narración.</li>
+        </ul>
+
+        <h2>Requisitos Previos</h2>
+        <ul class="article-bullet-list">
+          <li>Shiori instalado en tu dispositivo Android (probado en v2.3.6)</li>
+          <li>Cualquier libro en tu estantería (ej: <em>El Retrato de Dorian Gray</em>)</li>
+          <li>Motor de síntesis de voz (TTS) de Android en funcionamiento</li>
+          <li>Permiso de superposición sobre otras aplicaciones</li>
+        </ul>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Ajuste</th><th>Predeterminado</th><th>Qué Modifica</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Floating control size</strong></td><td>×1.0</td><td>Escala la tarjeta completa y sus botones</td></tr>
+              <tr><td><strong>Margin</strong></td><td>8dp</td><td>Espacio entre la tarjeta y los bordes de pantalla</td></tr>
+              <tr><td><strong>Padding</strong></td><td>8dp</td><td>Margen interno dentro de la tarjeta</td></tr>
+              <tr><td><strong>Font size</strong></td><td>13sp</td><td>Tamaño de la fuente de la línea de karaoke</td></tr>
+              <tr><td><strong>Background opacity</strong></td><td>90%</td><td>Transparencia del fondo de la tarjeta</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-callout">
+          <strong>Consejo de Visibilidad:</strong><br />
+          Mantén la opacidad entre el 80% y el 90% con fondo oscuro y letras claras para leer con comodidad sobre cualquier pantalla.
+        </div>
+      </div>
+    </article>
+
+    <!-- ==================== STEP-BY-STEP ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-en">Step-by-Step: Setting Up and Using Floating Controls (8 Steps)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-th">ขั้นตอนการตั้งค่าและใช้งานปุ่มควบคุมแบบลอย (8 ขั้นตอน)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-jp">フローティングコントロールの設定と使い方（8つのステップ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-cn">设置与使用悬浮窗朗读控制面板（8 个实操步骤）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-pt">Passo a Passo: Como Configurar os Controles Flutuantes (8 Passos)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 2rem; color: var(--text-primary);" class="lang-es">Paso a Paso: Configurar y Usar Controles Flotantes (8 Pasos)</h2>
+
+    <!-- STEP 1 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">1</span>Turn on Floating Controls</div>
+          <div class="step-desc">
+            <p>From the bookshelf, tap the <strong>Settings</strong> gear in the top toolbar, open <strong>TTS Listening</strong>, and find the row labelled <strong>Floating Controls</strong> — "Show playback controls over other apps".</p>
+            <p>The row has two parts: the toggle switch on the right turns the feature on, and the gear icon opens full appearance settings.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">1</span>เปิดใช้งาน Floating Controls</div>
+          <div class="step-desc">
+            <p>จากหน้าชั้นหนังสือ ให้แตะไอคอนฟันเฟือง <strong>Settings</strong> ที่แถบเครื่องมือด้านบน เลือกเมนู <strong>TTS Listening</strong> แล้วมองหาแถว <strong>Floating Controls</strong> ("Show playback controls over other apps")</p>
+            <p>แถวนี้จะมีสวิตช์เปิด/ปิดทางขวา และมีไอคอนฟันเฟืองเล็กๆ ด้านข้างสำหรับเข้าไปปรับแต่งรูปลักษณ์โดยละเอียด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">1</span>フローティングコントロールを有効化</div>
+          <div class="step-desc">
+            <p>本棚画面上部の歯車アイコン <strong>Settings</strong> をタップし、<strong>TTS Listening</strong> を開きます。<strong>Floating Controls</strong>（他アプリ上に再生コントロールを表示）の項目を見つけます。</p>
+            <p>右側のスイッチで機能をオンにし、隣の小さな歯車アイコンで外観設定画面を開くことができます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">1</span>开启悬浮窗控制器开关</div>
+          <div class="step-desc">
+            <p>在书架主界面点击顶部工具栏的 <strong>Settings</strong> 设置齿轮，进入 <strong>TTS Listening</strong>，找到 <strong>Floating Controls</strong>（在其他应用上显示播控卡片）。</p>
+            <p>点击右侧开关即可开启功能，旁边的齿轮按钮可进入专属外观与参数配置页面。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">1</span>Ative os Controles Flutuantes</div>
+          <div class="step-desc">
+            <p>Na estante, toque na engrenagem de <strong>Settings</strong>, abra <strong>TTS Listening</strong> e localize a opção <strong>Floating Controls</strong>.</p>
+            <p>O interruptor à direita ativa a função e o ícone de engrenagem ao lado abre as preferências visuais.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">1</span>Activa los Controles Flotantes</div>
+          <div class="step-desc">
+            <p>En la estantería, toca la rueda de <strong>Settings</strong>, abre <strong>TTS Listening</strong> y localiza la fila <strong>Floating Controls</strong>.</p>
+            <p>El interruptor de la derecha activa la función y el icono de engranaje abre las opciones de apariencia.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="01-floating-controls-switch-in-tts-settings.jpg" alt="Shiori's TTS Listening settings screen with the Floating Controls row switched on, showing its Show playback controls over other apps subtitle and the gear that opens the appearance page" class="img-preview" data-index="0" />
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">2</span>Allow Shiori to Draw Over Other Apps</div>
+          <div class="step-desc">
+            <p>The moment you flip the switch, Shiori asks whether it may show TTS controls over other apps while reading in the background. Tap <strong>Allow</strong>.</p>
+            <p>This is Android's overlay permission: without it the operating system will not let any app paint on top of another. Choosing <strong>Not Now</strong> keeps TTS playback working, but without the floating card.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">2</span>อนุญาตสิทธิ์แสดงทับแอปอื่น</div>
+          <div class="step-desc">
+            <p>ทันทีที่คุณเปิดสวิตช์ ระบบจะแสดงกล่องข้อความขอสิทธิ์แสดงปุ่มควบคุมซ้อนทับแอปอื่น ให้แตะ <strong>Allow</strong></p>
+            <p>นี่คือสิทธิ์ Overlay ของ Android ซึ่งจำเป็นต้องเปิดใช้งานเพื่อให้การ์ดลอยขึ้นมาได้ หากเลือก <strong>Not Now</strong> การฟังเสียง TTS ยังทำงานปกติเพียงแต่จะไม่มีการ์ดลอยแสดง</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">2</span>他アプリへの重ねて表示を許可</div>
+          <div class="step-desc">
+            <p>スイッチをオンにすると、バックグラウンド読書時に他アプリ上へ表示する許可ダイアログが表示されます。<strong>Allow</strong> をタップしてください。</p>
+            <p>これはAndroidのオーバーレイ権限であり、許可しないとカードが表示されません。「Not Now」を選んだ場合でも通常のTTS再生は継続します。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">2</span>授予 Android 系统悬浮窗权限</div>
+          <div class="step-desc">
+            <p>打开开关后，Shiori 将弹出系统授权提示，询问是否允许在其他应用上层显示控制器，点击 <strong>Allow</strong> 授权。</p>
+            <p>这是 Android 系统的悬浮窗权限要求，若选择 <strong>Not Now</strong>，后台听书功能仍旧正常工作，但不会显示悬浮卡片。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">2</span>Permita a Sobreposição a Outros Apps</div>
+          <div class="step-desc">
+            <p>Ao ativar o recurso, o Shiori solicitará a permissão de sobreposição. Toque em <strong>Allow</strong>.</p>
+            <p>Sem essa permissão do Android o cartão não poderá aparecer sobre outros aplicativos.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">2</span>Concede el Permiso de Superposición</div>
+          <div class="step-desc">
+            <p>Al activar la casilla, Shiori solicitará permiso para mostrarse sobre otras apps. Pulsa <strong>Allow</strong>.</p>
+            <p>Este permiso del sistema es imprescindible para que la tarjeta flotante pueda dibujarse en pantalla.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="02-allow-controls-over-other-apps.jpg" alt="The Floating Controls permission dialog asking to allow Shiori to show TTS controls over other apps while reading in background, with Not Now and Allow buttons" class="img-preview" data-index="1" />
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">3</span>Shape the Card on the Floating Control Page</div>
+          <div class="step-desc">
+            <p>Tap the gear next to the switch to open the <strong>Floating control</strong> page. A live <strong>Preview</strong> card at the top updates in real time with every adjustment.</p>
+            <p>Configure switches: <strong>Karaoke ticker</strong> (single scrolling line), <strong>Keep the word in the middle</strong>, <strong>Hide the control buttons</strong> (text-only card), <strong>Full-width floating card</strong>, and <strong>Snap to an edge</strong> (Free, Top, or Bottom).</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">3</span>ปรับแต่งรูปแบบของการ์ดควบคุมลอย</div>
+          <div class="step-desc">
+            <p>แตะไอคอนฟันเฟืองเพื่อเปิดหน้า <strong>Floating control</strong> ด้านบนสุดจะมีหน้าต่าง <strong>Preview</strong> แสดงตัวอย่างแบบสดที่เปลี่ยนตามการตั้งค่าทันที</p>
+            <p>เลือกปรับตัวเลือกสำคัญ: <strong>Karaoke ticker</strong> (แสดงข้อความวิ่ง 1 บรรทัด), <strong>Keep the word in the middle</strong> (ตรึงคำอ่านไว้กึ่งกลาง), <strong>Hide the control buttons</strong> (ซ่อนปุ่มเหลือเฉพาะข้อความ), <strong>Full-width</strong> (ขยายเต็มความกว้างจอ) และการดูดติดขอบ (Snap to Top/Bottom)</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">3</span>カードの形状と動作をカスタマイズ</div>
+          <div class="step-desc">
+            <p>歯車アイコンをタップすると設定画面が開き、上部の <strong>Preview</strong> で変更結果をリアルタイムに確認できます。</p>
+            <p><strong>Karaoke ticker</strong>（1行スクロール表示）、<strong>Keep the word in the middle</strong>（発声単語を中央固定）、<strong>Hide the control buttons</strong>（ボタンを隠して文字のみ）、<strong>Full-width</strong>（画面全幅バー）、および画面端スナップ（Free / Top / Bottom）を設定できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">3</span>定制悬浮窗展示形态与吸附模式</div>
+          <div class="step-desc">
+            <p>点击齿轮进入 <strong>Floating control</strong> 设置页，顶部配有实时 <strong>Preview</strong> 预览卡片，任何改动所见即所得。</p>
+            <p>可自由配置：<strong>Karaoke ticker</strong>（单行滚动条）、<strong>Keep the word in the middle</strong>（当前朗读词居中）、<strong>Hide the control buttons</strong>（极简纯文字卡片）、<strong>Full-width</strong>（全屏宽横条）以及屏幕边缘智能吸附（Free 自由/Top 顶部/Bottom 底部）。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">3</span>Personalize a Forma do Cartão</div>
+          <div class="step-desc">
+            <p>Toque na engrenagem para abrir as opções de <strong>Floating control</strong> com pré-visualização em tempo real.</p>
+            <p>Ative a linha de karaokê, centralize a palavra narrada, oculte botões para exibir apenas texto ou fixe nas bordas superior/inferior da tela.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">3</span>Personaliza la Forma de la Tarjeta</div>
+          <div class="step-desc">
+            <p>Toca el engranaje para abrir la pantalla de <strong>Floating control</strong> con vista previa interactiva en vivo.</p>
+            <p>Elige modo karaoke, fija la palabra en el centro, oculta los botones para un diseño minimalista o activa el anclaje magnético a los bordes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="03-floating-control-options-and-preview.jpg" alt="The Floating control settings page in Shiori showing the live preview card and the switches for karaoke ticker, keep the word in the middle, hide the control buttons, full-width card, and the Free Top Bottom snap options" class="img-preview" data-index="2" />
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">4</span>Set the Size, Spacing and Colours</div>
+          <div class="step-desc">
+            <p>Scroll down for appearance sliders: <strong>Floating control size</strong>, <strong>Margin</strong> and <strong>Padding</strong>, <strong>Font size</strong>, and <strong>Background opacity</strong>.</p>
+            <p>Below them are palettes for <strong>Text colour</strong>, <strong>Aloud text colour</strong> (the active word), and <strong>Background colour</strong>. To keep the card subtle, reduce opacity rather than shrinking it.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">4</span>กำหนดขนาด ระยะห่าง และชุดสี</div>
+          <div class="step-desc">
+            <p>เลื่อนลงมาด้านล่างเพื่อปรับแถบเลื่อน: ขนาดการ์ดควบคุม (Size), ระยะขอบ (Margin), ช่องว่างด้านใน (Padding), ขนาดฟอนต์ (Font size) และความทึบแสง (Background opacity)</p>
+            <p>ด้านล่างมีจานสีให้เลือก: สีข้อความทั่วไป, สีข้อความที่กำลังอ่านออกเสียง (Aloud text colour) และสีพื้นหลังของการ์ด</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">4</span>サイズ・余白・カラーを設定</div>
+          <div class="step-desc">
+            <p>画面下部のスライダーで、カードサイズ倍率、マージン、パディング、文字サイズ、背景不透明度を細かく調整できます。</p>
+            <p>さらに「通常テキスト色」「朗読中の文字色（Aloud text colour）」「カード背景色」の3つのカラーパレットから好みの配色を指定可能です。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">4</span>微调尺寸、内外边距与色彩配色</div>
+          <div class="step-desc">
+            <p>滑动至页面下方调节滑块参数：卡片尺寸比例、外部边距、内部留白、歌词字号大小以及背景不透明度。</p>
+            <p>下方提供三组调色板：常规文字颜色、当前朗读单词强调色（Aloud text colour）以及悬浮卡片背景色。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">4</span>Ajuste Tamanho, Espaçamento e Cores</div>
+          <div class="step-desc">
+            <p>Ajuste os controles deslizantes de tamanho, margem, espaçamento interno, tamanho da fonte e opacidade.</p>
+            <p>Escolha paletas para o texto comum, palavra destacada e fundo do cartão.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">4</span>Ajusta Tamaño, Espaciado y Colores</div>
+          <div class="step-desc">
+            <p>Configura los controles de escala, margen, relleno interno, tamaño de tipografía y opacidad.</p>
+            <p>Personaliza las paletas de color para el texto base, la palabra en locución y el fondo de la tarjeta.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="04-floating-card-size-and-colours.jpg" alt="The lower half of the Floating control page showing the size, margin, padding and font size sliders, the text, aloud text and background colour palettes, and the background opacity slider" class="img-preview" data-index="3" />
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">5</span>Start Listening in the Reader</div>
+          <div class="step-desc">
+            <p>Nothing floats until playback is running. Open any book in your library and tap the <strong>Play</strong> button on the reader's bottom control bar.</p>
+            <p>While Shiori is open, you get the full in-app experience: paragraph highlighting, word tracking, and the bottom chapter progress bar.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">5</span>เริ่มเปิดฟังเสียงอ่านในหนังสือ</div>
+          <div class="step-desc">
+            <p>การ์ดควบคุมลอยจะเริ่มทำงานเมื่อมีการเล่นเสียงอ่านเท่านั้น ให้เปิดหนังสือเล่มที่ต้องการแล้วแตะปุ่ม <strong>Play</strong> ที่แถบควบคุมด้านล่าง</p>
+            <p>ขณะอยู่ในแอป Shiori คุณจะเห็นการไฮไลต์ทั้งย่อหน้าและคำที่กำลังอ่าน พร้อมแถบความคืบหน้าของบท</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">5</span>リーダーで朗読を開始</div>
+          <div class="step-desc">
+            <p>再生が始まると同時にフローティング機能がスタンバイします。本を開き、下部バーの <strong>Play</strong> ボタンをタップして朗読を開始します。</p>
+            <p>Shioriの画面上では、段落と単語のハイライト、章の進捗バーが表示されます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">5</span>在图书阅读界面开启 TTS 朗读</div>
+          <div class="step-desc">
+            <p>只有当处于朗读播放状态时悬浮窗才会激活。打开任意图书，点击底部控制栏的 <strong>Play</strong> 播放按钮。</p>
+            <p>在 Shiori 界面内，当前段落与词汇同步呈现完整的卡拉OK高亮状态。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">5</span>Inicie a Reprodução no Leitor</div>
+          <div class="step-desc">
+            <p>O cartão flutuante só aparece enquanto a leitura estiver tocando. Abra um livro e toque no botão <strong>Play</strong> na barra inferior.</p>
+            <p>No leitor, o parágrafo e a palavra atual ficam destacados com barra de progresso do capítulo.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">5</span>Inicia la Lectura en el Lector</div>
+          <div class="step-desc">
+            <p>La tarjeta flotante solo se activa durante la reproducción. Abre cualquier libro y pulsa <strong>Play</strong> en la barra inferior.</p>
+            <p>Dentro de la app disfrutarás del resaltado bimodal por párrafos y palabras con barra de avance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="05-start-listening-in-the-reader.jpg" alt="The Picture of Dorian Gray open in Shiori with text-to-speech playing, the active paragraph highlighted and the current word marked, and the playback bar at the bottom of the screen" class="img-preview" data-index="4" />
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">6</span>Leave the App — the Card Follows You</div>
+          <div class="step-desc">
+            <p>Switch to another app or return to the home screen. The floating card immediately appears on top of it, tracking narration word by word.</p>
+            <p>Drag the card anywhere by its body. If you lose track of it, <strong>double-tap the card</strong> and it instantly snaps back to the center of your screen.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">6</span>สลับไปแอปอื่น — แผงควบคุมจะลอยตามไป</div>
+          <div class="step-desc">
+            <p>เมื่อสลับไปแอปอื่นหรือกลับสู่หน้าจอโฮม การ์ดควบคุมจะลอยขึ้นมาซ้อนทับหน้าจอทันที พร้อมแสดงข้อความวิ่งตามเสียงอ่านคำต่อคำ</p>
+            <p>คุณสามารถใช้นิ้วลากการ์ดไปวางจุดใดก็ได้บนจอ และหากการ์ดหลุดไปติดมุมจอ เพียง <strong>แตะสองครั้งติดกัน (Double-tap)</strong> การ์ดจะเด้งกลับมาอยู่ตรงกลางหน้าจอทันที</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">6</span>他アプリへ移動 — カードが追従して表示</div>
+          <div class="step-desc">
+            <p>ホーム画面や他のアプリに切り替えると、画面上にフローティングカードが浮き上がり、単語単位で朗読を追跡し続けます。</p>
+            <p>カードは自由にドラッグして移動可能。位置を見失った時はカードを <strong>ダブルタップ</strong> すると即座に画面中央へ戻ります。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">6</span>切换至其他应用 — 悬浮卡片无缝跟随</div>
+          <div class="step-desc">
+            <p>切出至手机桌面或聊天、浏览器等应用，悬浮卡片立刻常驻在上层，逐词同步跟进朗读进度。</p>
+            <p>手指按住卡片主体即可随意拖拽位置。若拖动至不便点击的边缘，只需 <strong>双击卡片</strong> 即可立刻平滑归位至屏幕正中央。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">6</span>Mude de App — o Cartão Acompanha Você</div>
+          <div class="step-desc">
+            <p>Alterne para outro app. O cartão flutuante aparece sobre ele acompanhando a narração palavra por palavra.</p>
+            <p>Arraste para onde quiser. Se precisar reposicionar rapidamente, dê um <strong>toque duplo</strong> para trazê-lo de volta ao centro.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">6</span>Sal de la App — la Tarjeta te Acompaña</div>
+          <div class="step-desc">
+            <p>Cambia a otra aplicación. La tarjeta flotante aparecerá encima sincronizando la narración palabra por palabra.</p>
+            <p>Arrastra la tarjeta libremente. Si queda en un lugar incómodo, haz <strong>doble toque</strong> sobre ella para centrarla al instante.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="06-floating-card-over-another-app.jpg" alt="The Shiori floating control card sitting on top of a web browser, showing the current sentence with one word highlighted and the go-to-position, replacement, previous, play-pause and next buttons" class="img-preview" data-index="5" />
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">7</span>The Minimal, Full-Width Layout</div>
+          <div class="step-desc">
+            <p>Enable <strong>Hide the control buttons</strong> and <strong>Full-width floating card</strong> together to transform the card into an ultra-slim ticker bar across the screen.</p>
+            <p>This layout moves only vertically. Park it just below the status bar or just above the navigation area so it never competes with the app you are using.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">7</span>โหมดมินิมอลแบบแถบยาวเต็มจอ (Full-Width)</div>
+          <div class="step-desc">
+            <p>หากเปิดตัวเลือก <strong>Hide the control buttons</strong> ร่วมกับ <strong>Full-width floating card</strong> การ์ดจะเปลี่ยนเป็นแถบเพรียวบางยาวพาดขวางหน้าจอ</p>
+            <p>โหมดนี้สามารถเลื่อนขึ้นลงได้ในแนวตั้ง วางไว้ใต้แถบสถานะด้านบนหรือเหนือแถบนำทางด้านล่าง เพื่อให้ไม่บดบังเนื้อหาของแอปหลัก</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">7</span>全幅スリムなミニマルレイアウト</div>
+          <div class="step-desc">
+            <p>「<strong>Hide the control buttons</strong>」と「<strong>Full-width floating card</strong>」を両方オンにすると、画面幅いっぱいに広がるスリムなティッカーバーに変身します。</p>
+            <p>上下方向にのみ移動できるため、ステータスバー直下や画面最下部に固定すれば、メインのアプリ操作を一切邪魔しません。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">7</span>全屏宽极简条状布局</div>
+          <div class="step-desc">
+            <p>同时开启 <strong>Hide the control buttons</strong>（隐藏播控按键）与 <strong>Full-width floating card</strong>（全屏宽卡片），卡片将化身为一条横贯屏幕的纤细信息条。</p>
+            <p>该模式仅支持上下垂直移动，停靠在手机顶部状态栏下方或底部手势栏上方，完全不遮挡正在使用的主要软件。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">7</span>Layout Minimalista em Largura Total</div>
+          <div class="step-desc">
+            <p>Ative <strong>Hide the control buttons</strong> e <strong>Full-width floating card</strong> juntos para transformar o cartão em uma barra ultrafina.</p>
+            <p>Essa barra move-se apenas na vertical, ideal para ficar abaixo da barra de status sem disputar espaço com outros apps.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">7</span>Diseño Minimalista de Ancho Completo</div>
+          <div class="step-desc">
+            <p>Activa <strong>Hide the control buttons</strong> y <strong>Full-width floating card</strong> a la vez para convertir el widget en una barra ultrafina de pantalla completa.</p>
+            <p>Solo se desliza verticalmente, ideal para situarse bajo la barra de estado superior sin estorbar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="07-minimal-full-width-card.jpg" alt="The floating controls in minimal full-width mode, a slim bar spanning the browser window with only the go-to-position button, a pause button, the scrolling karaoke line and a close button" class="img-preview" data-index="6" />
+      </div>
+    </section>
+
+    <!-- STEP 8 -->
+    <section class="tutorial-step single-img">
+      <div class="step-text">
+        <div class="lang-en">
+          <div class="step-title"><span class="step-number">8</span>Fix a Mispronounced Word Without Going Back</div>
+          <div class="step-desc">
+            <p>The second button on the floating card opens <strong>Add Text Replacement</strong> directly from whichever app you are in.</p>
+            <p>Type the original text under <strong>Find (from)</strong>, the phonetic correction under <strong>Replace with (to)</strong>, choose <strong>TTS</strong> mode so it only alters speech, and tap Save. Narration continues seamlessly.</p>
+          </div>
+        </div>
+        <div class="lang-th">
+          <div class="step-title"><span class="step-number">8</span>แก้คำอ่านออกเสียงผิดได้ทันทีโดยไม่ต้องสลับแอป</div>
+          <div class="step-desc">
+            <p>ปุ่มที่สองบนการ์ดลอยจะเปิดหน้าต่าง <strong>Add Text Replacement</strong> ขึ้นมาซ้อนบนหน้าจอที่คุณอยู่ได้ทันที</p>
+            <p>พิมพ์คำที่เขียนในหนังสือลงในช่อง <strong>Find (from)</strong> และพิมพ์คำอ่านที่ถูกต้องในช่อง <strong>Replace with (to)</strong> เลือกโหมด <strong>TTS</strong> เพื่อให้มีผลเฉพาะเสียงอ่าน แล้วกดบันทึก การอ่านจะดำเนินต่ออย่างลื่นไหล</p>
+          </div>
+        </div>
+        <div class="lang-jp">
+          <div class="step-title"><span class="step-number">8</span>アプリを開き直さず誤読を即座に修正</div>
+          <div class="step-desc">
+            <p>フローティングカードの2番目のボタンをタップすると、作業中のアプリ画面の上に直接 <strong>Add Text Replacement</strong>（置換ルール追加）ダイアログが開きます。</p>
+            <p><strong>Find</strong> に元の単語、<strong>Replace with</strong> に正しい読みを入力し、<strong>TTS</strong> モードを選択して保存するだけで、朗読を止めずに修正できます。</p>
+          </div>
+        </div>
+        <div class="lang-cn">
+          <div class="step-title"><span class="step-number">8</span>无需返回阅读器，即时纠正多音字生词</div>
+          <div class="step-desc">
+            <p>点击悬浮卡片上的第二个替换图标，即可就地弹出 <strong>Add Text Replacement</strong>（添加文本替换规则）窗口。</p>
+            <p>在 <strong>Find (from)</strong> 中输入原文生词，在 <strong>Replace with (to)</strong> 中输入拼音纠正读音，选中 <strong>TTS</strong> 模式后保存，听书全程不中断。</p>
+          </div>
+        </div>
+        <div class="lang-pt">
+          <div class="step-title"><span class="step-number">8</span>Corrija Pronúncias sem Voltar ao App</div>
+          <div class="step-desc">
+            <p>O segundo botão do cartão abre o diálogo <strong>Add Text Replacement</strong> diretamente de onde você estiver.</p>
+            <p>Preencha o termo original, digite a pronúncia desejada, selecione o modo <strong>TTS</strong> e salve para continuar ouvindo perfeitamente.</p>
+          </div>
+        </div>
+        <div class="lang-es">
+          <div class="step-title"><span class="step-number">8</span>Corrige la Pronunciación sin Volver al Lector</div>
+          <div class="step-desc">
+            <p>El segundo icono de la tarjeta flotante abre el cuadro de diálogo <strong>Add Text Replacement</strong> al instante.</p>
+            <p>Indica la palabra original, escribe la pronunciación fonética correcta, marca el modo <strong>TTS</strong> y guarda los cambios.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step-image-container">
+        <img src="08-add-text-replacement-from-the-card.jpg" alt="The Add Text Replacement dialog opened from the floating card, with Visual and TTS modes, Find from and Replace with to fields, a Use Regex checkbox and an order value" class="img-preview" data-index="7" />
+      </div>
+    </section>
+
+    <!-- ==================== FAQ & TIPS SECTION ==================== -->
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-en">Troubleshooting &amp; Frequently Asked Questions</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-th">การแก้ปัญหาและคำถามที่พบบ่อย (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-jp">よくある質問＆トラブルシューティング（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-cn">常见问题排查与解答（FAQ）</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-pt">Solução de Problemas e Perguntas Frequentes (FAQ)</h2>
+    <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--text-primary);" class="lang-es">Solución de Problemas y Preguntas Frecuentes (FAQ)</h2>
+
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Why do the floating controls never appear?</div>
+        <div class="faq-a">The overlay permission was probably declined. Turn the <strong>Floating Controls</strong> switch off and on again to bring back the permission dialog, or grant "Display over other apps" for Shiori in Android's system settings.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมการ์ดควบคุมลอยถึงไม่ปรากฏขึ้นมาบนจอ?</div>
+        <div class="faq-a">อาจเกิดจากการปฏิเสธสิทธิ์การแสดงทับแอปอื่น (Overlay) แนะนำให้ปิดแล้วเปิดสวิตช์ <strong>Floating Controls</strong> ใหม่อีกครั้งเพื่อเรียกหน้าต่างขอสิทธิ์ หรือเข้าไปที่การตั้งค่าระบบ Android และเปิดสิทธิ์ "Display over other apps" ให้แก่แอป Shiori</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">フローティングカードが表示されない原因は？</div>
+        <div class="faq-a">オーバーレイ表示の権限が拒否された可能性があります。<strong>Floating Controls</strong> のスイッチを一度オフにしてから再度オンにするか、Androidのシステム設定からShioriの「他のアプリの上に重ねて表示」を許可してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么开启后悬浮窗依然没有显示？</div>
+        <div class="faq-a">通常是因为系统悬浮窗权限未成功授予。将 <strong>Floating Controls</strong> 开关关闭后重新开启以唤起权限授权弹窗，或直接前往 Android 系统“设置 - 应用权限”中为 Shiori 开启“在其他应用上层显示”权限。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">Por que os controles flutuantes não aparecem?</div>
+        <div class="faq-a">A permissão de sobreposição pode ter sido recusada. Desative e ative o botão <strong>Floating Controls</strong> novamente ou vá às configurações do Android e conceda a permissão "Sobrepor a outros apps".</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">¿Por qué no aparecen los controles flotantes?</div>
+        <div class="faq-a">Es probable que el permiso de superposición no fuera concedido. Apaga y vuelve a encender el interruptor <strong>Floating Controls</strong> o concede el permiso "Mostrar sobre otras aplicaciones" en los ajustes de Android.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">The card shows buttons but no text. Why?</div>
+        <div class="faq-a"><strong>Karaoke ticker on floating controls</strong> is switched off, putting the card in buttons-only mode. Turn it back on in Settings &rarr; TTS Listening &rarr; Floating control.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">การ์ดลอยแสดงเฉพาะปุ่มแต่ไม่มีข้อความขึ้น เกิดจากอะไร?</div>
+        <div class="faq-a">ตัวเลือก <strong>Karaoke ticker on floating controls</strong> ถูกปิดอยู่ ทำให้การ์ดอยู่ในโหมดปุ่มควบคุมล้วน คุณสามารถเปิดให้แสดงข้อความได้ที่ Settings &rarr; TTS Listening &rarr; Floating control</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">カードにボタンだけ表示されて文字が出ない場合は？</div>
+        <div class="faq-a">「<strong>Karaoke ticker on floating controls</strong>」がオフになっており、ボタン専用モードになっています。Settings &rarr; TTS Listening &rarr; Floating control でオンに戻してください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">悬浮窗仅显示控制按钮而不显示文本怎么办？</div>
+        <div class="faq-a">这是因为关闭了 <strong>Karaoke ticker on floating controls</strong> 开关。前往 Settings &rarr; TTS Listening &rarr; Floating control 重新开启该选项即可恢复文字滚动显示。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O cartão mostra botões mas nenhum texto. O que fazer?</div>
+        <div class="faq-a">A opção <strong>Karaoke ticker on floating controls</strong> está desativada. Reative-a em Settings &rarr; TTS Listening &rarr; Floating control.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">La tarjeta muestra botones pero no el texto. ¿Cómo lo arreglo?</div>
+        <div class="faq-a">La opción <strong>Karaoke ticker on floating controls</strong> está apagada. Vuelve a activarla en Settings &rarr; TTS Listening &rarr; Floating control.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">The card is hard to read over bright apps.</div>
+        <div class="faq-a">Raise <strong>Background opacity</strong> to 90% or 100% and choose a darker <strong>Background colour</strong> with white or yellow text for dependable contrast over any screen.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">อ่านข้อความบนการ์ดยากเมื่อเปิดแอปที่มีพื้นหลังสว่างจ้า</div>
+        <div class="faq-a">แนะนำให้เพิ่มค่าความทึบแสง <strong>Background opacity</strong> เป็น 90% หรือ 100% และเลือกสีพื้นหลังของการ์ดเป็นสีเข้ม พร้อมตั้งสีตัวอักษรเป็นสีสว่าง</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">明るいアプリの上で文字が読みにくいときは？</div>
+        <div class="faq-a"><strong>Background opacity</strong>（背景不透明度）を90%〜100%に引き上げ、濃い背景色と明るいテキスト色を組み合わせることで、どんな画面でも見やすくなります。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">在白色或高亮背景软件上方文字辨识度不高怎么办？</div>
+        <div class="faq-a">请调高 <strong>Background opacity</strong>（背景不透明度）至 90% 或更高，并挑选深色卡片背景与明亮显眼的文字色彩以确保绝佳对比度。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">O cartão é difícil de ler sobre aplicativos claros.</div>
+        <div class="faq-a">Aumente a <strong>Background opacity</strong> para 90%–100% e escolha um fundo escuro com texto claro para manter alto contraste em qualquer tela.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">Cuesta leer la tarjeta sobre fondos muy claros o luminosos.</div>
+        <div class="faq-a">Aumenta la <strong>Background opacity</strong> al 90% o 100% y elige un color de fondo oscuro con texto claro para maximizar el contraste.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="lang-en">
+        <div class="faq-q">Playback stopped when I dismissed the card with ×.</div>
+        <div class="faq-a">That is expected behavior — the close button (×) dismisses the card and stops audio playback. To hide the card while keeping the audio narration running, turn off the <strong>Floating Controls</strong> switch in settings instead.</div>
+      </div>
+      <div class="lang-th">
+        <div class="faq-q">ทำไมเสียงอ่านหยุดลงเมื่อกดปุ่มกากบาท (×) ปิดการ์ด?</div>
+        <div class="faq-a">ปุ่มกากบาท (×) ออกแบบมาให้ปิดการ์ดพร้อมหยุดการเล่นเสียงอ่าน หากคุณต้องการฟังเสียงต่อเนื่องในพื้นหลังโดยไม่ให้มีหน้าต่างการ์ดลอย ให้เข้าไปปิดสวิตช์ <strong>Floating Controls</strong> ในการตั้งค่าแทน</div>
+      </div>
+      <div class="lang-jp">
+        <div class="faq-q">カードの×ボタンを押したら朗読が止まってしまいました。</div>
+        <div class="faq-a">これは仕様です。×ボタンはカードを閉じるのと同時に音声再生を終了します。カードを消して朗読だけ続けたい場合は、設定画面で <strong>Floating Controls</strong> のスイッチのみをオフにしてください。</div>
+      </div>
+      <div class="lang-cn">
+        <div class="faq-q">为什么点击卡片上的叉号（×）后听书会直接停止？</div>
+        <div class="faq-a">这是符合预期的设定——叉号用于彻底关闭悬浮窗并停止播放。如果希望在隐藏卡片的同时保持后台纯音频听书，只需在设置中将 <strong>Floating Controls</strong> 开关关闭即可。</div>
+      </div>
+      <div class="lang-pt">
+        <div class="faq-q">A reprodução parou quando fechei o cartão no ×.</div>
+        <div class="faq-a">Esse é o comportamento padrão: o botão × fecha o cartão e para o áudio. Se quiser continuar ouvindo sem o cartão, desative a chave <strong>Floating Controls</strong> nas configurações.</div>
+      </div>
+      <div class="lang-es">
+        <div class="faq-q">La locución se detuvo al cerrar la tarjeta con la ×.</div>
+        <div class="faq-a">Es el comportamiento previsto: la cruz (×) cierra la tarjeta y finaliza la lectura. Si deseas seguir escuchando sin ventana flotante, desactiva la casilla <strong>Floating Controls</strong> en los ajustes.</div>
+      </div>
+    </div>
+
+    <!-- Tips Section -->
+    <article class="article-section" style="margin-top: 2rem;">
+      <div class="lang-en">
+        <h2>Pro Tips for Floating Controls</h2>
+        <ul class="article-bullet-list">
+          <li><strong>RTL support for Arabic &amp; Hebrew:</strong> In right-to-left books, the karaoke ticker automatically pins the active word to the right so reading flow stays natural.</li>
+          <li><strong>One-tap bookmarking:</strong> Use the leftmost jump-to-position button to return your reader directly to the sentence you reached while multitasking.</li>
+          <li><strong>Pinch and zoom:</strong> You can resize the floating card with two fingers directly while using other apps.</li>
+        </ul>
+      </div>
+      <div class="lang-th">
+        <h2>เคล็ดลับการใช้งาน Floating Controls ระดับโปร</h2>
+        <ul class="article-bullet-list">
+          <li><strong>รองรับภาษาเขียนขวาไปซ้าย (RTL):</strong> ในหนังสือภาษาอาหรับหรือฮิบรู ตัววิ่งคาราโอเกะจะจัดคำอ่านไว้ทางขวาโดยอัตโนมัติ สอดคล้องกับทิศทางการอ่าน</li>
+          <li><strong>คั่นหน้าด่วนในแตะเดียว:</strong> แตะปุ่มกระโดดด้านซ้ายสุดเพื่อพาแอป Shiori กลับไปยังประโยคที่คุณฟังค้างไว้ทันที</li>
+          <li><strong>ซูมย่อขยายด้วยสองนิ้ว:</strong> คุณสามารถใช้สองนิ้วจีบเข้าหรือกางออกบนตัวการ์ดเพื่อย่อขยายขนาดได้ทันทีขณะอยู่บนแอปอื่น</li>
+        </ul>
+      </div>
+      <div class="lang-jp">
+        <h2>フローティングコントロール活用のプロTips</h2>
+        <ul class="article-bullet-list">
+          <li><strong>RTL（右横書き）にも対応：</strong> アラビア語などの書籍では、ティッカーの進行方向が自動で右揃えになります。</li>
+          <li><strong>ワンタップしおり代わり：</strong> 左端のジャンプボタンを使えば、他アプリの作業中に耳で進んだ位置へリーダー画面を瞬時に戻せます。</li>
+          <li><strong>ピンチ操作で直感サイズ変更：</strong> 他アプリを開いた状態でも、カード上で2本指ピンチ操作を行うことで手軽にサイズを拡大縮小できます。</li>
+        </ul>
+      </div>
+      <div class="lang-cn">
+        <h2>悬浮控制进阶实用技巧</h2>
+        <ul class="article-bullet-list">
+          <li><strong>原生兼容从右向左语言（RTL）：</strong> 在阅读阿拉伯语等书目时，卡拉OK条会自动自右向左排版跟读。</li>
+          <li><strong>一键书签秒回现场：</strong> 点击最左侧定位按键，即可快速将阅读界面直接校准至听书刚刚到达的最新进度。</li>
+          <li><strong>双指捏合缩放：</strong> 在使用其他应用时，直接在悬浮窗上双指捏合或外扩即可即时调整卡片缩放比例。</li>
+        </ul>
+      </div>
+      <div class="lang-pt">
+        <h2>Dicas Práticas para os Controles Flutuantes</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Compatível com RTL (Direita para Esquerda):</strong> Em livros em árabe, a linha de texto alinha-se automaticamente à direita.</li>
+          <li><strong>Marcador em um toque:</strong> Use o botão de salto para posicionar o leitor exatamente onde a narração parou.</li>
+          <li><strong>Pinça para redimensionar:</strong> Use dois dedos sobre o cartão para ajustar o tamanho rapidamente sobre qualquer app.</li>
+        </ul>
+      </div>
+      <div class="lang-es">
+        <h2>Consejos Prácticos para Controles Flotantes</h2>
+        <ul class="article-bullet-list">
+          <li><strong>Compatibilidad con RTL (Derecha a Izquierda):</strong> En libros en árabe, el desplazamiento de texto fluye de derecha a izquierda.</li>
+          <li><strong>Marcador de posición instantáneo:</strong> Pulsa el botón de salto para regresar el lector a la línea exacta narrada.</li>
+          <li><strong>Pellizcar para redimensionar:</strong> Usa dos dedos sobre la tarjeta flotante para cambiar su tamaño sin entrar en ajustes.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Related Reading -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-en">Related Reading</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-th">บทความที่เกี่ยวข้อง</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-jp">関連記事</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-cn">相关阅读</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-pt">Leitura Relacionada</h3>
+      <h3 style="font-family: var(--font-display); color: var(--text-primary);" class="lang-es">Lecturas Relacionadas</h3>
+
+      <ul class="article-bullet-list">
+        <li><a href="/blog/read-along-tts-karaoke-highlight-epub-android/">Read Along with Karaoke Highlighting in Shiori EPUB Reader</a></li>
+        <li><a href="/blog/multi-language-text-to-speech-android-epub/">Multi-Language Text-to-Speech in Shiori: Natural Voice Switching</a></li>
+        <li><a href="/blog/read-selected-text-aloud-epub-android/">Read Selected Text Aloud on Android: Sentence Pronunciation Checks</a></li>
+        <li><a href="/blog/text-replacement-regex-epub-android/">Text Replacement and Regex for EPUB on Android</a></li>
+      </ul>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="background: var(--accent-gradient); color: #fff; border-radius: 24px; padding: 3rem 2rem; text-align: center; margin-top: 4rem; box-shadow: var(--card-shadow);" class="animate-fade-in">
+      <!-- English CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-en">Your Book, Wherever You Are on the Phone</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-en">
+        Download Shiori EPUB Reader on Google Play, switch on Floating Controls, and keep the line you are listening to on screen no matter which app you open next.
+      </p>
+
+      <!-- Thai CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-th">ฟังหนังสือได้ต่อเนื่อง ไม่ว่าคุณจะเปิดแอปใดอยู่ก็ตาม</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-th">
+        ดาวน์โหลด Shiori EPUB Reader บน Google Play เปิดใช้งาน Floating Controls แล้วเพลิดเพลินกับการฟังหนังสือพร้อมเนื้อเพลงคาราโอเกะได้ตลอดเวลา
+      </p>
+
+      <!-- Japanese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-jp">スマホのどこにいても、読書がすぐそばに</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-jp">
+        Google PlayからShiori EPUB Readerをダウンロードし、フローティングコントロールをオンにして、マルチタスク中も快適な読書体験をお楽しみください。
+      </p>
+
+      <!-- Chinese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-cn">多任务随心切，好书时刻相伴</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-cn">
+        前往 Google Play 下载 Shiori EPUB 阅读器，开启悬浮窗播控功能，无论打开哪个应用，都能随时随地尽情畅听。
+      </p>
+
+      <!-- Portuguese CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-pt">Seu Livro Acompanha Você em Qualquer App</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-pt">
+        Baixe o Shiori no Google Play, ative os Controles Flutuantes e mantenha a leitura na sua tela enquanto realiza qualquer outra tarefa no celular.
+      </p>
+
+      <!-- Spanish CTA -->
+      <h2 style="color: #fff; font-size: 2.25rem; margin-bottom: 1rem; font-family: var(--font-display);" class="lang-es">Tu Libro Contigo en Cualquier Lugar del Móvil</h2>
+      <p style="opacity: 0.92; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem; line-height: 1.7;" class="lang-es">
+        Descarga Shiori en Google Play, activa los Controles Flotantes y no pierdas de vista la narración sin importar qué app estés usando.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="btn" style="background: #fff; color: var(--accent-primary);" target="_blank" rel="noopener">
+          <span>▶ Get it on Google Play</span>
+        </a>
+        <a href="/blog/" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+          <span data-i18n="nav-blog">View All Blog Posts</span> ➔
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged screenshot" class="lightbox-img" id="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <div class="lightbox-nav">
+      <div class="lightbox-arrow" id="lightbox-prev">&#10094;</div>
+      <div class="lightbox-arrow" id="lightbox-next">&#10095;</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-logo">
+          <img src="/images/icon-trim.png" alt="Shiori Logo" class="brand-logo" />
+          <span>Shiori</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer-desc">An EPUB Reader for Android featuring premium, flexible reading and Text-to-Speech experiences.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-app">Application</h4>
+        <ul class="footer-links">
+          <li><a href="https://play.google.com/store/apps/details?id=com.shiori.epubreader" class="footer-link" target="_blank" rel="noopener">Google Play Store</a></li>
+          <li><a href="/blog/" class="footer-link" data-i18n="footer-blog">Blog</a></li>
+          <li><a href="https://buymeacoffee.com/endofday" class="footer-link" target="_blank" rel="noopener">Buy Me a Coffee ☕</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading" data-i18n="footer-legal">Legal Info</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy-policy" class="footer-link" data-i18n="footer-privacy">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link" data-i18n="footer-terms">Terms of Service</a></li>
+          <li><a href="/app-ads.txt" class="footer-link">App-Ads.txt</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Shiori ePub Reader (栞). Developed by Endofday. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/scripts.js"></script>
+  <script src="../../scripts.js"></script>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = Array.from(document.querySelectorAll('.img-preview'));
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxThumbs = document.getElementById('lightbox-thumbs');
+
+      let currentIndex = 0;
+      let lastScrollTime = 0;
+
+      // Populate Thumbnails
+      images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.src;
+        thumb.alt = img.alt;
+        thumb.className = 'lightbox-thumb';
+        thumb.addEventListener('click', () => openImage(idx));
+        lightboxThumbs.appendChild(thumb);
+      });
+
+      const thumbs = Array.from(lightboxThumbs.children);
+
+      function openImage(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightboxCaption.textContent = images[currentIndex].alt;
+        lightbox.classList.add('active');
+
+        thumbs.forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+
+      images.forEach((img, idx) => {
+        img.addEventListener('click', () => openImage(idx));
+      });
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        openImage(currentIndex);
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openImage(currentIndex);
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+      });
+
+      lightbox.addEventListener('wheel', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime < 300) return;
+        if (e.deltaY > 0 || e.deltaX > 0) showNext();
+        else if (e.deltaY < 0 || e.deltaX < 0) showPrev();
+        lastScrollTime = now;
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
